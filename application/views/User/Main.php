@@ -93,22 +93,22 @@
         <ul class="table-view" style="background-color: #4CD964">
             <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;">Sep 2015</li>
             <li class="table-view-cell media">
-                <table class="slider-table table">
+                <table class="slider-table table" style="margin-left: -87px;">
                     <tr>
 
-                        <td></td>
-                        <th>Doc</th>
+                        <td  style="text-align:right"></td>
+                        <th  style="text-align:center">Doc</th>
                         <th>Rx</th>
                     </tr>
 
                     <tr>
-                        <th>Pradaxa</th>
-                        <td>4</td>
+                        <th  style="text-align:right">Pradaxa</th>
+                        <td  style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <th>Trajenta</th>
-                        <td>4</td>
+                        <th  style="text-align:right">Trajenta</th>
+                        <td  style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                 </table>
@@ -119,21 +119,21 @@
         <ul class="table-view" style="background-color: #E8A698">
             <li class="table-view-cell table-view-divider" style="color: #E8A698;font-weight: 700;">Oct 2015</li>
             <li class="table-view-cell media">
-                <table class="slider-table table">
+                <table class="slider-table table" style="margin-left: -87px;">
                     <tr>
-                        <td></td>
-                        <th>Doc</th>
+                        <td style="text-align:right"></td>
+                        <th style="text-align:center">Doc</th>
                         <th>Rx</th>
                     </tr>
 
                     <tr>
-                        <th>Pradaxa</th>
-                        <td>4</td>
+                        <th style="text-align:right">Pradaxa</th>
+                        <td style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <th>Trajenta</th>
-                        <td>4</td>
+                        <th style="text-align:right">Trajenta</th>
+                        <td style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                 </table>
@@ -144,22 +144,22 @@
         <ul class="table-view" style="background-color: #2680E4">
             <li class="table-view-cell table-view-divider" style="    color: #2680E4;font-weight: 700;">Nov 2015</li>
             <li class="table-view-cell media">
-                <table class="slider-table table">
+                <table class="slider-table table" style="margin-left: -147px;">
                     <tr>
 
-                        <td></td>
-                        <th>Doc</th>
+                        <td style="text-align:right"></td>
+                        <th style="text-align:center">Doc</th>
                         <td>Rx</td>
                     </tr>
 
                     <tr>
-                        <th>Pradaxa</th>
-                        <td>4</td>
+                        <th style="text-align:right">Pradaxa</th>
+                        <td style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <th>Trajenta Family</th>
-                        <td>4</td>
+                        <th style="text-align:right">Trajenta Family</th>
+                        <td style="text-align:center">4</td>
                         <td>2</td>
                     </tr>
                 </table>
