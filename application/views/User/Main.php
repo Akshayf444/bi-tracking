@@ -144,7 +144,7 @@
         <ul class="table-view" style="background-color: #2680E4">
             <li class="table-view-cell table-view-divider" style="    color: #2680E4;font-weight: 700;">Nov 2015</li>
             <li class="table-view-cell media">
-                <table class="slider-table table" style="margin-left: -147px;">
+                <table class="slider-table table" style="margin-left: -143px;">
                     <tr>
 
                         <td style="text-align:right"></td>
