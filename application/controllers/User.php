@@ -13,6 +13,10 @@ class User extends CI_Controller {
         $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => 'blank');
         $this->load->view('template1', $data);
     }
+    public function PlanningDr() {
+        $data = array('title' => 'PlanningDr', 'content' => 'User/PlanningDr', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+    }
 
     public function dashboard() {
         $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => 'blank');
