@@ -61,5 +61,8 @@ class User extends CI_Controller {
     public function logout() {
         redirect('User/index', 'refresh');
     }
-
+    public function view_status(){
+         $data = array('title' => 'View_status', 'content' => 'User/view_status', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+    }
 }

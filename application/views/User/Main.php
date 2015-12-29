@@ -81,7 +81,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/productSel'); ?>';" >
+            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/view_status'); ?>';" >
                 View Result
             </a>
         </li>
