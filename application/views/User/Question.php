@@ -18,7 +18,7 @@
                 <option>Please Select</option>
                 <option value="Actilyse">Actilyse</option>
                 <option value="Pradaxa">Pradaxa</option>
-                <option value="Trajenta">Trajenta</option>              
+                <option value="Trajenta">Trajenta Family</option>              
             </select>
 
         </li>

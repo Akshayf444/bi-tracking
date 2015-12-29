@@ -19,7 +19,7 @@
                 <option>Please Select</option>
                 <option>Actilyse</option>
                 <option>Pradaxa</option>
-                <option>Trajenta</option>              
+                <option>Trajenta Family</option>              
             </select>
             <table class="table table-bordered" id="rx" style="display: none">
                 <tr>
