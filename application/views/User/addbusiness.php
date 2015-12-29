@@ -21,7 +21,7 @@
                 <option>Please Select</option>
                 <option>Actilyse</option>
                 <option>Pradaxa</option>
-                <option>Trajenta</option>              
+                <option>Trajenta Family</option>              
             </select>
 
         </li>

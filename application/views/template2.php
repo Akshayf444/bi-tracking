@@ -56,5 +56,6 @@
         <script src="<?php echo asset_url() ?>js/docs.min.js" type="text/javascript"></script>
 <!--        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>-->
     </body>
+<!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
 </html>
 
