@@ -559,6 +559,14 @@ class User_model extends CI_Model {
 
         return $query->result();
     }
+    public function bdm_authentication($username,$password) {
+
+        $query = "SELECT * FROM bdm
+                    WHERE bdm_empid=$username AND password=$password";
+        $query = $this->db->query($query);
+
+        return $query->row_array();
+    }
 
     public function view4($id) {
         $query = "SELECT u.user_id,u.name,

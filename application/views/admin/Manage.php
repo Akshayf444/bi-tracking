@@ -48,7 +48,7 @@
                             <tr>
                                 <td><?php echo $t->asm_name ?></td>
                                 <td><?php echo $t->mobile ?></td>
-                                <td><a href="<?php echo site_url() ?>/admin/dashboard?id=<?php echo $t->asm_id;?>&name=<?php echo "asm";?>">Edit</a></td>
+                                <td><a onclick="window.location='<?php echo site_url() ?>/admin/edit?id=<?php echo $t->asm_id;?>&name=<?php echo "asm";?>'">Edit</a></td>
                             </tr>
                             <?php
                         endforeach;
@@ -66,7 +66,7 @@
                             <tr>
                                 <td><?php echo $t->zsm_name ?></td>
                                 <td><?php echo $t->mobile ?></td>
-                                <td><a href="<?php echo site_url() ?>/admin/dashboard?id=<?php echo $t->zsm_id;?>&name=<?php echo "zsm";?>">Edit</a></td>
+                                <td><a onclick="window.location='<?php echo site_url() ?>/admin/edit?id=<?php echo $t->zsm_id;?>&name=<?php echo "zsm";?>'">Edit</a></td>
                             </tr>
                             <?php
                         endforeach;
@@ -84,7 +84,7 @@
                             <tr>
                                 <td><?php echo $t->bdm_name ?></td>
                                 <td><?php echo $t->mobile ?></td>
-                                <td><a href="<?php echo site_url() ?>/admin/dashboard?id=<?php echo $t->bdm_id;?>&name=<?php echo "bdm";?>">Edit</a></td>
+                                <td><a onclick="window.location='<?php echo site_url() ?>/admin/edit?id=<?php echo $t->bdm_id;?>&name=<?php echo "bdm";?>'">Edit</a></td>
                             </tr>
                             <?php
                         endforeach;

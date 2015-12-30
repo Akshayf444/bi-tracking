@@ -46,21 +46,34 @@ class admin extends CI_Controller {
         $this->load->view('template2', $data);
     }
 
+    public function edit() {
+        $id = $_GET['id'];
+        $name = $_GET['name'];
+        if ($this->input->post()) {
+            if ($name == 'asm') {
+                $check['show'] = $this->admin_model->asm_edit($id);
+            } elseif ($name == 'zsm') {
+                $check['show'] = $this->admin_model->zsm_edit($id);
+            } elseif ($name == 'bdm') {
+                $check['show'] = $this->admin_model->bdm_edit($id);
+            }
+        }
+        $check['show'] = $this->admin_model->asm_by_id($id);
+        $data = array('title' => 'Login', 'content' => 'admin/edit', 'view_data' => $check);
+        $this->load->view('template2', $data);
+    }
+
     public function manage() {
         if ($this->input->post()) {
             $team = $this->input->post('team');
             if ($team == 'asm') {
                 $check['team1'] = $this->admin_model->asm();
-            }
-            elseif ($team == 'zsm') {
+            } elseif ($team == 'zsm') {
                 $check['team2'] = $this->admin_model->zsm();
-            }
-            elseif ($team == 'bdm'){
+            } elseif ($team == 'bdm') {
                 $check['team3'] = $this->admin_model->bdm();
-            }
-            else
-            {
-                $check['team4'] ='';
+            } else {
+                $check['team4'] = '';
             }
         }
 

@@ -8,13 +8,15 @@ class User extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper();
+        $this->load->model('User_model');
     }
 
     public function index() {
         if ($this->input->post()) {
-            $username = $this->input->post('Username');
+            $username = $this->input->post('username');
             $password = $this->input->post('password');
-            if ($username != 'admin' && $password != 'admin') {
+            $check=  $this->User_model->bdm_authentication($username,$password);
+            if (empty($check)) {
                 $data['message'] = ' Username/password Incorrect';
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
                 $this->load->view('template1', $data);
