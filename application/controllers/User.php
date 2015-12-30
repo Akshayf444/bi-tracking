@@ -69,4 +69,8 @@ class User extends CI_Controller {
          $data = array('title' => 'View_status', 'content' => 'User/view_status', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
+     public  function rep_doc(){
+         $data=array('title'=>'Reporting Doctor','content'=>  'User/reporting_doctor','view_data'=>'blank');
+         $this->load->view('template2',$data);
+     }
 }

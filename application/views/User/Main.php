@@ -260,8 +260,8 @@
                             {
                                 'min': 10,
                                 'readOnly': true,
-                                'width': 150,
-                                'height': 20,
+                                'width': 100,
+                                'height': 10,
                                 'fgColor': '#88BBC8',
                                 'dynamicDraw': true,
                                 'thickness': 0.3,
