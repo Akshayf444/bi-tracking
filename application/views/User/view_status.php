@@ -1,6 +1,16 @@
 <script src="<?php echo asset_url() ?>js/highcharts.js" type="text/javascript"></script>
 
-
+<style>
+    .table-view .table-view-cell {
+        background-position: 0px 100%;
+    }
+    .col-xs-9, .col-xs-3{
+        padding: 0px;
+    }
+    .table-view-cell {
+        padding: 11px 12px 11px 15px;
+    }
+</style>
 
 <form class="card">
     <ul class="table-view " >
@@ -20,13 +30,7 @@
             </select>
         </li>
         <li class="table-view-cell" id="piechart">
-        </li>
-    </ul>
-</form>
-
-
-</div>
-
+       
 
 <script>
     $(function () {
@@ -68,3 +72,7 @@
         });
     });
 </script>
+ </li>
+    
+</ul>
+</form>
