@@ -1,4 +1,10 @@
 <div class="container" style="margin-top: 2em">
+    <?php 
+    if(isset($message))
+    {
+        echo $message;
+    }
+    ?>
     <div class="row">
         <div class="col-lg-6 col-lg-offset-3">
             <div class="panel panel-default">
@@ -8,7 +14,7 @@
 
                 </div>
                 <div class="panel-body">
-                    <form method="" action="<?php echo site_url('User/dashboard'); ?>">
+                    <?php echo form_open('User/index') ?>
 
                         <div class="form-group">
                             <input type="text" class="form-control uname" placeholder="Username" name="username"/>
@@ -16,7 +22,7 @@
                         <div class="form-group">
                             <input type="password" class="form-control pword" placeholder="Password" name="password" />
                         </div>
-                        <button class="btn btn-positive btn-block" type="submit" name="submit" >Sign In</button>
+                        <input class="btn btn-positive btn-block" type="submit" vlaue="Sign In" >
 
                     </form>
                 </div>
