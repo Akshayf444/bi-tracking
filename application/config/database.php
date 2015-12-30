@@ -48,6 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+
 $db['default']['hostname'] = '50.62.209.81';
 $db['default']['username'] = 'respi2';
 $db['default']['password'] = 'respi2@123';

@@ -7,6 +7,8 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link href="http://pocketdrugs.com/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/ratchet.css" rel="stylesheet" type="text/css"/>
+        <link href="<?php echo asset_url() ?>css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/app.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/pygments-manni.css" rel="stylesheet" type="text/css"/>
@@ -27,7 +29,7 @@
         <header class="bar bar-nav">
             <h1 class="title" >                 
                 <img style="height: 99%" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
-                <a class="fa fa-2x fa-power-off pull-right" onclick="window.location='<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
+                <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php if ($title != 'Main') { ?>
                     <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
                 <?php }
@@ -56,6 +58,6 @@
         <script src="<?php echo asset_url() ?>js/docs.min.js" type="text/javascript"></script>
 <!--        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>-->
     </body>
-<!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
+    <!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
 </html>
 
