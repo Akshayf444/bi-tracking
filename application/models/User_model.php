@@ -31,6 +31,7 @@ class User_model extends CI_Model {
     public function generateTab($VEEVA_Employee_ID = 0, $Product_id = 0) {
         $tabs = $this->Tabs($VEEVA_Employee_ID);
         $HTML = '';
+       
     }
 
 }
