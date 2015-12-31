@@ -70,6 +70,9 @@ class User extends MY_Controller {
     }
 
     public function askQuestion() {
+        if ($this->input->post()) {
+            
+        }
         $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
