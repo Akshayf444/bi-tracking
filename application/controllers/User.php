@@ -46,8 +46,9 @@ class User extends MY_Controller {
     public function dashboard() {
         if ($this->is_logged_in()) {
             $data = array();
-            $result = $this->Master_Model->BrandList();
+            $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
+            var_dump($result);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
