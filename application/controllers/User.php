@@ -107,10 +107,12 @@ class User extends MY_Controller {
                 'Year' => date('Y'),
                 'created_at' => date('Y-m-d H:i:s'),
             );
-            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'));
+            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id);
             if (!empty($check)) {
-                $data = array('target' => $values);
-                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data);
+                $data = array(
+                    'target' => $values,
+                    'Product_Id' => $this->session->userdata('Product_Id'));
+                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data, $this->Product_Id);
             } else {
                 $this->User_model->Set_Target($data);
             }
