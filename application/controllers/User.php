@@ -64,6 +64,11 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
+    public function Act_Plan() {
+        $data = array('title' => 'Select Product', 'content' => 'User/Act_Plan', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+    }
+
     public function doctorList() {
         $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => 'blank');
         $this->load->view('template2', $data);
@@ -88,6 +93,24 @@ class User extends MY_Controller {
     }
 
     public function Set_Target() {
+        if ($this->input->post()) {
+            $values = $this->input->post('value');
+            $data = array(
+                'target' => $values,
+                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
+                'Product_Id' => $this->session->userdata('Product_Id'),
+                'Month' => date('Y-m-d', strtotime('+1 month')),
+                'Year' => date('Y'),
+                'created_at' => date('Y-m-d H:i:s'),
+            );
+            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'));
+            if (!empty($check)) {
+                $data=array('target'=>$values);
+                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'),$data);
+            } else {
+                $this->User_model->Set_Target($data);
+            }
+        }
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }

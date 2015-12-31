@@ -18,6 +18,19 @@ class User_model extends CI_Model {
     public function validateLogin() {
         
     }
+    public function Set_Target($data) {
+       return $this->db->insert('Rx_Target',$data);
+    }
+    public function Set_Target_by_id($id) {
+       $sql="select * from Rx_Target
+               where VEEVA_Employee_ID='$id'";
+       $query=  $this->db->query($sql);
+       return $query->row_array();
+    }
+    public function Set_Target_update($id,$data) {
+        $this->db->where(array('VEEVA_Employee_ID'=>$id));
+        return $this->db->update('Rx_Target',$data);
+    }
 
     public function Tabs($VEEVA_Employee_ID) {
         $this->db->select('*');
