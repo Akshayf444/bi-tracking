@@ -23,7 +23,7 @@
     audio, canvas, progress, video {
         height: 90px;
         margin-left: 208px;
-        margin-top: -12px;
+        margin-top: 2px;
         margin-bottom: 30px;
     }
     audio,#kp1, progress, video {
@@ -36,14 +36,18 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            
-
-
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4 pull-right" style="    margin-right: -199px;" >
+                <?php echo $productList ?>
+            </div>
         </li>
     </ul>
+</div>
+<div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" style="    margin-top: 10px;    margin-bottom: -47px;"  onclick="window.location = '<?php echo site_url('User/askQuestion'); ?>';" >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = '<?php echo site_url('User/askQuestion'); ?>';" >
                 Doctor Profiling </a>
             <div class="demo pull-right">
                 <input class="knob" id="2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
@@ -57,7 +61,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="margin-bottom: -2px;" >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = '<?php echo site_url('User/Set_Target'); ?>';">
                 RX Target For The Month Of Jan 2016
             </a>
             <div class="demo pull-right">
@@ -70,7 +74,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="margin-bottom: -2px;" onclick="window.location = '<?php echo site_url('User/PlanMenu'); ?>';">
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = '<?php echo site_url('User/PlanMenu'); ?>';">
                 Planning For The Month Of Jan 2016
             </a>
             <div class="demo pull-right">
@@ -83,7 +87,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="margin-bottom: -2px;"  >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  >
                 Reporting For Activities
             </a>
             <div class="demo pull-right">
@@ -96,7 +100,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="margin-bottom: -2px;"  >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  >
                 Reporting Of Prescriptions
             </a>
             <div class="demo pull-right">

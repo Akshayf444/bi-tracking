@@ -12,7 +12,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx : 200</span>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b>200</b></span><br>
+            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b>200</b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
@@ -25,59 +26,41 @@
         </li>
     </ul>
 </div>
+
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <div class="col-xs-7">Doctor List</div>
-            <div class="col-xs-5">
-                <div class="segmented-control">
-                    <a class="control-item ">Winability</a>
-                    <a class="control-item">Dependency</a>
-                    <a class="control-item">Planned Rx</a>
-                    <a class="control-item">Actual Rx</a>
+            <div class="row">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Doctor List</th>
+                    <th>Winability</th>
+                    <th>Dependency</th>
+                    <th>BI Rx Share</th>
+                    <th>Oct Rx</th>
+                    <th>Nov Rx</th>
+                    <th>Dec Rx</th>
+                    <th>Planned for Jan</th>
+                    <th>Aactual</th>
+                </tr>
+                <tr>
+                    <td><a ><a>Yogesh Kanse</a>
+                <p>Speciality : Diabetes</p></a></td>
+                    <td><a class="control-item badge-positive">H</a></td>
+                    <td><a class="control-item">2%</a></td>
+                    <td><a class="control-item">4</a></td>
+                    <td><a class="control-item">4</a></td>
+                    <td><a class="control-item">4</a></td>
+                   <td> <a class="control-item">4</a></td>
+                   <td> <input type="text"/></td>
+                   <td> <a class="control-item">4</a></td>
+                </tr>
+            </table>
                 </div>
+            <div class="row">
+                <div class="col-xs-2 pull-right">
+            <input type="submit" class="btn btn-success btn-xs" value="Submit"/>
             </div>
-        </li>
-        <li class="table-view-cell">
-            <div class="col-xs-7"><a>Yogesh Kanse</a>
-                <p>Speciality : Diabetes</p>
-                <p>Segment : A</p>
-            </div>
-            <div class="col-xs-5">
-                <div class="segmented-control">
-                    <a class="control-item badge-positive">H</a>
-                    <a class="control-item">2%</a>
-                    <a class="control-item">4</a>
-                    <a class="control-item">4</a>
-                </div>
-            </div>
-        </li>
-        <li class="table-view-cell">
-            <div class="col-xs-7"><a>Amit P</a>
-                <p>Speciality : Ortho</p>
-                <p>Segment : B</p>
-            </div>
-            <div class="col-xs-5">
-                <div class="segmented-control">
-                    <a class="control-item badge-positive">H</a>
-                    <a class="control-item">4%</a>
-                    <a class="control-item">10</a>
-                    <a class="control-item">4</a>
-                </div>
-            </div>
-        </li>
-        <li class="table-view-cell">
-            <div class="col-xs-7"><a>Naresh Ghadi</a>
-                <p>Speciality : General</p>
-                <p>Segment : C</p>
-            </div>
-            <div class="col-xs-5">
-                <div class="segmented-control">
-                    <a class="control-item badge-negative">L</a>
-                    <a class="control-item">2%</a>
-                    <a class="control-item">22</a>
-                    <a class="control-item">4</a>
-                </div>
             </div>
         </li>
     </ul>

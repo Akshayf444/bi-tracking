@@ -1,8 +1,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/Delta'); ?>';" >
-                Set Total Expected Rx 
+            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/doctorList'); ?>';" >
+                Rx Planning 
             </a>
         </li>
     </ul>
@@ -10,8 +10,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/addPlanning'); ?>';">
-                Planning For Doctor
+            <a class="navigate-right" onclick="window.location = '<?php echo site_url('#'); ?>';" >
+                Activity Planning 
             </a>
         </li>
     </ul>

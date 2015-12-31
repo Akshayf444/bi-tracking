@@ -13,7 +13,7 @@
     <ul class="table-view ">
         <li class="table-view-cell table-view-divider">Add Expected Rx</li>
 
-        <li class="table-view-cell">
+<!--        <li class="table-view-cell">
             Select Product
             <select class="form-control" id="product">
                 <option>Please Select</option>
@@ -44,7 +44,7 @@
                     <td>40</td>
                 </tr>
             </table>
-        </li>   
+        </li>   -->
 
         <li class="table-view-cell">
             Total Expected Rx from Doctors in Jan

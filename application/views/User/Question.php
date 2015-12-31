@@ -12,7 +12,7 @@
 <form class="card">
     <ul class="table-view ">
         <li class="table-view-cell table-view-divider">Profiling</li>
-        <li class="table-view-cell">
+<!--        <li class="table-view-cell">
             Select Product
             <select class="form-control" id="product">
                 <option>Please Select</option>
@@ -21,7 +21,7 @@
                 <option value="Trajenta">Trajenta Family</option>              
             </select>
 
-        </li>
+        </li>-->
         <li class="table-view-cell">
             Select Doctor
             <select class="form-control">
@@ -32,11 +32,11 @@
         </li>
 
         <li class="table-view-cell">
-            No of Targeted Patients seen in Month for the <span id="span1">priority indication </span>
+            No of Patients seen in Month for  <span id="span1">priority indication </span>in Jan 2016
             <input type="text" >
         </li>
         <li class="table-view-cell">
-            No of Patients prescribed <span id="span2">NOAC </span> by the doctor in Month 
+            No of Patients prescribed <span id="span2">NOAC </span> by the doctor in Jan 2016
             <input type="text" >
         </li>
         <li class="table-view-cell">

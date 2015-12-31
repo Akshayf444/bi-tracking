@@ -12,7 +12,7 @@ class Master_model extends MY_model {
      * */
 
     function generateDropdown($result, $fieldid, $fieldname, $id = 0) {
-        $dropdown = '<select id ="' . $fieldid . '" ><option value="-1" ></option>';
+        $dropdown = '<select style="height: 23px;width: 215px;" id ="' . $fieldid . '" ><option value="-1" ></option>';
         if (!empty($result)) {
             foreach ($result as $item) {
                 if ($id == $item->{$fieldid}) {
