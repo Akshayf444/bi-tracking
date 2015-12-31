@@ -49,7 +49,7 @@ class User extends MY_Controller {
             $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
             if ($this->input->post()) {
-                $this->session->set_userdata('Reporting_To', $this->input->post('Product_Id'));
+                $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
                 $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             }
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
