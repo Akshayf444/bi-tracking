@@ -39,6 +39,7 @@
             <div class="">
                 <select name="Product">
                     <?php echo $productList ?>
+                </select>
             </div>
 
 

@@ -25,7 +25,7 @@ class MY_Controller extends CI_Controller {
     }
 
     function is_logged_in() {
-        if (!is_null($this->VEEVA_Employee_ID) && $this->VEEVA_Employee_ID > 0) {
+        if (!is_null($this->VEEVA_Employee_ID) && $this->VEEVA_Employee_ID != '') {
             return TRUE;
         } else {
             return FALSE;
