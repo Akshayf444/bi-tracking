@@ -14,8 +14,9 @@ class MY_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    public function update(){
+    public function update() {
         $this->db->where('');
         $this->db->update();
     }
+
 }
