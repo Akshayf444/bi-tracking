@@ -36,6 +36,16 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
+            <div class="">
+                <select name="Product">
+                    <?php echo $productList ?>
+            </div>
+
+
+        </li>
+    </ul>
+    <ul class="table-view">
+        <li class="table-view-cell">
             <a class="navigate-right" style="    margin-top: 10px;    margin-bottom: -47px;"  onclick="window.location = '<?php echo site_url('User/askQuestion'); ?>';" >
                 Doctor Profiling </a>
             <div class="demo pull-right">
