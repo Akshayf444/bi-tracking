@@ -12,22 +12,21 @@
 <form class="card">
     <ul class="table-view ">
         <li class="table-view-cell table-view-divider">Profiling</li>
-<!--        <li class="table-view-cell">
-            Select Product
-            <select class="form-control" id="product">
-                <option>Please Select</option>
-                <option value="Actilyse">Actilyse</option>
-                <option value="Pradaxa">Pradaxa</option>
-                <option value="Trajenta">Trajenta Family</option>              
-            </select>
-
-        </li>-->
+        <!--        <li class="table-view-cell">
+                    Select Product
+                    <select class="form-control" id="product">
+                        <option>Please Select</option>
+                        <option value="Actilyse">Actilyse</option>
+                        <option value="Pradaxa">Pradaxa</option>
+                        <option value="Trajenta">Trajenta Family</option>              
+                    </select>
+        
+                </li>-->
         <li class="table-view-cell">
             Select Doctor
             <select class="form-control">
                 <option>Please Select</option>
-                <option>Yogesh Kanse</option>             
-                <option>Naresh Ghadi</option>             
+                <?php echo $doctorList; ?>        
             </select>            
         </li>
 

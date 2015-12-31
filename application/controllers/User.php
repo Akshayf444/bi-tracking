@@ -75,10 +75,14 @@ class User extends MY_Controller {
     }
 
     public function askQuestion() {
+        $this->load->model('Doctor_Model');
+
+        $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
         if ($this->input->post()) {
             
         }
-        $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => 'blank');
+        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+        $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -105,8 +109,8 @@ class User extends MY_Controller {
             );
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'));
             if (!empty($check)) {
-                $data=array('target'=>$values);
-                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'),$data);
+                $data = array('target' => $values);
+                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data);
             } else {
                 $this->User_model->Set_Target($data);
             }
