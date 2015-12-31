@@ -209,14 +209,21 @@
 </style>
 <ul class="table-view card ">
     <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
-        <div class="col-xs-10">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
             Achievement Of Jan 2016
         </div>
+        <div class="col-lg-4"></div>
     </li>
     <li class="table-view-cell achievement">
 
-
-        <div class="col-lg-6">
+        <div class="col-lg-4">
+            <select class="form-control">
+                <option>Jan 2015</option>
+                <option>Cycle 1</option>
+            </select>
+        </div>
+        <div class="col-lg-4">
 
 
             <div class="demo" >        
@@ -226,7 +233,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-4">
 
             <div class="demo" >       
                 <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
@@ -236,10 +243,6 @@
         </div>
     </li>
 </ul>
-<div class="demo pull-right">
-    <input class="knob2" id="knob2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
-    <span style="    margin-left: 86px;position: absolute;margin-top: -39px;">10/100</span>
-</div>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
                 $(document).ready(function () {
