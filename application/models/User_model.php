@@ -18,5 +18,8 @@ class User_model extends CI_Model {
     public function validateLogin() {
         
     }
+    public function Set_Target($data) {
+       return $this->db->insert('Rx_Target',$data);
+    }
 
 }

@@ -9,7 +9,6 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-<form class="card">
     <ul class="table-view ">
         <li class="table-view-cell table-view-divider">Add Expected Rx</li>
 
@@ -45,14 +44,14 @@
                 </tr>
             </table>
         </li>   -->
-
+<?php echo form_open('User/Set_Target')?>
         <li class="table-view-cell">
             Total Expected Rx from Doctors in Jan
-            <input type="text" >
+            <input type="text" name="value">
         </li>
         <li class="table-view-cell">
             <br/>
-            <button class="btn btn-lg btn-positive">Submit</button>
+            <button type="submit" class="btn btn-sm btn-positive"/>Submit</button>
             <br/>
         </li>
     </ul>
