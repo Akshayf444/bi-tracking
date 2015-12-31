@@ -10,7 +10,7 @@ class User_model extends CI_Model {
     public function authentication($username, $password) {
         $this->db->select('*');
         $this->db->from($this->table_name);
-        $this->db->where(array('Username' => $username, 'Password' => $password, 'Status' => 'Active'));
+        $this->db->where(array('Username' => $username, 'Password' => $password, 'Status' => '1'));
         $query = $this->db->get();
         return $query->row_array();
     }
