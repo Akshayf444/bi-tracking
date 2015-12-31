@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
+$db['default']['hostname'] = '50.62.209.81';
+$db['default']['username'] = 'bi-tracking';
+$db['default']['password'] = 'track#$%@1';
+$db['default']['database'] = 'bi-tracking';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
