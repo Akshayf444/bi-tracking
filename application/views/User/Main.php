@@ -36,10 +36,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <div class="">
-                <select name="Product">
-                    <?php echo $productList ?>
-            </div>
+            
 
 
         </li>
