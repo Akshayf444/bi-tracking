@@ -24,6 +24,12 @@
         height: 90px;
         margin-left: 208px;
         margin-top: -12px;
+        margin-bottom: 30px;
+    }
+    audio,#kp1, progress, video {
+        height: 90px;
+        margin-left: 208px;
+        margin-top: -12px;
         margin-bottom: -22px;
     }
 </style>
@@ -33,11 +39,24 @@
             <a class="navigate-right" style="    margin-top: 10px;    margin-bottom: -47px;"  onclick="window.location = '<?php echo site_url('User/askQuestion'); ?>';" >
                 Doctor Profiling </a>
             <div class="demo pull-right">
-                <input class="knob" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
-                <span style="    margin-left: 86px;position: absolute;margin-top: -39px;">10/100</span>
+                <input class="knob" id="2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">20/100</span>
             </div>
 
 
+        </li>
+    </ul>
+</div>
+<div class="card">
+    <ul class="table-view">
+        <li class="table-view-cell" style="    margin-bottom: -32px;">
+            <a class="navigate-right" style="margin-bottom: -2px;" >
+                RX Target For The Month Of Jan 2016
+            </a>
+            <div class="demo pull-right">
+                <input class="knob" id="2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">20/100</span>
+            </div>
         </li>
     </ul>
 </div>
@@ -45,12 +64,11 @@
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
             <a class="navigate-right" style="margin-bottom: -2px;" onclick="window.location = '<?php echo site_url('User/PlanMenu'); ?>';">
-                Planning
+                Planning For The Month Of Jan 2016
             </a>
-            <div class="progress planning" style="    height: 5px;    width: 100%;margin-left: -13px;">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo 25; ?>" aria-valuemin="0" aria-valuemax="100" style="    height: 6px;width: <?php echo 25 . "%"; ?>;background-color: #00CCFF">
-                   
-                </div>
+            <div class="demo pull-right">
+                <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">30/100</span>
             </div>
         </li>
     </ul>
@@ -58,13 +76,25 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="margin-bottom: -2px;" onclick="window.location = '<?php echo site_url('User/addRx'); ?>';" >
-                Reporting
+            <a class="navigate-right" style="margin-bottom: -2px;"  >
+                Reporting For Activities
             </a>
-            <div class="progress planning" style="    height: 5px;    width: 100%;margin-left: -13px;">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo 25; ?>" aria-valuemin="0" aria-valuemax="100" style="    height: 6px;width: <?php echo 50 . "%"; ?>;background-color: #00CCFF">
-                   
-                </div>
+            <div class="demo pull-right">
+                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">30/100</span>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="card">
+    <ul class="table-view">
+        <li class="table-view-cell" style="    margin-bottom: -32px;">
+            <a class="navigate-right" style="margin-bottom: -2px;"  >
+                Reporting Of Prescriptions
+            </a>
+            <div class="demo pull-right">
+                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">30/100</span>
             </div>
         </li>
     </ul>
@@ -91,25 +121,23 @@
 <div id="owl-demo2" class="owl-carousel owl-theme" style="text-align: center">
     <div class="item card" > 
         <ul class="table-view" style="background-color: #4CD964">
-            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;">Sep 2015</li>
+            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;">Product 1</li>
             <li class="table-view-cell media">
                 <table class="slider-table table" style="margin-left: -87px;">
                     <tr>
 
-                        <td  style="text-align:right"></td>
-                        <th  style="text-align:center">Doc</th>
-                        <th>Rx</th>
+                        <th  style="text-align:right">Product 1</th>
+                        <th  style="text-align:center">Sep</th>
+                        <th  style="text-align:center">Oct</th>
+                        <th  style="text-align:center">Nov</th>
+                        <th>Dec</th>
                     </tr>
 
                     <tr>
-                        <th  style="text-align:right">Pradaxa</th>
-                        <td  style="text-align:center">4</td>
-                        <td>2</td>
+                        <th  style="text-align:right">Doctor</th>
                     </tr>
                     <tr>
-                        <th  style="text-align:right">Trajenta</th>
-                        <td  style="text-align:center">4</td>
-                        <td>2</td>
+                        <th  style="text-align:right">Prescription</th>
                     </tr>
                 </table>
             </li>
@@ -117,24 +145,22 @@
     </div>
     <div class="item card"> 
         <ul class="table-view" style="background-color: #E8A698">
-            <li class="table-view-cell table-view-divider" style="color: #E8A698;font-weight: 700;">Oct 2015</li>
+            <li class="table-view-cell table-view-divider" style="color: #E8A698;font-weight: 700;">Product 2</li>
             <li class="table-view-cell media">
                 <table class="slider-table table" style="margin-left: -87px;">
                     <tr>
-                        <td style="text-align:right"></td>
-                        <th style="text-align:center">Doc</th>
-                        <th>Rx</th>
+                        <th  style="text-align:right">Product 1</th>
+                        <th  style="text-align:center">Sep</th>
+                        <th  style="text-align:center">Oct</th>
+                        <th  style="text-align:center">Nov</th>
+                        <th>Dec</th>
                     </tr>
 
                     <tr>
-                        <th style="text-align:right">Pradaxa</th>
-                        <td style="text-align:center">4</td>
-                        <td>2</td>
+                        <th style="text-align:right">Doctor</th>
                     </tr>
                     <tr>
-                        <th style="text-align:right">Trajenta</th>
-                        <td style="text-align:center">4</td>
-                        <td>2</td>
+                        <th style="text-align:right">Prescription</th>
                     </tr>
                 </table>
             </li>
@@ -142,25 +168,23 @@
     </div>
     <div class="item card"> 
         <ul class="table-view" style="background-color: #2680E4">
-            <li class="table-view-cell table-view-divider" style="    color: #2680E4;font-weight: 700;">Nov 2015</li>
+            <li class="table-view-cell table-view-divider" style="    color: #2680E4;font-weight: 700;">Product 3</li>
             <li class="table-view-cell media">
                 <table class="slider-table table" style="margin-left: -143px;">
                     <tr>
 
-                        <td style="text-align:right"></td>
-                        <th style="text-align:center">Doc</th>
-                        <td>Rx</td>
+                        <th  style="text-align:right">Product 1</th>
+                        <th  style="text-align:center">Sep</th>
+                        <th  style="text-align:center">Oct</th>
+                        <th  style="text-align:center">Nov</th>
+                        <th>Dec</th>
                     </tr>
 
                     <tr>
-                        <th style="text-align:right">Pradaxa</th>
-                        <td style="text-align:center">4</td>
-                        <td>2</td>
+                        <th style="text-align:right">Doctor</th>
                     </tr>
                     <tr>
-                        <th style="text-align:right">Trajenta Family</th>
-                        <td style="text-align:center">4</td>
-                        <td>2</td>
+                        <th style="text-align:right">Prescription</th>
                     </tr>
                 </table>
             </li>
@@ -185,56 +209,40 @@
 </style>
 <ul class="table-view card ">
     <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
-        <div class="col-xs-10">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
             Achievement Of Jan 2016
         </div>
-        <div class="col-xs-2">
-            Target
-        </div>
+        <div class="col-lg-4"></div>
     </li>
     <li class="table-view-cell achievement">
 
-        <div class="col-xs-10">
-            Doctor Prioritiesed
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo 10; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo 10 . "%"; ?>;">
-                    <?php echo 10 . "%"; ?>
-                </div>
-            </div>
+        <div class="col-lg-4">
+            <select class="form-control">
+                <option>Jan 2015</option>
+                <option>Cycle 1</option>
+            </select>
         </div>
-        <div class="col-xs-2">
-            <br>
-            23
+        <div class="col-lg-4">
+
+
+            <div class="demo" >        
+                <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
+                <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Rx Actual / Rx Planned</span>
+            </div>
         </div>
 
-        <div class="col-xs-10">
-            KPI 1 (Rx from targeted/Prioritiesed Doctor)
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo 20; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo 20 . "%"; ?>;background-color: green">
-                    <?php echo 20 . "%"; ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-2">
-            <br>
-            56
-        </div>
+        <div class="col-lg-4">
 
-        <div class="col-xs-10">
-            KPI 2 (No. Of Doctor Engaged)
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo 25; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo 25 . "%"; ?>;background-color: #00CCFF">
-                    <?php echo 25 . "%"; ?>
-                </div>
+            <div class="demo" >       
+                <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
+                <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Activity Done / Planned</span>
             </div>
-        </div>
-        <div class="col-xs-2">
-            <br>
-            32
         </div>
     </li>
 </ul>
-
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
                 $(document).ready(function () {
@@ -253,23 +261,107 @@
                         navigation : false
                     });
                 });
-                
+
+//                $(document).ready(function () {
+//                    $('#1').trigger(
+//                            'configure',
+//                            {
+//                                'min': 10,
+//                                'readOnly': true,
+//                                'width': 100,
+//                                'height': 10,
+//                                'fgColor': '#88BBC8',
+//                                'dynamicDraw': true,
+//                                'thickness': 0.3,
+//                                'tickColorizeValues': true
+//                            }
+//                    );
+//                });
                 $(document).ready(function () {
-                    $('.knob').trigger(
-                            'configure',
-                            {
-                                'min': 10,
-                                'readOnly': true,
-                                'width': 100,
-                                'height': 10,
-                                'fgColor': '#88BBC8',
-                                'dynamicDraw': true,
-                                'thickness': 0.3,
-                                'tickColorizeValues': true
-                            }
-                    );
-            });
-                
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#1').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#2').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#3').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#4').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#5').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#kp1').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+                $(document).ready(function () {
+                    var initval = 20;
+                    $({value: 0}).animate({value: initval}, {
+                        duration: 1000,
+                        easing: 'swing',
+                        step: function ()
+                        {
+                            $('#kp2').val(this.value).trigger('change');
+                            $('#preval').val(initval);
+                        }
+                    });
+                });
+
 //                $(document).ready(function () {
 //                    var initval = 10;
 //                    $({value: 0}).animate({value: initval}, {

@@ -1,3 +1,14 @@
+<style>
+    .table-view .table-view-cell {
+        background-position: 0px 100%;
+    }
+    .col-xs-9, .col-xs-3{
+        padding: 0px;
+    }
+    .table-view-cell {
+        padding: 11px 12px 11px 15px;
+    }
+</style>
 <form action="" method="post" class="card" >
      <ul class="table-view " >
         <li class="table-view-cell table-view-divider">Reporting Doctor</li>
