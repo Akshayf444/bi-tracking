@@ -11,6 +11,7 @@ class MY_Controller extends CI_Controller {
     public $Division;
     public $Full_Name;
     public $table_name;
+    public $Product_Id;
 
     function __construct() {
         parent::__construct();
@@ -22,6 +23,7 @@ class MY_Controller extends CI_Controller {
         $this->Designation = $this->session->userdata('Designation');
         $this->Division = $this->session->userdata('Division');
         $this->Full_Name = $this->session->userdata('Full_Name');
+        $this->Product_Id = $this->session->userdata('Product_Id');
     }
 
     function is_logged_in() {

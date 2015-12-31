@@ -38,9 +38,14 @@
         <li class="table-view-cell">
             <div class="col-lg-4"></div>
             <div class="col-lg-4"></div>
-            <div class="col-lg-4 pull-right" style="    margin-right: -199px;" >
-                <?php echo $productList ?>
+            <?php echo form_open('User/dashboard'); ?>
+            <div class="col-lg-4 pull-right" style="margin-right: -199px;" >
+                <select name="Product_Id" class="form-control" onchange="this.form.submit()">
+                    <option value="-1">Select Product</option>
+                    <?php echo $productList ?>
+                </select>
             </div>
+            </form>
         </li>
     </ul>
 </div>
