@@ -48,7 +48,6 @@ class User extends MY_Controller {
             $data = array();
             $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
-            var_dump($result);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -81,7 +80,7 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
-    public function Delta() {
+    public function Set_Target() {
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }

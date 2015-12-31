@@ -28,15 +28,7 @@
     <body>
         <header class="bar bar-nav">
             <h1 class="title" >  
-                <div class="col-lg-4">
                     <img style="height: 99%" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
-                </div>
-                <div class="col-lg-4">
-                    <select class="form-control" name="Product">
-                        <?php echo $productList ?>
-                    </select>
-                </div>
-                <div class="col-lg-4">
                     <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
                     <?php if ($title != 'Main') { ?>
                         <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
