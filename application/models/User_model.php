@@ -19,4 +19,18 @@ class User_model extends CI_Model {
         
     }
 
+    public function Tabs($VEEVA_Employee_ID) {
+        $this->db->select('*');
+        $this->db->from($this->table_name . ' Em');
+        $this->db->join('Tab_Control tb', 'Em.VEEVA_Employee_ID = tb.VEEVA_Employee_ID');
+        $this->db->where(array('Em.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function generateTab($VEEVA_Employee_ID = 0, $Product_id = 0) {
+        $tabs = $this->Tabs($VEEVA_Employee_ID);
+        $HTML = '';
+    }
+
 }
