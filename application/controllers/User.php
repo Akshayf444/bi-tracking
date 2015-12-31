@@ -9,18 +9,28 @@ class User extends MY_Controller {
         parent::__construct();
         $this->load->helper();
         $this->load->model('User_model');
+        $this->load->model('Master_Model');
     }
 
     public function index() {
         if ($this->input->post()) {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
-            $check=  $this->User_model->bdm_authentication($username,$password);
+            $check = $this->User_model->authentication($username, $password);
             if (empty($check)) {
                 $data['message'] = ' Username/password Incorrect';
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
                 $this->load->view('template1', $data);
             } else {
+                $this->session->set_userdata('VEEVA_Employee_ID', $check['VEEVA_Employee_ID']);
+                $this->session->set_userdata('Local_Employee_ID', $check['Local_Employee_ID']);
+                $this->session->set_userdata('Full_Name', $check['Full_Name']);
+                $this->session->set_userdata('Division', $check['Division']);
+                $this->session->set_userdata('Designation', $check['Designation']);
+                $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
+                $this->session->set_userdata('Reporting_VEEVA_ID', $check['Reporting_VEEVA_ID']);
+                $this->session->set_userdata('Reporting_Local_ID', $check['Reporting_Local_ID']);
+                $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
                 redirect('User/dashboard', 'refresh');
             }
         }
@@ -34,9 +44,15 @@ class User extends MY_Controller {
     }
 
     public function dashboard() {
-
-        $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
+        if ($this->is_logged_in()) {
+            $data = array();
+            $result = $this->Master_Model->BrandList();
+            $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
+            $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
     public function productSel() {

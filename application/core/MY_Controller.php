@@ -5,21 +5,27 @@ class MY_Controller extends CI_Controller {
     public $VEEVA_Employee_ID;
     public $Local_Employee_ID;
     public $Designation;
-    public $Reporting;
+    public $Reporting_To;
     public $Reporting_VEEVA_ID;
     public $Reporting_Local_ID;
+    public $Division;
+    public $Full_Name;
+    public $table_name;
 
     function __construct() {
         parent::__construct();
-        $this->user_id = $this->session->userdata('VEEVA_Employee_ID');
-        $this->user_type = $this->session->userdata('Local_Employee_ID');
-        $this->level = $this->session->userdata('Reporting');
-        $this->repname = $this->session->userdata('Reporting_VEEVA_ID');
-        $this->repcode = $this->session->userdata('Reporting_Local_ID');
+        $this->VEEVA_Employee_ID = $this->session->userdata('VEEVA_Employee_ID');
+        $this->Local_Employee_ID = $this->session->userdata('Local_Employee_ID');
+        $this->Reporting_To = $this->session->userdata('Reporting_To');
+        $this->Reporting_VEEVA_ID = $this->session->userdata('Reporting_VEEVA_ID');
+        $this->Reporting_Local_ID = $this->session->userdata('Reporting_Local_ID');
+        $this->Designation = $this->session->userdata('Designation');
+        $this->Division = $this->session->userdata('Division');
+        $this->Full_Name = $this->session->userdata('Full_Name');
     }
 
     function is_logged_in() {
-        if (!is_null($this->user_id) && $this->user_id > 0) {
+        if (!is_null($this->VEEVA_Employee_ID) && $this->VEEVA_Employee_ID > 0) {
             return TRUE;
         } else {
             return FALSE;
@@ -27,12 +33,12 @@ class MY_Controller extends CI_Controller {
     }
 
     function logout() {
-        $this->session->unset_userdata('user_id');
-        $this->session->unset_userdata('user_type');
-        $this->session->unset_userdata('level');
-        $this->session->unset_userdata('repname');
-        $this->session->unset_userdata('repcode');
-        $this->session->unset_userdata('div_id');
+        $this->session->unset_userdata('VEEVA_Employee_ID');
+        $this->session->unset_userdata('Local_Employee_ID');
+        $this->session->unset_userdata('Designation');
+        $this->session->unset_userdata('Reporting');
+        $this->session->unset_userdata('Reporting_VEEVA_ID');
+        $this->session->unset_userdata('Reporting_Local_ID');
         redirect('User/login', 'refresh');
     }
 
