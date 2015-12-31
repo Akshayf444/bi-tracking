@@ -21,9 +21,9 @@ class User_model extends CI_Model {
     public function Set_Target($data) {
        return $this->db->insert('Rx_Target',$data);
     }
-    public function Set_Target_by_id($id) {
+    public function Set_Target_by_id($id,$pid) {
        $sql="select * from Rx_Target
-               where VEEVA_Employee_ID='$id'";
+               where VEEVA_Employee_ID='$id' And Product_Id='$pid'";
        $query=  $this->db->query($sql);
        return $query->row_array();
     }
