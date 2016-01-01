@@ -11,7 +11,7 @@ class MY_Controller extends CI_Controller {
     public $Division;
     public $Full_Name;
     public $table_name;
-    public $Product_Id;
+    public $Product_Id = 0;
 
     function __construct() {
         parent::__construct();

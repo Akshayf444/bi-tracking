@@ -29,8 +29,9 @@
 
 <div class="card">
     <ul class="table-view">
-        <li class="table-view-cell table-view-divider">
-            <div class="row">
+        <li class="table-view-cell table-view-divider">Planning</li>
+        <li class="table-view-cell ">
+
             <table class="table table-bordered">
                 <tr>
                     <th>Doctor List</th>
@@ -43,25 +44,36 @@
                     <th>Planned for Jan</th>
                     <th>Aactual</th>
                 </tr>
-                <tr>
-                    <td><a ><a>Yogesh Kanse</a>
-                <p>Speciality : Diabetes</p></a></td>
-                    <td><a class="control-item badge-positive">H</a></td>
-                    <td><a class="control-item">2%</a></td>
-                    <td><a class="control-item">4</a></td>
-                    <td><a class="control-item">4</a></td>
-                    <td><a class="control-item">4</a></td>
-                   <td> <a class="control-item">4</a></td>
-                   <td> <input type="text"/></td>
-                   <td> <a class="control-item">4</a></td>
-                </tr>
+
+                <?php
+                if (isset($doctorList) && !empty($doctorList)) {
+                    foreach ($doctorList as $doctor) {
+                        ?>
+                        <tr>
+                            <td><a ><?php echo $doctor->Account_Name; ?></a>
+                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
+                            <td><a class="control-item badge badge-positive">H</a></td>
+                            <td><a class="control-item">2%</a></td>
+                            <td><a class="control-item">4</a></td>
+                            <td><a class="control-item">4</a></td>
+                            <td><a class="control-item">4</a></td>
+                            <td> <a class="control-item">4</a></td>
+                            <td> <input type="text"/></td>
+                            <td> <a class="control-item"></a></td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
+
+
             </table>
-                </div>
-            <div class="row">
-                <div class="col-xs-2 pull-right">
-            <input type="submit" class="btn btn-success btn-xs" value="Submit"/>
-            </div>
-            </div>
         </li>
+        <li class="table-view-cell">
+            <br/>
+            <button type="submit" class="btn btn-positive">Submit</button>
+            <br/>
+        </li>
+
     </ul>
 </div>

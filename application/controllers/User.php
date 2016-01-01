@@ -10,6 +10,7 @@ class User extends MY_Controller {
         $this->load->helper();
         $this->load->model('User_model');
         $this->load->model('Master_Model');
+        $this->load->model('Doctor_Model');
     }
 
     public function index() {
@@ -52,6 +53,7 @@ class User extends MY_Controller {
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
                 $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             }
+            $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -70,20 +72,34 @@ class User extends MY_Controller {
     }
 
     public function doctorList() {
-        $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
+        if ($this->is_logged_in()) {
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+            $data['doctorList'] = $result;
+            $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
-    public function askQuestion() {
-        $this->load->model('Doctor_Model');
-
-        $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
-        if ($this->input->post()) {
-            
+    public function Profiling() {
+        if ($this->is_logged_in()) {
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+            if ($this->input->post()) {
+                $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
+                $_POST['Product_id'] = $this->Product_Id;
+                $_POST['created_at'] = date('Y-m-d H:i:s');
+                if ($this->db->insert('Profiling', $_POST)) {
+                    redirect('User/Profiling', 'refresh');
+                }
+            }
+            $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+            $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
+            $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
         }
-        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
-        $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);
-        $this->load->view('template2', $data);
     }
 
     public function addPlanning() {

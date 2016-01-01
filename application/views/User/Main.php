@@ -52,7 +52,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = '<?php echo site_url('User/askQuestion'); ?>';" >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = '<?php echo site_url('User/Profiling'); ?>';" >
                 Doctor Profiling </a>
             <div class="demo pull-right">
                 <input class="knob" id="2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">

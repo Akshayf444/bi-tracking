@@ -9,66 +9,36 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-<form class="card">
-    <ul class="table-view ">
-        <li class="table-view-cell table-view-divider">Profiling</li>
-        <!--        <li class="table-view-cell">
-                    Select Product
-                    <select class="form-control" id="product">
-                        <option>Please Select</option>
-                        <option value="Actilyse">Actilyse</option>
-                        <option value="Pradaxa">Pradaxa</option>
-                        <option value="Trajenta">Trajenta Family</option>              
-                    </select>
-        
-                </li>-->
-        <li class="table-view-cell">
-            Select Doctor
-            <select class="form-control">
-                <option>Please Select</option>
-                <?php echo $doctorList; ?>        
-            </select>            
-        </li>
+<?php echo form_open('User/Profiling') ?>
+<ul class="table-view ">
+    <li class="table-view-cell table-view-divider">Profiling</li>
 
-        <li class="table-view-cell">
-            No of Patients seen in Month for  <span id="span1">priority indication </span>in Jan 2016
-            <input type="text" >
-        </li>
-        <li class="table-view-cell">
-            No of Patients prescribed <span id="span2">NOAC </span> by the doctor in Jan 2016
-            <input type="text" >
-        </li>
-        <li class="table-view-cell">
-            Is doctor inclined or has shown interest towards being continously engaged or has been engaged by BI?
-            <select class="form-control">
-                <option>Please Select</option>
-                <option>Yes</option>
-                <option>No</option>
-            </select>
-        </li>
-        <li class="table-view-cell">
-            Whether doctor asks product related questions or objections during clinic visits?
-            <select class="form-control">
-                <option>Please Select</option>
-                <option>Yes</option>
-                <option>No</option>
-            </select>
-        </li>
-        <li class="table-view-cell">
-            Does the doctor mostly prescribe and is loyal to competitor brand?
-            <select class="form-control">
-                <option>Please Select</option>
-                <option>Yes</option>
-                <option>No</option>
-            </select>
+    <li class="table-view-cell">
+        Select Doctor
+        <select class="form-control" name="Doctor_id">
+            <option>Please Select</option>
+            <?php echo $doctorList; ?>        
+        </select> 
+    </li>
+    <?php
+    if (isset($questionList) && !empty($questionList)) {
+        foreach ($questionList as $Question) {
+            ?>
+            <li class="table-view-cell">
+                <?php echo $Question->Question ?>
+                <?php echo $Question->name ?>
+            </li>
+            <?php
+        }
+    }
+    ?>
 
-        </li>
-        <li class="table-view-cell">
-            <br/>
-            <button class="btn btn-lg btn-positive">Submit</button>
-            <br/>
-        </li>
-    </ul>
+    <li class="table-view-cell">
+        <br/>
+        <button type="submit" class="btn btn-positive">Submit</button>
+        <br/>
+    </li>
+</ul>
 </form>
 <script>
     $("#product").change(function () {
@@ -84,4 +54,16 @@
             $('#span2').html('DPP4');
         }
     });
+
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    var currentDate = new Date();
+    var nextMonthDate = new Date(currentDate.getYear(), currentDate.getMonth());
+    var monthname = months[parseInt(nextMonthDate.getMonth(), 10)]
+
+    $(function () {
+        $(".next-month").html('in ' + monthname);
+    });
+
 </script>

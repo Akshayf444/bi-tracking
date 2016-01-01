@@ -35,4 +35,12 @@ class Master_model extends MY_model {
         return $query->result();
     }
 
+    function getQuestions($Product_Id = 0) {
+        $this->db->select('*');
+        $this->db->from('Question_Master');
+        $this->db->where('Product_Id', $Product_Id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }
