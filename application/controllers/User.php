@@ -49,13 +49,15 @@ class User extends MY_Controller {
             $data = array();
             $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
+            $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
+
             if ($this->input->post()) {
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
                 $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
-            $this->load->view('template2', $data);
+           $this->load->view('template2', $data);
         } else {
             $this->logout();
         }

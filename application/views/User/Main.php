@@ -49,20 +49,8 @@
         </li>
     </ul>
 </div>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell">
-            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = '<?php echo site_url('User/Profiling'); ?>';" >
-                Doctor Profiling </a>
-            <div class="demo pull-right">
-                <input class="knob" id="2" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">20/100</span>
-            </div>
+<?php echo isset($tab1) ? $tab1 : ''; ?>
 
-
-        </li>
-    </ul>
-</div>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
@@ -294,13 +282,14 @@
 //                    );
 //                });
                 $(document).ready(function () {
-                    var initval = 20;
+                    var initval = parseInt($('#profile').val(), 10);
+                    //alert(initval);
                     $({value: 0}).animate({value: initval}, {
                         duration: 1000,
                         easing: 'swing',
                         step: function ()
                         {
-                            $('#1').val(this.value).trigger('change');
+                            $('#1').val(initval).trigger('change');
                             $('#preval').val(initval);
                         }
                     });
@@ -378,17 +367,5 @@
                     });
                 });
 
-//                $(document).ready(function () {
-//                    var initval = 10;
-//                    $({value: 0}).animate({value: initval}, {
-//                        duration: 1000,
-//                        easing: 'swing',
-//                        step: function ()
-//                        {
-//                            $('.knob').val(this.value,{"readOnly":true}).trigger('change');
-//                            $('#preval').val(initval);
-//                            $('.knob').knob();
-//                        }
-//                    });
-//                });
+
 </script>
