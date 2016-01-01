@@ -119,7 +119,7 @@ class User extends MY_Controller {
                 'target' => $values,
                 'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
                 'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => date('Y-m-d', strtotime('+1 month')),
+                'Month' => date('m', strtotime('+1 month')),
                 'Year' => date('Y'),
                 'created_at' => date('Y-m-d H:i:s'),
             );
