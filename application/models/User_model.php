@@ -29,6 +29,13 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+    public function Expected_Rx($id, $pid,$month) {
+        $this->db->select('target');
+        $this->db->from(' Rx_Target');
+        $this->db->where(array('month' => $month,'VEEVA_Employee_ID'=>$id,'Product_Id'=>$pid));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
     public function Save_Planning($data) {
         return $this->db->insert('Rx_Planning',$data);
     }

@@ -97,7 +97,8 @@ class User extends MY_Controller {
                     $this->User_model->Save_Planning($doc);
                 }
             }
-            
+            $month=date('n',  strtotime('+1 month'));
+            $data['expected']=$this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id,$month);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
