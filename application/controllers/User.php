@@ -77,6 +77,29 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
             $data['doctorList'] = $result;
+            if ($this->input->post()) {
+                for ($i = 0; $i < count($this->input->post('value')); $i++) {
+                    $value = $this->input->post('value');
+                    $doc_id = $this->input->post('doc_id');
+                    $current_date = date('Y-m-d');
+                    $next_date = date('M', strtotime('+1 month'));
+
+
+                    $doc = array(
+                        'Planned_Rx' => $value[$i],
+                        'Year' => date('Y', strtotime('+1 month')),
+                        'month' => date('m', strtotime('+1 month')),
+                        $next_date => $value[$i],
+                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                        'Product_Id' => $this->Product_Id,
+                        'created_at' => date('Y-m-d'),
+                        'Doctor_Id' => $doc_id[$i],
+                    );
+
+                    $this->User_model->Save_Planning($doc);
+                }
+            }
+            
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -160,6 +183,10 @@ class User extends MY_Controller {
 
     public function rep_doc() {
         $data = array('title' => 'Reporting Doctor', 'content' => 'User/reporting_doctor', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+    }
+    public function Prescription_Doctor_List() {
+        $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
 

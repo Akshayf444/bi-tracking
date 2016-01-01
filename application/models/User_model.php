@@ -29,6 +29,9 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+    public function Save_Planning($data) {
+        return $this->db->insert('Rx_Planning',$data);
+    }
 
     public function Set_Target_update($id, $data, $Pid) {
         $this->db->where(array('VEEVA_Employee_ID' => $id, 'Product_Id' => $Pid));

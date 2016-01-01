@@ -93,7 +93,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell" style="    margin-bottom: -32px;">
-            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  >
+            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = '<?php echo site_url('User/Prescription_Doctor_List'); ?>';" >
                 Reporting Of Prescriptions
             </a>
             <div class="demo pull-right">
