@@ -40,7 +40,7 @@ class User_model extends CI_Model {
         return $this->db->insert('Rx_Planning',$data);
     }
 
-    public function Set_Target_update($id, $data,$Pid) {
+    public function Set_Target_update($id, $data, $Pid) {
         $this->db->where(array('VEEVA_Employee_ID' => $id, 'Product_Id' => $Pid));
         return $this->db->update('Rx_Target', $data);
     }
@@ -54,8 +54,45 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function generateTab($VEEVA_Employee_ID = 0, $Product_id = 0) {
+    public function generateTabs($VEEVA_Employee_ID = 0, $Product_id = 0) {
         $tabs = $this->Tabs($VEEVA_Employee_ID);
+        $this->load->model('Doctor_Model');
+        $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID);
+        $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
+        $Tab1Location = '#';
+
+        if ($tabs['Tab1'] == 1) {
+            $Tab1Location = "'" . site_url('User/Profiling') . "'";
+        }
+
+        $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
+        
+        $HTML = '<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >Doctor Profiling </a>
+                            <div class="demo pull-right">
+                            <input type="hidden" id="profile" value="'.$tab1Calc.'">
+                                <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
+                                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>';
+        return $HTML;
+    }
+
+    public function Tab1($VEEVA_Employee_ID = 0, $Product_id = 0) {
+        
+    }
+
+    public function ProfilingCount($VEEVA_Employee_ID, $Product_id = 0) {
+        $this->db->select('COUNT(pf.`VEEVA_Employee_ID`) AS profile_count,emp.`VEEVA_Employee_ID`');
+        $this->db->from('Employee_Master emp');
+        $this->db->join('Profiling pf', 'emp.VEEVA_Employee_ID = pf.VEEVA_Employee_ID', 'LEFT');
+        $this->db->where(array('pf.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $query = $this->db->get();
+        return $query->row_array();
     }
 
 }
