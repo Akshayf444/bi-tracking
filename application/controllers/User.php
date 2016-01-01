@@ -57,7 +57,7 @@ class User extends MY_Controller {
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
-           $this->load->view('template2', $data);
+            $this->load->view('template2', $data);
         } else {
             $this->logout();
         }
@@ -99,8 +99,8 @@ class User extends MY_Controller {
                     $this->User_model->Save_Planning($doc);
                 }
             }
-            $month=date('n',  strtotime('+1 month'));
-            $data['expected']=$this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id,$month);
+            $month = date('n', strtotime('+1 month'));
+            $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $month);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -186,9 +186,33 @@ class User extends MY_Controller {
         $data = array('title' => 'Reporting Doctor', 'content' => 'User/reporting_doctor', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
+
     public function Prescription_Doctor_List() {
-        $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
+        if ($this->is_logged_in()) {
+            
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+            $data['doctorList'] = $result;
+            if ($this->input->post()) {
+                for ($i = 0; $i < count($this->input->post('value')); $i++) {
+                    $value = $this->input->post('value');
+                    $doc_id = $this->input->post('doc_id')[$i];
+                    $current_date = date('Y-m-d');
+                    $next_date = date('M', strtotime('+1 month'));
+
+
+                    $doc = array(
+                        'Actual_Rx' => $value[$i],
+                    );
+
+                    $this->User_model->Save_Planning_prescription($doc,$this->VEEVA_Employee_ID,$doc_id,$this->Product_Id);
+                }
+            }
+
+            $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
 }

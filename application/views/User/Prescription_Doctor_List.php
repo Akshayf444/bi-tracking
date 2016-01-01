@@ -44,19 +44,27 @@
                     <th>Planned for Jan</th>
                     <th>Aactual</th>
                 </tr>
-
+<?php echo form_open('User/Prescription_Doctor_List');?>
+                <?php
+                if (isset($doctorList) && !empty($doctorList)) {
+                    foreach ($doctorList as $doctor) {
+                        ?>
                         <tr>
-                            <td><a >< echo $doctor->Account_Name ></a>
-                                <p>Speciality : < $doctor->Specialty; ></p></a></td>
+                            <td><a ><?php echo $doctor->Account_Name; ?></a>
+                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
                             <td><a class="control-item badge badge-positive">H</a></td>
                             <td><a class="control-item">2%</a></td>
                             <td><a class="control-item">4</a></td>
                             <td><a class="control-item">4</a></td>
                             <td><a class="control-item">4</a></td>
                             <td> <a class="control-item">4</a></td>
-                            <td> <input name="value[]" type="text" readonly="readonly"/></td>
-                            <td> <input name="value[]" type="text" /><input type="hidden" name="doc_id[]" value="< $doctor->Account_ID>"/></td>
+                            <td> <input name="" type="text" readonly="readonly"/></td>
+                            <td> <input name="value[]" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID?>"/></td>
                         </tr>
+                        <?php
+                    }
+                }
+                ?>
 
 
             </table>

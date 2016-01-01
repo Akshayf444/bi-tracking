@@ -39,6 +39,10 @@ class User_model extends CI_Model {
     public function Save_Planning($data) {
         return $this->db->insert('Rx_Planning',$data);
     }
+    public function Save_Planning_prescription($data,$id,$doc_id,$pid) {
+         $this->db->where(array('VEEVA_Employee_ID'=>$id,'Doctor_Id'=>$doc_id,'Product_Id'=>$pid));
+         return $this->db->update('Rx_Planning',$data);
+    }
 
     public function Set_Target_update($id, $data, $Pid) {
         $this->db->where(array('VEEVA_Employee_ID' => $id, 'Product_Id' => $Pid));
