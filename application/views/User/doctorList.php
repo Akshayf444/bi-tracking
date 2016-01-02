@@ -12,8 +12,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b>200</b></span><br>
-            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b>200</b></span>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php echo $expected['target']; ?>"></b></span><br>
+            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
@@ -30,45 +30,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Planning</li>
-        <li class="table-view-cell ">
 
-<!--            <table class="table table-bordered">
-                <tr>
-                    <th>Doctor List</th>
-                    <th>Winability</th>
-                    <th>Dependency</th>
-                    <th>BI Rx Share</th>
-                    <th>Oct Rx</th>
-                    <th>Nov Rx</th>
-                    <th>Dec Rx</th>
-                    <th>Planned for Jan</th>
-                    <th>Actual</th>
-                </tr>
-            <?php echo form_open('User/doctorList'); ?>
-            <?php
-            if (isset($doctorList) && !empty($doctorList)) {
-                foreach ($doctorList as $doctor) {
-                    ?>
-                                        <tr>
-                                            <td><a ><?php echo $doctor->Account_Name; ?></a>
-                                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
-                                            <td><a class="control-item badge badge-positive">H</a></td>
-                                            <td><a class="control-item">2%</a></td>
-                                            <td><a class="control-item">4</a></td>
-                                            <td><a class="control-item">4</a></td>
-                                            <td><a class="control-item">4</a></td>
-                                            <td> <a class="control-item">4</a></td>
-                                            <td> <input name="value[]" type="text" value="<?php echo isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : ''; ?>"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID ?>"/></td>
-                                            <td> <a class="control-item"></a></td>
-                                        </tr>
-                    <?php
-                }
-            }
-            ?>
-
-
-            </table>-->
-        </li>
         <li class="table-view-cell ">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
@@ -80,3 +42,14 @@
         </form>
     </ul>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.val').keyup(function () {
+            var one = $('.ck').val();
+            var two = $('.val').val();
+            var three = one - two;
+            $('.ckk').html(one - two);
+
+        })
+    })
+</script>

@@ -30,8 +30,21 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function Expected_Rx($id, $pid, $month) {
+        $this->db->select('target');
+        $this->db->from(' Rx_Target');
+        $this->db->where(array('month' => $month, 'VEEVA_Employee_ID' => $id, 'Product_Id' => $pid));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
     public function Save_Planning($data) {
         return $this->db->insert('Rx_Planning', $data);
+    }
+
+    public function Save_Planning_prescription($data, $id, $doc_id, $pid) {
+        $this->db->where(array('VEEVA_Employee_ID' => $id, 'Doctor_Id' => $doc_id, 'Product_Id' => $pid));
+        return $this->db->update('Rx_Planning', $data);
     }
 
     public function Set_Target_update($id, $data, $Pid) {
@@ -140,7 +153,7 @@ class User_model extends CI_Model {
                 <td><a class="control-item">4</a></td>
                 <td><a class="control-item">4</a></td>
                 <td> <a class="control-item">4</a></td>
-                <td> <input name="value[]" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                <td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                 <td> <a class = "control-item"></a></td>
                 </tr>';
             }
