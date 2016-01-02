@@ -32,7 +32,7 @@
         <li class="table-view-cell table-view-divider">Planning</li>
         <li class="table-view-cell ">
 
-            <table class="table table-bordered">
+<!--            <table class="table table-bordered">
                 <tr>
                     <th>Doctor List</th>
                     <th>Winability</th>
@@ -42,38 +42,41 @@
                     <th>Nov Rx</th>
                     <th>Dec Rx</th>
                     <th>Planned for Jan</th>
-                    <th>Aactual</th>
+                    <th>Actual</th>
                 </tr>
-<?php echo form_open('User/doctorList');?>
-                <?php
-                if (isset($doctorList) && !empty($doctorList)) {
-                    foreach ($doctorList as $doctor) {
-                        ?>
-                        <tr>
-                            <td><a ><?php echo $doctor->Account_Name; ?></a>
-                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
-                            <td><a class="control-item badge badge-positive">H</a></td>
-                            <td><a class="control-item">2%</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td> <a class="control-item">4</a></td>
-                            <td> <input name="value[]" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID?>"/></td>
-                            <td> <a class="control-item"></a></td>
-                        </tr>
-                        <?php
-                    }
+            <?php echo form_open('User/doctorList'); ?>
+            <?php
+            if (isset($doctorList) && !empty($doctorList)) {
+                foreach ($doctorList as $doctor) {
+                    ?>
+                                        <tr>
+                                            <td><a ><?php echo $doctor->Account_Name; ?></a>
+                                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
+                                            <td><a class="control-item badge badge-positive">H</a></td>
+                                            <td><a class="control-item">2%</a></td>
+                                            <td><a class="control-item">4</a></td>
+                                            <td><a class="control-item">4</a></td>
+                                            <td><a class="control-item">4</a></td>
+                                            <td> <a class="control-item">4</a></td>
+                                            <td> <input name="value[]" type="text" value="<?php echo isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : ''; ?>"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID ?>"/></td>
+                                            <td> <a class="control-item"></a></td>
+                                        </tr>
+                    <?php
                 }
-                ?>
+            }
+            ?>
 
 
-            </table>
+            </table>-->
+        </li>
+        <li class="table-view-cell ">
+            <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
         <li class="table-view-cell">
             <br/>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
-</form>
+        </form>
     </ul>
 </div>
