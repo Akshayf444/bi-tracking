@@ -26,11 +26,11 @@
         </li>
     </ul>
 </div>
-
+<??>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Planning</li>
-        <li class="table-view-cell ">
+<!--        <li class="table-view-cell ">
 
             <table class="table table-bordered">
                 <tr>
@@ -44,7 +44,7 @@
                     <th>Planned for Jan</th>
                     <th>Aactual</th>
                 </tr>
-<?php echo form_open('User/Prescription_Doctor_List');?>
+                <?php echo form_open('User/Prescription_Doctor_List'); ?>
                 <?php
                 if (isset($doctorList) && !empty($doctorList)) {
                     foreach ($doctorList as $doctor) {
@@ -59,7 +59,7 @@
                             <td><a class="control-item">4</a></td>
                             <td> <a class="control-item">4</a></td>
                             <td> <input name="" type="text" readonly="readonly"/></td>
-                            <td> <input name="value[]" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID?>"/></td>
+                            <td> <input name="value[]" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID ?>"/></td>
                         </tr>
                         <?php
                     }
@@ -68,12 +68,15 @@
 
 
             </table>
+        </li>-->
+        <li class="table-view-cell ">
+            <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
         <li class="table-view-cell">
             <br/>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
-</form>
+        </form>
     </ul>
 </div>

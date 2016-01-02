@@ -21,7 +21,7 @@
         <?php //$this->load->view('footer'); ?>
 
         <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/segmented-controllers.js" type="text/javascript"></script>
+<!--        <script src="<?php echo asset_url() ?>js/segmented-controllers.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/modals.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/popovers.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/push.js" type="text/javascript"></script>
@@ -29,7 +29,7 @@
         <script src="<?php echo asset_url() ?>js/toggles.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/docs.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/docs.min.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>
+        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>-->
     </body>
 </html>
 

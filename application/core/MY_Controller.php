@@ -26,8 +26,8 @@ class MY_Controller extends CI_Controller {
         $this->Division = $this->session->userdata('Division');
         $this->Full_Name = $this->session->userdata('Full_Name');
         $this->Product_Id = $this->session->userdata('Product_Id');
-        $this->nextMonth = date('n', strtotime('+1 month'));
-        $this->nextYear = date('Y', strtotime('+1 month'));
+        $this->nextMonth = date('n');
+        $this->nextYear = date('Y');
     }
 
     function is_logged_in() {
@@ -35,6 +35,19 @@ class MY_Controller extends CI_Controller {
             return TRUE;
         } else {
             return FALSE;
+        }
+    }
+
+    function calcPlanning() {
+        $this->db->select('*');
+        $this->db->from('Setting');
+        $this->db->where('Current_Month', date('n'));
+        $query = $this->db->get();
+        $result = $query->result();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                $this->nextMonth = $value->Planned_For_Month;
+            }
         }
     }
 

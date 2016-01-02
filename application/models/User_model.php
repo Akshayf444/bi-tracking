@@ -103,14 +103,6 @@ class User_model extends CI_Model {
     }
 
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016') {
-        $sql = "SELECT rxp.*,dm.* FROM `Employee_Master` emp
-                INNER JOIN `Employee_Doc` ed
-                ON ed.`Local_Employee_ID` = emp.`VEEVA_Employee_ID`
-                INNER JOIN Doctor_Master dm
-                ON dm.`Account_ID` = ed.`VEEVA_Account_ID`
-                LEFT JOIN `Rx_Planning` rxp
-                ON dm.`Account_ID` = rxp.`Doctor_Id`";
-
         $this->db->select('rxp.*,dm.*');
         $this->db->from('Employee_Master emp');
         $this->db->join('Employee_Doc ed', 'ed.Local_Employee_ID = emp.VEEVA_Employee_ID');
@@ -122,7 +114,7 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-    function generatePlanningTab() {
+    function generatePlanningTab($type = 'Planning') {
         $result = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
         if (empty($result)) {
             $this->load->model('Doctor_Model');
@@ -140,22 +132,35 @@ class User_model extends CI_Model {
                     <th>Planned for Jan</th>
                     <th>Actual</th>
                 </tr>';
-        $html .= form_open('User/doctorList');
-        $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
+        if ($type == 'Planning') {
+            $html .= form_open('User/doctorList');
+        } elseif ($type == 'Actual') {
+            $html .= form_open('User/Prescription_Doctor_List');
+        }
+
+
         if (isset($result) && !empty($result)) {
             foreach ($result as $doctor) {
+                $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
+                $winability = $this->calcWinability($doctor->Account_ID);
                 $html .= '<tr>
                     <td><a >' . $doctor->Account_Name . '</a>
                         <p>Speciality : ' . $doctor->Specialty . '</p></a></td>
-                <td><a class="control-item badge badge-positive">H</a></td>
+                <td>' . $winability . '</td>
                 <td><a class="control-item">2%</a></td>
                 <td><a class="control-item">4</a></td>
                 <td><a class="control-item">4</a></td>
                 <td><a class="control-item">4</a></td>
-                <td> <a class="control-item">4</a></td>
-                <td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                <td> <a class="control-item">4</a></td>';
+                if ($type == 'Planning') {
+                    $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                 <td> <a class = "control-item"></a></td>
                 </tr>';
+                } elseif ($type == 'Actual') {
+                    $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                <td> <input name="value[]" type="text"/></td>
+                </tr>';
+                }
             }
         }
         $html.='</table></form>';
@@ -166,8 +171,31 @@ class User_model extends CI_Model {
         
     }
 
-    function calcWinability() {
-        
+    function getWinability($Doctor_Id = 0) {
+        $this->db->select('*');
+        $this->db->from('Profiling');
+        $this->db->where(array('Doctor_id' => $Doctor_Id, 'Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function calcWinability($Doctor_Id = 0) {
+        $result = $this->getWinability($Doctor_Id);
+        $winabilty = '';
+        if (!empty($result)) {
+            if ($this->Product_Id == 1) {
+                
+            } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5) {
+                if ($result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
+                    $winabilty = '<a class="control-item badge badge-positive">H</a>';
+                } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
+                    $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
+                    $winabilty = '<a class="control-item badge badge-negative">L</a>';
+                }
+            }
+        }
+        return $winabilty;
     }
 
 }

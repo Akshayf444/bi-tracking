@@ -54,7 +54,7 @@ class User extends MY_Controller {
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('Product_Id');
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
-                $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
+                redirect('User/dashboard', 'refresh');
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
@@ -84,26 +84,22 @@ class User extends MY_Controller {
                     $value = $this->input->post('value');
                     $doc_id = $this->input->post('doc_id');
                     $current_date = date('Y-m-d');
-                    $next_date = date('M', strtotime('+1 month'));
-
-
+                    $next_date = date('M');
                     $doc = array(
                         'Planned_Rx' => $value[$i],
-                        'Year' => date('Y', strtotime('+1 month')),
-                        'month' => date('m', strtotime('+1 month')),
+                        'Year' => $this->nextYear,
+                        'month' => $this->nextMonth,
                         $next_date => $value[$i],
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                         'Product_Id' => $this->Product_Id,
                         'created_at' => date('Y-m-d'),
                         'Doctor_Id' => $doc_id[$i],
                     );
-
                     $this->User_model->Save_Planning($doc);
                 }
             }
 
-            $month = date('n', strtotime('+1 month'));
-            $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $month);
+            $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -193,15 +189,14 @@ class User extends MY_Controller {
     public function Prescription_Doctor_List() {
         if ($this->is_logged_in()) {
 
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
-            $data['doctorList'] = $result;
+            $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
+            // echo  $data['doctorList'];
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
                     $doc_id = $this->input->post('doc_id')[$i];
                     $current_date = date('Y-m-d');
-                    $next_date = date('M', strtotime('+1 month'));
-
+                    $next_date = date('M');
 
                     $doc = array(
                         'Actual_Rx' => $value[$i],
