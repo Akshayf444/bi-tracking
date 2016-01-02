@@ -36,15 +36,16 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4"></div>
+            <div class="col-sm-4"></div>
+            
             <?php echo form_open('User/dashboard'); ?>
-            <div class="col-lg-4 pull-right" style="margin-right: -199px;" >
+            <div class="col-sm-4" style="margin-right: -199px;" >
                 <select name="Product_Id" class="form-control" onchange="this.form.submit()">
                     <option value="-1">Select Product</option>
                     <?php echo $productList ?>
                 </select>
             </div>
+            <div class="col-sm-4"></div>
             </form>
         </li>
     </ul>
