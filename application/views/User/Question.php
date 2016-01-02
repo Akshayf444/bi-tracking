@@ -64,8 +64,13 @@
 
     $(function () {
         $(".next-month").html('in ' + monthname);
+
     });
-    
-    
+
+    $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
+        $("input[name='Patient_Rxbed_In_Month']").val($(this).val() * 4);
+    });
+
+
 
 </script>

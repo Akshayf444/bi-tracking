@@ -181,6 +181,7 @@ class User_model extends CI_Model {
             }
         }
         $html.='</table>';
+
         return $html;
     }
 

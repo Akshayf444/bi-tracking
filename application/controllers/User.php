@@ -201,11 +201,11 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
-    public function Prescription_Doctor_List() {
+    public function Reporting() {
         if ($this->is_logged_in()) {
 
             $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
-            // echo  $data['doctorList'];
+
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
