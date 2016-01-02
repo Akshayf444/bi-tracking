@@ -26,49 +26,10 @@
         </li>
     </ul>
 </div>
-<??>
+<?php echo form_open('User/Prescription_Doctor_List'); ?>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Planning</li>
-<!--        <li class="table-view-cell ">
-
-            <table class="table table-bordered">
-                <tr>
-                    <th>Doctor List</th>
-                    <th>Winability</th>
-                    <th>Dependency</th>
-                    <th>BI Rx Share</th>
-                    <th>Oct Rx</th>
-                    <th>Nov Rx</th>
-                    <th>Dec Rx</th>
-                    <th>Planned for Jan</th>
-                    <th>Aactual</th>
-                </tr>
-                <?php echo form_open('User/Prescription_Doctor_List'); ?>
-                <?php
-                if (isset($doctorList) && !empty($doctorList)) {
-                    foreach ($doctorList as $doctor) {
-                        ?>
-                        <tr>
-                            <td><a ><?php echo $doctor->Account_Name; ?></a>
-                                <p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
-                            <td><a class="control-item badge badge-positive">H</a></td>
-                            <td><a class="control-item">2%</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td><a class="control-item">4</a></td>
-                            <td> <a class="control-item">4</a></td>
-                            <td> <input name="" type="text" readonly="readonly"/></td>
-                            <td> <input name="value[]" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID ?>"/></td>
-                        </tr>
-                        <?php
-                    }
-                }
-                ?>
-
-
-            </table>
-        </li>-->
         <li class="table-view-cell ">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
@@ -77,6 +38,7 @@
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
-        </form>
+
     </ul>
 </div>
+</form>

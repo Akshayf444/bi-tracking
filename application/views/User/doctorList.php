@@ -12,7 +12,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target']; ?>"></b></span><br>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target'];     ?>"></b></span><br>
             <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
@@ -26,11 +26,10 @@
         </li>
     </ul>
 </div>
-
+<?php echo form_open('User/doctorList'); ?>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Planning</li>
-
         <li class="table-view-cell ">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
@@ -39,10 +38,11 @@
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
-        </form>
     </ul>
 </div>
+</form>
 <script>
+
     $(document).ready(function () {
         $('.val').keyup(function () {
             var one = $('.ck').val();

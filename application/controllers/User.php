@@ -200,6 +200,7 @@ class User extends MY_Controller {
 
                     $doc = array(
                         'Actual_Rx' => $value[$i],
+                        'Actual_Created' => date('Y-m-d H:i:s'),
                     );
 
                     $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id);

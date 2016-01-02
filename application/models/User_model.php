@@ -120,7 +120,12 @@ class User_model extends CI_Model {
             $this->load->model('Doctor_Model');
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
         }
-        $html = '<table class="table table-bordered">
+        if ($type == 'Planning') {
+            $html = form_open('User/doctorList');
+        } elseif ($type == 'Actual') {
+            $html = form_open('User/Prescription_Doctor_List');
+        }
+        $html .= '<table class="table table-bordered">
                 <tr>
                     <th>Doctor List</th>
                     <th>Winability</th>
@@ -132,11 +137,7 @@ class User_model extends CI_Model {
                     <th>Planned for Jan</th>
                     <th>Actual</th>
                 </tr>';
-        if ($type == 'Planning') {
-            $html .= form_open('User/doctorList');
-        } elseif ($type == 'Actual') {
-            $html .= form_open('User/Prescription_Doctor_List');
-        }
+
 
 
         if (isset($result) && !empty($result)) {
@@ -163,7 +164,7 @@ class User_model extends CI_Model {
                 }
             }
         }
-        $html.='</table></form>';
+        $html.='</table>';
         return $html;
     }
 
