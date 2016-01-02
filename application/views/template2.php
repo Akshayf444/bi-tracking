@@ -24,16 +24,61 @@
                 padding: 0px 4px;
             }
         </style>
+
+        <?php
+        print_r($this->session->all_userdata());
+        if ($this->session->userdata('Product_Id') == 1) {
+            ?>
+            <style>
+                .table-view{
+                    background-color: red;
+                }
+            </style>
+            <?php
+        } elseif ($this->session->userdata('Product_Id') == 2) {
+            ?>
+            <style>
+                .table-view{
+                    background-color: green;
+                }
+            </style>
+            <?php
+        } elseif ($this->session->userdata('Product_Id') == 3) {
+            ?>
+            <style>
+                .table-view{
+                    background-color: blue;
+                }
+            </style>
+            <?php
+        } elseif ($this->session->userdata('Product_Id') == 4) {
+            ?>
+            <style>
+                .table-view{
+                    background-color: skyblue;
+                }
+            </style>
+            <?php
+        } elseif ($this->session->userdata('Product_Id') == 5) {
+            ?>
+            <style>
+                .table-view{
+                    background-color: orange;
+                }
+            </style>
+            <?php
+        }
+        ?>
     </head>
     <body>
         <header class="bar bar-nav">
             <h1 class="title" >  
-                    <img style="height: 99%" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
-                    <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
-                    <?php if ($title != 'Main') { ?>
-                        <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
-                    <?php }
-                    ?>
+                <img style="height: 99%" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
+                <?php if ($title != 'Main') { ?>
+                    <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
+                <?php }
+                ?>
                 </div>
             </h1>
         </header>
@@ -46,7 +91,7 @@
         <div class="content" style="padding-right: 0px;padding-left: 0px">
             <?php $this->load->view($content, $view_data); ?>
         </div>
-        <?php //$this->load->view('footer');  ?>
+        <?php //$this->load->view('footer');      ?>
 
         <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
 <!--        <script src="<?php echo asset_url() ?>js/segmented-controllers.js" type="text/javascript"></script>
