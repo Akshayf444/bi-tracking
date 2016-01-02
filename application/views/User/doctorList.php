@@ -12,7 +12,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php echo $expected['target'];?>"></b></span><br>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="200"></b></span><br>
             <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
@@ -58,7 +58,7 @@
                             <td><a class="control-item">4</a></td>
                             <td><a class="control-item">4</a></td>
                             <td> <a class="control-item">4</a></td>
-                            <td> <input name="value[]" class="val" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID?>"/></td>
+                            <td> <input name="value[]" id="val" type="text"/><input type="hidden" name="doc_id[]" value="<?php echo $doctor->Account_ID?>"/></td>
                             <td> <a class="control-item"></a></td>
                         </tr>
                         <?php
@@ -79,9 +79,9 @@
 </div>
 <script>
 $(document).ready(function(){
-    $('.val').keyup(function(){
+    $('#val').keyup(function(){
         var one = $('.ck').val();
-        var two = $('.val').val();
+        var two = $('#val').val();
         var three= one- two;
         $('.ckk').html(one- two);
         
