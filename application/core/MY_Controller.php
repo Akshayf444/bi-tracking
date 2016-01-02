@@ -12,6 +12,8 @@ class MY_Controller extends CI_Controller {
     public $Full_Name;
     public $table_name;
     public $Product_Id = 0;
+    public $nextMonth = 0;
+    public $nextYear;
 
     function __construct() {
         parent::__construct();
@@ -24,6 +26,8 @@ class MY_Controller extends CI_Controller {
         $this->Division = $this->session->userdata('Division');
         $this->Full_Name = $this->session->userdata('Full_Name');
         $this->Product_Id = $this->session->userdata('Product_Id');
+        $this->nextMonth = date('n', strtotime('+1 month'));
+        $this->nextYear = date('Y', strtotime('+1 month'));
     }
 
     function is_logged_in() {

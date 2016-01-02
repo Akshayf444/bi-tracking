@@ -12,7 +12,11 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
+<<<<<<< HEAD
             <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="200"></b></span><br>
+=======
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php echo $expected['target']; ?>"></b></span><br>
+>>>>>>> 605661333c67fcdb0faa7e4af361a9a9e6d1600f
             <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
@@ -67,24 +71,26 @@
                 ?>
 
 
-            </table>
+        <li class="table-view-cell ">
+            <?php echo isset($doctorList) ? $doctorList : '' ?>
         </li>
         <li class="table-view-cell">
             <br/>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
-</form>
+        </form>
     </ul>
 </div>
 <script>
-$(document).ready(function(){
-    $('#val').keyup(function(){
-        var one = $('.ck').val();
-        var two = $('#val').val();
-        var three= one- two;
-        $('.ckk').html(one- two);
-        
+
+    $(document).ready(function () {
+        $('.val').keyup(function () {
+            var one = $('.ck').val();
+            var two = $('.val').val();
+            var three = one - two;
+            $('.ckk').html(one - two);
+
+        })
     })
-})
 </script>

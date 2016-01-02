@@ -52,6 +52,7 @@ class User extends MY_Controller {
             $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
 
             if ($this->input->post()) {
+                $this->Product_Id = $this->input->post('Product_Id');
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
                 $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             }
@@ -75,8 +76,9 @@ class User extends MY_Controller {
 
     public function doctorList() {
         if ($this->is_logged_in()) {
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
-            $data['doctorList'] = $result;
+
+            $data['doctorList'] = $this->User_model->generatePlanningTab();
+            //echo($data['doctorList']);
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
@@ -99,6 +101,7 @@ class User extends MY_Controller {
                     $this->User_model->Save_Planning($doc);
                 }
             }
+
             $month = date('n', strtotime('+1 month'));
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $month);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
@@ -189,7 +192,7 @@ class User extends MY_Controller {
 
     public function Prescription_Doctor_List() {
         if ($this->is_logged_in()) {
-            
+
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
             $data['doctorList'] = $result;
             if ($this->input->post()) {
@@ -205,7 +208,7 @@ class User extends MY_Controller {
                         'Actual_Created' => date('Y-m-d H:i:s'),
                     );
 
-                    $this->User_model->Save_Planning_prescription($doc,$this->VEEVA_Employee_ID,$doc_id,$this->Product_Id);
+                    $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id);
                 }
             }
 

@@ -266,21 +266,7 @@
                     });
                 });
 
-//                $(document).ready(function () {
-//                    $('#1').trigger(
-//                            'configure',
-//                            {
-//                                'min': 10,
-//                                'readOnly': true,
-//                                'width': 100,
-//                                'height': 10,
-//                                'fgColor': '#88BBC8',
-//                                'dynamicDraw': true,
-//                                'thickness': 0.3,
-//                                'tickColorizeValues': true
-//                            }
-//                    );
-//                });
+
                 $(document).ready(function () {
                     var initval = parseInt($('#profile').val(), 10);
                     //alert(initval);

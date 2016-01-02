@@ -29,19 +29,22 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-    public function Expected_Rx($id, $pid,$month) {
+
+    public function Expected_Rx($id, $pid, $month) {
         $this->db->select('target');
         $this->db->from(' Rx_Target');
-        $this->db->where(array('month' => $month,'VEEVA_Employee_ID'=>$id,'Product_Id'=>$pid));
+        $this->db->where(array('month' => $month, 'VEEVA_Employee_ID' => $id, 'Product_Id' => $pid));
         $query = $this->db->get();
         return $query->row_array();
     }
+
     public function Save_Planning($data) {
-        return $this->db->insert('Rx_Planning',$data);
+        return $this->db->insert('Rx_Planning', $data);
     }
-    public function Save_Planning_prescription($data,$id,$doc_id,$pid) {
-         $this->db->where(array('VEEVA_Employee_ID'=>$id,'Doctor_Id'=>$doc_id,'Product_Id'=>$pid));
-         return $this->db->update('Rx_Planning',$data);
+
+    public function Save_Planning_prescription($data, $id, $doc_id, $pid) {
+        $this->db->where(array('VEEVA_Employee_ID' => $id, 'Doctor_Id' => $doc_id, 'Product_Id' => $pid));
+        return $this->db->update('Rx_Planning', $data);
     }
 
     public function Set_Target_update($id, $data, $Pid) {
@@ -70,13 +73,13 @@ class User_model extends CI_Model {
         }
 
         $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
-        
+
         $HTML = '<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell">
                             <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >Doctor Profiling </a>
                             <div class="demo pull-right">
-                            <input type="hidden" id="profile" value="'.$tab1Calc.'">
+                            <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
                                 <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
@@ -97,6 +100,74 @@ class User_model extends CI_Model {
         $this->db->where(array('pf.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
         $query = $this->db->get();
         return $query->row_array();
+    }
+
+    function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016') {
+        $sql = "SELECT rxp.*,dm.* FROM `Employee_Master` emp
+                INNER JOIN `Employee_Doc` ed
+                ON ed.`Local_Employee_ID` = emp.`VEEVA_Employee_ID`
+                INNER JOIN Doctor_Master dm
+                ON dm.`Account_ID` = ed.`VEEVA_Account_ID`
+                LEFT JOIN `Rx_Planning` rxp
+                ON dm.`Account_ID` = rxp.`Doctor_Id`";
+
+        $this->db->select('rxp.*,dm.*');
+        $this->db->from('Employee_Master emp');
+        $this->db->join('Employee_Doc ed', 'ed.Local_Employee_ID = emp.VEEVA_Employee_ID');
+        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
+        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id', 'LEFT');
+        $this->db->where(array('rxp.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    function generatePlanningTab() {
+        $result = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+        if (empty($result)) {
+            $this->load->model('Doctor_Model');
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+        }
+        $html = '<table class="table table-bordered">
+                <tr>
+                    <th>Doctor List</th>
+                    <th>Winability</th>
+                    <th>Dependency</th>
+                    <th>BI Rx Share</th>
+                    <th>Oct Rx</th>
+                    <th>Nov Rx</th>
+                    <th>Dec Rx</th>
+                    <th>Planned for Jan</th>
+                    <th>Actual</th>
+                </tr>';
+        $html .= form_open('User/doctorList');
+        $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
+        if (isset($result) && !empty($result)) {
+            foreach ($result as $doctor) {
+                $html .= '<tr>
+                    <td><a >' . $doctor->Account_Name . '</a>
+                        <p>Speciality : ' . $doctor->Specialty . '</p></a></td>
+                <td><a class="control-item badge badge-positive">H</a></td>
+                <td><a class="control-item">2%</a></td>
+                <td><a class="control-item">4</a></td>
+                <td><a class="control-item">4</a></td>
+                <td><a class="control-item">4</a></td>
+                <td> <a class="control-item">4</a></td>
+                <td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                <td> <a class = "control-item"></a></td>
+                </tr>';
+            }
+        }
+        $html.='</table></form>';
+        return $html;
+    }
+
+    function Dependancy() {
+        
+    }
+
+    function calcWinability() {
+        
     }
 
 }
