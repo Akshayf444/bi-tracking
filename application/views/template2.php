@@ -72,7 +72,7 @@
     <body>
         <header class="bar bar-nav">
             <h1 class="title" >  
-                <img style="height: 99%" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                <img style="height: 99%" onclick="window.location = '<?php echo site_url('User/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
                 <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php if ($title != 'Main') { ?>
                     <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
