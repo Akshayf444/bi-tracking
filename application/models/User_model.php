@@ -42,8 +42,8 @@ class User_model extends CI_Model {
         return $this->db->insert('Rx_Planning', $data);
     }
 
-    public function Save_Planning_prescription($data, $id, $doc_id, $pid) {
-        $this->db->where(array('VEEVA_Employee_ID' => $id, 'Doctor_Id' => $doc_id, 'Product_Id' => $pid));
+    public function Save_Planning_prescription($data, $id, $doc_id, $pid, $month = 0, $year = 0) {
+        $this->db->where(array('VEEVA_Employee_ID' => $id, 'Doctor_Id' => $doc_id, 'Product_Id' => $pid, 'month' => $month, 'Year' => $year));
         return $this->db->update('Rx_Planning', $data);
     }
 
@@ -110,7 +110,6 @@ class User_model extends CI_Model {
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id', 'LEFT');
         $this->db->where(array('rxp.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
         $query = $this->db->get();
-
         return $query->result();
     }
 
@@ -138,28 +137,45 @@ class User_model extends CI_Model {
                     <th>Actual</th>
                 </tr>';
 
-
+        $month = date('n', strtotime('-1 month'));
+        $lastMonthRx = $this->countLastMonthRx($month);
 
         if (isset($result) && !empty($result)) {
             foreach ($result as $doctor) {
                 $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
-                $winability = $this->calcWinability($doctor->Account_ID);
+                $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
+                $getPlan = $this->getWinability($doctor->Account_ID);
+                $winability = $this->calcWinability($getPlan);
+
+                $month = date('n', strtotime('-3 month'));
+                $month1 = $this->getMonthwiseRx($doctor->Account_ID, $month);
+                $month = date('n', strtotime('-2 month'));
+                $month2 = $this->getMonthwiseRx($doctor->Account_ID, $month);
+                $month = date('n', strtotime('-1 month'));
+                $month3 = $this->getMonthwiseRx($doctor->Account_ID, $month);
+                $dependancy = round(($month3->Actual_Rx / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
+                if ($getPlan->Patient_Rxbed_Month > 0) {
+                    $BI_Share = ($month3->Actual_Rx / $getPlan->Patient_Rxbed_Month) * 100;
+                } else {
+                    $BI_Share = '';
+                }
+
                 $html .= '<tr>
                     <td><a >' . $doctor->Account_Name . '</a>
                         <p>Speciality : ' . $doctor->Specialty . '</p></a></td>
                 <td>' . $winability . '</td>
-                <td><a class="control-item">2%</a></td>
-                <td><a class="control-item">4</a></td>
-                <td><a class="control-item">4</a></td>
-                <td><a class="control-item">4</a></td>
-                <td> <a class="control-item">4</a></td>';
+                <td><a class="control-item">' . $dependancy . '%</a></td>
+                <td><a class="control-item">' . $BI_Share . '</a></td>
+                <td><a class="control-item">' . $month1->Actual_Rx . '</a></td>
+                <td><a class="control-item">' . $month2->Actual_Rx . '</a></td>
+                <td> <a class="control-item">' . $month3->Actual_Rx . '</a></td>';
                 if ($type == 'Planning') {
                     $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                 <td> <a class = "control-item"></a></td>
                 </tr>';
                 } elseif ($type == 'Actual') {
                     $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td> <input name="value[]" type="text"/></td>
+                <td> <input name="value[]" type="text" value="' . $actual_rx . '"/></td>
                 </tr>';
                 }
             }
@@ -168,8 +184,20 @@ class User_model extends CI_Model {
         return $html;
     }
 
-    function Dependancy() {
-        
+    function getMonthwiseRx($Doctor_Id = 0, $month = 0) {
+        $this->db->select('*');
+        $this->db->from('Rx_Planning');
+        $this->db->where(array('Doctor_id' => $Doctor_Id, 'Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function countLastMonthRx($month = 0) {
+        $this->db->select('SUM(Actual_Rx) AS Actual_Rx');
+        $this->db->from('Rx_Planning');
+        $this->db->where(array('Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month));
+        $query = $this->db->get();
+        return $query->row();
     }
 
     function getWinability($Doctor_Id = 0) {
@@ -180,8 +208,7 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
-    function calcWinability($Doctor_Id = 0) {
-        $result = $this->getWinability($Doctor_Id);
+    function calcWinability($result) {
         $winabilty = '';
         if (!empty($result)) {
             if ($this->Product_Id == 1) {

@@ -11,6 +11,21 @@ class User extends MY_Controller {
         $this->load->model('User_model');
         $this->load->model('Master_Model');
         $this->load->model('Doctor_Model');
+        $this->calcPlanning();
+    }
+
+    function calcPlanning() {
+        $this->db->select('*');
+        $this->db->from('Setting');
+        $this->db->where('Current_Month', date('n'));
+        $query = $this->db->get();
+        $result = $query->result();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                $this->nextMonth = $value->Planned_For_Month;
+                $this->nextYear = $value->Planned_For_Year;
+            }
+        }
     }
 
     public function index() {
@@ -200,10 +215,11 @@ class User extends MY_Controller {
 
                     $doc = array(
                         'Actual_Rx' => $value[$i],
+                        $next_date => $value[$i],
                         'Actual_Created' => date('Y-m-d H:i:s'),
                     );
 
-                    $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id);
+                    $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 }
             }
 

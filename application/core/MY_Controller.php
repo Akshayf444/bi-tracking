@@ -12,7 +12,7 @@ class MY_Controller extends CI_Controller {
     public $Full_Name;
     public $table_name;
     public $Product_Id = 0;
-    public $nextMonth = 0;
+    public $nextMonth;
     public $nextYear;
 
     function __construct() {
@@ -38,18 +38,6 @@ class MY_Controller extends CI_Controller {
         }
     }
 
-    function calcPlanning() {
-        $this->db->select('*');
-        $this->db->from('Setting');
-        $this->db->where('Current_Month', date('n'));
-        $query = $this->db->get();
-        $result = $query->result();
-        if (!empty($result)) {
-            foreach ($result as $value) {
-                $this->nextMonth = $value->Planned_For_Month;
-            }
-        }
-    }
 
     function logout() {
         $this->session->unset_userdata('VEEVA_Employee_ID');

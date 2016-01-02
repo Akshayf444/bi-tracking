@@ -65,5 +65,7 @@
     $(function () {
         $(".next-month").html('in ' + monthname);
     });
+    
+    
 
 </script>
