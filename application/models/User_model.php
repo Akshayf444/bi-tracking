@@ -130,9 +130,9 @@ class User_model extends CI_Model {
                     <th>Winability</th>
                     <th>Dependency</th>
                     <th>BI Rx Share</th>
-                    <th>Oct Rx</th>
-                    <th>Nov Rx</th>
-                    <th>Dec Rx</th>
+                    <th>'.date('M',  strtotime('-3 month')). ' Rx</th>
+                    <th>'.date('M',  strtotime('-2 month')). ' Rx</th>
+                    <th>'.date('M',  strtotime('-1 month')). ' Rx</th>
                     <th>Planned for Jan</th>
                     <th>Actual</th>
                 </tr>';
