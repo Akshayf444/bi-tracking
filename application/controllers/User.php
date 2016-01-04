@@ -11,6 +11,7 @@ class User extends MY_Controller {
         $this->load->model('User_model');
         $this->load->model('Master_Model');
         $this->load->model('Doctor_Model');
+        $this->load->library('form_validation');
         $this->calcPlanning();
     }
 
@@ -126,11 +127,19 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
             if ($this->input->post()) {
-                $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
-                $_POST['Product_id'] = $this->Product_Id;
-                $_POST['created_at'] = date('Y-m-d H:i:s');
-                if ($this->db->insert('Profiling', $_POST)) {
-                    redirect('User/Profiling', 'refresh');
+                $this->form_validation->set_rules('Doctor_Id', 'Doctor ', 'required');
+                $this->form_validation->set_rules('Patient_Seen', 'Patient Seen', 'required');
+                $this->form_validation->set_rules('Patient_Rxbed_In_Week', 'Patient Rxbed In Week', 'required');
+                $this->form_validation->set_rules('Win_Q1', 'Win Q1', 'required');
+                if ($this->form_validation->run() == FALSE) {
+//                   $this->form_validation->set_message('required', 'Your custom message here');
+                } else {
+                    $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
+                    $_POST['Product_id'] = $this->Product_Id;
+                    $_POST['created_at'] = date('Y-m-d H:i:s');
+                    if ($this->db->insert('Profiling', $_POST)) {
+                        redirect('User/Profiling', 'refresh');
+                    }
                 }
             }
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');

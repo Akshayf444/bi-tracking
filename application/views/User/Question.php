@@ -8,15 +8,48 @@
     .table-view-cell {
         padding: 11px 12px 11px 15px;
     }
+    .label {
+        width:100px;
+        text-align:right;
+        float:left;
+        padding-right:10px;
+        font-weight:bold;
+    }
+    #register-form label.error {
+        color:#FB3A3A;
+        font-weight:bold;
+    }
+    h1 {
+        font-family: Helvetica;
+        font-weight: 100;
+        color:#333;
+        padding-bottom:20px;
+    }
 </style>
-<?php echo form_open('User/Profiling') ?>
+<script>
+    function validateform() {
+        var Doctor_id = document.myform.name.value;
+
+        if (Doctor_id == 'Please Select') {
+            alert("Please Select Doctor");
+            return false;
+        } 
+    }
+</script>
+<link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
+
+<?php
+$attributes = array('id' => 'activate', 'name' => 'myform', 'onsubmit' => 'return validateform()');
+echo validation_errors();
+echo form_open('User/Profiling', $attributes);
+?>
 <ul class="table-view ">
     <li class="table-view-cell table-view-divider">Profiling</li>
 
     <li class="table-view-cell">
         Select Doctor
-        <select class="form-control" name="Doctor_id">
-            <option>Please Select</option>
+        <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
+            <option value="Please Select">Please Select</option>
             <?php echo $doctorList; ?>        
         </select> 
     </li>
@@ -54,19 +87,15 @@
             $('#span2').html('DPP4');
         }
     });
-
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
     var currentDate = new Date();
     var nextMonthDate = new Date(currentDate.getYear(), currentDate.getMonth());
     var monthname = months[parseInt(nextMonthDate.getMonth(), 10)]
 
     $(function () {
         $(".next-month").html('in ' + monthname);
-
     });
-
     $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
         $("input[name='Patient_Rxbed_In_Month']").val($(this).val() * 4);
     });
@@ -74,3 +103,6 @@
 
 
 </script>
+
+
+
