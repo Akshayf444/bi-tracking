@@ -14,6 +14,13 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+    public function profiling_by_id($Doctor_id,$VEEVA_Employee_ID,$Product_id) {
+        $this->db->select('*');
+        $this->db->from('Profiling');
+        $this->db->where(array('Doctor_id' => $Doctor_id, 'VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 
     public function validateLogin() {
         

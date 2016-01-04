@@ -137,8 +137,14 @@ class User extends MY_Controller {
                     $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
                     $_POST['Product_id'] = $this->Product_Id;
                     $_POST['created_at'] = date('Y-m-d H:i:s');
-                    if ($this->db->insert('Profiling', $_POST)) {
-                        redirect('User/Profiling', 'refresh');
+                    $check - $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
+                    if (empty($check)) {
+                        if ($this->db->insert('Profiling', $_POST)) {
+                            redirect('User/Profiling', 'refresh');
+                        }else
+                        {
+                            redirect('User/Profiling', 'refresh');
+                        }
                     }
                 }
             }
