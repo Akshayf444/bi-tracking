@@ -12,7 +12,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target'];     ?>"></b></span><br>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target'];        ?>"></b></span><br>
             <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
@@ -44,12 +44,15 @@
 <script>
 
     $(document).ready(function () {
-        $('.val').keyup(function () {
-            var one = $('.ck').val();
-            var two = $('.val').val();
-            var three = one - two;
-            $('.ckk').html(one - two);
 
-        })
+        $(".val").keyup(function () {
+            var finalval = 0;
+            $(".val").each(function () {
+                finalval = parseInt(finalval) + parseInt($(this).val());
+            });
+            $('.ckk').html(finalval - $('.ck').val());
+
+        });
+
     })
 </script>

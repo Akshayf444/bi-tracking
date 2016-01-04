@@ -29,7 +29,9 @@ class User extends MY_Controller {
     }
 
     public function index() {
+        $data = array();
         if ($this->input->post()) {
+
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $check = $this->User_model->authentication($username, $password);
@@ -69,6 +71,7 @@ class User extends MY_Controller {
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('Product_Id');
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
+
                 redirect('User/dashboard', 'refresh');
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
@@ -222,7 +225,7 @@ class User extends MY_Controller {
                     $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 }
             }
-
+            //echo $data['doctorList'] ;
             $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {

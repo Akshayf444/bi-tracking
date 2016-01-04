@@ -9,8 +9,6 @@
         <link href="<?php echo asset_url() ?>css/ratchet.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
-<!--        <link href="<?php echo asset_url() ?>css/app.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo asset_url() ?>css/pygments-manni.css" rel="stylesheet" type="text/css"/>-->
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <style>
@@ -30,7 +28,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: red;
+                    background-color: #79B61C;
                 }
             </style>
             <?php
@@ -38,7 +36,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: green;
+                    background-color: #4E88BC;
                 }
             </style>
             <?php
@@ -46,7 +44,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: blue;
+                    background-color: #EFC083;
                 }
             </style>
             <?php
@@ -62,7 +60,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: orange;
+                    background-color: #9999ff;
                 }
             </style>
             <?php

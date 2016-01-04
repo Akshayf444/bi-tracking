@@ -66,13 +66,22 @@ class User_model extends CI_Model {
         $this->load->model('Doctor_Model');
         $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID);
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
-        $Tab1Location = '#';
 
-        if ($tabs['Tab1'] == 1) {
+
+        if (isset($tabs['Tab1']) && $tabs['Tab1'] == 1) {
             $Tab1Location = "'" . site_url('User/Profiling') . "'";
+        } elseif (isset($tabs['Tab1']) && $tabs['Tab1'] == 0) {
+            $Tab1Location = '#';
+        } else {
+            $Tab1Location = '#';
         }
 
-        $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
+        if ($doctorCount["DoctorCount"] > 0) {
+            $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
+        } else {
+            $tab1Calc = 0;
+        }
+
 
         $HTML = '<div class="card">
                     <ul class="table-view">
@@ -139,9 +148,12 @@ class User_model extends CI_Model {
 
         $month = date('n', strtotime('-1 month'));
         $lastMonthRx = $this->countLastMonthRx($month);
-
+        $currentMonthRx = $this->countPlannedRx(date('n'));
         if (isset($result) && !empty($result)) {
             foreach ($result as $doctor) {
+
+
+
                 $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
                 $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
                 $getPlan = $this->getWinability($doctor->Account_ID);
@@ -153,12 +165,24 @@ class User_model extends CI_Model {
                 $month2 = $this->getMonthwiseRx($doctor->Account_ID, $month);
                 $month = date('n', strtotime('-1 month'));
                 $month3 = $this->getMonthwiseRx($doctor->Account_ID, $month);
-                $dependancy = round(($month3->Actual_Rx / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
-                if ($getPlan->Patient_Rxbed_Month > 0) {
-                    $BI_Share = ($month3->Actual_Rx / $getPlan->Patient_Rxbed_Month) * 100;
+
+                $month1rx = isset($month1->Actual_Rx) ? $month1->Actual_Rx : 0;
+                $month2rx = isset($month2->Actual_Rx) ? $month2->Actual_Rx : 0;
+                $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
+                if ($lastMonthRx->Actual_Rx > 0)
+                    $dependancy = round(($month3rx / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
+                else {
+                    $dependancy = 0;
+                }
+                if (isset($getPlan->Patient_Rxbed_In_Month) && $getPlan->Patient_Rxbed_In_Month > 0) {
+                    $BI_Share = round(($month3rx / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
                 } else {
                     $BI_Share = '';
                 }
+
+                //$currentDependancy = round(($planned_rx / $currentMonthRx->Planned_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
+                //$data = array('Delta' => $month3rx- $planned_rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doctor->Account_ID, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'));
+                //$this->db->insert('Doctor_Priority', $data);
 
                 $html .= '<tr>
                     <td><a >' . $doctor->Account_Name . '</a>
@@ -166,9 +190,9 @@ class User_model extends CI_Model {
                 <td>' . $winability . '</td>
                 <td><a class="control-item">' . $dependancy . '%</a></td>
                 <td><a class="control-item">' . $BI_Share . '</a></td>
-                <td><a class="control-item">' . $month1->Actual_Rx . '</a></td>
-                <td><a class="control-item">' . $month2->Actual_Rx . '</a></td>
-                <td> <a class="control-item">' . $month3->Actual_Rx . '</a></td>';
+                <td><a class="control-item">' . $month1rx . '</a></td>
+                <td><a class="control-item">' . $month2rx . '</a></td>
+                <td> <a class="control-item">' . $month3rx . '</a></td>';
                 if ($type == 'Planning') {
                     $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                 <td> <a class = "control-item"></a></td>
@@ -195,6 +219,14 @@ class User_model extends CI_Model {
 
     function countLastMonthRx($month = 0) {
         $this->db->select('SUM(Actual_Rx) AS Actual_Rx');
+        $this->db->from('Rx_Planning');
+        $this->db->where(array('Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function countPlannedRx($month = 0) {
+        $this->db->select('SUM(Actual_Rx) AS Planned_Rx');
         $this->db->from('Rx_Planning');
         $this->db->where(array('Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month));
         $query = $this->db->get();

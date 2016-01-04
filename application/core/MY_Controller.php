@@ -38,7 +38,6 @@ class MY_Controller extends CI_Controller {
         }
     }
 
-
     function logout() {
         $this->session->unset_userdata('VEEVA_Employee_ID');
         $this->session->unset_userdata('Local_Employee_ID');
@@ -46,6 +45,19 @@ class MY_Controller extends CI_Controller {
         $this->session->unset_userdata('Reporting');
         $this->session->unset_userdata('Reporting_VEEVA_ID');
         $this->session->unset_userdata('Reporting_Local_ID');
+        $this->session->unset_userdata('Product_Id');
+        $this->$VEEVA_Employee_ID = null;
+        $this->$Local_Employee_ID = null;
+        $this->$Designation = null;
+        $this->$Reporting_To = null;
+        $this->$Reporting_VEEVA_ID = null;
+        $this->$Reporting_Local_ID = null;
+        $this->$Division = null;
+        $this->$Full_Name = null;
+        $this->$table_name = null;
+        $this->$Product_Id = null;
+        $this->$nextMonth = null;
+        $this->$nextYear = null;
         redirect('User/login', 'refresh');
     }
 
