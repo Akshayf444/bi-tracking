@@ -75,6 +75,14 @@ class User extends MY_Controller {
 
                 redirect('User/dashboard', 'refresh');
             }
+            $current_month = date('n');
+            $year = date('Y');
+            if($this->Product_Id != '')
+            {
+                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
+                $data['Planned'] = $this->User_model->Planned_Rx_Count();
+                
+            }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -209,16 +217,18 @@ class User extends MY_Controller {
 //                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data, $this->Product_Id);
             } else {
                 $this->User_model->Set_Target($data);
+                redirect('User/Set_Target', 'refresh');
             }
         }
         $month_start = date('n', strtotime('-3 month'));
         $month_between = date('n', strtotime('-2 month'));
         $month_ends = date('n', strtotime('-1 month'));
         $current_month = date('n');
-        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start);
-        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between);
-        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends);
-        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
+        $year = date('Y');
+        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start, $year);
+        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
+        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends, $year);
+        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month, $year);
         $data['date'] = date('M', strtotime('+1 month'));
         $data['month_start'] = date('M', strtotime('-3 month'));
         $data['month_between'] = date('M', strtotime('-2 month'));
