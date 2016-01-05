@@ -47,7 +47,7 @@ echo form_open('User/Profiling', $attributes);
     <li class="table-view-cell table-view-divider">Profiling</li>
 
     <li class="table-view-cell">
-        Select Doctor
+        Select Hospital
         <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
             <option value="Please Select">Please Select</option>
             <?php echo $doctorList; ?>        
