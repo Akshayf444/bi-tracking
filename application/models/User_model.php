@@ -14,16 +14,13 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
-    public function profiling_by_id($Doctor_id,$VEEVA_Employee_ID,$Product_id) {
+
+    public function profiling_by_id($Doctor_id, $VEEVA_Employee_ID, $Product_id) {
         $this->db->select('*');
         $this->db->from('Profiling');
         $this->db->where(array('Doctor_id' => $Doctor_id, 'VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
         $query = $this->db->get();
         return $query->row_array();
-    }
-
-    public function validateLogin() {
-        
     }
 
     public function Set_Target($data) {
@@ -71,7 +68,7 @@ class User_model extends CI_Model {
     public function generateTabs($VEEVA_Employee_ID = 0, $Product_id = 0) {
         $tabs = $this->Tabs($VEEVA_Employee_ID);
         $this->load->model('Doctor_Model');
-        $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID);
+        $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID, $this->Individual_Type);
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
 
 
@@ -173,7 +170,7 @@ class User_model extends CI_Model {
         }
         if (empty($result)) {
             $this->load->model('Doctor_Model');
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
         }
         if ($type == 'Planning') {
             $html = form_open('User/doctorList');
@@ -186,9 +183,9 @@ class User_model extends CI_Model {
                     <th>Winability</th>
                     <th>Dependency</th>
                     <th>BI Rx Share</th>
-                    <th>'.date('M',  strtotime('-3 month')). ' Rx</th>
-                    <th>'.date('M',  strtotime('-2 month')). ' Rx</th>
-                    <th>'.date('M',  strtotime('-1 month')). ' Rx</th>
+                    <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
+                    <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
+                    <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
                     <th>Planned for Jan</th>
                     <th>Actual</th>
                 </tr>';

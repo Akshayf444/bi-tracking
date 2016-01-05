@@ -14,6 +14,7 @@ class MY_Controller extends CI_Controller {
     public $Product_Id = 0;
     public $nextMonth;
     public $nextYear;
+    public $Individual_Type;
 
     function __construct() {
         parent::__construct();
@@ -28,6 +29,11 @@ class MY_Controller extends CI_Controller {
         $this->Product_Id = $this->session->userdata('Product_Id');
         $this->nextMonth = date('n');
         $this->nextYear = date('Y');
+        if ($this->Product_Id == 1) {
+            $this->Individual_Type = 'Pharmacist';
+        } else {
+            $this->Individual_Type = 'Doctor';
+        }
     }
 
     function is_logged_in() {

@@ -113,7 +113,7 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
-    public function doctorList() {
+    public function Planning() {
         if ($this->is_logged_in()) {
 
             $data['doctorList'] = $this->User_model->generatePlanningTab();
@@ -159,22 +159,20 @@ class User extends MY_Controller {
 
     public function Profiling() {
         if ($this->is_logged_in()) {
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
             if ($this->input->post()) {
-                
-                    $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
-                    $_POST['Product_id'] = $this->Product_Id;
-                    $_POST['created_at'] = date('Y-m-d H:i:s');
-                    $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
-                    if (empty($check)) {
-                        if ($this->db->insert('Profiling', $_POST)) {
-                            redirect('User/Profiling', 'refresh');
-                        }else
-                        {
-                            redirect('User/Profiling', 'refresh');
-                        }
+
+                $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
+                $_POST['Product_id'] = $this->Product_Id;
+                $_POST['created_at'] = date('Y-m-d H:i:s');
+                $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
+                if (empty($check)) {
+                    if ($this->db->insert('Profiling', $_POST)) {
+                        redirect('User/Profiling', 'refresh');
+                    } else {
+                        redirect('User/Profiling', 'refresh');
                     }
-              
+                }
             }
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
@@ -183,11 +181,6 @@ class User extends MY_Controller {
         } else {
             $this->logout();
         }
-    }
-
-    public function addPlanning() {
-        $data = array('title' => 'Planning', 'content' => 'User/addbusiness', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
     }
 
     public function addRx() {
@@ -220,18 +213,9 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
-    public function doctorwiseDelta() {
-        $data = array('title' => 'Report', 'content' => 'User/DoctorWiseDelta', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
-    }
-
     public function PlanMenu() {
         $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => 'blank');
         $this->load->view('template2', $data);
-    }
-
-    public function logout() {
-        redirect('User/index', 'refresh');
     }
 
     public function view_status() {
