@@ -202,11 +202,11 @@ class User extends MY_Controller {
                 'target' => $values,
                 'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
                 'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => date('m', strtotime('+1 month')),
-                'Year' => date('Y'),
+                'Month' => $this->nextMonth,
+                'Year' => $this->nextYear,
                 'created_at' => date('Y-m-d H:i:s'),
             );
-            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,date('n',  strtotime('+1 month')));
+            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$this->nextMonth);
             if (!empty($check)) {
 //                $data = array(
 //                    'target' => $values,
@@ -219,13 +219,16 @@ class User extends MY_Controller {
         $month_start=date('n',  strtotime('-3 month'));
         $month_between=date('n',  strtotime('-2 month'));
         $month_ends=date('n',  strtotime('-1 month'));
+        $current_month=date('n');
         $data['show1']=  $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_start);
         $data['show2']=  $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_between);
         $data['show3']=  $this->User_model->Rx_Target_month3($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_ends);
+        $data['show4']=  $this->User_model->Rx_Target_month4($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$current_month);
         $data['date']=  date('M',  strtotime('+1 month'));
         $data['month_start']=  date('M',  strtotime('-3 month'));;
         $data['month_between']=  date('M',  strtotime('-2 month'));
         $data['month_ends']= date('M',  strtotime('-1 month'));
+        $data['current_month']= date('M');
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }

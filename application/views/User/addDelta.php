@@ -32,6 +32,7 @@
                     <th><?php echo $month_start;?></th>
                     <th><?php echo $month_between;?></th>
                     <th><?php echo $month_ends;?></th>
+                    <th><?php echo $current_month;?></th>
                 </tr>
                 <tr>
                     <td><?php 
@@ -50,6 +51,12 @@
                     foreach($show3 as $sh3)
                     {
                         echo $sh3->target;
+                    }
+                    ?></td>
+                    <td><?php 
+                    foreach($show4 as $sh4)
+                    {
+                        echo $sh4->target;
                     }
                     ?></td>
                 </tr>

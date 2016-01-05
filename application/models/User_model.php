@@ -59,6 +59,13 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+    public function Rx_Target_month4($VEEVA_Employee_ID, $Product_Id,$current_month) {
+        $sql = "SELECT * FROM Rx_Target
+                WHERE Month= $current_month
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
     public function Expected_Rx($id, $pid, $month) {
         $this->db->select('target');
