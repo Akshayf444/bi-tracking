@@ -11,6 +11,7 @@
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
+
         <style>
             .form-control{
                 height: 32px;
@@ -89,9 +90,9 @@
             <?php $this->load->view($content, $view_data); ?>
         </div>
 
-        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
-
+<!--        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>-->
     </body>
     <!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
 </html>
 
+    

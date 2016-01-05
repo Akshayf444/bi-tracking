@@ -11,6 +11,7 @@ class User extends MY_Controller {
         $this->load->model('User_model');
         $this->load->model('Master_Model');
         $this->load->model('Doctor_Model');
+        $this->load->library('form_validation');
         $this->calcPlanning();
     }
 
@@ -160,12 +161,20 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
             if ($this->input->post()) {
-                $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
-                $_POST['Product_id'] = $this->Product_Id;
-                $_POST['created_at'] = date('Y-m-d H:i:s');
-                if ($this->db->insert('Profiling', $_POST)) {
-                    redirect('User/Profiling', 'refresh');
-                }
+                
+                    $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
+                    $_POST['Product_id'] = $this->Product_Id;
+                    $_POST['created_at'] = date('Y-m-d H:i:s');
+                    $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
+                    if (empty($check)) {
+                        if ($this->db->insert('Profiling', $_POST)) {
+                            redirect('User/Profiling', 'refresh');
+                        }else
+                        {
+                            redirect('User/Profiling', 'refresh');
+                        }
+                    }
+              
             }
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
