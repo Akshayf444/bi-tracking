@@ -111,19 +111,59 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016') {
+    public function getActivityDoctor() {
+        $this->db->select('*');
+        $this->db->from('Actual_Doctor_Priority dp');
+        $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function getPlannedActivityDoctor() {
+        $this->db->select('*');
+        $this->db->from('Activity_Planning dp');
+        $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $this->db->select('rxp.*,dm.*');
         $this->db->from('Employee_Master emp');
         $this->db->join('Employee_Doc ed', 'ed.Local_Employee_ID = emp.VEEVA_Employee_ID');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id', 'LEFT');
+        if ($where == 'true') {
+            $this->db->where_in('rxp.Doctor_Id', $doctor_ids);
+        }
+
         $this->db->where(array('rxp.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
         $query = $this->db->get();
         return $query->result();
     }
 
-    function generatePlanningTab($type = 'Planning') {
-        $result = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+    function getPlanning2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
+
+        $doctor_id = join(",", $doctor_ids);
+        $sql = "SELECT rxp.*,dm.* FROM Employee_Master emp "
+                . " INNER JOIN Employee_Doc ed ON ed.Local_Employee_ID = emp.VEEVA_Employee_ID "
+                . " INNER JOIN Doctor_Master dm ON dm.Account_ID = ed.VEEVA_Account_ID "
+                . " LEFT JOIN Rx_Planning rxp ON dm.Account_ID = rxp.Doctor_Id "
+                . " WHERE rxp.Doctor_Id IN (" . $doctor_id . ") AND rxp.Product_id = '$Product_id' AND emp.VEEVA_Employee_ID = '$VEEVA_Employee_ID' AND rxp.month = '$month' AND rxp.Year = '$Year' "
+                . " order by FIELD(rxp.Doctor_Id ," . $doctor_id . ")";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function generatePlanningTab($type = 'Planning', $priority = 'false', $doctor_ids = array()) {
+
+        if ($priority == 'true') {
+            $result = $this->User_model->getPlanning2($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear, 'true', $doctor_ids);
+        } else {
+            $result = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+        }
         if (empty($result)) {
             $this->load->model('Doctor_Model');
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID);
@@ -151,9 +191,6 @@ class User_model extends CI_Model {
         $currentMonthRx = $this->countPlannedRx(date('n'));
         if (isset($result) && !empty($result)) {
             foreach ($result as $doctor) {
-
-
-
                 $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
                 $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
                 $getPlan = $this->getWinability($doctor->Account_ID);
@@ -180,13 +217,14 @@ class User_model extends CI_Model {
                     $BI_Share = '';
                 }
 
-                //$currentDependancy = round(($planned_rx / $currentMonthRx->Planned_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
-                //$data = array('Delta' => $month3rx- $planned_rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doctor->Account_ID, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'));
-                //$this->db->insert('Doctor_Priority', $data);
-
-                $html .= '<tr>
-                    <td><a >' . $doctor->Account_Name . '</a>
-                        <p>Speciality : ' . $doctor->Specialty . '</p></a></td>
+                if ($priority == 'true') {
+                    $html .= '<tr>
+                    <td><a ><input type="checkbox" name="priority[]" value="' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
+                } else {
+                    $html .= '<tr>
+                    <td><a >' . $doctor->Account_Name . '</a>';
+                }
+                $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>
                 <td>' . $winability . '</td>
                 <td><a class="control-item">' . $dependancy . '%</a></td>
                 <td><a class="control-item">' . $BI_Share . '</a></td>
@@ -257,6 +295,76 @@ class User_model extends CI_Model {
             }
         }
         return $winabilty;
+    }
+
+    function PriorityIds() {
+        $doctors = array();
+        $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` WHERE `Delta` >= 20
+                AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  AND month = '$this->nextMonth'          ";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                array_push($doctors, $value->Doctor_Id);
+            }
+        }
+
+        $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` WHERE `Dependancy` >= 20
+                AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'                ";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                array_push($doctors, $value->Doctor_Id);
+            }
+        }
+        $doctors = array_unique($doctors);
+        $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` 
+                WHERE VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  ORDER BY `Planned_Rx` DESC                ";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                array_push($doctors, $value->Doctor_Id);
+            }
+        }
+
+        $doctors = array_unique($doctors);
+        $doctors2 = array();
+        if (!empty($doctors)) {
+            foreach ($doctors as $value) {
+                array_push($doctors2, "'" . $value . "'");
+            }
+        }
+
+        return $doctors2;
+    }
+
+    function getActivityList() {
+        $this->db->select('*');
+        $this->db->from('Activity_Master');
+        $this->db->where(array('Product_id' => $this->Product_Id));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getPlannedActivityList($Doctor_Id) {
+        $this->db->select('*');
+        $this->db->from('Activity_Planning ap');
+        $this->db->join('Activity_Master am', 'ap.Activity_Id = am.Activity_id');
+        $this->db->where(array('ap.Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function generateCheckboxList($result, $id) {
+        $html = '';
+        if (!empty($result)) {
+            foreach ($result as $item) {
+                $html .= '<p><input name="activity[]" value="' . $item->Activity_id . '" type="checkbox" />   ' . $item->Activity_Name . '</p>';
+            }
+        }
+        return $html;
     }
 
 }

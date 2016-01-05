@@ -33,11 +33,11 @@
     }
     ?>
 
-    <li class="table-view-cell">
-        <br/>
-        <button type="submit" class="btn btn-positive">Submit</button>
-        <br/>
-    </li>
+            <li class="table-view-cell">
+                <br/>
+                <button type="submit" class="btn btn-positive">Submit</button>
+                <br/>
+            </li>
 </ul>
 </form>
 <script>

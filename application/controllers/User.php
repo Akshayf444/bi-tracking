@@ -87,8 +87,28 @@ class User extends MY_Controller {
         $this->load->view('template2', $data);
     }
 
-    public function Act_Plan() {
-        $data = array('title' => 'Select Product', 'content' => 'User/Act_Plan', 'view_data' => 'blank');
+    public function ActivityPlanning() {
+        $result = $this->User_model->getActivityDoctor();
+        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+        $data['ActiviyList'] = $this->User_model->getActivityList();
+        if ($this->input->post()) {
+            foreach ($data['ActiviyList'] as $Activity) {
+                if ($this->input->post($Activity->Activity_id)) {
+                    $data2 = array(
+                        'Activity_Id' => $Activity->Activity_id,
+                        'Doctor_Id' => $this->input->post('Doctor_Id'),
+                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                        'Product_Id' => $this->Product_Id,
+                        'Activity_detail' => $this->input->post($Activity->Activity_id . 'Detail'),
+                        'Reason' => $this->input->post($Activity->Activity_id . 'Reason'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'Status' => $this->input->post($Activity->Activity_id)
+                    );
+                    $this->db->insert('Activity_Planning', $data2);
+                }
+            }
+        }
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -98,6 +118,8 @@ class User extends MY_Controller {
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             //echo($data['doctorList']);
             if ($this->input->post()) {
+                $currentPlanned = array_sum($this->input->post('value'));
+                $currentPlanned = (int) $currentPlanned;
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
                     $doc_id = $this->input->post('doc_id');
@@ -113,7 +135,16 @@ class User extends MY_Controller {
                         'created_at' => date('Y-m-d'),
                         'Doctor_Id' => $doc_id[$i],
                     );
-                    $this->User_model->Save_Planning($doc);
+
+                    //$this->User_model->Save_Planning($doc);
+                    $month = date('n', strtotime('-1 month'));
+                    $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
+                    $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
+                    $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
+                    $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
+                    ///var_dump($data2);
+                    //$this->db->insert('Doctor_Priority', $data2);
+                    redirect('User/Priority', 'refresh');
                 }
             }
 
@@ -206,9 +237,7 @@ class User extends MY_Controller {
 
     public function Reporting() {
         if ($this->is_logged_in()) {
-
             $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
-
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
@@ -231,6 +260,87 @@ class User extends MY_Controller {
         } else {
             $this->logout();
         }
+    }
+
+    public function Priority() {
+        $doctor_ids = $this->User_model->PriorityIds();
+        //var_dump($doctor_ids);
+        $data['doctorList'] = $this->User_model->generatePlanningTab('Planning', 'true', $doctor_ids);
+        if ($this->input->post()) {
+            for ($i = 0; $i < count($this->input->post('priority')); $i++) {
+                $priority = $this->input->post('priority');
+                $data2 = array(
+                    'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                    'Product_Id' => $this->Product_Id,
+                    'month' => $this->nextMonth,
+                    'Doctor_Id' => $priority[$i],
+                );
+                $this->db->insert('Actual_Doctor_Priority', $data2);
+            }
+
+            redirect('User/Priority', 'refresh');
+        }
+        $data = array('title' => 'Set Priority', 'content' => 'User/Priority', 'view_data' => $data);
+        $this->load->view('template2', $data);
+    }
+
+    public function ActivityReporting() {
+        $result = $this->User_model->getPlannedActivityDoctor();
+        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+        if ($this->input->get('Doctor_Id')) {
+            $data['ActiviyList'] = $this->User_model->getPlannedActivityList($this->input->get('Doctor_Id'));
+        }
+        if ($this->input->post()) {
+            foreach ($data['ActiviyList'] as $Activity) {
+                if ($this->input->post($Activity->Activity_id)) {
+                    $data2 = array(
+                        'Activity_Id' => $Activity->Activity_id,
+                        'Doctor_Id' => $this->input->post('Doctor_Id'),
+                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                        'Product_Id' => $this->Product_Id,
+                        'Activity_detail' => $this->input->post($Activity->Activity_id . 'Detail'),
+                        'Reason' => $this->input->post($Activity->Activity_id . 'Reason'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'Status' => $this->input->post($Activity->Activity_id)
+                    );
+                    $this->db->insert('Activity_Planning', $data2);
+                }
+            }
+        }
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'view_data' => $data);
+        $this->load->view('template2', $data);
+    }
+
+    public function getActivityDetails() {
+        $ActiviyList = $this->User_model->getPlannedActivityList($this->input->post('Doctor_Id'));
+        $html = '';
+        if (isset($ActiviyList) && !empty($ActiviyList)) {
+            foreach ($ActiviyList as $Activity) {
+                $html .= '<li class="table-view-cell">
+                    <div class="col-xs-4">' . $Activity->Activity_Name . '</div>
+                    <div class="col-xs-8">
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $Activity->Activity_id . '" value="Yes"><span id="' . $Activity->Activity_id . '-1 ">Yes</span></label>    
+                        </div>
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $Activity->Activity_id . '" value="No"><span id="' . $Activity->Activity_id . '-2 " >No</span></label>
+                        </div>
+                    </div>
+                    <div id="heading ' . $Activity->Activity_id . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name=" ' . $Activity->Activity_id . 'Detail" placeholder="Activity Details"></textarea> </div> 
+                        </div> 
+                    </div>
+                    <div id="reason ' . $Activity->Activity_id . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $Activity->Activity_id . 'Reason " placeholder="Reason"></textarea> </div> 
+                        </div> 
+                    </div>
+                </li>';
+            }
+        }
+
+        echo $html;
     }
 
 }
