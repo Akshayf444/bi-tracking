@@ -12,41 +12,9 @@
     <ul class="table-view ">
         <li class="table-view-cell table-view-divider">Add Expected Rx</li>
 
-<!--        <li class="table-view-cell">
-            Select Product
-            <select class="form-control" id="product">
-                <option>Please Select</option>
-                <option>Actilyse</option>
-                <option>Pradaxa</option>
-                <option>Trajenta Family</option>              
-            </select>
-            <table class="table table-bordered" id="rx" style="display: none">
-                <tr>
-                    <td></td>
-                    <td>Sep</td>
-                    <td>Oct</td>
-                    <td>Nov</td>
-                    <td>Dec</td>
-                </tr>
-                <tr>
-                    <th>Expected Rx</th>
-                    <td>10</td>
-                    <td>20</td>
-                    <td>30</td>
-                    <td>40</td>
-                </tr>
-                <tr>
-                    <th>Actual Rx</th>
-                    <td>10</td>
-                    <td>20</td>
-                    <td>30</td>
-                    <td>40</td>
-                </tr>
-            </table>
-        </li>   -->
 <?php echo form_open('User/Set_Target')?>
         <li class="table-view-cell">
-            Total Expected Rx from Doctors in Jan
+            Total Expected Rx from Doctors in <?php echo $date;?>
             <input type="text" name="value">
         </li>
         <li class="table-view-cell">
@@ -56,6 +24,39 @@
         </li>
     </ul>
 </form>
+<ul class="table-view">
+    <li class="table-view-cell">
+            
+            <table class="table table-bordered">
+                <tr>
+                    <th><?php echo $month_start;?></th>
+                    <th><?php echo $month_between;?></th>
+                    <th><?php echo $month_ends;?></th>
+                </tr>
+                <tr>
+                    <td><?php 
+                    foreach($show1 as $sh1)
+                    {
+                        echo $sh1->target;
+                    }
+                    ?></td>
+                    <td><?php 
+                    foreach($show2 as $sh2)
+                    {
+                        echo $sh2->target;
+                    }
+                    ?></td>
+                    <td><?php 
+                    foreach($show3 as $sh3)
+                    {
+                        echo $sh3->target;
+                    }
+                    ?></td>
+                </tr>
+                
+            </table>
+        </li>
+</ul>
 <script>
     $("#product").change(function () {
         $("#rx").show();

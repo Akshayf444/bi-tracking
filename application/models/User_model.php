@@ -14,7 +14,8 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
-    public function profiling_by_id($Doctor_id,$VEEVA_Employee_ID,$Product_id) {
+
+    public function profiling_by_id($Doctor_id, $VEEVA_Employee_ID, $Product_id) {
         $this->db->select('*');
         $this->db->from('Profiling');
         $this->db->where(array('Doctor_id' => $Doctor_id, 'VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
@@ -30,11 +31,33 @@ class User_model extends CI_Model {
         return $this->db->insert('Rx_Target', $data);
     }
 
-    public function Set_Target_by_id($id, $pid) {
+    public function Set_Target_by_id($id, $pid,$month) {
         $sql = "select * from Rx_Target
-               where VEEVA_Employee_ID='$id' And Product_Id='$pid'";
+               where VEEVA_Employee_ID='$id' And Product_Id='$pid' And Month=$month";
         $query = $this->db->query($sql);
         return $query->row_array();
+    }
+
+    public function Rx_Target_month($VEEVA_Employee_ID, $Product_Id,$month_start) {
+        $sql = "SELECT * FROM Rx_Target
+                WHERE Month = $month_start
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id,$month_between) {
+        $sql = "SELECT * FROM Rx_Target
+                WHERE Month = $month_between
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    public function Rx_Target_month3($VEEVA_Employee_ID, $Product_Id,$month_ends) {
+        $sql = "SELECT * FROM Rx_Target
+                WHERE Month= $month_ends
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     public function Expected_Rx($id, $pid, $month) {
@@ -186,9 +209,9 @@ class User_model extends CI_Model {
                     <th>Winability</th>
                     <th>Dependency</th>
                     <th>BI Rx Share</th>
-                    <th>'.date('M',  strtotime('-3 month')). ' Rx</th>
-                    <th>'.date('M',  strtotime('-2 month')). ' Rx</th>
-                    <th>'.date('M',  strtotime('-1 month')). ' Rx</th>
+                    <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
+                    <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
+                    <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
                     <th>Planned for Jan</th>
                     <th>Actual</th>
                 </tr>';
