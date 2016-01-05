@@ -81,6 +81,7 @@ class User extends MY_Controller {
             {
                 $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
                 $data['Planned'] = $this->User_model->Planned_Rx_Count();
+                $data['Actual'] = $this->User_model->Actual_Rx_Count();
                 
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
