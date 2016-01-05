@@ -119,33 +119,35 @@ class User extends MY_Controller {
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             //echo($data['doctorList']);
             if ($this->input->post()) {
-                $currentPlanned = array_sum($this->input->post('value'));
-                $currentPlanned = (int) $currentPlanned;
-                for ($i = 0; $i < count($this->input->post('value')); $i++) {
-                    $value = $this->input->post('value');
-                    $doc_id = $this->input->post('doc_id');
-                    $current_date = date('Y-m-d');
-                    $next_date = date('M');
-                    $doc = array(
-                        'Planned_Rx' => $value[$i],
-                        'Year' => $this->nextYear,
-                        'month' => $this->nextMonth,
-                        $next_date => $value[$i],
-                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
-                        'Product_Id' => $this->Product_Id,
-                        'created_at' => date('Y-m-d'),
-                        'Doctor_Id' => $doc_id[$i],
-                    );
+                if (empty($this->User_Model->PlanningExist())) {
+                    $currentPlanned = array_sum($this->input->post('value'));
+                    $currentPlanned = (int) $currentPlanned;
+                    for ($i = 0; $i < count($this->input->post('value')); $i++) {
+                        $value = $this->input->post('value');
+                        $doc_id = $this->input->post('doc_id');
+                        $current_date = date('Y-m-d');
+                        $next_date = date('M');
+                        $doc = array(
+                            'Planned_Rx' => $value[$i],
+                            'Year' => $this->nextYear,
+                            'month' => $this->nextMonth,
+                            $next_date => $value[$i],
+                            'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Product_Id' => $this->Product_Id,
+                            'created_at' => date('Y-m-d'),
+                            'Doctor_Id' => $doc_id[$i],
+                        );
 
-                    //$this->User_model->Save_Planning($doc);
-                    $month = date('n', strtotime('-1 month'));
-                    $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
-                    $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
-                    $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
-                    $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
-                    ///var_dump($data2);
-                    //$this->db->insert('Doctor_Priority', $data2);
-                    redirect('User/Priority', 'refresh');
+                        //$this->User_model->Save_Planning($doc);
+                        $month = date('n', strtotime('-1 month'));
+                        $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
+                        $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
+                        $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
+                        ///var_dump($data2);
+                        //$this->db->insert('Doctor_Priority', $data2);
+                        redirect('User/Priority', 'refresh');
+                    }
                 }
             }
 
@@ -199,7 +201,7 @@ class User extends MY_Controller {
                 'Year' => $this->nextYear,
                 'created_at' => date('Y-m-d H:i:s'),
             );
-            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$this->nextMonth);
+            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (!empty($check)) {
 //                $data = array(
 //                    'target' => $values,
@@ -210,19 +212,19 @@ class User extends MY_Controller {
                 redirect('User/Set_Target','refresh');
             }
         }
-        $month_start=date('n',  strtotime('-3 month'));
-        $month_between=date('n',  strtotime('-2 month'));
-        $month_ends=date('n',  strtotime('-1 month'));
-        $current_month=date('n');
-        $data['show1']=  $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_start);
-        $data['show2']=  $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_between);
-        $data['show3']=  $this->User_model->Rx_Target_month3($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$month_ends);
-        $data['show4']=  $this->User_model->Rx_Target_month4($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id,$current_month);
-        $data['date']=  date('M',  strtotime('+1 month'));
-        $data['month_start']=  date('M',  strtotime('-3 month'));;
-        $data['month_between']=  date('M',  strtotime('-2 month'));
-        $data['month_ends']= date('M',  strtotime('-1 month'));
-        $data['current_month']= date('M');
+        $month_start = date('n', strtotime('-3 month'));
+        $month_between = date('n', strtotime('-2 month'));
+        $month_ends = date('n', strtotime('-1 month'));
+        $current_month = date('n');
+        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start);
+        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between);
+        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends);
+        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
+        $data['date'] = date('M', strtotime('+1 month'));
+        $data['month_start'] = date('M', strtotime('-3 month'));
+        $data['month_between'] = date('M', strtotime('-2 month'));
+        $data['month_ends'] = date('M', strtotime('-1 month'));
+        $data['current_month'] = date('M');
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
