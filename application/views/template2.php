@@ -17,7 +17,7 @@
                 height: 32px;
                 padding: 3px 3px;
             }
-            input[type=text]{
+            input[type=text],input[type=number]{
                 height: 32px;
                 padding: 0px 4px;
             }
