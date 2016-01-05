@@ -34,10 +34,10 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month_start) {
+    public function Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month_start,$year) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
-                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year=$year";
         $query = $this->db->query($sql);
         return $query->result();
     }

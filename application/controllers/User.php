@@ -216,10 +216,11 @@ class User extends MY_Controller {
         $month_between = date('n', strtotime('-2 month'));
         $month_ends = date('n', strtotime('-1 month'));
         $current_month = date('n');
-        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start);
-        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between);
-        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends);
-        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
+        $year = date('Y');
+        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start,$year);
+        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between,$year);
+        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends,$year);
+        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month,$year);
         $data['date'] = date('M', strtotime('+1 month'));
         $data['month_start'] = date('M', strtotime('-3 month'));
         $data['month_between'] = date('M', strtotime('-2 month'));
