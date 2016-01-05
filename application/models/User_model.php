@@ -177,7 +177,7 @@ class User_model extends CI_Model {
     }
 
     function generatePlanningTab($type = 'Planning', $priority = 'false', $doctor_ids = array()) {
-        $result = $this->Rx_Target_month($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
+        $result = $this->Rx_Target_month($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth,  $this->nextYear);
 
         if (isset($result->target) && $result->target > 0) {
             if ($priority == 'true') {
@@ -371,6 +371,13 @@ class User_model extends CI_Model {
         $this->db->where(array('Product_id' => $this->Product_Id));
         $query = $this->db->get();
         return $query->result();
+    }
+    function Planned_Rx_Count() {
+        $this->db->select('COUNT(`Planned_Rx`) AS Planned_Rx');
+        $this->db->from('Rx_Planning');
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Product_Id' => $this->Product_Id));
+        $query = $this->db->get();
+        return $query->row_array();
     }
 
     function getPlannedActivityList($Doctor_Id) {

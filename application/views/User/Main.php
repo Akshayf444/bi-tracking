@@ -56,15 +56,16 @@
     <ul class="table-view">
         <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
             <div style="margin-top: 17px;" class="">
-            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = '<?php echo site_url('User/Set_Target'); ?>';">
-                RX Target For The Month Of <?php echo date('M') . "&nbsp" . date('Y'); ?>
-            </a>
-            <span style="font-size: x-large;" class="pull-right"><b><?php
-                if (isset($show4)) {
-                    if(!empty($show4)){
-                    echo $show4['target'];
-                }}
-                ?></b></span>
+                <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = '<?php echo site_url('User/Set_Target'); ?>';">
+                    RX Target For The Month Of <?php echo date('M') . "&nbsp" . date('Y'); ?>
+                </a>
+                <span style="font-size: x-large;" class="pull-right"><b><?php
+                        if (isset($show4)) {
+                            if (!empty($show4)) {
+                                echo $show4['target'];
+                            }
+                        }
+                        ?></b></span>
             </div>
         </li>
     </ul>
@@ -77,7 +78,11 @@
             </a>
             <div class="demo pull-right">
                 <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">30/100</span>
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;"><?php
+                    if (isset($Planned)) {
+                        echo $Planned['Planned_Rx'];
+                    }
+                    ?>/100</span>
             </div>
         </li>
     </ul>
