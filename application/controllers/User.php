@@ -214,6 +214,7 @@ class User extends MY_Controller {
 //                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data, $this->Product_Id);
             } else {
                 $this->User_model->Set_Target($data);
+                redirect('User/Set_Target','refresh');
             }
         }
         $month_start=date('n',  strtotime('-3 month'));
