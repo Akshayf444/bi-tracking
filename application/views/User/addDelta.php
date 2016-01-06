@@ -14,7 +14,7 @@
 
 <?php echo form_open('User/Set_Target')?>
         <li class="table-view-cell">
-            Total Expected Rx from Doctors in <?php echo $date;?>
+            Total Expected Rx from Doctors in <?php echo date('M',  strtotime($this->nextMonth));?>
             <input type="text" name="value">
         </li>
         <li class="table-view-cell">
