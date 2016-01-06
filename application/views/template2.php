@@ -21,13 +21,21 @@
                 height: 32px;
                 padding: 0px 4px;
             }
+            .panel{
+                margin-top: 10px;
+            }
+            .panel-heading{
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+            }
         </style>
 
         <?php
         if ($this->session->userdata('Product_Id') == 1) {
             ?>
             <style>
-                .table-view{
+                .table-view,.panel-body{
                     background-color: #79B61C;
                 }
             </style>
@@ -35,7 +43,7 @@
         } elseif ($this->session->userdata('Product_Id') == 2) {
             ?>
             <style>
-                .table-view{
+                .table-view,.panel-body{
                     background-color: #4E88BC;
                 }
             </style>
@@ -43,7 +51,7 @@
         } elseif ($this->session->userdata('Product_Id') == 3) {
             ?>
             <style>
-                .table-view{
+                .table-view,.panel-body{
                     background-color: #EFC083;
                 }
             </style>
@@ -51,7 +59,7 @@
         } elseif ($this->session->userdata('Product_Id') == 4) {
             ?>
             <style>
-                .table-view{
+                .table-view,.panel-body{
                     background-color: skyblue;
                 }
             </style>
@@ -59,7 +67,7 @@
         } elseif ($this->session->userdata('Product_Id') == 5) {
             ?>
             <style>
-                .table-view{
+                .table-view,.panel-body{
                     background-color: #9999ff;
                 }
             </style>
@@ -89,9 +97,7 @@
             <?php $this->load->view($content, $view_data); ?>
         </div>
 
-<!--        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>-->
     </body>
     <!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
 </html>
 
-    

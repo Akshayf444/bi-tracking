@@ -126,7 +126,7 @@ class User extends MY_Controller {
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             //echo($data['doctorList']);
             if ($this->input->post()) {
-                $result = $this->User_Model->PlanningExist();
+                $result = $this->User_model->PlanningExist();
                 if (empty($result)) {
                     $currentPlanned = array_sum($this->input->post('value'));
                     $currentPlanned = (int) $currentPlanned;
@@ -153,10 +153,11 @@ class User extends MY_Controller {
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
                         $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
                         ///var_dump($data2);
-                        //$this->db->insert('Doctor_Priority', $data2);
-                        redirect('User/Priority', 'refresh');
+                        $this->db->insert('Doctor_Priority', $data2);
+
                     }
                 }
+                redirect('User/Priority', 'refresh');
             }
 
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
@@ -283,8 +284,10 @@ class User extends MY_Controller {
 
     public function Priority() {
         $doctor_ids = $this->User_model->PriorityIds();
-        //var_dump($doctor_ids);
-        $data['doctorList'] = $this->User_model->generatePlanningTab('Planning', 'true', $doctor_ids);
+        if(!empty($doctor_ids)){
+            $data['doctorList'] = $this->User_model->generatePlanningTab('Planning', 'true', $doctor_ids); 
+        }
+
         if ($this->input->post()) {
             for ($i = 0; $i < count($this->input->post('priority')); $i++) {
                 $priority = $this->input->post('priority');
