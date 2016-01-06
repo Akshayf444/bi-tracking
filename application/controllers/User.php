@@ -282,6 +282,8 @@ class User extends MY_Controller {
                 }
             }
             //echo $data['doctorList'] ;
+            $current_month = date('n');
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
