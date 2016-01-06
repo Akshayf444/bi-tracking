@@ -33,7 +33,7 @@
         if (Doctor_id == 'Please Select') {
             alert("Please Select Doctor");
             return false;
-        } 
+        }
     }
 </script>
 <link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
@@ -43,35 +43,37 @@ $attributes = array('id' => 'activate', 'name' => 'myform', 'onsubmit' => 'retur
 echo validation_errors();
 echo form_open('User/Profiling', $attributes);
 ?>
-<ul class="table-view ">
-    <li class="table-view-cell table-view-divider">Profiling</li>
+<div class="card">
+    <ul class="table-view">
+        <li class="table-view-cell table-view-divider">Profiling</li>
 
-    <li class="table-view-cell">
-        Select Hospital
-        <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
-            <option value="Please Select">Please Select</option>
-            <?php echo $doctorList; ?>        
-        </select> 
-    </li>
-    <?php
-    if (isset($questionList) && !empty($questionList)) {
-        foreach ($questionList as $Question) {
-            ?>
-            <li class="table-view-cell">
-                <?php echo $Question->Question ?>
-                <?php echo $Question->name ?>
-            </li>
-            <?php
+        <li class="table-view-cell">
+            Select Doctor
+            <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
+                <option value="Please Select">Please Select</option>
+                <?php echo $doctorList; ?>        
+            </select> 
+        </li>
+        <?php
+        if (isset($questionList) && !empty($questionList)) {
+            foreach ($questionList as $Question) {
+                ?>
+                <li class="table-view-cell">
+                    <?php echo $Question->Question ?>
+                    <?php echo $Question->name ?>
+                </li>
+                <?php
+            }
         }
-    }
-    ?>
+        ?>
 
-            <li class="table-view-cell">
-                <br/>
-                <button type="submit" class="btn btn-positive">Submit</button>
-                <br/>
-            </li>
-</ul>
+        <li class="table-view-cell">
+            <br/>
+            <button type="submit" class="btn btn-positive">Submit</button>
+            <br/>
+        </li>
+    </ul>
+</div>
 </form>
 <script>
     $("#product").change(function () {
@@ -103,6 +105,3 @@ echo form_open('User/Profiling', $attributes);
 
 
 </script>
-
-
-

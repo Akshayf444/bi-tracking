@@ -64,7 +64,7 @@ class MY_Controller extends CI_Controller {
         $this->Product_Id = null;
         $this->nextMonth = null;
         $this->nextYear = null;
-        redirect('User/login', 'refresh');
+        redirect('User/index', 'refresh');
     }
 
 }

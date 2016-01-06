@@ -17,14 +17,13 @@
                 height: 32px;
                 padding: 3px 3px;
             }
-            input[type=text]{
+            input[type=text],input[type=number]{
                 height: 32px;
                 padding: 0px 4px;
             }
         </style>
 
         <?php
-        print_r($this->session->all_userdata());
         if ($this->session->userdata('Product_Id') == 1) {
             ?>
             <style>

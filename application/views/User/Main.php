@@ -78,7 +78,7 @@
             </a>
             <div class="demo pull-right">
                 <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 80px;position: absolute;margin-top: -46px;"><?php
+                <span style="margin-left: 87px;position: absolute;margin-top: -46px;"><?php
                     if (isset($Planned)) {
                         echo $Planned['Planned_Rx'];
                     }

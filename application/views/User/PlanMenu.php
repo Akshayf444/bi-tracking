@@ -10,7 +10,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
-            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/Act_Plan'); ?>';" >
+            <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/ActivityPlanning'); ?>';" >
                 Activity Planning 
             </a>
         </li>
