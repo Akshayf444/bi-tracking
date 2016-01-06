@@ -59,7 +59,7 @@
                 <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;    color: #383D3F;" onclick="window.location = '<?php echo site_url('User/Set_Target'); ?>';">
                     RX Target For The Month Of <?php echo date('M',  strtotime($this->nextMonth)) . "&nbsp" . date('Y',  strtotime($this->nextYear)); ?>
                 </a>
-                <span style="font-size: x-large;" class="pull-right"><b><?php
+                <span style="font-size: x-large;    margin-right: 13px;" class="pull-right"><b><?php
                         if (isset($show4)) {
                             if (!empty($show4)) {
                                 echo $show4['target'];

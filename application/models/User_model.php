@@ -41,6 +41,13 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+    public function Actual_Rx_Target_month($VEEVA_Employee_ID,$Product_Id, $month,$year) {
+        $sql = "SELECT SUM(Actual_Rx) as Act FROM Rx_Planning
+                WHERE month=$month
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id  And Year=$year";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
     public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start

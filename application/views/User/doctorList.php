@@ -12,7 +12,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target'];        ?>"></b></span><br>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php echo $Planned['Planned_Rx'];        ?>"></b></span><br>
             <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
             <span class="pull-right">
                 Sort By
