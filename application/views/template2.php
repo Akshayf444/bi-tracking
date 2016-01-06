@@ -5,33 +5,30 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <link href="http://pocketdrugs.com/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+
         <link href="<?php echo asset_url() ?>css/ratchet.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo asset_url() ?>css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo asset_url() ?>css/app.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo asset_url() ?>css/pygments-manni.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
+
         <style>
             .form-control{
                 height: 32px;
                 padding: 3px 3px;
             }
-            input[type=text]{
+            input[type=text],input[type=number]{
                 height: 32px;
                 padding: 0px 4px;
             }
         </style>
 
         <?php
-        print_r($this->session->all_userdata());
         if ($this->session->userdata('Product_Id') == 1) {
             ?>
             <style>
                 .table-view{
-                    background-color: red;
+                    background-color: #79B61C;
                 }
             </style>
             <?php
@@ -39,7 +36,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: green;
+                    background-color: #4E88BC;
                 }
             </style>
             <?php
@@ -47,7 +44,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: blue;
+                    background-color: #EFC083;
                 }
             </style>
             <?php
@@ -63,7 +60,7 @@
             ?>
             <style>
                 .table-view{
-                    background-color: orange;
+                    background-color: #9999ff;
                 }
             </style>
             <?php
@@ -91,18 +88,10 @@
         <div class="content" style="padding-right: 0px;padding-left: 0px">
             <?php $this->load->view($content, $view_data); ?>
         </div>
-        <?php //$this->load->view('footer');      ?>
 
-        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
-<!--        <script src="<?php echo asset_url() ?>js/segmented-controllers.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/modals.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/popovers.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/push.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/sliders.js" type="text/javascript"></script>
-        <script src="<?php echo asset_url() ?>js/toggles.js" type="text/javascript"></script>-->
-        <script src="<?php echo asset_url() ?>js/docs.min.js" type="text/javascript"></script>
-<!--        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>-->
+<!--        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>-->
     </body>
     <!--    <a  href="http://www.jqueryajaxphp.com/dynamically-animate-jquery-knob">Tutorial: Dynamically animate jQuery knob</a>-->
 </html>
 
+    
