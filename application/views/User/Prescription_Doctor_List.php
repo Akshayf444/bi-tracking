@@ -12,8 +12,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b>200</b></span><br>
-            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b>200</b></span>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b><?php echo $show4['target'];?></b></span><br>
+            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b></b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">

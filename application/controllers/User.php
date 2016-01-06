@@ -159,7 +159,8 @@ class User extends MY_Controller {
                 }
                 redirect('User/Priority', 'refresh');
             }
-
+            $current_month = date('n');
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -179,9 +180,9 @@ class User extends MY_Controller {
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
                     if ($this->db->insert('Profiling', $_POST)) {
-                        redirect('User/Profiling', 'refresh');
+                        redirect('User/dashboard', 'refresh');
                     } else {
-                        redirect('User/Profiling', 'refresh');
+                        redirect('User/dashboard', 'refresh');
                     }
                 }
             }
@@ -221,7 +222,8 @@ class User extends MY_Controller {
                 redirect('User/Set_Target', 'refresh');
             }
         }
-        $month_start = date('n', strtotime('-3 month'));
+        $month_start = date('n', strtotime('-4 month'));
+        $month_mid = date('n', strtotime('-3 month'));
         $month_between = date('n', strtotime('-2 month'));
         $month_ends = date('n', strtotime('-1 month'));
         $current_month = date('n');
@@ -230,7 +232,13 @@ class User extends MY_Controller {
         $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
         $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends, $year);
         $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month, $year);
+        $data['show5'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_mid, $year);
+        $data['Actual1'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start, $year);
+        $data['Actual2'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_mid, $year);
+        $data['Actual3'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
+        $data['Actual4'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends, $year);
         $data['date'] = date('M', strtotime('+1 month'));
+        $data['month_mid'] = date('M', strtotime('-4 month'));
         $data['month_start'] = date('M', strtotime('-3 month'));
         $data['month_between'] = date('M', strtotime('-2 month'));
         $data['month_ends'] = date('M', strtotime('-1 month'));
@@ -275,6 +283,8 @@ class User extends MY_Controller {
                 }
             }
             //echo $data['doctorList'] ;
+            $current_month = date('n');
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {

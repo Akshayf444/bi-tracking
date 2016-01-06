@@ -12,8 +12,8 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" class="ck" value="<?php //echo $expected['target'];        ?>"></b></span><br>
-            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk">200</b></span>
+            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" style=" width: 67px;" class="ck" value="<?php echo $show4['target'];        ?>"></b></span><br><br>
+            <span style="    margin-left: -283px;" class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk"></b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">

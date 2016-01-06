@@ -42,6 +42,14 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    public function Actual_Rx_Target_month($VEEVA_Employee_ID,$Product_Id, $month,$year) {
+        $sql = "SELECT SUM(Actual_Rx) as Act FROM Rx_Planning
+                WHERE month=$month
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id  And Year=$year";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
@@ -122,7 +130,7 @@ class User_model extends CI_Model {
                             <div class="demo pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
-                                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
                         </li>
                     </ul>
