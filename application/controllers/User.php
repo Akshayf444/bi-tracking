@@ -158,7 +158,8 @@ class User extends MY_Controller {
                     }
                 }
             }
-            $data['Planned'] = $this->User_model->Planned_Rx_Count();
+            $current_month = date('n');
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
             $data = array('title' => 'Search', 'content' => 'User/doctorList', 'view_data' => $data);
             $this->load->view('template2', $data);
