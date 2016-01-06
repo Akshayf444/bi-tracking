@@ -373,7 +373,14 @@ class User_model extends CI_Model {
         return $query->result();
     }
     function Planned_Rx_Count() {
-        $this->db->select('COUNT(`Planned_Rx`) AS Planned_Rx');
+        $this->db->select('SUM(`Planned_Rx`) AS Planned_Rx');
+        $this->db->from('Rx_Planning');
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Product_Id' => $this->Product_Id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    function Actual_Rx_Count() {
+        $this->db->select('SUM(`Actual_Rx`) AS Actual_Rx');
         $this->db->from('Rx_Planning');
         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Product_Id' => $this->Product_Id));
         $query = $this->db->get();

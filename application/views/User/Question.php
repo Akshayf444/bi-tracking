@@ -105,6 +105,3 @@ echo form_open('User/Profiling', $attributes);
 
 
 </script>
-
-
-

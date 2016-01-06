@@ -24,7 +24,6 @@
         </style>
 
         <?php
-        print_r($this->session->all_userdata());
         if ($this->session->userdata('Product_Id') == 1) {
             ?>
             <style>

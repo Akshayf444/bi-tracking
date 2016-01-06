@@ -108,12 +108,16 @@
             </a>
             <div class="demo pull-right">
                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;">30/100</span>
+                <span style="    margin-left: 86px;position: absolute;margin-top: -85px;"><?php
+                    if (isset($Actual)) {
+                        echo $Actual['Actual_Rx'];
+                    }
+                    ?>/100</span>
             </div>
         </li>
     </ul>
 </div>
-<div class="card">
+<!--<div class="card">
     <ul class="table-view">
         <li class="table-view-cell">
             <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/productSel'); ?>';" >
@@ -130,7 +134,7 @@
             </a>
         </li>
     </ul>
-</div>
+</div>-->
 
 <div id="owl-demo2" class="owl-carousel owl-theme" style="text-align: center">
     <div class="item card" > 
@@ -152,53 +156,6 @@
                     </tr>
                     <tr>
                         <th  style="text-align:right">Prescription</th>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </div>
-    <div class="item card"> 
-        <ul class="table-view" style="background-color: #E8A698">
-            <li class="table-view-cell table-view-divider" style="color: #E8A698;font-weight: 700;">Product 2</li>
-            <li class="table-view-cell media">
-                <table class="slider-table table" style="margin-left: -87px;">
-                    <tr>
-                        <th  style="text-align:right">Product 1</th>
-                        <th  style="text-align:center">Sep</th>
-                        <th  style="text-align:center">Oct</th>
-                        <th  style="text-align:center">Nov</th>
-                        <th>Dec</th>
-                    </tr>
-
-                    <tr>
-                        <th style="text-align:right">Doctor</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:right">Prescription</th>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </div>
-    <div class="item card"> 
-        <ul class="table-view" style="background-color: #2680E4">
-            <li class="table-view-cell table-view-divider" style="    color: #2680E4;font-weight: 700;">Product 3</li>
-            <li class="table-view-cell media">
-                <table class="slider-table table" style="margin-left: -143px;">
-                    <tr>
-
-                        <th  style="text-align:right">Product 1</th>
-                        <th  style="text-align:center">Sep</th>
-                        <th  style="text-align:center">Oct</th>
-                        <th  style="text-align:center">Nov</th>
-                        <th>Dec</th>
-                    </tr>
-
-                    <tr>
-                        <th style="text-align:right">Doctor</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:right">Prescription</th>
                     </tr>
                 </table>
             </li>

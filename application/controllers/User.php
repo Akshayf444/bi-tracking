@@ -77,11 +77,10 @@ class User extends MY_Controller {
             }
             $current_month = date('n');
             $year = date('Y');
-            if($this->Product_Id != '')
-            {
+            if ($this->Product_Id != '') {
                 $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
                 $data['Planned'] = $this->User_model->Planned_Rx_Count();
-                
+                $data['Actual'] = $this->User_model->Actual_Rx_Count();
             }
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
@@ -127,7 +126,8 @@ class User extends MY_Controller {
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             //echo($data['doctorList']);
             if ($this->input->post()) {
-                if (empty($this->User_Model->PlanningExist())) {
+                $result = $this->User_Model->PlanningExist();
+                if (empty($result)) {
                     $currentPlanned = array_sum($this->input->post('value'));
                     $currentPlanned = (int) $currentPlanned;
                     for ($i = 0; $i < count($this->input->post('value')); $i++) {
@@ -259,7 +259,8 @@ class User extends MY_Controller {
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
-                    $doc_id = $this->input->post('doc_id')[$i];
+                    $doc_id = $this->input->post('doc_id');
+                    $doc_id = $doc_id[$i];
                     $current_date = date('Y-m-d');
                     $next_date = date('M');
 
