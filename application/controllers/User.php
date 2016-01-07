@@ -179,6 +179,8 @@ class User extends MY_Controller {
                     }
                 }
             }
+            
+            $data['Product_Id'] = $this->Product_Id;
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
             $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);

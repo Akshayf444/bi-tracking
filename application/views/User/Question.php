@@ -49,7 +49,14 @@ echo form_open('User/Profiling', $attributes);
         <div class="panel-heading">Profiling</div>
         <div class="panel-body">
             <div class="form-group">
-                Select Doctor
+                <?php
+                if (isset($Product_Id) && $Product_Id == 1) {
+                    echo 'Select Hospital';
+                } else {
+                    echo 'Select Doctor';
+                }
+                ?>
+
                 <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
                     <option value="">Please Select</option>
                     <?php echo $doctorList; ?>        
