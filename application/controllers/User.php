@@ -90,8 +90,8 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-        $result = $this->User_model->getActivityDoctor();
-        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+
+        $data['doctorList'] = $this->User_model->getActivityDoctor();
         $data['ActiviyList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
             foreach ($data['ActiviyList'] as $Activity) {

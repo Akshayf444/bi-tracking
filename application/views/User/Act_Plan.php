@@ -43,45 +43,74 @@
     }
 </style>
 <?php echo form_open('User/ActivityReporting'); ?>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Activity Planning</li>
-        <li class="table-view-cell">
-            <b>Select Doctor</b>
-
-
-            <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
-                <option>Select Doctor</option>
-                <?php echo isset($doctorList) ? $doctorList : ''; ?>
-            </select>
-
-        </li>
-        <li class="table-view-cell"><b>Select Activity</b></li>
-     
-        <li class="table-view-cell">
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Activity Planning</div>
+        <div class="panel-body">            
             <table class="table table-bordered">
                 <tr>
-                    <th>Doctor Details</th>
-                    <th>Activity</th>
+                    <td>Doctor Name</td>
+                    <td>Activity</td>
                 </tr>
-                <tr>
-                    <td>Abc</td>
-                    <td><input type="checkbox" name="one"/> Activity 1<br>
-                    <input type="checkbox" name="one"/>   Activity 2
-                       <li id="result"></li>
-                    </td>
-                </tr>
+
+                    <?php
+                    if (isset($doctorList) && !empty($doctorList)) {
+                        foreach ($doctorList as $doctor) {
+                            ?>
+                        <tr>
+                            <td><?php echo $doctor->Account_Name ?></td>
+                            <td><?php
+                                if (isset($ActivityList) && !empty($ActivityList)) {
+
+                                    foreach ($ActivityList as $Activity) {
+                                        ?>
+                                        <input type="checkbox"> <?php echo $Activity->Activity_Name ?>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                }
+                ?>
+
             </table>
-        </li>
-        <li class="table-view-cell">
-            <br/>
+
+            <!--            <b>Select Doctor</b>
+            
+            
+                        <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
+                            <option>Select Doctor</option>
+<?php //echo isset($doctorList) ? $doctorList : '';    ?>
+                        </select>
+            
+                        </li>
+                        <li class="table-view-cell"><b>Select Activity</b></li>
+            
+                        <li class="table-view-cell">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Doctor Details</th>
+                                    <th>Activity</th>
+                                </tr>
+                                <tr>
+                                    <td>Abc</td>
+                                    <td><input type="checkbox" name="one"/> Activity 1<br>
+                                        <input type="checkbox" name="one"/>   Activity 2
+                                <li id="result"></li>
+                                </td>
+                                </tr>
+                            </table>
+                        </li>-->
+        </div>
+        <div class="panel-footer">
             <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
             <button type="submit" class="btn btn-positive">Submit</button>
-            <br/>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>
-
 </form>
 <script>
     $('label').click(function () {

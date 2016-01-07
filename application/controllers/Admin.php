@@ -339,5 +339,22 @@ class Admin extends CI_Controller {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
+    public function BrandMaster() {
+        try {
+            $crud = new grocery_CRUD();
+
+            $crud->set_theme('flexigrid');
+            $crud->set_table('Brand_Master');
+            $crud->set_subject('Product');
+            $output = $crud->render();
+            $data['output'] = $output->output;
+            $data['css_files'] = $output->css_files;
+            $data['js_files'] = $output->js_files;
+            $data = array('title' => 'Profile_Completion', 'content' => 'admin/GroceryCrud', 'page_title' => 'Question Master', 'view_data' => $data);
+            $this->load->view('template3', $data);
+        } catch (Exception $e) {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+        }
+    }
 
 }

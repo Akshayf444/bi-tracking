@@ -49,7 +49,7 @@
                                     <span class="hidden-xs"><?php echo 'Admin'; ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <!-- The user image in the menu -->
+<!--                                     The user image in the menu 
                                     <li class="user-header">
                                         <p>
                                             <?php //echo $CI->user_name; ?>
@@ -57,7 +57,7 @@
                                             <small>Member since Nov. 2012</small>
                                         </p>
                                     </li>
-                                    <!-- Menu Body -->
+                                     Menu Body 
                                     <li class="user-body">
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Followers</a>
@@ -68,12 +68,12 @@
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Friends</a>
                                         </div>
-                                    </li>
+                                    </li>-->
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
+<!--                                        <div class="pull-left">
                                             <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
+                                        </div>-->
                                         <div class="pull-right">
                                             <a href="<?php echo site_url('Admin/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
                                         </div>
@@ -141,8 +141,7 @@
         </div><!-- ./wrapper -->
 
         <script src="<?php echo asset_url() ?>js/app.min.js" type="text/javascript"></script>
-
-<!--        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>-->
+        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
 
