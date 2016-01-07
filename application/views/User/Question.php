@@ -51,7 +51,7 @@ echo form_open('User/Profiling', $attributes);
             <div class="form-group">
                 Select Doctor
                 <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
-                    <option value="Please Select">Please Select</option>
+                    <option value="">Please Select</option>
                     <?php echo $doctorList; ?>        
                 </select> 
             </div>
@@ -147,7 +147,7 @@ echo form_open('User/Profiling', $attributes);
                         },
                     }
                 },
-                Doctor_Id: {
+                Doctor_id: {
                     validators: {
                         notEmpty: {
                             message: 'Please Enter Value'

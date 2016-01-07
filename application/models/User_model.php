@@ -39,10 +39,11 @@ class User_model extends CI_Model {
                 WHERE Month = $month_start
                 AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year=$year";
         $query = $this->db->query($sql);
-        return $query->result();
+        //echo $this->db->last_query();
+        return $query->row();
     }
 
-    public function Actual_Rx_Target_month($VEEVA_Employee_ID,$Product_Id, $month,$year) {
+    public function Actual_Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month, $year) {
         $sql = "SELECT SUM(Actual_Rx) as Act FROM Rx_Planning
                 WHERE month=$month
                 AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id  And Year=$year";
@@ -112,6 +113,28 @@ class User_model extends CI_Model {
             $Tab2Location = '#';
         }
 
+        if (isset($tabs['Tab3']) && $tabs['Tab3'] == 1) {
+            $Tab3Location = "'" . site_url('User/PlanMenu') . "'";
+        } elseif (isset($tabs['Tab3']) && $tabs['Tab3'] == 0) {
+            $Tab3Location = '#';
+        } else {
+            $Tab3Location = '#';
+        }
+        if (isset($tabs['Tab4']) && $tabs['Tab4'] == 1) {
+            $Tab4Location = "'" . site_url('User/ActivityReporting') . "'";
+        } elseif (isset($tabs['Tab4']) && $tabs['Tab4'] == 0) {
+            $Tab4Location = '#';
+        } else {
+            $Tab4Location = '#';
+        }
+        if (isset($tabs['Tab5']) && $tabs['Tab5'] == 1) {
+            $Tab5Location = "'" . site_url('User/Reporting') . "'";
+        } elseif (isset($tabs['Tab5']) && $tabs['Tab5'] == 0) {
+            $Tab5Location = '#';
+        } else {
+            $Tab5Location = '#';
+        }
+
         if ($doctorCount["DoctorCount"] > 0) {
             $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
         } else {
@@ -121,8 +144,11 @@ class User_model extends CI_Model {
             $data['show4'] = $this->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             $data['Planned'] = $this->Planned_Rx_Count();
             $data['Actual'] = $this->Actual_Rx_Count();
-            $target = isset($data['show4']) ? $data['show4'] : 0;
         }
+        $target = isset($data['show4']) ? $data['show4']['target'] : 0;
+        $Planned = isset($data['Planned']) ? $data['Planned']['Planned_Rx'] : 0;
+        $Actual = isset($data['Actual']) ? $data['Actual']['Actual_Rx'] : 0;
+
         $HTML = '<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: -32px;">
@@ -135,7 +161,7 @@ class User_model extends CI_Model {
                         </li>
                     </ul>
                     </div>';
-        /*$HTML .='<div class="card">
+        $HTML .='<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
                         <div style="margin-top: 17px;" class="">
@@ -146,12 +172,48 @@ class User_model extends CI_Model {
                          </div>
                         </li>
                     </ul>
-                </div>';*/
-        return $HTML;
-    }
+                </div>';
 
-    public function Tab1($VEEVA_Employee_ID = 0, $Product_id = 0) {
-        
+        $HTML .='<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab3Location . '">
+                                Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 87px;position: absolute;margin-top: -46px;">' . $Planned . '</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>';
+
+        $HTML .='<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab4Location . '" >
+                                Reporting For Activities
+                            </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 92px;position: absolute;margin-top: -46px;">30/100</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
+                                Reporting Of Prescriptions
+                            </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $Actual . '/100</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>';
+        return $HTML;
     }
 
     public function ProfilingCount($VEEVA_Employee_ID, $Product_id = 0) {

@@ -9,15 +9,17 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-
+<script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
         <div class="panel-heading">Set Expected Rx</div>
         <div class="panel-body">
-            <?php echo form_open('User/Set_Target') ?>
+            <?php $attributes = array('id' => 'form1', 'name' => 'myform');
+            echo form_open('User/Set_Target', $attributes) ?>
             <div class="form-group">
                 Total Expected Rx from Doctors in <?php echo date('M', strtotime($this->nextMonth)); ?>
-                <input type="text" name="value">
+                <input type="number" name="value">
             </div>
         </div>
         <div class="panel-footer">
@@ -105,9 +107,26 @@
 </ul>
 
 </div>
-
 <script>
-    $("#product").change(function () {
-        $("#rx").show();
+    $('document').ready(function () {
+        $('#form1').formValidation({
+            message: 'This value is not valid',
+            icon: {
+            },
+            fields: {
+                value: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                        integer: {
+                            message: 'It Has To Be No'
+                        }
+                    }
+                }
+
+            }
+        });
     });
+
 </script>
