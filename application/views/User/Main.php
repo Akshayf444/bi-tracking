@@ -80,11 +80,11 @@
 
     <?php
     if ($this->Product_Id == '1') {
-        echo "<ul class='table-view' style='background-color: #4CD964'>";
+        echo "<ul class='table-view' style='background-color: #79B61C;'>";
     } elseif ($this->Product_Id == '2') {
-        echo "<ul class='table-view' style='background-color: #4CD964'>";
+        echo "<ul class='table-view' style='background-color: #4E88BC;'>";
     } elseif ($this->Product_Id == '3') {
-        echo "<ul class='table-view' style='background-color: #4CD964'>";
+        echo "<ul class='table-view' style='background-color: #EFC083;'>";
     } elseif ($this->Product_Id == '4') {
         echo "<ul class='table-view' style='background-color:  #87CEEB'>";
     } elseif ($this->Product_Id == '5') {
