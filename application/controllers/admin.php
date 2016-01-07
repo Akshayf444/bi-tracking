@@ -137,11 +137,11 @@ class admin extends CI_Controller {
                 'Status' => '1',
             );
             $this->admin_model->update_emp($empid, $data);
-//      redirect('admin/dashboard', 'refresh');
+redirect('admin/update_emp', 'refresh');
         }
        
-//        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
-        $this->load->view('admin/update_emp', $data);
+   $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
+        $this->load->view('admin/template', $data);
     }
 
     public function emp_del() {
@@ -237,7 +237,7 @@ class admin extends CI_Controller {
                 'updated_at' => date('Y-m-d'),
             );
             $this->admin_model->update_act($actid, $data);
-            redirect('admin/view_activity', 'refresh');
+            redirect('admin/update_act', 'refresh');
         }
 
         $data = array('title' => 'Login', 'content' => 'admin/update_activity', 'view_data' => $data);

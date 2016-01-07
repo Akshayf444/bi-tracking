@@ -9,14 +9,19 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-<ul class="table-view ">
-    <li class="table-view-cell table-view-divider"> Doctor List</li>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Doctor List </h1>
+    </div>
+     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+   
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php // echo site_url('admin/emp_add'); ?>';"> Add Doctor</a>
-    <ul class="table-view-cell">
-        <li class="table-view-cell">
-            <table class="table table-borderedb">
+     </div>
+     <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
+    <div class="table-responsive">
+    <table class="table table-bordered table-hover ">
                 <tr>
-                    <th>Full_Name</th>
+                    <th>Full Name</th>
                     
 
                     <th>Mobile</th>
@@ -44,8 +49,8 @@
                         ?>
                 </tr>
             </table>
-        </li>
-    </ul>
+         </table>
+  </div>
 </div>
 
 

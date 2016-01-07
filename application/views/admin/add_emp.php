@@ -15,7 +15,7 @@
     <table class="table table-bordered table-hover ">
       <tr>
       <tr style="background-color: #428BCA">
-                    <th>Full_Name</th>
+                    <th>Full Name</th>
                     <th>Territory</th>
 
                     <th>Mobile</th>
