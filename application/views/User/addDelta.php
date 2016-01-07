@@ -12,18 +12,26 @@
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">
+    <?php
+    $attributes = array('id' => 'form1', 'name' => 'myform');
+    echo form_open('User/Set_Target', $attributes)
+    ?>
     <div class="panel panel-default">
         <div class="panel-heading">Set Expected Rx</div>
         <div class="panel-body">
-            <?php $attributes = array('id' => 'form1', 'name' => 'myform');
-            echo form_open('User/Set_Target', $attributes) ?>
+
             <div class="form-group">
-                Total Expected Rx from Doctors in <?php echo date('M', strtotime($this->nextMonth)); ?>
+                No Of New Rx Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
                 <input type="number" name="value">
             </div>
-        </div>
-        <div class="panel-footer">
-            <button type="submit" class="btn btn-positive"/>Submit</button>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <input type="submit" name="save" class="btn btn-primary" value="Save"/>
+                </div>
+                <div class="col-sm-2">
+                    <input type="submit"  class="btn btn-positive" value="Submit"/>
+                </div>
+            </div>
         </div>
         </form>
 
@@ -32,6 +40,9 @@
 
 </form>
 <ul class="table-view">
+    <li class="table-view-cell" align="center">
+        <h5>New Rx Generated</h5>
+    </li>
     <li class="table-view-cell">
 
         <table class="table table-bordered">
@@ -43,37 +54,37 @@
                 <th><?php echo $month_ends; ?></th>
 <!--                <th><?php echo $current_month; ?></th>-->
             </tr>
-            <tr>
+<!--            <tr>
                 <td>Rx Target :</td>
                 <td><?php
-                    foreach ($show5 as $sh5) {
-                        echo $sh5->target;
-                    }
-                    ?></td>
+            foreach ($show5 as $sh5) {
+                echo $sh5->target;
+            }
+            ?></td>
                 <td><?php
-                    foreach ($show1 as $sh1) {
-                        echo $sh1->target;
-                    }
-                    ?></td>
+            foreach ($show1 as $sh1) {
+                echo $sh1->target;
+            }
+            ?></td>
                 <td><?php
-                    foreach ($show2 as $sh2) {
-                        echo $sh2->target;
-                    }
-                    ?></td>
+            foreach ($show2 as $sh2) {
+                echo $sh2->target;
+            }
+            ?></td>
                 <td><?php
-                    foreach ($show3 as $sh3) {
-                        echo $sh3->target;
-                    }
-                    ?></td>
-<!--                <td><?php
-                foreach ($show4 as $sh4) {
-                    // echo $sh4->target;
-                }
-                ?></td>-->
-            </tr>
+            foreach ($show3 as $sh3) {
+                echo $sh3->target;
+            }
+            ?></td>
+                <td><?php
+            foreach ($show4 as $sh4) {
+                // echo $sh4->target;
+            }
+            ?></td>
+            </tr>-->
             <tr>
                 <td>
-                    Actual :
+                    Actual Rx
                 </td>
                 <td><?php
                     foreach ($Actual1 as $sh1) {

@@ -1,142 +1,158 @@
-
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
     <head>
-
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <title><?php echo isset($title) ? $title : ""; ?></title>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-        <link href="<?php echo asset_url() ?>css/jquery-ui.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
-
-        <link href="<?php echo asset_url() ?>css/metisMenu.min.css" rel="stylesheet" type="text/css " >
-
-        <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
+        <meta charset="UTF-8">
+        <title><?php echo $title ?></title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <!-- Bootstrap 3.3.2 -->
+        <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- Font Awesome Icons -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <!-- Ionicons -->
+        <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+        <!-- Theme style -->
+        <link href="<?php echo asset_url() ?>css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo asset_url() ?>css/skin-blue.min.css" rel="stylesheet" type="text/css" />
+        <script src="<?php echo asset_url() ?>js/jquery.js"></script>
         <script src="<?php echo asset_url() ?>js/jquery-ui.js" type="text/javascript"></script>
-        <link href="<?php echo asset_url() ?>css/sb-admin-2.css" rel="stylesheet" type="text/css"/>
-
-        <style>
-            .form-control{
-                height: 32px;
-                padding: 3px 3px;
-            }
-            input[type=text]{
-                height: 32px;
-                padding: 0px 4px;
-            }
-        </style>
-
-        <!-- Bootstrap Core CSS -->
-
-        <!-- Custom CSS -->
-
-
-        <!-- Custom Fonts -->
-
-
+         <script src="<?php echo asset_url() ?>js/highcharts.js" type="text/javascript"></script>
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
     </head>
+    <body class="skin-blue">
+        <div class="wrapper">
 
-    <body>
+            <!-- Main Header -->
+            <header class="main-header">
 
-    <body>
+                <!-- Logo -->
+                <a href="<?php echo site_url('Admin/dashboard'); ?>" class="logo"><b><img src="<?php echo asset_url() ?>images/Travels.png"></b></a>
 
-        <div id="wrapper">
-
-            <!-- Navigation -->
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <!-- Header Navbar -->
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                         <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <img width="160px" height="68px" class="navbar" onclick="window.location = '<?php echo site_url('admin/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                    </a>
+                    <!-- Navbar Right Menu -->
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <!-- User Account Menu -->
+                            <li class="dropdown user user-menu">
+                                <!-- Menu Toggle Button -->
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <!-- The user image in the navbar-->
+<!--                                    <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>-->
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                    <?php $CI = & get_instance(); ?>
+                                    <span class="hidden-xs"><?php echo 'Admin'; ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- The user image in the menu -->
+                                    <li class="user-header">
+                                        <p>
+                                            <?php //echo $CI->user_name; ?>
 
-                </div>
-                <ul class="nav navbar-top navbar-right">
-                    <li class="dropdown">
-
-
-                        <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('admin/logout'); ?>';" ></a>
-
-                    </li>
-                </ul>
-                <!-- /.navbar-header -->
-                <!--  <ul class="nav navbar top-nav">
-                                  
-                                
-                                                              <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('admin/logout'); ?>';" ></a>
-                                       
-                                    </ul>-->
-                <!-- /.dropdown-user -->
-
-
-
-
-
-                <!-- /.navbar-top-links -->
-
-                <div class="navbar sidebar" role="navigation" >
-                    <div class="sidebar-nav navbar-collapse">
-
-                        <ul class="nav" id="side-menu">
-                            <li>
-                                <a onclick="window.location = '<?php echo site_url('admin/dashboard'); ?>';" > Dashboard</a>
-
-
-                            </li>
-
-                            <li>
-                                <a  onclick="window.location = '<?php echo site_url('admin/view_activity'); ?>';" > Activities</a>
-
-                            </li>
-
-                            <li>
-                                <a  onclick="window.location = '<?php echo site_url('admin/profile_view'); ?>';" > Profile</a>
-
-                            </li>
-                            <li>
-                                <a  onclick="window.location = '<?php echo site_url('admin/doc_view'); ?>';" >Doctor</a>
-
-                            </li>
-                            <li class="">
-                                <a   >Reports</a>
-                                <ul class="" role="menu">
-                                    <li><a onclick="window.location = '<?php echo site_url('admin/Profile_Completion'); ?>';">Profile Completion Status</a></li>
-                                    <li><a onclick="window.location = '<?php echo site_url('admin/Rx_Planning'); ?>';">Rx Planning</a></li>
-                                    <li><a href="#">Reporting For Rx</a></li>
+                                            <small>Member since Nov. 2012</small>
+                                        </p>
+                                    </li>
+                                    <!-- Menu Body -->
+                                    <li class="user-body">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo site_url('Admin/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
-
                     </div>
-                    <!-- /.sidebar-collapse -->
-                </div>
+                </nav>
+            </header>
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="main-sidebar">
 
-                <!-- /.navbar-static-side -->
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- search form (Optional) -->
+                    <!--                    <form action="#" method="get" class="sidebar-form">
+                                            <div class="input-group">
+                                                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+                                                <span class="input-group-btn">
+                                                    <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>-->
+                    <!-- /.search form -->
 
-            </nav>
+                    <!-- Sidebar Menu -->
+                    <ul class="sidebar-menu">
+                        <!--                        <li class="header">HEADER</li>-->
 
-            <div id="page-wrapper">
-                <?php $this->load->view($content, $view_data); ?>
-            </div>
+                        <li class="treeview">
+                            <a href="#"><span>Contact</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li><a href="<?php echo site_url() ?>/Contact/view">View</a></li>
+                                <li><a href="<?php echo site_url() ?>/Contact/Add_contact">Add</a></li>
+                                <!--                                <li><a href="#">Update</a></li>-->
+                            </ul>
+                        </li>
+                        <li><a href="<?php echo site_url(); ?>/Contact/group"><span>Groups</span></a></li>
+                        <li><a href="<?php echo site_url(); ?>/Contact/Send_sms"><span>Sms</span></a></li>
+                    </ul><!-- /.sidebar-menu -->
+                </section>
+                <!-- /.sidebar -->
+            </aside>
 
-        </div>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        <?php echo isset($page_title) ? $page_title : ''; ?>
+                        <small></small>
+                    </h1>
+                </section>
 
+                <!-- Main content -->
+                <section class="content">
+                    <?php $this->load->view($content, $view_data); ?>
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->
 
-        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
+            <!-- Main Footer -->
+            <!--            <footer class="main-footer">
+                             To the right 
+                            <div class="pull-right hidden-xs">
+            
+                            </div>
+                             Default to the left  
+                            <strong>Copyright &copy; 2015 <a href="#">Instacom</a>.</strong> All rights reserved.
+                        </footer>-->
 
-        <script src="<?php echo asset_url() ?>js/docs.min.js" type="text/javascript"></script>
-<!--        <script src="<?php echo asset_url() ?>js/fingerblast.js" type="text/javascript"></script>-->
+        </div><!-- ./wrapper -->
 
+        <script src="<?php echo asset_url() ?>js/app.min.js" type="text/javascript"></script>
 
+<!--        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>-->
+        <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
+        <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
+
+    </body>
+</html>

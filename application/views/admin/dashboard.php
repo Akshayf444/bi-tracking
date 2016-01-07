@@ -88,9 +88,10 @@
             series: [{
                     type: 'pie',
                     name: 'Class',
-                    data: [
-<?php echo join(',', $myurl) . ","; ?>
-                    ]
+                     data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+//                    data: [
+//<?php // echo join(',', $myurl) . ","; ?>
+//                    ]
                 }]
         });
     });
@@ -131,9 +132,8 @@
             series: [{
                     type: 'pie',
                     name: 'Service',
-                    data: [
-<?php echo join(',', $myurl1) . ","; ?>
-                    ]
+                     data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+//                  
                 }]
         });
     });
@@ -178,52 +178,6 @@ $(function () {
                 }]
         });
     });
-$(function () {
-        $('#BarGraph1').highcharts({
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Monthwise Business'
-            },
-            xAxis: {
-                categories: <?php
-$temp = array_shift($xAxisData);
-array_push($xAxisData, $temp);
-echo json_encode($xAxisData)
-?>
-            },
-            yAxis: {
-                allowDecimals: false,
-                title: {
-                    text: 'Business'
-                },
-                plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-            },
-            tooltip: {
-                valueSuffix: ''
-            },
-            credits: {
-                enabled: false,
-                text: 'Techvertica.com',
-                href: 'http://www.techvertica.com'
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle',
-                borderWidth: 0
-            },
-            series: [{
-                    name: 'Value',
-                    data: <?php echo json_encode($brandSeriesData); ?>
-                }]
-        });
-    });
 
 
       </script>
@@ -237,7 +191,8 @@ echo json_encode($xAxisData)
                 text: 'Monthwise Activities'
             },
             xAxis: {
-                categories: <?php echo json_encode($xAxisData1) ?>
+                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             },
             yAxis: {
                 allowDecimals: false,
