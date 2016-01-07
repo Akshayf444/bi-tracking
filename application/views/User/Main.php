@@ -91,7 +91,7 @@
                     </tr>
 
                     <tr>
-                        <th  style="text-align:right">Doctor</th>
+                        <th  style="text-align:right">Users</th>
                     </tr>
                     <tr>
                         <th  style="text-align:right">Prescription</th>

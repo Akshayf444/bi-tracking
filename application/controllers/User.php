@@ -118,7 +118,7 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
 
             $data['doctorList'] = $this->User_model->generatePlanningTab();
-           // echo($data['doctorList']);
+            // echo($data['doctorList']);
             if ($this->input->post()) {
                 $result = $this->User_model->PlanningExist();
                 if (empty($result)) {
@@ -196,23 +196,35 @@ class User extends MY_Controller {
     public function Set_Target() {
         if ($this->input->post()) {
             $values = $this->input->post('value');
-            $data = array(
+            $data1 = array(
                 'target' => $values,
                 'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
                 'Product_Id' => $this->session->userdata('Product_Id'),
                 'Month' => $this->nextMonth,
                 'Year' => $this->nextYear,
                 'created_at' => date('Y-m-d H:i:s'),
+                'status' => 'Active',
+            );
+            $data2 = array(
+                'target' => $values,
+                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
+                'Product_Id' => $this->session->userdata('Product_Id'),
+                'Month' => $this->nextMonth,
+                'Year' => $this->nextYear,
+                'created_at' => date('Y-m-d H:i:s'),
+                'status' => 'Inactive',
             );
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (!empty($check)) {
-//                $data = array(
-//                    'target' => $values,
-//                    'Product_Id' => $this->session->userdata('Product_Id'));
-//                $this->User_model->Set_Target_update($this->session->userdata('VEEVA_Employee_ID'), $data, $this->Product_Id);
-            } else {
-                $this->User_model->Set_Target($data);
+                $this->User_model->Set_Target_update2($data1);
                 redirect('User/Set_Target', 'refresh');
+            } else {
+                if ($this->input->post('save')) {
+                    $this->User_model->Set_Target($data2);
+                    redirect('User/Set_Target', 'refresh');
+                } else {
+                    
+                }
             }
         }
         $month_start = date('n', strtotime('-4 month'));

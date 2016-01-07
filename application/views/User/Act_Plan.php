@@ -42,53 +42,40 @@
         transition: 0.15s ease-out;
     }
 </style>
-<?php echo form_open('User/ActivityPlanning'); ?>
+<?php echo form_open('User/ActivityReporting'); ?>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Activity Planning</li>
         <li class="table-view-cell">
             <b>Select Doctor</b>
-            <select class="form-control" name="Doctor_Id">     
+
+
+            <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
                 <option>Select Doctor</option>
                 <?php echo isset($doctorList) ? $doctorList : ''; ?>
             </select>
+
         </li>
         <li class="table-view-cell"><b>Select Activity</b></li>
-
-        <?php
-        if (isset($ActiviyList) && !empty($ActiviyList)) {
-            foreach ($ActiviyList as $Activity) {
-                ?>
-
-                <li class="table-view-cell">
-                    <div class="col-xs-4"><?php echo $Activity->Activity_Name; ?></div>
-                    <div class="col-xs-8">
-                        <div class="toggle">
-                            <label><input type="radio" name="<?php echo $Activity->Activity_id; ?>" value="Yes"><span id="<?php echo $Activity->Activity_id . "-1"; ?>">Yes</span></label>    
-                        </div>
-                        <div class="toggle">
-                            <label><input type="radio" name="<?php echo $Activity->Activity_id; ?>" value="No"><span id="<?php echo $Activity->Activity_id . "-2"; ?>" >No</span></label>
-                        </div>
-                    </div>
-                    <div id="<?php echo "heading" . $Activity->Activity_id; ?>" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="<?php echo $Activity->Activity_id . 'Detail'; ?>" placeholder="Activity Details"></textarea> </div> 
-                        </div> 
-                    </div>
-                    <div id="<?php echo "reason" . $Activity->Activity_id; ?>" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="<?php echo $Activity->Activity_id . 'Reason'; ?>" placeholder="Reason"></textarea> </div> 
-                        </div> 
-                    </div>
-                </li>
-                <?php
-            }
-        }
-        ?>
-
-
+     
+        <li class="table-view-cell">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Doctor Details</th>
+                    <th>Activity</th>
+                </tr>
+                <tr>
+                    <td>Abc</td>
+                    <td><input type="checkbox" name="one"/> Activity 1<br>
+                    <input type="checkbox" name="one"/>   Activity 2
+                       <li id="result"></li>
+                    </td>
+                </tr>
+            </table>
+        </li>
         <li class="table-view-cell">
             <br/>
+            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
@@ -112,4 +99,19 @@
             $("#reason" + id).show();
         }
     });
+
+    function sendRequest(Doctor_ID) {
+        alert(Doctor_ID);
+        $.ajax({
+            type: 'get',
+            data: {'Doctor_Id': Doctor_ID},
+            url: '<?php echo site_url('User/getActivityDetails'); ?>',
+            success: function (data) {
+                console.log(data);
+                $('#result').append(data);
+            }
+        });
+    }
+
+
 </script>
