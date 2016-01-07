@@ -78,12 +78,50 @@
 <div id="owl-demo2" class="owl-carousel owl-theme" style="text-align: center">
     <div class="item card" > 
         <ul class="table-view" style="background-color: #4CD964">
-            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;">Product 1</li>
+            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;"><?php 
+            if($this->Product_Id == '1')
+            {
+                echo "Actilize";
+            }elseif($this->Product_Id == '2')
+            {
+                echo "Pradaxa";
+            }
+            elseif($this->Product_Id == '3')
+            {
+                echo "Metalyse";
+            }
+            elseif($this->Product_Id == '4')
+            {
+                echo "Trajenta Family";
+            }
+            elseif($this->Product_Id == '5')
+            {
+                echo "Jardiance";
+            }?></li>
             <li class="table-view-cell media">
                 <table class="slider-table table" style="margin-left: -87px;">
                     <tr>
 
-                        <th  style="text-align:right">Product 1</th>
+                        <th  style="text-align:right"><?php 
+            if($this->Product_Id == '1')
+            {
+                echo "Actilize";
+            }elseif($this->Product_Id == '2')
+            {
+                echo "Pradaxa";
+            }
+            elseif($this->Product_Id == '3')
+            {
+                echo "Metalyse";
+            }
+            elseif($this->Product_Id == '4')
+            {
+                echo "Trajenta Family";
+            }
+            elseif($this->Product_Id == '5')
+            {
+                echo "Jardiance";
+            }?></th>
                         <th  style="text-align:center">Sep</th>
                         <th  style="text-align:center">Oct</th>
                         <th  style="text-align:center">Nov</th>
@@ -127,9 +165,9 @@
     </li>
     <li class="table-view-cell achievement">
 
-        <div class="col-lg-4">
+        <div class="col-lg-1">
             <select class="form-control">
-                <option>Jan 2015</option>
+                <option>Jan 2016</option>
                 <option>Cycle 1</option>
             </select>
         </div>
@@ -138,6 +176,7 @@
 
             <div class="demo" >        
                 <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
                 <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Rx Actual / Rx Planned</span>
             </div>
@@ -147,6 +186,7 @@
 
             <div class="demo" >       
                 <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
                 <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Activity Done / Planned</span>
             </div>
