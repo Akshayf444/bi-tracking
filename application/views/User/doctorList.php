@@ -12,15 +12,15 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b ><input type="text" readonly="readonly" style=" width: 67px;" class="ck" value="<?php echo $show4['target']; ?>"></b></span><br><br>
-            <span style="    margin-left: -292px;" class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk"></b></span>
+            <span class="pull-left">No Of New Rx Targeted For <?php echo date('M',  strtotime($this->nextMonth));?> <?php echo date('Y',  strtotime($this->nextYear));?> : <b ><input type="text" readonly="readonly" style=" width: 67px;    border: none;" class="ck" value="<?php echo $show4['target']; ?>"></b></span><br><br>
+            <span style="    margin-left: -327px;" class="pull-left">Balanced Rx To Plan For Jan 2016: <b class="ckk"></b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
-                    <option>Rx</option>
-                    <option>Priority</option>
                     <option>Winability</option>
                     <option>Dependency</option>
+                    <option>BI Market Share</option>
+                    <option>Planned Rx Of Present Month</option>
                 </select>
             </span>
         </li>
@@ -35,7 +35,11 @@
         </li>
         <li class="table-view-cell">
             <br/>
-            <button type="submit" class="btn btn-positive">Submit</button>
+            
+            
+            <button type="submit" class="btn btn-negative">Prioritize</button>
+            <button type="submit" style="margin-right:  87px;" class="btn btn-positive pull-right">Submit</button>
+            <button type="submit" style="margin-right: 162px;" class="btn btn-primary pull-right">Save</button>
             <br/>
         </li>
     </ul>

@@ -27,6 +27,12 @@ class User_model extends CI_Model {
         return $this->db->insert('Rx_Target', $data);
     }
 
+    public function Set_Target_update2($data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID')));
+        return $this->db->update('Rx_Target', $data);
+        
+    }
+
     public function Set_Target_by_id($id, $pid, $month) {
         $sql = "select * from Rx_Target
                where VEEVA_Employee_ID='$id' And Product_Id='$pid' And Month=$month";
@@ -166,7 +172,7 @@ class User_model extends CI_Model {
                         <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
                         <div style="margin-top: 17px;" class="">
                          <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab2Location . ';">
-                            RX Target For The Month Of ' . date('M') . "&nbsp" . date('Y') . '
+                            No Of New Rx Targeted For ' . date('M') . "&nbsp" . date('Y') . '
                         </a>
                                 <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
                          </div>
@@ -176,13 +182,9 @@ class User_model extends CI_Model {
 
         $HTML .='<div class="card">
                     <ul class="table-view">
-                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;height: 120px;">
                             <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab3Location . '">
                                 Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
-                            <div class="demo pull-right">
-                                <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 87px;position: absolute;margin-top: -46px;">' . $Planned . '</span>
-                            </div>
                         </li>
                     </ul>
                 </div>';
@@ -289,17 +291,22 @@ class User_model extends CI_Model {
             } elseif ($type == 'Actual') {
                 $html = form_open('User/Prescription_Doctor_List');
             }
+            if ($type == 'Planning') {
+                
+            } elseif ($type == 'Actual') {
+                $actual="Actual";
+            }
             $html .= '<table class="table table-bordered">
     <tr>
         <th>Doctor List</th>
         <th>Winability</th>
         <th>Dependency</th>
-        <th>BI Rx Share</th>
+        <th>BI Market Share</th>
         <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
         <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
         <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
-        <th>Planned for Jan</th>
-        <th>Actual</th>
+        <th>New Rx Targeted For ' . date('M', strtotime($this - nextMonth)) . ' </th>
+        <th>' . $actual . '</th>
     </tr>';
 
             $month = date('n', strtotime('-1 month'));
@@ -349,11 +356,11 @@ class User_model extends CI_Model {
         <td> <a class="control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-        <td> <a class = "control-item"></a></td>
+        <td  style="display:none"> <a class = "control-item" ></a></td>
     </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-    <td> <input name="value[]" type="text" value="' . $actual_rx . '"/></td>
+    <td> <input name="value[]"  type="text" value="' . $actual_rx . '"/></td>
 </tr>';
                     }
                 }

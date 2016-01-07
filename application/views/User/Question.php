@@ -70,6 +70,7 @@ echo form_open('User/Profiling', $attributes);
             ?>
         </div>
         <div class="panel-footer">
+            <button type="submit" name="Save1" class="btn btn-primary">Save</button>
             <button type="submit" name="Save" class="btn btn-positive">Submit</button>
         </div>
     </div>
@@ -100,6 +101,12 @@ echo form_open('User/Profiling', $attributes);
     });
     $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
         $("input[name='Patient_Rxbed_In_Month']").val($(this).val() * 4);
+    });
+    $(function () {
+        $(".next-month").html('in ' + monthname);
+    });
+    $("input[name='Patient_Seen']").keyup(function () {
+        $("input[name='Patient_Seen_month']").val($(this).val() * 4);
     });
 
 

@@ -35,6 +35,7 @@
         </li>
         <li class="table-view-cell">
             <br/>
+            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>

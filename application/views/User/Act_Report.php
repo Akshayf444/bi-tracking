@@ -46,7 +46,7 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Activity Planning</li>
-        <li class="table-view-cell">
+<!--        <li class="table-view-cell">
             <b>Select Doctor</b>
 
 
@@ -55,11 +55,25 @@
                 <?php echo isset($doctorList) ? $doctorList : ''; ?>
             </select>
 
+        </li>-->
+<!--        <li class="table-view-cell"><b>Select Activity</b></li>-->
+<!--        <li id="result"></li>-->
+        <li class="table-view-cell">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Doctor Details</th>
+                    <th>Activity</th>
+                </tr>
+                <tr>
+                    <td>Abc</td>
+                    <td><input type="checkbox" name="one"/> Activity 1<br>
+                    <input type="checkbox" name="one"/>   Activity 2</td>
+                </tr>
+            </table>
         </li>
-        <li class="table-view-cell"><b>Select Activity</b></li>
-        <li id="result"></li>
         <li class="table-view-cell">
             <br/>
+            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
             <button type="submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
@@ -68,34 +82,34 @@
 
 </form>
 <script>
-    $('label').click(function () {
-        $(this).children('span').addClass('input-checked');
-        $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
-
-        var id = $(this).children('span').attr('id').split("-");
-        id = id[0];
-
-        if ($(this).children('span').text() === 'Yes') {
-            $("#heading" + id).show();
-            $("#reason" + id).hide();
-        } else if ($(this).children('span').text() === 'No') {
-            $("#heading" + id).hide();
-            $("#reason" + id).show();
-        }
-    });
-
-    function sendRequest(Doctor_ID) {
-        alert(Doctor_ID);
-        $.ajax({
-            type: 'get',
-            data: {'Doctor_Id': Doctor_ID},
-            url: '<?php echo site_url('User/getActivityDetails'); ?>',
-            success: function (data) {
-                console.log(data);
-                $('#result').append(data);
-            }
-        });
-    }
-
+//    $('label').click(function () {
+//        $(this).children('span').addClass('input-checked');
+//        $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
+//
+//        var id = $(this).children('span').attr('id').split("-");
+//        id = id[0];
+//
+//        if ($(this).children('span').text() === 'Yes') {
+//            $("#heading" + id).show();
+//            $("#reason" + id).hide();
+//        } else if ($(this).children('span').text() === 'No') {
+//            $("#heading" + id).hide();
+//            $("#reason" + id).show();
+//        }
+//    });
+//
+//    function sendRequest(Doctor_ID) {
+//        alert(Doctor_ID);
+//        $.ajax({
+//            type: 'get',
+//            data: {'Doctor_Id': Doctor_ID},
+//            url: '<?php echo site_url('User/getActivityDetails'); ?>',
+//            success: function (data) {
+//                console.log(data);
+//                $('#result').append(data);
+//            }
+//        });
+//    }
+//
 
 </script>
