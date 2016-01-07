@@ -414,7 +414,17 @@ class User_model extends CI_Model {
         $winabilty = '';
         if (!empty($result)) {
             if ($this->Product_Id == 1) {
-                
+                if ($result->Win_Q1 == 'No') {
+                    $winabilty = '<a class="control-item badge badge-negative">L</a>';
+                } elseif ($result->Win_Q1 == 'Yes') {
+                    if ($result->Win_Q2 == 'No') {
+                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
+                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
+                        $winabilty = '<a class="control-item badge badge-positive">H</a>';
+                    }
+                }
             } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5) {
                 if ($result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
                     $winabilty = '<a class="control-item badge badge-positive">H</a>';
