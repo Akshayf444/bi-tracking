@@ -9,23 +9,27 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-<div class="card">
-    <ul class="table-view ">
-        <li class="table-view-cell table-view-divider">Set Expected Rx</li>
+<script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Set Expected Rx</div>
+        <div class="panel-body">
+            <?php $attributes = array('id' => 'form1', 'name' => 'myform');
+            echo form_open('User/Set_Target', $attributes) ?>
+            <div class="form-group">
+                Total Expected Rx from Doctors in <?php echo date('M', strtotime($this->nextMonth)); ?>
+                <input type="number" name="value">
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-positive"/>Submit</button>
+        </div>
+        </form>
 
-        <?php echo form_open('User/Set_Target') ?>
-        <li class="table-view-cell">
 
-            Total Expected Rx from Doctors in <?php echo date('M',  strtotime($this->nextMonth));?>
+    </div>
 
-            <input type="text" name="value">
-        </li>
-        <li class="table-view-cell">
-            <br/>
-            <button type="submit" class="btn btn-sm btn-positive"/>Submit</button>
-            <br/>
-        </li>
-    </ul>
 </form>
 <ul class="table-view">
     <li class="table-view-cell">
@@ -62,14 +66,14 @@
                     }
                     ?></td>
 <!--                <td><?php
-                    foreach ($show4 as $sh4) {
-                       // echo $sh4->target;
-                    }
-                    ?></td>-->
+                foreach ($show4 as $sh4) {
+                    // echo $sh4->target;
+                }
+                ?></td>-->
             </tr>
             <tr>
                 <td>
-               Actual :
+                    Actual :
                 </td>
                 <td><?php
                     foreach ($Actual1 as $sh1) {
@@ -92,18 +96,37 @@
                     }
                     ?></td>
 <!--                <td><?php
-                    foreach ($show4 as $sh4) {
-                       // echo $sh4->target;
-                    }
-                    ?></td>-->
+                foreach ($show4 as $sh4) {
+                    // echo $sh4->target;
+                }
+                ?></td>-->
             </tr>
 
         </table>
     </li>
 </ul>
+
 </div>
 <script>
-    $("#product").change(function () {
-        $("#rx").show();
+    $('document').ready(function () {
+        $('#form1').formValidation({
+            message: 'This value is not valid',
+            icon: {
+            },
+            fields: {
+                value: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                        integer: {
+                            message: 'It Has To Be No'
+                        }
+                    }
+                }
+
+            }
+        });
     });
+
 </script>

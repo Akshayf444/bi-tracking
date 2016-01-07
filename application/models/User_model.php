@@ -34,20 +34,23 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month_start,$year) {
+    public function Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month_start, $year) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
                 AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year=$year";
         $query = $this->db->query($sql);
-        return $query->result();
+        //echo $this->db->last_query();
+        return $query->row();
     }
-    public function Actual_Rx_Target_month($VEEVA_Employee_ID,$Product_Id, $month,$year) {
+
+    public function Actual_Rx_Target_month($VEEVA_Employee_ID, $Product_Id, $month, $year) {
         $sql = "SELECT SUM(Actual_Rx) as Act FROM Rx_Planning
                 WHERE month=$month
                 AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id  And Year=$year";
         $query = $this->db->query($sql);
         return $query->result();
     }
+
     public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
@@ -102,12 +105,49 @@ class User_model extends CI_Model {
             $Tab1Location = '#';
         }
 
+        if (isset($tabs['Tab2']) && $tabs['Tab2'] == 1) {
+            $Tab2Location = "'" . site_url('User/Set_Target') . "'";
+        } elseif (isset($tabs['Tab2']) && $tabs['Tab2'] == 0) {
+            $Tab2Location = '#';
+        } else {
+            $Tab2Location = '#';
+        }
+
+        if (isset($tabs['Tab3']) && $tabs['Tab3'] == 1) {
+            $Tab3Location = "'" . site_url('User/PlanMenu') . "'";
+        } elseif (isset($tabs['Tab3']) && $tabs['Tab3'] == 0) {
+            $Tab3Location = '#';
+        } else {
+            $Tab3Location = '#';
+        }
+        if (isset($tabs['Tab4']) && $tabs['Tab4'] == 1) {
+            $Tab4Location = "'" . site_url('User/ActivityReporting') . "'";
+        } elseif (isset($tabs['Tab4']) && $tabs['Tab4'] == 0) {
+            $Tab4Location = '#';
+        } else {
+            $Tab4Location = '#';
+        }
+        if (isset($tabs['Tab5']) && $tabs['Tab5'] == 1) {
+            $Tab5Location = "'" . site_url('User/Reporting') . "'";
+        } elseif (isset($tabs['Tab5']) && $tabs['Tab5'] == 0) {
+            $Tab5Location = '#';
+        } else {
+            $Tab5Location = '#';
+        }
+
         if ($doctorCount["DoctorCount"] > 0) {
             $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
         } else {
             $tab1Calc = 0;
         }
-
+        if ($this->Product_Id > 0) {
+            $data['show4'] = $this->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+            $data['Planned'] = $this->Planned_Rx_Count();
+            $data['Actual'] = $this->Actual_Rx_Count();
+        }
+        $target = isset($data['show4']) ? $data['show4']['target'] : 0;
+        $Planned = isset($data['Planned']) ? $data['Planned']['Planned_Rx'] : 0;
+        $Actual = isset($data['Actual']) ? $data['Actual']['Actual_Rx'] : 0;
 
         $HTML = '<div class="card">
                     <ul class="table-view">
@@ -121,11 +161,59 @@ class User_model extends CI_Model {
                         </li>
                     </ul>
                     </div>';
-        return $HTML;
-    }
+        $HTML .='<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
+                        <div style="margin-top: 17px;" class="">
+                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab2Location . ';">
+                            RX Target For The Month Of ' . date('M') . "&nbsp" . date('Y') . '
+                        </a>
+                                <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
+                         </div>
+                        </li>
+                    </ul>
+                </div>';
 
-    public function Tab1($VEEVA_Employee_ID = 0, $Product_id = 0) {
-        
+        $HTML .='<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab3Location . '">
+                                Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="3" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 87px;position: absolute;margin-top: -46px;">' . $Planned . '</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>';
+
+        $HTML .='<div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab4Location . '" >
+                                Reporting For Activities
+                            </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 92px;position: absolute;margin-top: -46px;">30/100</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <ul class="table-view">
+                        <li class="table-view-cell" style="    margin-bottom: -32px;">
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
+                                Reporting Of Prescriptions
+                            </a>
+                            <div class="demo pull-right">
+                                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $Actual . '/100</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>';
+        return $HTML;
     }
 
     public function ProfilingCount($VEEVA_Employee_ID, $Product_id = 0) {
@@ -184,7 +272,7 @@ class User_model extends CI_Model {
     }
 
     function generatePlanningTab($type = 'Planning', $priority = 'false', $doctor_ids = array()) {
-        $result = $this->Rx_Target_month($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth,  $this->nextYear);
+        $result = $this->Rx_Target_month($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
 
         if (isset($result->target) && $result->target > 0) {
             if ($priority == 'true') {
@@ -202,17 +290,17 @@ class User_model extends CI_Model {
                 $html = form_open('User/Prescription_Doctor_List');
             }
             $html .= '<table class="table table-bordered">
-                <tr>
-                    <th>Doctor List</th>
-                    <th>Winability</th>
-                    <th>Dependency</th>
-                    <th>BI Rx Share</th>
-                    <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
-                    <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
-                    <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
-                    <th>Planned for Jan</th>
-                    <th>Actual</th>
-                </tr>';
+    <tr>
+        <th>Doctor List</th>
+        <th>Winability</th>
+        <th>Dependency</th>
+        <th>BI Rx Share</th>
+        <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
+        <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
+        <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
+        <th>Planned for Jan</th>
+        <th>Actual</th>
+    </tr>';
 
             $month = date('n', strtotime('-1 month'));
             $lastMonthRx = $this->countLastMonthRx($month);
@@ -247,26 +335,26 @@ class User_model extends CI_Model {
 
                     if ($priority == 'true') {
                         $html .= '<tr>
-                    <td><a ><input type="checkbox" name="priority[]" value="' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
+        <td><a ><input type="checkbox" name="priority[]" value="' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
                     } else {
                         $html .= '<tr>
-                    <td><a >' . $doctor->Account_Name . '</a>';
+        <td><a >' . $doctor->Account_Name . '</a>';
                     }
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>
-                <td>' . $winability . '</td>
-                <td><a class="control-item">' . $dependancy . '%</a></td>
-                <td><a class="control-item">' . $BI_Share . '</a></td>
-                <td><a class="control-item">' . $month1rx . '</a></td>
-                <td><a class="control-item">' . $month2rx . '</a></td>
-                <td> <a class="control-item">' . $month3rx . '</a></td>';
+        <td>' . $winability . '</td>
+        <td><a class="control-item">' . $dependancy . '%</a></td>
+        <td><a class="control-item">' . $BI_Share . '</a></td>
+        <td><a class="control-item">' . $month1rx . '</a></td>
+        <td><a class="control-item">' . $month2rx . '</a></td>
+        <td> <a class="control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td> <a class = "control-item"></a></td>
-                </tr>';
+        <td> <a class = "control-item"></a></td>
+    </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td> <input name="value[]" type="text" value="' . $actual_rx . '"/></td>
-                </tr>';
+    <td> <input name="value[]" type="text" value="' . $actual_rx . '"/></td>
+</tr>';
                     }
                 }
             }
@@ -332,7 +420,7 @@ class User_model extends CI_Model {
     function PriorityIds() {
         $doctors = array();
         $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` WHERE `Delta` >= 20
-                AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  AND month = '$this->nextMonth'          ";
+        AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  AND month = '$this->nextMonth'          ";
         $query = $this->db->query($sql);
         $result = $query->result();
         if (!empty($result)) {
@@ -379,17 +467,19 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+
     function Planned_Rx_Count() {
         $this->db->select('SUM(`Planned_Rx`) AS Planned_Rx');
         $this->db->from('Rx_Planning');
-        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Product_Id' => $this->Product_Id));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth));
         $query = $this->db->get();
         return $query->row_array();
     }
+
     function Actual_Rx_Count() {
         $this->db->select('SUM(`Actual_Rx`) AS Actual_Rx');
         $this->db->from('Rx_Planning');
-        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Product_Id' => $this->Product_Id));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth));
         $query = $this->db->get();
         return $query->row_array();
     }

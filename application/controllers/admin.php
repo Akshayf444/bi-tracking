@@ -287,6 +287,16 @@ redirect('admin/update_emp', 'refresh');
         $data = array('title' => 'Login', 'content' => 'admin/doctor_view', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
+    public function Profile_Completion() {
+
+        $data = array('title' => 'Profile_Completion', 'content' => 'admin/Profile_Completion', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+    }
+    public function Rx_Planning() {
+
+        $data = array('title' => 'Rx_Planning', 'content' => 'admin/Rx_Planning', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+    }
 
     public function is_logged_in() {
         if (!is_null($this->ADMIN_ID) && $this->ADMIN_ID != '') {

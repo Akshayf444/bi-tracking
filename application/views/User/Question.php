@@ -36,43 +36,43 @@
         }
     }
 </script>
-<link rel="stylesheet" href="http://jqueryvalidation.org/files/demo/site-demos.css">
+<script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 
 <?php
-$attributes = array('id' => 'activate', 'name' => 'myform', 'onsubmit' => 'return validateform()');
+$attributes = array('id' => 'form1', 'name' => 'myform', 'onsubmit' => 'return validateform()');
 echo validation_errors();
 echo form_open('User/Profiling', $attributes);
 ?>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Profiling</li>
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Profiling</div>
+        <div class="panel-body">
+            <div class="form-group">
+                Select Doctor
+                <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
+                    <option value="">Please Select</option>
+                    <?php echo $doctorList; ?>        
+                </select> 
+            </div>
 
-        <li class="table-view-cell">
-            Select Doctor
-            <select class="form-control" name="Doctor_id" id="Doctor_id" title="Please select something!">
-                <option value="Please Select">Please Select</option>
-                <?php echo $doctorList; ?>        
-            </select> 
-        </li>
-        <?php
-        if (isset($questionList) && !empty($questionList)) {
-            foreach ($questionList as $Question) {
-                ?>
-                <li class="table-view-cell">
-                    <?php echo $Question->Question ?>
-                    <?php echo $Question->name ?>
-                </li>
-                <?php
+            <?php
+            if (isset($questionList) && !empty($questionList)) {
+                foreach ($questionList as $Question) {
+                    ?>
+                    <div class="form-group">
+                        <?php echo $Question->Question ?>
+                        <?php echo $Question->name ?>
+                    </div>
+                    <?php
+                }
             }
-        }
-        ?>
-
-        <li class="table-view-cell">
-            <br/>
-            <button type="submit" class="btn btn-positive">Submit</button>
-            <br/>
-        </li>
-    </ul>
+            ?>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" name="Save" class="btn btn-positive">Submit</button>
+        </div>
+    </div>
 </div>
 </form>
 <script>
@@ -103,5 +103,74 @@ echo form_open('User/Profiling', $attributes);
     });
 
 
+
+</script>
+<script>
+    $('document').ready(function () {
+        $('#form1').formValidation({
+            message: 'This value is not valid',
+            icon: {
+            },
+            fields: {
+                Win_Q1: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Win_Q2: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Win_Q3: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Patient_Seen: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Patient_Rxbed_In_Week: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Doctor_id: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Patient_Rxbed_In_Month: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                No_of_Beds: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                }
+
+            }
+        });
+    });
 
 </script>
