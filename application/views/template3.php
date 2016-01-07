@@ -103,17 +103,10 @@
                     <!-- Sidebar Menu -->
                     <ul class="sidebar-menu">
                         <!--                        <li class="header">HEADER</li>-->
-
-                        <li class="treeview">
-                            <a href="#"><span>Contact</span> <i class="fa fa-angle-left pull-right"></i></a>
-                            <ul class="treeview-menu">
-                                <li><a href="<?php echo site_url() ?>/Contact/view">View</a></li>
-                                <li><a href="<?php echo site_url() ?>/Contact/Add_contact">Add</a></li>
-                                <!--                                <li><a href="#">Update</a></li>-->
-                            </ul>
-                        </li>
-                        <li><a href="<?php echo site_url(); ?>/Contact/group"><span>Groups</span></a></li>
-                        <li><a href="<?php echo site_url(); ?>/Contact/Send_sms"><span>Sms</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/dashboard'); ?>"><span>Employee Master</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/doc_view'); ?>"><span>Doctor Master</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/view_Activity'); ?>"><span>Activity</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/profile_view'); ?>"><span>Control Access</span></a></li>
                     </ul><!-- /.sidebar-menu -->
                 </section>
                 <!-- /.sidebar -->
