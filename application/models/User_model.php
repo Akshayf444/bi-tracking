@@ -139,6 +139,11 @@ class User_model extends CI_Model {
         } else {
             $Tab5Location = '#';
         }
+        if ($this->Product_Id == 1) {
+            $vials = "Vials";
+        } else {
+            $vials = "Rx";
+        }
 
         if ($doctorCount["DoctorCount"] > 0) {
             $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
@@ -170,8 +175,8 @@ class User_model extends CI_Model {
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
                         <div style="margin-top: 17px;" class="">
-                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab2Location . ';">
-                            No Of New Rx Targeted For ' . date('M') . "&nbsp" . date('Y') . '
+                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;color: #333333;" onclick="window.location = ' . $Tab2Location . ';">
+                            No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
                         </a>
                                 <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
                          </div>

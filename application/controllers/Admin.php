@@ -8,6 +8,7 @@ class Admin extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
+         $this->load->library('Csvimport');
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
@@ -33,14 +34,21 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-//             if ($this->is_logged_in()) {
+         
+        
 
-        $data['show'] = $this->admin_model->emp_view();
-        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+
+
+$data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Admin', 'view_data' => 'blank');
         $this->load->view('template3', $data);
 //        }
     }
-
+ public function emp_view(){
+      $data['show'] = $this->admin_model->emp_view();
+        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    
+ }
     public function logout() {
         redirect('admin/index', 'refresh');
     }
@@ -137,11 +145,16 @@ class Admin extends CI_Controller {
                 'Status' => '1',
             );
             $this->admin_model->update_emp($empid, $data);
-//      redirect('admin/dashboard', 'refresh');
+            redirect('admin/update_emp', 'refresh');
         }
 
+
+        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
+        $this->load->view('template3', $data);
+
 //        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
-        $this->load->view('admin/update_emp', $data);
+//        $this->load->view('admin/update_emp', $data);
+
     }
 
     public function emp_del() {
@@ -237,7 +250,7 @@ class Admin extends CI_Controller {
                 'updated_at' => date('Y-m-d'),
             );
             $this->admin_model->update_act($actid, $data);
-            redirect('admin/view_activity', 'refresh');
+            redirect('admin/update_act', 'refresh');
         }
 
         $data = array('title' => 'Login', 'content' => 'admin/update_activity', 'page_title' => 'Update Activity', 'view_data' => $data);
@@ -354,6 +367,93 @@ class Admin extends CI_Controller {
             $this->load->view('template3', $data);
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+        }
+    }
+
+    public function emp_csv() {
+        $data = array('title' => 'View_Employee', 'content' => 'admin/add_emp', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+
+        if ($this->input->post()) {
+            $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+                $data = array(
+                    'VEEVA_Employee_ID' => $row['0'],
+                    'Local_Employee_ID' => $row['1'],
+                    'First_Name' => $row['2'],
+                    'Middle_Name' => $row['3'],
+                    'Last_Name' => $row['4'],
+                    'Full_Name' => $row['5'],
+                    'Territory' => $row['6'],
+                    'Gender' => $row['7'],
+                    'Mobile' => $row['8'],
+                    'Email_ID' => $row['9'],
+                    'Username' => $row['10'],
+                    'Password' => $row['11'],
+                    'Last_Login' => $row['12'],
+                    'Address_1' => $row['13'],
+                    'Address_2' => $row['14'],
+                    'City' => $row['15'],
+                    'State' => $row['16'],
+                    'Division' => $row['17'],
+                    'Product' => $row['18'],
+                    'Zone' => $row['19'],
+                    'Region' => $row['20'],
+                    'Profile' => $row['21'],
+                    'Designation' => $row['22'],
+                    'Created_By' => $row['23'],
+                    'created_date' => date('Y-m-d'),
+                    'Modified_By' => $row['25'],
+                    'Modified_Date' => $row['26'],
+                    'Date_of_Joining' => $row['27'],
+                    'DOB' => $row['28'],
+                    'Reporting_To' => $row['29'],
+                    'Reporting_VEEVA_ID' => $row['30'],
+                    'Reporting_Local_ID' => $row['31'],
+                    'Status' => $row['32'],
+                );
+                //insert csv data into mysql table
+                $sql = $this->admin_model->insert_csv($data);
+            }
+        }
+    }
+
+    public function doc_csv() {
+        $data = array('title' => 'Doctor_view', 'content' => 'admin/add_emp', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+
+        if ($this->input->post()) {
+            $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+                $data = array(
+                    'Account_ID' => $row['0'],
+                    'Salutation' => $row['1'],
+                    'First_Name' => $row['2'],
+                    'Last_Name' => $row['3'],
+                    'Account_Name' => $row['4'],
+                    'Specialty' => $row['5'],
+                    'Specialty_2' => $row['6'],
+                    'Specialty_3' => $row['7'],
+                    'Specialty_4' => $row['8'],
+                    'Individual_Type' => $row['9'],
+                    'Email' => $row['10'],
+                    'Gender' => $row['11'],
+                    'Mobile' => $row['12'],
+                    'Status' => $row['13'],
+                    'Created_Date' => $row['14'],
+                    'Created_By' => $row['15'],
+                    'Modified_Date' => $row['16'],
+                    'Modified_By' => $row['17'],
+                    'City' => $row['18'],
+                    'State' => $row['19'],
+                    'Pin_Code' => $row['20'],
+                    'Address' => $row['21'],
+                    'Designation' => $row['22'],
+                    
+                );
+                //insert csv data into mysql table
+                $sql = $this->admin_model->insert_csv($data);
+            }
         }
     }
 
