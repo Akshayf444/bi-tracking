@@ -34,21 +34,21 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-//             if ($this->is_logged_in()) {
-
-//        $data = array('title' => 'Admin', 'content' => 'admin/add_emp', 'view_data' => 'blank');
-//        $data['show'] = $this->admin_model->emp_view();
-//        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'view_data' => $data);
-        $data = array('title' => 'Admin', 'content' => 'admin/dashboard', 'view_data' => 'blank');
+         
+        
 
 
-//        $data['show'] = $this->admin_model->emp_view();
-//        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
-$data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Employee Master', 'view_data' => $data);
+
+$data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Admin', 'view_data' => 'blank');
         $this->load->view('template3', $data);
 //        }
     }
-
+ public function emp_view(){
+      $data['show'] = $this->admin_model->emp_view();
+        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    
+ }
     public function logout() {
         redirect('admin/index', 'refresh');
     }

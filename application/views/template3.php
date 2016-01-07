@@ -104,7 +104,8 @@
                     <!-- Sidebar Menu -->
                     <ul class="sidebar-menu">
                         <!--                        <li class="header">HEADER</li>-->
-                        <li><a href="<?php echo site_url('Admin/dashboard'); ?>"><span>Employee Master</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/dashboard'); ?>"><span>Dashboard</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/emp_view'); ?>"><span>Employee Master</span></a></li>
                         <li><a href="<?php echo site_url('Admin/doc_view'); ?>"><span>Doctor Master</span></a></li>
                         <li><a href="<?php echo site_url('Admin/view_Activity'); ?>"><span>Activity</span></a></li>
                         <li><a href="<?php echo site_url('Admin/profile_view'); ?>"><span>Control Access</span></a></li>
