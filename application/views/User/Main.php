@@ -75,69 +75,70 @@
     </ul>
 </div>-->
 
-<div id="owl-demo2" class="owl-carousel owl-theme" style="text-align: center">
-    <div class="item card" > 
-        <ul class="table-view" style="background-color: #4CD964">
-            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;"><?php 
-            if($this->Product_Id == '1')
-            {
-                echo "Actilize";
-            }elseif($this->Product_Id == '2')
-            {
-                echo "Pradaxa";
-            }
-            elseif($this->Product_Id == '3')
-            {
-                echo "Metalyse";
-            }
-            elseif($this->Product_Id == '4')
-            {
-                echo "Trajenta Family";
-            }
-            elseif($this->Product_Id == '5')
-            {
-                echo "Jardiance";
-            }?></li>
-            <li class="table-view-cell media">
-                <table class="slider-table table" style="margin-left: -87px;">
-                    <tr>
+<div class="item card" style="text-align: center" > 
 
-                        <th  style="text-align:right"><?php 
-            if($this->Product_Id == '1')
-            {
-                echo "Actilize";
-            }elseif($this->Product_Id == '2')
-            {
-                echo "Pradaxa";
-            }
-            elseif($this->Product_Id == '3')
-            {
-                echo "Metalyse";
-            }
-            elseif($this->Product_Id == '4')
-            {
-                echo "Trajenta Family";
-            }
-            elseif($this->Product_Id == '5')
-            {
-                echo "Jardiance";
-            }?></th>
-                        <th  style="text-align:center">Sep</th>
-                        <th  style="text-align:center">Oct</th>
-                        <th  style="text-align:center">Nov</th>
-                        <th>Dec</th>
-                    </tr>
 
-                    <tr>
-                        <th  style="text-align:right">Users</th>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:right">Prescription</th>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </div>
+    <?php
+    if ($this->Product_Id == '1') {
+        echo "<ul class='table-view' style='background-color: #4CD964'>";
+    } elseif ($this->Product_Id == '2') {
+        echo "<ul class='table-view' style='background-color: #4CD964'>";
+    } elseif ($this->Product_Id == '3') {
+        echo "<ul class='table-view' style='background-color: #4CD964'>";
+    } elseif ($this->Product_Id == '4') {
+        echo "<ul class='table-view' style='background-color:  #87CEEB'>";
+    } elseif ($this->Product_Id == '5') {
+        echo "<ul class='table-view' style='background-color: #9999FF;'>";
+    }
+    ?>
+
+
+
+    <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+    if ($this->Product_Id == '1') {
+        echo "Actilize";
+    } elseif ($this->Product_Id == '2') {
+        echo "Pradaxa";
+    } elseif ($this->Product_Id == '3') {
+        echo "Metalyse";
+    } elseif ($this->Product_Id == '4') {
+        echo "Trajenta Family";
+    } elseif ($this->Product_Id == '5') {
+        echo "Jardiance";
+    }
+    ?></li>
+    <li class="table-view-cell media">
+        <table class="slider-table table" style="margin-left: -87px;">
+            <tr>
+
+                <th  style="text-align:right"><?php
+        if ($this->Product_Id == '1') {
+            echo "Actilize";
+        } elseif ($this->Product_Id == '2') {
+            echo "Pradaxa";
+        } elseif ($this->Product_Id == '3') {
+            echo "Metalyse";
+        } elseif ($this->Product_Id == '4') {
+            echo "Trajenta Family";
+        } elseif ($this->Product_Id == '5') {
+            echo "Jardiance";
+        }
+        ?></th>
+                <th  style="text-align:center">Sep</th>
+                <th  style="text-align:center">Oct</th>
+                <th  style="text-align:center">Nov</th>
+                <th>Dec</th>
+            </tr>
+
+            <tr>
+                <th  style="text-align:right">Users</th>
+            </tr>
+            <tr>
+                <th  style="text-align:right">Prescription</th>
+            </tr>
+        </table>
+    </li>
+</ul>
 </div>
 <style>
     .progress{
@@ -195,109 +196,110 @@
 </ul>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
-                $(document).ready(function () {
-                    $("#owl-demo").owlCarousel({
-                        navigation: true, // Show next and prev buttons
-                        slideSpeed: 300,
-                        paginationSpeed: 400,
-                        singleItem: true,
-                        navigation : false
+                    $(document).ready(function () {
+                        $("#owl-demo").owlCarousel({
+                            navigation: true, // Show next and prev buttons
+                            slideSpeed: 300,
+                            paginationSpeed: 400,
+                            singleItem: true,
+                            navigation : false
+                        });
+                        $("#owl-demo2").owlCarousel({
+                            navigation: true, // Show next and prev buttons
+                            slideSpeed: 300,
+                            paginationSpeed: 400,
+                            singleItem: true,
+                            navigation : false
+                        });
                     });
-                    $("#owl-demo2").owlCarousel({
-                        navigation: true, // Show next and prev buttons
-                        slideSpeed: 300,
-                        paginationSpeed: 400,
-                        singleItem: true,
-                        navigation : false
-                    });
-                });
 
 
-                $(document).ready(function () {
-                    var initval = parseInt($('#profile').val(), 10);
-                    //alert(initval);
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#1').val(initval).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = parseInt($('#profile').val(), 10);
+                        //alert(initval);
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#1').val(initval).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#2').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#2').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#3').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#3').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#4').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#4').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                                
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#5').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#5').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#kp1').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#kp1').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#kp2').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#kp2').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
 
 
 </script>
