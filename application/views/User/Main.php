@@ -75,31 +75,70 @@
     </ul>
 </div>-->
 
-<div id="owl-demo2" class="owl-carousel owl-theme" style="text-align: center">
-    <div class="item card" > 
-        <ul class="table-view" style="background-color: #4CD964">
-            <li class="table-view-cell table-view-divider" style="color: #4CD964;font-weight: 700;">Product 1</li>
-            <li class="table-view-cell media">
-                <table class="slider-table table" style="margin-left: -87px;">
-                    <tr>
+<div class="item card" style="text-align: center" > 
 
-                        <th  style="text-align:right">Product 1</th>
-                        <th  style="text-align:center">Sep</th>
-                        <th  style="text-align:center">Oct</th>
-                        <th  style="text-align:center">Nov</th>
-                        <th>Dec</th>
-                    </tr>
 
-                    <tr>
-                        <th  style="text-align:right">Users</th>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:right">Prescription</th>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </div>
+    <?php
+    if ($this->Product_Id == '1') {
+        echo "<ul class='table-view' style='background-color: #79B61C;'>";
+    } elseif ($this->Product_Id == '2') {
+        echo "<ul class='table-view' style='background-color: #4E88BC;'>";
+    } elseif ($this->Product_Id == '3') {
+        echo "<ul class='table-view' style='background-color: #EFC083;'>";
+    } elseif ($this->Product_Id == '4') {
+        echo "<ul class='table-view' style='background-color:  #87CEEB'>";
+    } elseif ($this->Product_Id == '5') {
+        echo "<ul class='table-view' style='background-color: #9999FF;'>";
+    }
+    ?>
+
+
+
+    <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+    if ($this->Product_Id == '1') {
+        echo "Actilize";
+    } elseif ($this->Product_Id == '2') {
+        echo "Pradaxa";
+    } elseif ($this->Product_Id == '3') {
+        echo "Metalyse";
+    } elseif ($this->Product_Id == '4') {
+        echo "Trajenta Family";
+    } elseif ($this->Product_Id == '5') {
+        echo "Jardiance";
+    }
+    ?></li>
+    <li class="table-view-cell media">
+        <table class="slider-table table" style="margin-left: -87px;">
+            <tr>
+
+                <th  style="text-align:right"><?php
+        if ($this->Product_Id == '1') {
+            echo "Actilize";
+        } elseif ($this->Product_Id == '2') {
+            echo "Pradaxa";
+        } elseif ($this->Product_Id == '3') {
+            echo "Metalyse";
+        } elseif ($this->Product_Id == '4') {
+            echo "Trajenta Family";
+        } elseif ($this->Product_Id == '5') {
+            echo "Jardiance";
+        }
+        ?></th>
+                <th  style="text-align:center">Sep</th>
+                <th  style="text-align:center">Oct</th>
+                <th  style="text-align:center">Nov</th>
+                <th>Dec</th>
+            </tr>
+
+            <tr>
+                <th  style="text-align:right">Users</th>
+            </tr>
+            <tr>
+                <th  style="text-align:right">Prescription</th>
+            </tr>
+        </table>
+    </li>
+</ul>
 </div>
 <style>
     .progress{
@@ -127,9 +166,9 @@
     </li>
     <li class="table-view-cell achievement">
 
-        <div class="col-lg-4">
+        <div class="col-lg-1">
             <select class="form-control">
-                <option>Jan 2015</option>
+                <option>Jan 2016</option>
                 <option>Cycle 1</option>
             </select>
         </div>
@@ -138,6 +177,7 @@
 
             <div class="demo" >        
                 <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
                 <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Rx Actual / Rx Planned</span>
             </div>
@@ -147,6 +187,7 @@
 
             <div class="demo" >       
                 <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
                 <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Activity Done / Planned</span>
             </div>
@@ -155,109 +196,110 @@
 </ul>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
-                $(document).ready(function () {
-                    $("#owl-demo").owlCarousel({
-                        navigation: true, // Show next and prev buttons
-                        slideSpeed: 300,
-                        paginationSpeed: 400,
-                        singleItem: true,
-                        navigation : false
+                    $(document).ready(function () {
+                        $("#owl-demo").owlCarousel({
+                            navigation: true, // Show next and prev buttons
+                            slideSpeed: 300,
+                            paginationSpeed: 400,
+                            singleItem: true,
+                            navigation : false
+                        });
+                        $("#owl-demo2").owlCarousel({
+                            navigation: true, // Show next and prev buttons
+                            slideSpeed: 300,
+                            paginationSpeed: 400,
+                            singleItem: true,
+                            navigation : false
+                        });
                     });
-                    $("#owl-demo2").owlCarousel({
-                        navigation: true, // Show next and prev buttons
-                        slideSpeed: 300,
-                        paginationSpeed: 400,
-                        singleItem: true,
-                        navigation : false
-                    });
-                });
 
 
-                $(document).ready(function () {
-                    var initval = parseInt($('#profile').val(), 10);
-                    //alert(initval);
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#1').val(initval).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = parseInt($('#profile').val(), 10);
+                        //alert(initval);
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#1').val(initval).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#2').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#2').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#3').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#3').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#4').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#4').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                                
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#5').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#5').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#kp1').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#kp1').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
-                $(document).ready(function () {
-                    var initval = 20;
-                    $({value: 0}).animate({value: initval}, {
-                        duration: 1000,
-                        easing: 'swing',
-                        step: function ()
-                        {
-                            $('#kp2').val(this.value).trigger('change');
-                            $('#preval').val(initval);
-                        }
+                    $(document).ready(function () {
+                        var initval = 20;
+                        $({value: 0}).animate({value: initval}, {
+                            duration: 1000,
+                            easing: 'swing',
+                            step: function ()
+                            {
+                                $('#kp2').val(this.value).trigger('change');
+                                $('#preval').val(initval);
+                            }
+                        });
                     });
-                });
 
 
 </script>

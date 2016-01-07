@@ -379,5 +379,9 @@ class User extends MY_Controller {
 
         echo $html;
     }
+    public function Profiling_thnx() {
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Profiling_thnx', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+    }
 
 }

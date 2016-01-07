@@ -30,7 +30,6 @@ class User_model extends CI_Model {
     public function Set_Target_update2($data) {
         $this->db->where(array('VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID')));
         return $this->db->update('Rx_Target', $data);
-        
     }
 
     public function Set_Target_by_id($id, $pid, $month) {
@@ -140,6 +139,11 @@ class User_model extends CI_Model {
         } else {
             $Tab5Location = '#';
         }
+        if ($this->Product_Id == 1) {
+            $vials = "Vials";
+        } else {
+            $vials = "Rx";
+        }
 
         if ($doctorCount["DoctorCount"] > 0) {
             $tab1Calc = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
@@ -171,8 +175,8 @@ class User_model extends CI_Model {
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
                         <div style="margin-top: 17px;" class="">
-                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab2Location . ';">
-                            No Of New Rx Targeted For ' . date('M') . "&nbsp" . date('Y') . '
+                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;color: #333333;" onclick="window.location = ' . $Tab2Location . ';">
+                            No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
                         </a>
                                 <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
                          </div>
@@ -294,7 +298,7 @@ class User_model extends CI_Model {
             if ($type == 'Planning') {
                 
             } elseif ($type == 'Actual') {
-                $actual="Actual";
+                $actual = "Actual";
             }
             $html .= '<table class="table table-bordered">
     <tr>
@@ -410,7 +414,17 @@ class User_model extends CI_Model {
         $winabilty = '';
         if (!empty($result)) {
             if ($this->Product_Id == 1) {
-                
+                if ($result->Win_Q1 == 'No') {
+                    $winabilty = '<a class="control-item badge badge-negative">L</a>';
+                } elseif ($result->Win_Q1 == 'Yes') {
+                    if ($result->Win_Q2 == 'No') {
+                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
+                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
+                        $winabilty = '<a class="control-item badge badge-positive">H</a>';
+                    }
+                }
             } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5) {
                 if ($result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
                     $winabilty = '<a class="control-item badge badge-positive">H</a>';
