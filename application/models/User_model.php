@@ -100,9 +100,9 @@ class User_model extends CI_Model {
         $this->load->model('Doctor_Model');
         $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID, $this->Individual_Type);
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
-        $rxlabel =  $this->Product_Id == 1 ? 'Vials' : 'Rx';
+        $rxlabel = $this->Product_Id == 1 ? 'Vials' : 'Rx';
         $hospital = $this->Product_Id == 1 ? 'Hospital' : 'Doctor';
-        
+
         if (isset($tabs['Tab1']) && $tabs['Tab1'] == 1) {
             $Tab1Location = "'" . site_url('User/Profiling') . "'";
         } elseif (isset($tabs['Tab1']) && $tabs['Tab1'] == 0) {
@@ -156,7 +156,7 @@ class User_model extends CI_Model {
             $data['Planned'] = $this->Planned_Rx_Count();
             $data['Actual'] = $this->Actual_Rx_Count();
         }
-        
+
         $target = isset($data['show4']['target']) ? $data['show4']['target'] : 0;
         $Planned = isset($data['Planned']['Planned_Rx']) ? $data['Planned']['Planned_Rx'] : 0;
         $Actual = isset($data['Actual']['Actual_Rx']) ? $data['Actual']['Actual_Rx'] : 0;
@@ -164,7 +164,7 @@ class User_model extends CI_Model {
         $HTML = '<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >'.$hospital.' Profiling </a>
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="demo pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
@@ -212,7 +212,7 @@ class User_model extends CI_Model {
                     <ul class="table-view">
                         <li class="table-view-cell" style="    margin-bottom: -32px;">
                             <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
-                                Reporting Of '.$vials.'
+                                Reporting Of ' . $vials . '
                             </a>
                             <div class="demo pull-right">
                                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
@@ -298,29 +298,33 @@ class User_model extends CI_Model {
             } elseif ($type == 'Actual') {
                 $html = form_open('User/Prescription_Doctor_List');
             }
-            if ($type == 'Planning') {
-                
-            } elseif ($type == 'Actual') {
-                $actual = "Actual";
+
+
+            if ($this->Product_Id == '1') {
+                $vials = "Vials";
+            } else {
+                $vials = "Rx";
             }
-            
-                    if ($this->Product_Id == '1') {
-                        $vials= "Vials";
-                    } else {
-                        $vials= "Rx";
-                    }
+
             $html .= '<table class="table table-bordered">
     <tr>
         <th>Doctor List</th>
         <th>Winability</th>
         <th>Dependency</th>
         <th>BI Market Share</th>
-        <th>' . date('M', strtotime('-3 month')) . ' '.$vials.'</th>
-        <th>' . date('M', strtotime('-2 month')) . ' '.$vials.'</th>
-        <th>' . date('M', strtotime('-1 month')) . ' '.$vials.'</th>
-        <th>New '.$vials.' Targeted For ' . date('M', strtotime($this - nextMonth)) . ' </th>
-        <th>' . $actual . '</th>
-    </tr>';
+
+        <th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
+        <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
+        <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
+        <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
+            if ($type == 'Planning') {
+                $html .= '</tr>';
+            } elseif ($type == 'Actual') {
+                $html .= '<td>Actual</td></tr>';
+            } else {
+                $html .= '</tr>';
+            }
+
 
             $month = date('n', strtotime('-1 month'));
             $lastMonthRx = $this->countLastMonthRx($month);
@@ -355,26 +359,26 @@ class User_model extends CI_Model {
 
                     if ($priority == 'true') {
                         $html .= '<tr>
-        <td><a ><input type="checkbox" name="priority[]" value="' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
+                <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
                     } else {
                         $html .= '<tr>
-        <td><a >' . $doctor->Account_Name . '</a>';
+                <td><a >' . $doctor->Account_Name . '</a>';
                     }
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>
-        <td>' . $winability . '</td>
-        <td><a class="control-item">' . $dependancy . '%</a></td>
-        <td><a class="control-item">' . $BI_Share . '</a></td>
-        <td><a class="control-item">' . $month1rx . '</a></td>
-        <td><a class="control-item">' . $month2rx . '</a></td>
-        <td> <a class="control-item">' . $month3rx . '</a></td>';
+                <td>' . $winability . '</td>
+                <td><a class = "control-item">' . $dependancy . '%</a></td>
+                <td><a class = "control-item">' . $BI_Share . '</a></td>
+                <td><a class = "control-item">' . $month1rx . '</a></td>
+                <td><a class = "control-item">' . $month2rx . '</a></td>
+                <td> <a class = "control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
-                        $html .= '<td> <input name="value[]" class="val" type="text" value="' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-        <td  style="display:none"> <a class = "control-item" ></a></td>
-    </tr>';
+                        $html .= '<td> <input name = "value[]" class = "val" type = "text" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                <td style = "display:none"> <a class = "control-item" ></a></td>
+                </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-    <td> <input name="value[]"  type="text" value="' . $actual_rx . '"/></td>
-</tr>';
+                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
+                </tr>';
                     }
                 }
             }
@@ -424,23 +428,23 @@ class User_model extends CI_Model {
         if (!empty($result)) {
             if ($this->Product_Id == 1) {
                 if ($result->Win_Q1 == 'No') {
-                    $winabilty = '<a class="control-item badge badge-negative">L</a>';
+                    $winabilty = '<a class = "control-item badge badge-negative">L</a>';
                 } elseif ($result->Win_Q1 == 'Yes') {
                     if ($result->Win_Q2 == 'No') {
-                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                        $winabilty = '<a class = "control-item badge badge-primary">M</a>';
                     } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
-                        $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                        $winabilty = '<a class = "control-item badge badge-primary">M</a>';
                     } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
-                        $winabilty = '<a class="control-item badge badge-positive">H</a>';
+                        $winabilty = '<a class = "control-item badge badge-positive">H</a>';
                     }
                 }
             } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5) {
                 if ($result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
-                    $winabilty = '<a class="control-item badge badge-positive">H</a>';
+                    $winabilty = '<a class = "control-item badge badge-positive">H</a>';
                 } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
-                    $winabilty = '<a class="control-item badge badge-primary">M</a>';
+                    $winabilty = '<a class = "control-item badge badge-primary">M</a>';
                 } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
-                    $winabilty = '<a class="control-item badge badge-negative">L</a>';
+                    $winabilty = '<a class = "control-item badge badge-negative">L</a>';
                 }
             }
         }
@@ -527,7 +531,7 @@ class User_model extends CI_Model {
         $html = '';
         if (!empty($result)) {
             foreach ($result as $item) {
-                $html .= '<p><input name="activity[]" value="' . $item->Activity_id . '" type="checkbox" />   ' . $item->Activity_Name . '</p>';
+                $html .= '<p><input name = "activity[]" value = "' . $item->Activity_id . '" type = "checkbox" /> ' . $item->Activity_Name . '</p>';
             }
         }
         return $html;

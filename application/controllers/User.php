@@ -90,7 +90,6 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-
         $data['doctorList'] = $this->User_model->getActivityDoctor();
         $data['ActiviyList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
@@ -111,7 +110,7 @@ class User extends MY_Controller {
             }
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
-        //$this->load->view('template2', $data);
+        $this->load->view('template2', $data);
     }
 
     public function Planning() {
@@ -140,7 +139,7 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                         );
 
-                        //$this->User_model->Save_Planning($doc);
+                        $this->User_model->Save_Planning($doc);
                         $month = date('n', strtotime('-1 month'));
                         $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
