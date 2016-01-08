@@ -45,7 +45,7 @@
 <?php echo form_open('User/ActivityReporting'); ?>
 <div class="card">
     <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Activity Planning</li>
+        <li class="table-view-cell table-view-divider">Activity Reporting</li>
 <!--        <li class="table-view-cell">
             <b>Select Doctor</b>
 
@@ -61,7 +61,7 @@
         <li class="table-view-cell">
             <table class="table table-bordered">
                 <tr>
-                    <th>Doctor Details</th>
+                    <th>Hospital Details</th>
                     <th>Activity</th>
                 </tr>
                 <tr>
