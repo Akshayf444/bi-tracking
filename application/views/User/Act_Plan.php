@@ -49,7 +49,15 @@
         <div class="panel-body">            
             <table class="table table-bordered">
                 <tr>
-                    <td>Doctor Name</td>
+                    <td><?PHP if($this->Product_Id == '1')
+                    {
+                        echo "Hospital";
+                    }
+                    else
+                    {
+                        echo "Doctor";
+                    }
+                    ?> Name</td>
                     <td>Activity</td>
                 </tr>
 
