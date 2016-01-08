@@ -61,7 +61,15 @@
         <li class="table-view-cell">
             <table class="table table-bordered">
                 <tr>
-                    <th>Hospital Details</th>
+                    <th><?PHP if($this->Product_Id == '1')
+                    {
+                        echo "Hospital";
+                    }
+                    else
+                    {
+                        echo "Doctor";
+                    }
+                    ?> Details</th>
                     <th>Activity</th>
                 </tr>
                 <tr>
