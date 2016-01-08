@@ -38,6 +38,21 @@ class User extends MY_Controller {
             $check = $this->User_model->authentication($username, $password);
             if (empty($check)) {
                 $data['message'] = ' Username/password Incorrect';
+                $emp = $this->User_model->employee_id($username);
+                $add = array(
+                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                    'password' => $password,
+                    'created_at' => date('Y-m-d H:i:s'),
+                );
+                $this->User_model->password_save($add);
+                $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
+                if ($count['cnt'] > 5) {
+                    $data1 = array(
+                        'Status' => 'locked',
+                    );
+                    $this->User_model->update_status($username, $data1);
+                    $data['message'] = 'Your Account Has Been Locked';
+                }
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
                 $this->load->view('template1', $data);
             } else {
@@ -56,7 +71,11 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status'])) {
                     redirect('User/password', 'refresh');
                 } else {
-                    redirect('User/dashboard', 'refresh');
+                    if ($check_password['Designation'] == 'ASM') {
+                        redirect('ASM/dashboard', 'refresh');
+                    } else {
+                        redirect('User/dashboard', 'refresh');
+                    }
                 }
             }
         }
@@ -85,6 +104,26 @@ class User extends MY_Controller {
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
+    }
+
+    public function ASM_dashboard() {
+        if ($this->is_logged_in()) {
+
+            $data = array('title' => 'Main', 'content' => 'User/ASM_dashboard', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
+    }
+
+    public function ASM_hospital_profiling() {
+        if ($this->is_logged_in()) {
+
+            $data = array('title' => 'Main', 'content' => 'User/ASM_hospital_profiling', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -285,7 +324,12 @@ class User extends MY_Controller {
                         'password_status' => 'Active',
                     );
                     $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
-                    redirect('User/dashboard', 'refresh');
+                    $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
+                    if ($check_password['Designation'] == 'ASM') {
+                        redirect('User/ASM_dashboard', 'refresh');
+                    } else {
+                        redirect('User/dashboard', 'refresh');
+                    }
                 }
             }
             $data = array('title' => 'Report', 'content' => 'User/password', 'view_data' => 'blank');
