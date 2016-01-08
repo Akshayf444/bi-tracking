@@ -91,6 +91,7 @@ class User extends MY_Controller {
 
     public function ActivityPlanning() {
         $data['doctorList'] = $this->User_model->getActivityDoctor();
+        var_dump($data['doctorList']);
         $data['ActiviyList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
             foreach ($data['ActiviyList'] as $Activity) {
@@ -139,14 +140,14 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                         );
 
-                        //$this->User_model->Save_Planning($doc);
+                        $this->User_model->Save_Planning($doc);
                         $month = date('n', strtotime('-1 month'));
                         $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
                         $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
                         ///var_dump($data2);
-                       // $this->db->insert('Doctor_Priority', $data2);
+                        $this->db->insert('Doctor_Priority', $data2);
                     }
                 }
                 redirect('User/Priority', 'refresh');
@@ -178,7 +179,7 @@ class User extends MY_Controller {
                     }
                 }
             }
-            
+
             $data['Product_Id'] = $this->Product_Id;
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
@@ -381,6 +382,7 @@ class User extends MY_Controller {
 
         echo $html;
     }
+
     public function Profiling_thnx() {
         $data = array('title' => 'Activity Planning', 'content' => 'User/Profiling_thnx', 'view_data' => 'blank');
         $this->load->view('template2', $data);

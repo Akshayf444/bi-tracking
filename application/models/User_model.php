@@ -239,7 +239,7 @@ class User_model extends CI_Model {
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
         $query = $this->db->get();
-        echo $this->db->last_query();
+       //echo $this->db->last_query();
         return $query->result();
     }
 
