@@ -302,13 +302,15 @@ class User_model extends CI_Model {
 
             if ($this->Product_Id == '1') {
                 $vials = "Vials";
+                $hospital = "Hospital";
             } else {
                 $vials = "Rx";
+                $hospital = "Doctor";
             }
 
             $html .= '<table class="table table-bordered">
     <tr>
-        <th>Doctor List</th>
+        <th>' . $hospital . ' List</th>
         <th>Winability</th>
         <th>Dependency</th>
         <th>BI Market Share</th>
