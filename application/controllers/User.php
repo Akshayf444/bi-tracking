@@ -50,7 +50,14 @@ class User extends MY_Controller {
                 $this->session->set_userdata('Reporting_VEEVA_ID', $check['Reporting_VEEVA_ID']);
                 $this->session->set_userdata('Reporting_Local_ID', $check['Reporting_Local_ID']);
                 $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
-                redirect('User/dashboard', 'refresh');
+
+                $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
+
+                if (is_null($check_password['password_status'])) {
+                    redirect('User/password', 'refresh');
+                } else {
+                    redirect('User/dashboard', 'refresh');
+                }
             }
         }
         $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
@@ -145,7 +152,7 @@ class User extends MY_Controller {
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
                         $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
-                        ///var_dump($data2);
+
                         $this->db->insert('Doctor_Priority', $data2);
                     }
                 }
@@ -258,6 +265,26 @@ class User extends MY_Controller {
     public function PlanMenu() {
         $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => 'blank');
         $this->load->view('template2', $data);
+    }
+
+    public function password() {
+        if ($this->is_logged_in()) {
+            if ($this->input->post()) {
+                $password = $this->input->post('password');
+                if (!empty($password)) {
+                    $data = array(
+                        'password' => $password,
+                        'password_status' => 'Active',
+                    );
+                    $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
+                    redirect('User/dashboard', 'refresh');
+                }
+            }
+            $data = array('title' => 'Report', 'content' => 'User/password', 'view_data' => 'blank');
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
     public function view_status() {
