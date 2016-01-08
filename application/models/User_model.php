@@ -547,4 +547,17 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    function password($id, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $id));
+        return $this->db->update('Employee_Master', $data);
+    }
+
+    function password_status($id) {
+        $this->db->select('password_status');
+        $this->db->from('Employee_Master');
+        $this->db->where(array('VEEVA_Employee_ID' => $id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
 }
