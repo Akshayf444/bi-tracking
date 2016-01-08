@@ -95,23 +95,6 @@
 
 
     <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
-    if ($this->Product_Id == '1') {
-        echo "Actilize";
-    } elseif ($this->Product_Id == '2') {
-        echo "Pradaxa";
-    } elseif ($this->Product_Id == '3') {
-        echo "Metalyse";
-    } elseif ($this->Product_Id == '4') {
-        echo "Trajenta Family";
-    } elseif ($this->Product_Id == '5') {
-        echo "Jardiance";
-    }
-    ?></li>
-    <li class="table-view-cell media">
-        <table class="slider-table table" style="margin-left: -87px;">
-            <tr>
-
-                <th  style="text-align:right"><?php
         if ($this->Product_Id == '1') {
             echo "Actilize";
         } elseif ($this->Product_Id == '2') {
@@ -123,7 +106,24 @@
         } elseif ($this->Product_Id == '5') {
             echo "Jardiance";
         }
-        ?></th>
+        ?></li>
+    <li class="table-view-cell media">
+        <table class="slider-table table" style="margin-left: -87px;">
+            <tr>
+
+                <th  style="text-align:right"><?php
+                    if ($this->Product_Id == '1') {
+                        echo "Actilize";
+                    } elseif ($this->Product_Id == '2') {
+                        echo "Pradaxa";
+                    } elseif ($this->Product_Id == '3') {
+                        echo "Metalyse";
+                    } elseif ($this->Product_Id == '4') {
+                        echo "Trajenta Family";
+                    } elseif ($this->Product_Id == '5') {
+                        echo "Jardiance";
+                    }
+                    ?></th>
                 <th  style="text-align:center">Sep</th>
                 <th  style="text-align:center">Oct</th>
                 <th  style="text-align:center">Nov</th>
@@ -134,7 +134,13 @@
                 <th  style="text-align:right">Users</th>
             </tr>
             <tr>
-                <th  style="text-align:right">Prescription</th>
+                <th  style="text-align:right"><?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } elseif ($this->Product_Id == '2') {
+                        echo "Rx";
+                    }
+                    ?></th>
             </tr>
         </table>
     </li>
@@ -179,7 +185,19 @@
                 <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                 <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
-                <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Rx Actual / Rx Planned</span>
+                <span style="margin-left: 41px;position: absolute;margin-top: -30px;"><?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } elseif ($this->Product_Id == '2') {
+                        echo "Rx";
+                    }
+                    ?> Actual / <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } elseif ($this->Product_Id == '2') {
+                        echo "Rx";
+                    }
+                    ?> Planned</span>
             </div>
         </div>
 
@@ -260,7 +278,7 @@
                             {
                                 $('#4').val(this.value).trigger('change');
                                 $('#preval').val(initval);
-                                
+
                             }
                         });
                     });

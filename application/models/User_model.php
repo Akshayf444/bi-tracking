@@ -210,7 +210,7 @@ class User_model extends CI_Model {
                     <ul class="table-view">
                         <li class="table-view-cell" style="    margin-bottom: -32px;">
                             <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
-                                Reporting Of Prescriptions
+                                Reporting Of '.$vials.'
                             </a>
                             <div class="demo pull-right">
                                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
