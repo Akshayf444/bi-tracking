@@ -13,19 +13,19 @@
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
             <span class="pull-left">Total Expected <?php
-                    if ($this->Product_Id == '1') {
-                        echo "Vials";
-                    } else {
-                        echo "Rx";
-                    }
-                    ?> For Jan 2016 : <b><?php echo $show4['target'];?></b></span><br>
+                if ($this->Product_Id == '1') {
+                    echo "Vials";
+                } else {
+                    echo "Rx";
+                }
+                ?> For Jan 2016 : <b><?php echo isset($show4['target']) ? $show4['target'] : 0; ?></b></span><br>
             <span class="pull-left">Balanced <?php
-                    if ($this->Product_Id == '1') {
-                        echo "Vials";
-                    } else {
-                        echo "Rx";
-                    }
-                    ?> To Plan For Jan 2016: <b></b></span>
+                if ($this->Product_Id == '1') {
+                    echo "Vials";
+                } else {
+                    echo "Rx";
+                }
+                ?> To Plan For Jan 2016: <b></b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
@@ -33,12 +33,12 @@
                     <option>Dependency</option>
                     <option>BI Market Share</option>
                     <option>Planned <?php
-                    if ($this->Product_Id == '1') {
-                        echo "Vials";
-                    } else {
-                        echo "Rx";
-                    }
-                    ?> Of Present Month</option>
+                        if ($this->Product_Id == '1') {
+                            echo "Vials";
+                        } else {
+                            echo "Rx";
+                        }
+                        ?> Of Present Month</option>
                 </select>
             </span>
         </li>

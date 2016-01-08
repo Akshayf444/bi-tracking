@@ -139,14 +139,14 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                         );
 
-                        $this->User_model->Save_Planning($doc);
+                        //$this->User_model->Save_Planning($doc);
                         $month = date('n', strtotime('-1 month'));
                         $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
                         $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
                         ///var_dump($data2);
-                        $this->db->insert('Doctor_Priority', $data2);
+                       // $this->db->insert('Doctor_Priority', $data2);
                     }
                 }
                 redirect('User/Priority', 'refresh');
