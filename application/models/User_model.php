@@ -359,7 +359,7 @@ class User_model extends CI_Model {
 
                     if ($priority == 'true') {
                         $html .= '<tr>
-                <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >' . $doctor->Account_Name . '</a>';
+                <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
                     } else {
                         $html .= '<tr>
                 <td><a >' . $doctor->Account_Name . '</a>';

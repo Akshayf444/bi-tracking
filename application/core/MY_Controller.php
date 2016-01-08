@@ -30,7 +30,7 @@ class MY_Controller extends CI_Controller {
         $this->nextMonth = date('n');
         $this->nextYear = date('Y');
         if ($this->Product_Id == 1) {
-            $this->Individual_Type = 'Pharmacist';
+            $this->Individual_Type = 'Hospital';
         } else {
             $this->Individual_Type = 'Doctor';
         }
