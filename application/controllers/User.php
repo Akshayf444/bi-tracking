@@ -173,17 +173,37 @@ class User extends MY_Controller {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
 
             if ($this->input->post()) {
-
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
                 $_POST['Product_id'] = $this->Product_Id;
                 $_POST['created_at'] = date('Y-m-d H:i:s');
+                $_POST['Status'] = 'Draft';
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
-                    if ($this->db->insert('Profiling', $_POST)) {
-                        redirect('User/dashboard', 'refresh');
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $_POST['Product_id'] = 4;
+                        $this->db->insert('Profiling', $_POST);
+                        $_POST['Product_id'] = 6;
+                        $this->db->insert('Profiling', $_POST);
+                        redirect('User/Profiling', 'refresh');
                     } else {
-                        redirect('User/dashboard', 'refresh');
+                        $this->db->insert('Profiling', $_POST);
+                        redirect('User/Profiling', 'refresh');
                     }
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.');
+                } elseif ($check['Status'] == 'Draft') {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $_POST['Product_id'] = 4;
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+
+                        $_POST['Product_id'] = 6;
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+                    } else {
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+                    }
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.');
                 }
             }
 
@@ -212,28 +232,16 @@ class User extends MY_Controller {
                 'Month' => $this->nextMonth,
                 'Year' => $this->nextYear,
                 'created_at' => date('Y-m-d H:i:s'),
-                'status' => 'Active',
+                'status' => 'Draft',
             );
-            $data2 = array(
-                'target' => $values,
-                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
-                'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => $this->nextMonth,
-                'Year' => $this->nextYear,
-                'created_at' => date('Y-m-d H:i:s'),
-                'status' => 'Inactive',
-            );
+
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
-            if (!empty($check)) {
+            if (!empty($check) && $check['Draft']) {
                 $this->User_model->Set_Target_update2($data1);
                 redirect('User/Set_Target', 'refresh');
             } else {
-                if ($this->input->post('save')) {
-                    $this->User_model->Set_Target($data2);
-                    redirect('User/Set_Target', 'refresh');
-                } else {
-                    
-                }
+                $this->User_model->Set_Target($data1);
+                redirect('User/Set_Target', 'refresh');
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -421,6 +429,20 @@ class User extends MY_Controller {
 
         if (!empty($ProfilingDetails)) {
             echo json_encode($ProfilingDetails);
+        } else {
+            echo '404';
+        }
+    }
+
+    public function updateDraftStatus() {
+        $Doctor_Id = $this->input->post('Doctor_Id');
+        $Table_Name = $this->input->post('Table_Name');
+        $data = array('Status' => 'Submitted');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        if ($this->db->update($Table_Name, $data)) {
+            echo 'Success';
+        } else {
+            echo '404';
         }
     }
 
