@@ -68,12 +68,18 @@
             ?>
             <style>
                 .table-view,.panel-body{
-                    background-color: #9999ff;
+                    background-color: #20B2AA;
                 }
             </style>
             <?php
-        }
-        ?>
+        } elseif ($this->session->userdata('Product_Id') == 6) {
+            ?>
+            <style>
+                .table-view,.panel-body{
+                    background-color: #9999ff;
+                }
+            </style>
+        <?php } ?>
     </head>
     <body>
         <header class="bar bar-nav">

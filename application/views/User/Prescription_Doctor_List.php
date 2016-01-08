@@ -12,15 +12,33 @@
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected Rx For Jan 2016 : <b><?php echo $show4['target'];?></b></span><br>
-            <span class="pull-left">Balanced Rx To Plan For Jan 2016: <b></b></span>
+            <span class="pull-left">Total Expected <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> For Jan 2016 : <b><?php echo $show4['target'];?></b></span><br>
+            <span class="pull-left">Balanced <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> To Plan For Jan 2016: <b></b></span>
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
-                    <option>Rx</option>
-                    <option>Priority</option>
                     <option>Winability</option>
                     <option>Dependency</option>
+                    <option>BI Market Share</option>
+                    <option>Planned <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> Of Present Month</option>
                 </select>
             </span>
         </li>

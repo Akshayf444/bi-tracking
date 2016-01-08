@@ -212,7 +212,7 @@ class User_model extends CI_Model {
                     <ul class="table-view">
                         <li class="table-view-cell" style="    margin-bottom: -32px;">
                             <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
-                                Reporting Of Prescriptions
+                                Reporting Of ' . $vials . '
                             </a>
                             <div class="demo pull-right">
                                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
@@ -299,16 +299,24 @@ class User_model extends CI_Model {
                 $html = form_open('User/Prescription_Doctor_List');
             }
 
+
+            if ($this->Product_Id == '1') {
+                $vials = "Vials";
+            } else {
+                $vials = "Rx";
+            }
+
             $html .= '<table class="table table-bordered">
     <tr>
         <th>Doctor List</th>
         <th>Winability</th>
         <th>Dependency</th>
         <th>BI Market Share</th>
-        <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
-        <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
-        <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
-        <th>New Rx Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
+
+        <th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
+        <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
+        <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
+        <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
             if ($type == 'Planning') {
                 $html .= '</tr>';
             } elseif ($type == 'Actual') {

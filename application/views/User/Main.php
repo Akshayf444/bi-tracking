@@ -114,6 +114,7 @@
 
                 <th  style="text-align:right"><?php
                     if ($this->Product_Id == '1') {
+
                         echo "Actilyse";
                     } elseif ($this->Product_Id == '2') {
                         echo "Pradaxa";
@@ -135,7 +136,13 @@
                 <th  style="text-align:right">Users</th>
             </tr>
             <tr>
-                <th  style="text-align:right">Prescription</th>
+                <th  style="text-align:right"><?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?></th>
             </tr>
         </table>
     </li>
@@ -180,7 +187,9 @@
                 <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                 <span style="margin-left: 98px;position: absolute;margin-top: -84px;">20%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
+
                 <span style="margin-left: 41px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+
             </div>
         </div>
 

@@ -2,7 +2,13 @@
     <ul class="table-view">
         <li class="table-view-cell">
             <a class="navigate-right" onclick="window.location = '<?php echo site_url('User/Planning'); ?>';" >
-                Rx Planning 
+                <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> Planning 
             </a>
         </li>
     </ul>

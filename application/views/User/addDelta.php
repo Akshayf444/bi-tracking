@@ -85,7 +85,13 @@
             </tr>-->
             <tr>
                 <td>
-                    Actual Rx
+                    Actual <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?>
                 </td>
                 <td><?php
                     foreach ($Actual1 as $sh1) {
