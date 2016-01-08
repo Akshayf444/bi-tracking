@@ -312,7 +312,7 @@ class User_model extends CI_Model {
         <th>' . date('M', strtotime('-3 month')) . ' Rx</th>
         <th>' . date('M', strtotime('-2 month')) . ' Rx</th>
         <th>' . date('M', strtotime('-1 month')) . ' Rx</th>
-        <th>New Rx Targeted For ' . date('M', strtotime($this - nextMonth)) . ' </th>
+        <th>New Rx Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>
         <th>' . $actual . '</th>
     </tr>';
 
