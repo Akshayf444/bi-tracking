@@ -72,14 +72,14 @@
                 }
             </style>
             <?php
-        }elseif ($this->session->userdata('Product_Id') == 6) {
+        } elseif ($this->session->userdata('Product_Id') == 6) {
             ?>
             <style>
                 .table-view,.panel-body{
                     background-color: #9999ff;
                 }
             </style>
-            <?php
+        <?php } ?>
     </head>
     <body>
         <header class="bar bar-nav">
