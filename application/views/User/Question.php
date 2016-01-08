@@ -77,8 +77,8 @@ echo form_open('User/Profiling', $attributes);
             ?>
         </div>
         <div class="panel-footer">
-            <button type="submit" name="Save1" class="btn btn-primary">Save</button>
-            <button type="submit" name="Save" class="btn btn-positive">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>

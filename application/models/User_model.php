@@ -100,8 +100,9 @@ class User_model extends CI_Model {
         $this->load->model('Doctor_Model');
         $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID, $this->Individual_Type);
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
-
-
+        $rxlabel =  $this->Product_Id == 1 ? 'Vials' : 'Rx';
+        $hospital = $this->Product_Id == 1 ? 'Hospital' : 'Doctor';
+        
         if (isset($tabs['Tab1']) && $tabs['Tab1'] == 1) {
             $Tab1Location = "'" . site_url('User/Profiling') . "'";
         } elseif (isset($tabs['Tab1']) && $tabs['Tab1'] == 0) {
@@ -155,14 +156,15 @@ class User_model extends CI_Model {
             $data['Planned'] = $this->Planned_Rx_Count();
             $data['Actual'] = $this->Actual_Rx_Count();
         }
-        $target = isset($data['show4']) ? $data['show4']['target'] : 0;
-        $Planned = isset($data['Planned']) ? $data['Planned']['Planned_Rx'] : 0;
-        $Actual = isset($data['Actual']) ? $data['Actual']['Actual_Rx'] : 0;
+        
+        $target = isset($data['show4']['target']) ? $data['show4']['target'] : 0;
+        $Planned = isset($data['Planned']['Planned_Rx']) ? $data['Planned']['Planned_Rx'] : 0;
+        $Actual = isset($data['Actual']['Actual_Rx']) ? $data['Actual']['Actual_Rx'] : 0;
 
         $HTML = '<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >Doctor Profiling </a>
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >'.$hospital.' Profiling </a>
                             <div class="demo pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
@@ -237,6 +239,7 @@ class User_model extends CI_Model {
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
         $query = $this->db->get();
+        echo $this->db->last_query();
         return $query->result();
     }
 

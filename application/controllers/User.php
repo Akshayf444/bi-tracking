@@ -75,7 +75,7 @@ class User extends MY_Controller {
 
                 redirect('User/dashboard', 'refresh');
             }
-
+            $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -111,7 +111,7 @@ class User extends MY_Controller {
             }
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
-        $this->load->view('template2', $data);
+        //$this->load->view('template2', $data);
     }
 
     public function Planning() {
@@ -250,6 +250,7 @@ class User extends MY_Controller {
         $data['month_between'] = date('M', strtotime('-2 month'));
         $data['month_ends'] = date('M', strtotime('-1 month'));
         $data['current_month'] = date('M');
+        $data['Product_Id'] = $this->Product_Id;
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }

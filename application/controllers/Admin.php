@@ -8,7 +8,7 @@ class Admin extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
-         $this->load->library('Csvimport');
+         //$this->load->library('csvimport');
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
