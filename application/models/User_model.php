@@ -553,11 +553,32 @@ class User_model extends CI_Model {
     }
 
     function password_status($id) {
-        $this->db->select('password_status');
+        $this->db->select('*');
         $this->db->from('Employee_Master');
         $this->db->where(array('VEEVA_Employee_ID' => $id));
         $query = $this->db->get();
         return $query->row_array();
+    }
+    function employee_id($id) {
+        $this->db->select('VEEVA_Employee_ID');
+        $this->db->from('Employee_Master');
+        $this->db->where(array('Username' => $id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    function password_count($id) {
+        $this->db->select('COUNT(VEEVA_Employee_ID) AS cnt');
+        $this->db->from('password_count');
+        $this->db->where(array('VEEVA_Employee_ID' => $id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    function password_save($data) {
+        return $this->db->insert('password_count',$data);
+    }
+    function update_status($id,$data) {
+        $this->db->where(array('Username'=>$id));
+        return $this->db->update('Employee_Master',$data);
     }
 
 }
