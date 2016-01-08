@@ -26,7 +26,7 @@
         </li>
     </ul>
 </div>
-<?php echo form_open('User/doctorList'); ?>
+<?php echo form_open('User/Planning'); ?>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">Planning</li>

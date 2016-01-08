@@ -15,6 +15,7 @@
         <link href="<?php echo asset_url() ?>css/skin-blue.min.css" rel="stylesheet" type="text/css" />
         <script src="<?php echo asset_url() ?>js/jquery.js"></script>
         <script src="<?php echo asset_url() ?>js/jquery-ui.js" type="text/javascript"></script>
+         <script src="<?php echo asset_url() ?>js/highcharts.js" type="text/javascript"></script>
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -49,7 +50,7 @@
                                     <span class="hidden-xs"><?php echo 'Admin'; ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <!-- The user image in the menu -->
+<!--                                     The user image in the menu 
                                     <li class="user-header">
                                         <p>
                                             <?php //echo $CI->user_name; ?>
@@ -57,7 +58,7 @@
                                             <small>Member since Nov. 2012</small>
                                         </p>
                                     </li>
-                                    <!-- Menu Body -->
+                                     Menu Body 
                                     <li class="user-body">
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Followers</a>
@@ -68,12 +69,12 @@
                                         <div class="col-xs-4 text-center">
                                             <a href="#">Friends</a>
                                         </div>
-                                    </li>
+                                    </li>-->
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
+<!--                                        <div class="pull-left">
                                             <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                        </div>
+                                        </div>-->
                                         <div class="pull-right">
                                             <a href="<?php echo site_url('Admin/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
                                         </div>
@@ -103,7 +104,8 @@
                     <!-- Sidebar Menu -->
                     <ul class="sidebar-menu">
                         <!--                        <li class="header">HEADER</li>-->
-                        <li><a href="<?php echo site_url('Admin/dashboard'); ?>"><span>Employee Master</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/dashboard'); ?>"><span>Dashboard</span></a></li>
+                        <li><a href="<?php echo site_url('Admin/emp_view'); ?>"><span>Employee Master</span></a></li>
                         <li><a href="<?php echo site_url('Admin/doc_view'); ?>"><span>Doctor Master</span></a></li>
                         <li><a href="<?php echo site_url('Admin/view_Activity'); ?>"><span>Activity</span></a></li>
                         <li><a href="<?php echo site_url('Admin/profile_view'); ?>"><span>Control Access</span></a></li>
@@ -141,8 +143,7 @@
         </div><!-- ./wrapper -->
 
         <script src="<?php echo asset_url() ?>js/app.min.js" type="text/javascript"></script>
-
-<!--        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>-->
+        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
 

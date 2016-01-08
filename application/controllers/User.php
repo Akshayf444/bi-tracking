@@ -75,7 +75,7 @@ class User extends MY_Controller {
 
                 redirect('User/dashboard', 'refresh');
             }
-
+            $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -90,8 +90,8 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-        $result = $this->User_model->getActivityDoctor();
-        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+
+        $data['doctorList'] = $this->User_model->getActivityDoctor();
         $data['ActiviyList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
             foreach ($data['ActiviyList'] as $Activity) {
@@ -111,7 +111,7 @@ class User extends MY_Controller {
             }
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
-        $this->load->view('template2', $data);
+        //$this->load->view('template2', $data);
     }
 
     public function Planning() {
@@ -179,6 +179,8 @@ class User extends MY_Controller {
                     }
                 }
             }
+            
+            $data['Product_Id'] = $this->Product_Id;
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
             $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);
@@ -248,6 +250,7 @@ class User extends MY_Controller {
         $data['month_between'] = date('M', strtotime('-2 month'));
         $data['month_ends'] = date('M', strtotime('-1 month'));
         $data['current_month'] = date('M');
+        $data['Product_Id'] = $this->Product_Id;
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }

@@ -13,15 +13,16 @@
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">
     <?php
+    $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
     $attributes = array('id' => 'form1', 'name' => 'myform');
     echo form_open('User/Set_Target', $attributes)
     ?>
     <div class="panel panel-default">
-        <div class="panel-heading">Set Expected Rx</div>
+        <div class="panel-heading">Set Expected <?php echo $rxlabel; ?></div>
         <div class="panel-body">
 
             <div class="form-group">
-                No Of New Rx Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
+                No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
                 <input type="number" name="value">
             </div>
             <div class="form-group">
@@ -41,7 +42,7 @@
 </form>
 <ul class="table-view">
     <li class="table-view-cell" align="center">
-        <h5>New Rx Generated</h5>
+        <h5>New <?php echo $rxlabel; ?> Generated</h5>
     </li>
     <li class="table-view-cell">
 
