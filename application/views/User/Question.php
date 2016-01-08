@@ -116,7 +116,7 @@ echo form_open('User/Profiling', $attributes);
         $("input[name='Patient_Seen_month']").val($(this).val() * 4);
     });
 
-$(".spaf1").change(function () {
+    $(".spaf1").change(function () {
 
         if ($(this).val() == 'SPAF') {
             $('.spaf').html('SPAF');
@@ -196,4 +196,51 @@ $(".spaf1").change(function () {
         });
     });
 
+    $("#Doctor_id").change(function () {
+        $.ajax({
+            type: 'POST',
+            data: {'Doctor_Id': $(this).val()},
+            url: '<?php echo site_url('User/getProfilingData'); ?>',
+            success: function (data) {
+                console.log(data);
+                var obj = jQuery.parseJSON(data);
+                $("input[name='Patient_Seen']").val(obj.Patient_Seen);
+                $("input[name='Patient_Seen_month']").val(obj.Patient_Seen_month);
+                $("input[name='Patient_Rxbed_In_Month']").val(obj.Patient_Rxbed_In_Month);
+                $("input[name='Patient_Rxbed_In_Week']").val(obj.Patient_Rxbed_In_Week);
+                $("input[name='No_Of_Beds']").val(obj.No_Of_Beds);
+                $("input[name='CT_MRI_available']").val(obj.CT_MRI_available);
+
+                if (obj.CT_MRI_available == 'Yes') {
+                    $("#CT_MRI_available_yes").attr('checked', true);
+                } else if (obj.CT_MRI_available == 'No') {
+                    $("#CT_MRI_available_no").attr('checked', true);
+                }
+
+                if (obj.Win_Q1 == 'Yes') {
+                    $("#Win_Q1_yes").attr('checked', true);
+                } else if (obj.Win_Q1 == 'No') {
+                    $("#Win_Q1_no").attr('checked', true);
+                }
+                if (obj.Win_Q2 == 'Yes') {
+                    $("#Win_Q2_yes").attr('checked', true);
+                } else if (obj.Win_Q2 == 'No') {
+                    $("#Win_Q2_no").attr('checked', true);
+                }
+                if (obj.Win_Q3 == 'Yes') {
+                    $("#Win_Q3_yes").attr('checked', true);
+                } else if (obj.Win_Q3 == 'No') {
+                    $("#Win_Q3_no").attr('checked', true);
+                }
+
+                $("input[name='Primary_indication']").each(function () {
+                    if ($(this).val() == obj.Primary_indication) {
+                        $(this).attr("selected", "selected");
+                    }
+                });
+
+            }
+        });
+
+    });
 </script>

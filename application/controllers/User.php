@@ -91,8 +91,7 @@ class User extends MY_Controller {
 
     public function ActivityPlanning() {
         $data['doctorList'] = $this->User_model->getActivityDoctor();
-        var_dump($data['doctorList']);
-        $data['ActiviyList'] = $this->User_model->getActivityList();
+        $data['ActivityList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
             foreach ($data['ActiviyList'] as $Activity) {
                 if ($this->input->post($Activity->Activity_id)) {
@@ -164,7 +163,8 @@ class User extends MY_Controller {
 
     public function Profiling() {
         if ($this->is_logged_in()) {
-            $result = $this->Doctor_Model->getProfilingDoctor($this->Individual_Type);
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
+
             if ($this->input->post()) {
 
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
@@ -386,6 +386,15 @@ class User extends MY_Controller {
     public function Profiling_thnx() {
         $data = array('title' => 'Activity Planning', 'content' => 'User/Profiling_thnx', 'view_data' => 'blank');
         $this->load->view('template2', $data);
+    }
+
+    public function getProfilingData() {
+        $Doctor_Id = $this->input->post('Doctor_Id');
+        $ProfilingDetails = $this->User_model->profiling_by_id($Doctor_Id, $this->VEEVA_Employee_ID, $this->Product_Id);
+
+        if (!empty($ProfilingDetails)) {
+            echo json_encode($ProfilingDetails);
+        }
     }
 
 }

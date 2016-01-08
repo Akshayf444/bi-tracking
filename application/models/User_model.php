@@ -300,7 +300,7 @@ class User_model extends CI_Model {
             }
 
 
-            if ($this->Product_Id == '1') {
+            if ($this->Product_Id == 1) {
                 $vials = "Vials";
                 $hospital = "Hospital";
             } else {
