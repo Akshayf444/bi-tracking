@@ -139,7 +139,7 @@
                 <th  style="text-align:right"><?php
                     if ($this->Product_Id == '1') {
                         echo "Vials";
-                    } elseif ($this->Product_Id == '2') {
+                    } else {
                         echo "Rx";
                     }
                     ?></th>
