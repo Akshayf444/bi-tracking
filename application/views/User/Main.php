@@ -89,6 +89,8 @@
     } elseif ($this->Product_Id == '4') {
         echo "<ul class='table-view' style='background-color:  #87CEEB'>";
     } elseif ($this->Product_Id == '5') {
+        echo "<ul class='table-view' style='background-color: #20B2AA;'>";
+    } elseif ($this->Product_Id == '6') {
         echo "<ul class='table-view' style='background-color: #9999FF;'>";
     }
     ?>
@@ -96,7 +98,27 @@
 
 
     <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+    if ($this->Product_Id == '1') {
+        echo "Actilyse";
+    } elseif ($this->Product_Id == '2') {
+        echo "Pradaxa";
+    } elseif ($this->Product_Id == '3') {
+        echo "Metalyse";
+    } elseif ($this->Product_Id == '4') {
+        echo "Trajenta Family";
+    } elseif ($this->Product_Id == '5') {
+        echo "Jardiance";
+    } elseif ($this->Product_Id == '6') {
+        echo "Trajenta Duo";
+    }
+    ?></li>
+    <li class="table-view-cell media">
+        <table class="slider-table table" style="margin-left: -87px;">
+            <tr>
+
+                <th  style="text-align:right"><?php
         if ($this->Product_Id == '1') {
+
             echo "Actilyse";
         } elseif ($this->Product_Id == '2') {
             echo "Pradaxa";
@@ -106,26 +128,10 @@
             echo "Trajenta Family";
         } elseif ($this->Product_Id == '5') {
             echo "Jardiance";
+        } elseif ($this->Product_Id == '6') {
+            echo "Trajenta duo";
         }
-        ?></li>
-    <li class="table-view-cell media">
-        <table class="slider-table table" style="margin-left: -87px;">
-            <tr>
-
-                <th  style="text-align:right"><?php
-                    if ($this->Product_Id == '1') {
-
-                        echo "Actilyse";
-                    } elseif ($this->Product_Id == '2') {
-                        echo "Pradaxa";
-                    } elseif ($this->Product_Id == '3') {
-                        echo "Metalyse";
-                    } elseif ($this->Product_Id == '4') {
-                        echo "Trajenta Family";
-                    } elseif ($this->Product_Id == '5') {
-                        echo "Jardiance";
-                    }
-                    ?></th>
+    ?></th>
                 <th  style="text-align:center">Sep</th>
                 <th  style="text-align:center">Oct</th>
                 <th  style="text-align:center">Nov</th>
@@ -142,7 +148,7 @@
                     } else {
                         echo "Rx";
                     }
-                    ?></th>
+    ?></th>
             </tr>
         </table>
     </li>

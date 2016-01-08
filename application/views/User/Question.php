@@ -116,7 +116,16 @@ echo form_open('User/Profiling', $attributes);
         $("input[name='Patient_Seen_month']").val($(this).val() * 4);
     });
 
+$(".spaf1").change(function () {
 
+        if ($(this).val() == 'SPAF') {
+            $('.spaf').html('SPAF');
+        } else if ($(this).val() == 'DVT-PE') {
+            $('.spaf').html('DVT-PE');
+        } else if ($(this).val() == 'pVTEp') {
+            $('.spaf').html('pVTEp');
+        }
+    });
 
 </script>
 <script>
