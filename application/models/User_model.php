@@ -28,7 +28,7 @@ class User_model extends CI_Model {
     }
 
     public function Set_Target_update2($data) {
-        $this->db->where(array('VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'), 'Product_Id' => $this->Product_Id));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id));
         return $this->db->update('Rx_Target', $data);
     }
 
@@ -308,7 +308,8 @@ class User_model extends CI_Model {
                 $hospital = "Doctor";
             }
 
-            $html .= '<table class="table table-bordered">
+            $html .= '<table class="table table-bordered datatable">
+                <thead>
     <tr>
         <th>' . $hospital . ' List</th>
         <th>Winability</th>
@@ -320,11 +321,11 @@ class User_model extends CI_Model {
         <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
         <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
             if ($type == 'Planning') {
-                $html .= '</tr>';
+                $html .= '</tr></thead>';
             } elseif ($type == 'Actual') {
-                $html .= '<td>Actual</td></tr>';
+                $html .= '<th>Actual</th></tr></thead>';
             } else {
-                $html .= '</tr>';
+                $html .= '</tr></thead>';
             }
 
 
@@ -360,10 +361,10 @@ class User_model extends CI_Model {
                     }
 
                     if ($priority == 'true') {
-                        $html .= '<tr>
+                        $html .= '<tbody><tr>
                 <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
                     } else {
-                        $html .= '<tr>
+                        $html .= '<tbody><tr>
                 <td><a >' . $doctor->Account_Name . '</a>';
                     }
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>
@@ -384,11 +385,10 @@ class User_model extends CI_Model {
                     }
                 }
             }
-            $html.='</table>';
+            $html.='</tbody></table>';
         } else {
             $html = "<h1>Please Set Target Before Planning</h1>";
         }
-
 
         return $html;
     }
@@ -456,7 +456,8 @@ class User_model extends CI_Model {
     function PriorityIds() {
         $doctors = array();
         $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` WHERE `Delta` >= 20
-        AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  AND month = '$this->nextMonth'          ";
+        AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  AND month = '$this->nextMonth' ORDER BY Delta DESC ";
+
         $query = $this->db->query($sql);
         $result = $query->result();
         if (!empty($result)) {
@@ -466,7 +467,8 @@ class User_model extends CI_Model {
         }
 
         $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` WHERE `Dependancy` >= 20
-                AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'                ";
+                AND VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id' ORDER BY Dependancy DESC  ";
+
         $query = $this->db->query($sql);
         $result = $query->result();
         if (!empty($result)) {
@@ -477,6 +479,7 @@ class User_model extends CI_Model {
         $doctors = array_unique($doctors);
         $sql = "SELECT `Doctor_Id` FROM `Doctor_Priority` 
                 WHERE VEEVA_Employee_Id = '$this->VEEVA_Employee_ID' and Product_Id = '$this->Product_Id'  ORDER BY `Planned_Rx` DESC                ";
+
         $query = $this->db->query($sql);
         $result = $query->result();
         if (!empty($result)) {
@@ -539,12 +542,12 @@ class User_model extends CI_Model {
         return $html;
     }
 
-    function PlanningExist() {
+    function PlanningExist($Doctor_Id = "") {
         $this->db->select('*');
         $this->db->from('Rx_Planning');
-        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id));
         $query = $this->db->get();
-        return $query->result();
+        return $query->row();
     }
 
     function password($id, $data) {
@@ -559,6 +562,7 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+
     function employee_id($id) {
         $this->db->select('VEEVA_Employee_ID');
         $this->db->from('Employee_Master');
@@ -566,6 +570,7 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+
     function password_count($id) {
         $this->db->select('COUNT(VEEVA_Employee_ID) AS cnt');
         $this->db->from('password_count');
@@ -573,12 +578,30 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+
     function password_save($data) {
-        return $this->db->insert('password_count',$data);
+        return $this->db->insert('password_count', $data);
     }
-    function update_status($id,$data) {
-        $this->db->where(array('Username'=>$id));
-        return $this->db->update('Employee_Master',$data);
+
+    function update_status($id, $data) {
+        $this->db->where(array('Username' => $id));
+        return $this->db->update('Employee_Master', $data);
+    }
+
+    function PriorityExist($Doctor_Id) {
+        $this->db->select('*');
+        $this->db->from('Doctor_Priority');
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    function ActualPriorityExist($Doctor_Id) {
+        $this->db->select('*');
+        $this->db->from('Actual_Doctor_Priority');
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth));
+        $query = $this->db->get();
+        return $query->row_array();
     }
     
     public function product_detail($VEEVA_Employee_ID, $Product_id,$month,$year) {

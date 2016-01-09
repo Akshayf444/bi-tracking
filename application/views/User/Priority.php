@@ -9,6 +9,7 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
+<script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
@@ -42,3 +43,12 @@
     </ul>
 </div>
 </form>
+
+<script>
+    $('document').ready(function () {
+        $('.datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false,
+        });
+    });
+</script>

@@ -25,18 +25,12 @@
                 No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
                 <input type="number" name="value">
             </div>
-            <div class="form-group">
-                <div class="col-sm-2">
-                    <input type="submit" name="save" class="btn btn-primary" value="Save"/>
-                </div>
-                <div class="col-sm-2">
-                    <input type="submit"  class="btn btn-positive" value="Submit"/>
-                </div>
-            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" id="Save" class="btn btn-primary">Save</button>
+            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
         </div>
         </form>
-
-
     </div>
 
 </form>
@@ -146,5 +140,18 @@
             }
         });
     });
+    $("#Submit").click(function () {
+        $.ajax({
+            type: 'POST',
+            data: {'Table_Name': 'Rx_Target'},
+            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
+            success: function (data) {
+                //alert(data);
+                if (data != '404') {
+                    alert('Data Submitted');
+                }
 
+            }
+        });
+    });
 </script>

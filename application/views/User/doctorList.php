@@ -44,39 +44,72 @@
         </li>
     </ul>
 </div>
-<?php echo form_open('User/Planning'); ?>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Planning</li>
-        <li class="table-view-cell ">
-            <?php echo isset($doctorList) ? $doctorList : '' ?>
-        </li>
-        <li class="table-view-cell">
-            <br/>
+<?php
+$attributes = array('id' => 'ProfilingForm');
+echo form_open('User/Planning', $attributes);
+?>
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Planning</div>
+        <div class="panel-body">
 
+<?php echo isset($doctorList) ? $doctorList : '' ?>
+        </div>
 
-            <button type="submit" class="btn btn-negative">Prioritize</button>
-            <button type="submit" style="margin-right:  87px;" class="btn btn-positive pull-right">Submit</button>
-            <button type="submit" style="margin-right: 162px;" class="btn btn-primary pull-right">Save</button>
-            <br/>
-        </li>
-    </ul>
+        <div class="panel-footer">
+            <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
+            <button type="submit" id="Save" style="display:none" class="btn btn-primary">Save</button>
+            <button type="button" id="Submit" style="display:none" class="btn btn-positive">Submit</button>
+
+        </div>
+    </div>
 </div>
 </form>
 <script>
 
     $(document).ready(function () {
-
         $(".val").keyup(function () {
-            var finalval = 0;
-            $(".val").each(function () {
-                var actual = parseInt($(this).val(), 10) || 0;
-                finalval = parseInt(finalval, 10) + actual;
-            });
-
-            var grandTotal = $('.ck').val() - finalval;
-            $('.ckk').html(grandTotal);
+            RemainingBalance();
         });
 
-    })
+    });
+
+    $(window).load(function () {
+        RemainingBalance();
+    });
+    function RemainingBalance() {
+        var finalval = 0;
+        $(".val").each(function () {
+            var actual = parseInt($(this).val(), 10) || 0;
+            finalval = parseInt(finalval, 10) + actual;
+        });
+
+        var grandTotal = $('.ck').val() - finalval;
+        $('.ckk').html(grandTotal);
+        if (grandTotal == 0) {
+            $("#Save").show();
+            $("#Submit").show();
+        }
+    }
+
+    $("#Priority").click(function () {
+        var formAction = '<?php echo site_url('User/generatePriority'); ?>';
+        $("#ProfilingForm").attr('action', formAction);
+        $("#ProfilingForm").submit();
+    });
+
+    $("#Submit").click(function () {
+        $.ajax({
+            type: 'POST',
+            data: {'Table_Name': 'Rx_Planning'},
+            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
+            success: function (data) {
+                //alert(data);
+                if (data != '404') {
+                    alert('Data Submitted Successfully.');
+                }
+
+            }
+        });
+    });
 </script>
