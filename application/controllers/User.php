@@ -125,8 +125,8 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx'])*100;
-            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned'])*100;
+            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
@@ -337,8 +337,14 @@ class User extends MY_Controller {
     }
 
     public function PlanMenu() {
-        $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
+        if ($this->is_logged_in()) {
+            $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
     public function password() {
@@ -429,10 +435,10 @@ class User extends MY_Controller {
                     $this->db->insert('Actual_Doctor_Priority', $data2);
                 }
             }
-            
+
             redirect('User/Priority', 'refresh');
         }
-        
+
         $data = array('title' => 'Set Priority', 'content' => 'User/Priority', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
