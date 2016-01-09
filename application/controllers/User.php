@@ -72,7 +72,7 @@ class User extends MY_Controller {
                     redirect('User/password', 'refresh');
                 } else {
                     if ($check_password['Designation'] == 'ASM') {
-                        redirect('ASM/dashboard', 'refresh');
+                        redirect('User/ASM_dashboard', 'refresh');
                     } else {
                         redirect('User/dashboard', 'refresh');
                     }
@@ -101,6 +101,32 @@ class User extends MY_Controller {
 
                 redirect('User/dashboard', 'refresh');
             }
+            $month1 = date('n', strtotime('-1 month'));
+            $month2 = date('n', strtotime('-2 month'));
+            $month3 = date('n', strtotime('-3 month'));
+            $month4 = date('n', strtotime('-4 month'));
+            $current_month = date('n');
+            $year1 = date('Y', strtotime('-1 month'));
+            $year2 = date('Y', strtotime('-2 month'));
+            $year3 = date('Y', strtotime('-3 month'));
+            $year4 = date('Y', strtotime('-4 month'));
+            $current_year = date('Y');
+
+            $data['month1'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month1, $year1);
+            $data['month2'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month2, $year2);
+            $data['month3'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month3, $year3);
+            $data['month4'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
+
+            $data['user1'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month1, $year1);
+            $data['user2'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month2, $year2);
+            $data['user3'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month3, $year3);
+            $data['user4'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
+            $current_month_actual = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
+            $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
+            $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+            $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx'])*100;
+            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned'])*100;
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);

@@ -30,7 +30,7 @@
                 Sort By
                 <select class="form-control">
                     <option>Winability</option>
-                    <option>Dependency</option>
+                    <option>Dependency/Rx For Last Month</option>
                     <option>BI Market Share</option>
                     <option>Planned <?php
                         if ($this->Product_Id == '1') {

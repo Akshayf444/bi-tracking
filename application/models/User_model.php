@@ -603,5 +603,41 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+    
+    public function product_detail($VEEVA_Employee_ID, $Product_id,$month,$year) {
+        $this->db->select('SUM(`Actual_Rx`) as actual_rx');
+        $this->db->from('`Rx_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function kpi($VEEVA_Employee_ID, $Product_id,$month,$year) {
+        $this->db->select('SUM(`Planned_Rx`) as planned_rx');
+        $this->db->from('`Rx_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function product_detail_user($VEEVA_Employee_ID, $Product_id,$month,$year) {
+        $this->db->select('COUNT(`Doctor_Id`) AS doctor_count');
+        $this->db->from('`Rx_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function activity_planned($VEEVA_Employee_ID, $Product_id) {
+        $this->db->select('COUNT(`Activity_Id`) AS activity_planned');
+        $this->db->from('`Activity_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function activity_actual($VEEVA_Employee_ID, $Product_id) {
+        $this->db->select('COUNT(`Activity_Id`) AS activity_actual');
+        $this->db->from('`Activity_Reporting`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 
 }
