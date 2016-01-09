@@ -580,5 +580,20 @@ class User_model extends CI_Model {
         $this->db->where(array('Username'=>$id));
         return $this->db->update('Employee_Master',$data);
     }
+    
+    public function product_detail($VEEVA_Employee_ID, $Product_id,$month,$year) {
+        $this->db->select('SUM(`Actual_Rx`) as actual_rx');
+        $this->db->from('`Rx_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+    public function product_detail_user($VEEVA_Employee_ID, $Product_id,$month,$year) {
+        $this->db->select('COUNT(`Doctor_Id`) AS doctor_count');
+        $this->db->from('`Rx_Planning`');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
 
 }

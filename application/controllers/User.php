@@ -101,6 +101,25 @@ class User extends MY_Controller {
 
                 redirect('User/dashboard', 'refresh');
             }
+            $month1=date('n',  strtotime('-1 month'));
+            $month2=date('n',  strtotime('-2 month'));
+            $month3=date('n',  strtotime('-3 month'));
+            $month4=date('n',  strtotime('-4 month'));
+            $year1=date('Y',  strtotime('-1 month'));
+            $year2=date('Y',  strtotime('-2 month'));
+            $year3=date('Y',  strtotime('-3 month'));
+            $year4=date('Y',  strtotime('-4 month'));
+            
+            $data['month1']=  $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id,$month1,$year1);
+            $data['month2']=  $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id,$month2,$year2);
+            $data['month3']=  $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id,$month3,$year3);
+            $data['month4']=  $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id,$month4,$year4);
+            $data['user1']=  $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id,$month1,$year1);
+            $data['user2']=  $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id,$month2,$year2);
+            $data['user3']=  $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id,$month3,$year3);
+            $data['user4']=  $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id,$month4,$year4);
+            
+            
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);

@@ -98,27 +98,7 @@
 
 
     <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
-    if ($this->Product_Id == '1') {
-        echo "Actilyse";
-    } elseif ($this->Product_Id == '2') {
-        echo "Pradaxa";
-    } elseif ($this->Product_Id == '3') {
-        echo "Metalyse";
-    } elseif ($this->Product_Id == '4') {
-        echo "Trajenta Family";
-    } elseif ($this->Product_Id == '5') {
-        echo "Jardiance";
-    } elseif ($this->Product_Id == '6') {
-        echo "Trajenta Duo";
-    }
-    ?></li>
-    <li class="table-view-cell media">
-        <table class="slider-table table" style="margin-left: -87px;">
-            <tr>
-
-                <th  style="text-align:right"><?php
         if ($this->Product_Id == '1') {
-
             echo "Actilyse";
         } elseif ($this->Product_Id == '2') {
             echo "Pradaxa";
@@ -129,9 +109,29 @@
         } elseif ($this->Product_Id == '5') {
             echo "Jardiance";
         } elseif ($this->Product_Id == '6') {
-            echo "Trajenta duo";
+            echo "Trajenta Duo";
         }
-    ?></th>
+        ?></li>
+    <li class="table-view-cell media">
+        <table class="slider-table table" style="margin-left: -87px;">
+            <tr>
+
+                <th  style="text-align:right"><?php
+                    if ($this->Product_Id == '1') {
+
+                        echo "Actilyse";
+                    } elseif ($this->Product_Id == '2') {
+                        echo "Pradaxa";
+                    } elseif ($this->Product_Id == '3') {
+                        echo "Metalyse";
+                    } elseif ($this->Product_Id == '4') {
+                        echo "Trajenta Family";
+                    } elseif ($this->Product_Id == '5') {
+                        echo "Jardiance";
+                    } elseif ($this->Product_Id == '6') {
+                        echo "Trajenta duo";
+                    }
+                    ?></th>
                 <th  style="text-align:center">Sep</th>
                 <th  style="text-align:center">Oct</th>
                 <th  style="text-align:center">Nov</th>
@@ -140,6 +140,10 @@
 
             <tr>
                 <th  style="text-align:right">Users</th>
+                <td style="text-align:center"><?php echo $user4['doctor_count'] ?></td>
+                <td style="text-align:center"><?php echo $user3['doctor_count'] ?></td>
+                <td style="text-align:center"><?php echo $user2['doctor_count'] ?></td>
+                <td><?php echo $user1['doctor_count'] ?></td>
             </tr>
             <tr>
                 <th  style="text-align:right"><?php
@@ -148,7 +152,13 @@
                     } else {
                         echo "Rx";
                     }
-    ?></th>
+                    ?></th>
+                
+                
+                <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
+                <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
+                <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
+                <td><?php echo $month1['actual_rx'] ?></td>
             </tr>
         </table>
     </li>
