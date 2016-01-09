@@ -161,7 +161,6 @@ class User extends MY_Controller {
 
     public function Planning() {
         if ($this->is_logged_in()) {
-
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             // echo($data['doctorList']);
             if ($this->input->post()) {
@@ -190,7 +189,7 @@ class User extends MY_Controller {
                         $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
-                        $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
+                        $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
 
                         $this->db->insert('Doctor_Priority', $data2);
                     }
