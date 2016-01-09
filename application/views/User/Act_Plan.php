@@ -49,37 +49,35 @@
         <div class="panel-body">            
             <table class="table table-bordered">
                 <tr>
-                    <td><?PHP if($this->Product_Id == '1')
-                    {
-                        echo "Hospital";
-                    }
-                    else
-                    {
-                        echo "Doctor";
-                    }
-                    ?> Name</td>
+                    <td><?PHP
+                        if ($this->Product_Id == '1') {
+                            echo "Hospital";
+                        } else {
+                            echo "Doctor";
+                        }
+                        ?> Name</td>
                     <td>Activity</td>
                 </tr>
 
-                    <?php
-                    if (isset($doctorList) && !empty($doctorList)) {
-                        foreach ($doctorList as $doctor) {
-                            ?>
+                <?php
+                if (isset($doctorList) && !empty($doctorList)) {
+                    foreach ($doctorList as $doctor) {
+                        ?>
                         <tr>
                             <td><?php echo $doctor->Account_Name ?></td>
-                            <td><?php
-                                if (isset($ActivityList) && !empty($ActivityList)) {
-
-                                    foreach ($ActivityList as $Activity) {
+                            <td><?php if (isset($ActivityList) && !empty($ActivityList)) { ?>
+                                    <select>
+                                        <?php foreach ($ActivityList as $Activity) {
+                                            ?>
+                                            <option value="<?php echo $Activity->Activity_id ?>"> <?php echo $Activity->Activity_Name ?></option>
+                                        <?php }
                                         ?>
-                                        <input type="checkbox"> <?php echo $Activity->Activity_Name ?>
-                                        <?php
-                                    }
-                                }
+                                    </select>
+                                <?php }
                                 ?>
                             </td>
                         </tr>
-                    <?php
+                        <?php
                     }
                 }
                 ?>
@@ -91,7 +89,7 @@
             
                         <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
                             <option>Select Doctor</option>
-<?php //echo isset($doctorList) ? $doctorList : '';    ?>
+            <?php //echo isset($doctorList) ? $doctorList : '';      ?>
                         </select>
             
                         </li>
