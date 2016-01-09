@@ -109,18 +109,20 @@ class User extends MY_Controller {
             $this->logout();
         }
     }
+
     public function ASM_dashboard() {
         if ($this->is_logged_in()) {
-            
+
             $data = array('title' => 'Main', 'content' => 'User/ASM_dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
         }
     }
+
     public function ASM_hospital_profiling() {
         if ($this->is_logged_in()) {
-            
+
             $data = array('title' => 'Main', 'content' => 'User/ASM_hospital_profiling', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -135,7 +137,7 @@ class User extends MY_Controller {
 
     public function ActivityPlanning() {
         $data['doctorList'] = $this->User_model->getActivityDoctor();
-        $data['ActiviyList'] = $this->User_model->getActivityList();
+        $data['ActivityList'] = $this->User_model->getActivityList();
         if ($this->input->post()) {
             foreach ($data['ActiviyList'] as $Activity) {
                 if ($this->input->post($Activity->Activity_id)) {
@@ -183,14 +185,14 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                         );
 
-                        //$this->User_model->Save_Planning($doc);
+                        $this->User_model->Save_Planning($doc);
                         $month = date('n', strtotime('-1 month'));
                         $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
                         $month3 = $this->User_model->getMonthwiseRx($doc_id[$i], $month);
                         $currentDependancy = round(($value[$i] / $currentPlanned) * 100, 0, PHP_ROUND_HALF_EVEN);
                         $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => date('n'), 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
-                        ///var_dump($data2);
-                        // $this->db->insert('Doctor_Priority', $data2);
+
+                        $this->db->insert('Doctor_Priority', $data2);
                     }
                 }
                 redirect('User/Priority', 'refresh');
@@ -207,19 +209,40 @@ class User extends MY_Controller {
 
     public function Profiling() {
         if ($this->is_logged_in()) {
-            $result = $this->Doctor_Model->getProfilingDoctor($this->Individual_Type);
-            if ($this->input->post()) {
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
 
+            if ($this->input->post()) {
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
                 $_POST['Product_id'] = $this->Product_Id;
                 $_POST['created_at'] = date('Y-m-d H:i:s');
+                $_POST['Status'] = 'Draft';
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
-                    if ($this->db->insert('Profiling', $_POST)) {
-                        redirect('User/dashboard', 'refresh');
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $_POST['Product_id'] = 4;
+                        $this->db->insert('Profiling', $_POST);
+                        $_POST['Product_id'] = 6;
+                        $this->db->insert('Profiling', $_POST);
+                        redirect('User/Profiling', 'refresh');
                     } else {
-                        redirect('User/dashboard', 'refresh');
+                        $this->db->insert('Profiling', $_POST);
+                        redirect('User/Profiling', 'refresh');
                     }
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.');
+                } elseif ($check['Status'] == 'Draft') {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $_POST['Product_id'] = 4;
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+
+                        $_POST['Product_id'] = 6;
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+                    } else {
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+                    }
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.');
                 }
             }
 
@@ -248,28 +271,16 @@ class User extends MY_Controller {
                 'Month' => $this->nextMonth,
                 'Year' => $this->nextYear,
                 'created_at' => date('Y-m-d H:i:s'),
-                'status' => 'Active',
+                'status' => 'Draft',
             );
-            $data2 = array(
-                'target' => $values,
-                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
-                'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => $this->nextMonth,
-                'Year' => $this->nextYear,
-                'created_at' => date('Y-m-d H:i:s'),
-                'status' => 'Inactive',
-            );
+
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
-            if (!empty($check)) {
+            if (!empty($check) && $check['Draft']) {
                 $this->User_model->Set_Target_update2($data1);
                 redirect('User/Set_Target', 'refresh');
             } else {
-                if ($this->input->post('save')) {
-                    $this->User_model->Set_Target($data2);
-                    redirect('User/Set_Target', 'refresh');
-                } else {
-                    
-                }
+                $this->User_model->Set_Target($data1);
+                redirect('User/Set_Target', 'refresh');
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -454,6 +465,29 @@ class User extends MY_Controller {
     public function Profiling_thnx() {
         $data = array('title' => 'Activity Planning', 'content' => 'User/Profiling_thnx', 'view_data' => 'blank');
         $this->load->view('template2', $data);
+    }
+
+    public function getProfilingData() {
+        $Doctor_Id = $this->input->post('Doctor_Id');
+        $ProfilingDetails = $this->User_model->profiling_by_id($Doctor_Id, $this->VEEVA_Employee_ID, $this->Product_Id);
+
+        if (!empty($ProfilingDetails)) {
+            echo json_encode($ProfilingDetails);
+        } else {
+            echo '404';
+        }
+    }
+
+    public function updateDraftStatus() {
+        $Doctor_Id = $this->input->post('Doctor_Id');
+        $Table_Name = $this->input->post('Table_Name');
+        $data = array('Status' => 'Submitted');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        if ($this->db->update($Table_Name, $data)) {
+            echo 'Success';
+        } else {
+            echo '404';
+        }
     }
 
 }

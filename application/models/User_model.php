@@ -28,7 +28,7 @@ class User_model extends CI_Model {
     }
 
     public function Set_Target_update2($data) {
-        $this->db->where(array('VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID')));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'), 'Product_Id' => $this->Product_Id));
         return $this->db->update('Rx_Target', $data);
     }
 
@@ -239,7 +239,7 @@ class User_model extends CI_Model {
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
         $query = $this->db->get();
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -300,7 +300,7 @@ class User_model extends CI_Model {
             }
 
 
-            if ($this->Product_Id == '1') {
+            if ($this->Product_Id == 1) {
                 $vials = "Vials";
                 $hospital = "Hospital";
             } else {
