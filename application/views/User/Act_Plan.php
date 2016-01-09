@@ -69,7 +69,7 @@
                                     <select>
                                         <?php foreach ($ActivityList as $Activity) {
                                             ?>
-                                            <option value="<?php echo $Activity->Activity_id ?>"> <?php echo $Activity->Activity_Name ?></option>
+                                            <option value="<?php echo $Activity->Activity_id ?>"><?php echo $Activity->Activity_Name ?></option>
                                         <?php }
                                         ?>
                                     </select>
