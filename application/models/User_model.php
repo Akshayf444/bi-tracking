@@ -237,6 +237,7 @@ class User_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID','LEFT');
         $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -603,28 +604,31 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
-    
-    public function product_detail($VEEVA_Employee_ID, $Product_id,$month,$year) {
+
+    public function product_detail($VEEVA_Employee_ID, $Product_id, $month, $year) {
         $this->db->select('SUM(`Actual_Rx`) as actual_rx');
         $this->db->from('`Rx_Planning`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year));
         $query = $this->db->get();
         return $query->row_array();
     }
-    public function kpi($VEEVA_Employee_ID, $Product_id,$month,$year) {
+
+    public function kpi($VEEVA_Employee_ID, $Product_id, $month, $year) {
         $this->db->select('SUM(`Planned_Rx`) as planned_rx');
         $this->db->from('`Rx_Planning`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year));
         $query = $this->db->get();
         return $query->row_array();
     }
-    public function product_detail_user($VEEVA_Employee_ID, $Product_id,$month,$year) {
+
+    public function product_detail_user($VEEVA_Employee_ID, $Product_id, $month, $year) {
         $this->db->select('COUNT(`Doctor_Id`) AS doctor_count');
         $this->db->from('`Rx_Planning`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id,'month'=>$month,'Year'=>$year));
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year));
         $query = $this->db->get();
         return $query->row_array();
     }
+
     public function activity_planned($VEEVA_Employee_ID, $Product_id) {
         $this->db->select('COUNT(`Activity_Id`) AS activity_planned');
         $this->db->from('`Activity_Planning`');
@@ -632,6 +636,7 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row_array();
     }
+
     public function activity_actual($VEEVA_Employee_ID, $Product_id) {
         $this->db->select('COUNT(`Activity_Id`) AS activity_actual');
         $this->db->from('`Activity_Reporting`');

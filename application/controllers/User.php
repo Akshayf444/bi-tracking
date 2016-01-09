@@ -125,8 +125,8 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx'])*100;
-            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned'])*100;
+            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
@@ -158,30 +158,6 @@ class User extends MY_Controller {
 
     public function productSel() {
         $data = array('title' => 'Select Product', 'content' => 'User/Product', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
-    }
-
-    public function ActivityPlanning() {
-        $data['doctorList'] = $this->User_model->getActivityDoctor();
-        $data['ActivityList'] = $this->User_model->getActivityList();
-        if ($this->input->post()) {
-            foreach ($data['ActiviyList'] as $Activity) {
-                if ($this->input->post($Activity->Activity_id)) {
-                    $data2 = array(
-                        'Activity_Id' => $Activity->Activity_id,
-                        'Doctor_Id' => $this->input->post('Doctor_Id'),
-                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
-                        'Product_Id' => $this->Product_Id,
-                        'Activity_detail' => $this->input->post($Activity->Activity_id . 'Detail'),
-                        'Reason' => $this->input->post($Activity->Activity_id . 'Reason'),
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'Status' => $this->input->post($Activity->Activity_id)
-                    );
-                    $this->db->insert('Activity_Planning', $data2);
-                }
-            }
-        }
-        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -331,6 +307,38 @@ class User extends MY_Controller {
         }
     }
 
+    public function ActivityPlanning() {
+        $data['doctorList'] = $this->User_model->getActivityDoctor();
+        $result = $this->User_model->getActivityList();
+        $data['ActivityList'] = $this->Master_Model->generateDropdown($result, 'Activity_id', 'Activity_Name');
+        if ($this->input->post()) {
+            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
+                $docid = $this->input->post('Doctor_Id');
+                $Activity = $this->input->post('Activity_id');
+                if (trim($Activity[$i]) != '') {
+                    $data2 = array(
+                        'Activity_Id' => $Activity[$i],
+                        'Doctor_Id' => $docid[$i],
+                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                        'Product_Id' => $this->Product_Id,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'Status' => 'Draft'
+                    );
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $data2['Product_Id'] = 4;
+                        $this->db->insert('Activity_Planning', $data2);
+                        $data2['Product_Id'] = 6;
+                        $this->db->insert('Activity_Planning', $data2);
+                    } else {
+                        $this->db->insert('Activity_Planning', $data2);
+                    }
+                }
+            }
+        }
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
+        $this->load->view('template2', $data);
+    }
+
     public function addRx() {
         $data = array('title' => 'Report', 'content' => 'User/Report', 'view_data' => 'blank');
         $this->load->view('template2', $data);
@@ -429,10 +437,10 @@ class User extends MY_Controller {
                     $this->db->insert('Actual_Doctor_Priority', $data2);
                 }
             }
-            
+
             redirect('User/Priority', 'refresh');
         }
-        
+
         $data = array('title' => 'Set Priority', 'content' => 'User/Priority', 'view_data' => $data);
         $this->load->view('template2', $data);
     }

@@ -42,7 +42,7 @@
         transition: 0.15s ease-out;
     }
 </style>
-<?php echo form_open('User/ActivityReporting'); ?>
+<?php echo form_open('User/ActivityPlanning'); ?>
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
         <div class="panel-heading">Activity Planning</div>
@@ -55,7 +55,8 @@
                         } else {
                             echo "Doctor";
                         }
-                        ?> Name</td>
+                        ?> Name
+                    </td>
                     <td>Activity</td>
                 </tr>
 
@@ -64,17 +65,12 @@
                     foreach ($doctorList as $doctor) {
                         ?>
                         <tr>
-                            <td><?php echo $doctor->Account_Name ?></td>
-                            <td><?php if (isset($ActivityList) && !empty($ActivityList)) { ?>
-                                    <select>
-                                        <?php foreach ($ActivityList as $Activity) {
-                                            ?>
-                                            <option value="<?php echo $Activity->Activity_id ?>"><?php echo $Activity->Activity_Name ?></option>
-                                        <?php }
-                                        ?>
-                                    </select>
-                                <?php }
-                                ?>
+                            <td><?php echo $doctor->Account_Name ?><input type="hidden" name="Doctor_Id[]" value="<?php echo $doctor->Doctor_Id; ?>" ></td>
+                            <td>
+                                <select name="Activity_id[]" class="form-control">
+                                    <option value="">Select Activity</option>
+                                    <?php echo (isset($ActivityList)) ? $ActivityList : ""; ?>
+                                </select>
                             </td>
                         </tr>
                         <?php
@@ -83,37 +79,10 @@
                 ?>
 
             </table>
-
-            <!--            <b>Select Doctor</b>
-            
-            
-                        <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
-                            <option>Select Doctor</option>
-            <?php //echo isset($doctorList) ? $doctorList : '';      ?>
-                        </select>
-            
-                        </li>
-                        <li class="table-view-cell"><b>Select Activity</b></li>
-            
-                        <li class="table-view-cell">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Doctor Details</th>
-                                    <th>Activity</th>
-                                </tr>
-                                <tr>
-                                    <td>Abc</td>
-                                    <td><input type="checkbox" name="one"/> Activity 1<br>
-                                        <input type="checkbox" name="one"/>   Activity 2
-                                <li id="result"></li>
-                                </td>
-                                </tr>
-                            </table>
-                        </li>-->
         </div>
         <div class="panel-footer">
-            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
-            <button type="submit" class="btn btn-positive">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>
