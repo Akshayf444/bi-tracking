@@ -72,7 +72,7 @@ class User extends MY_Controller {
                     redirect('User/password', 'refresh');
                 } else {
                     if ($check_password['Designation'] == 'ASM') {
-                        redirect('ASM/dashboard', 'refresh');
+                        redirect('User/ASM_dashboard', 'refresh');
                     } else {
                         redirect('User/dashboard', 'refresh');
                     }

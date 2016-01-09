@@ -24,6 +24,12 @@
         font-weight: 100;
         color:#333;
         padding-bottom:20px;
+
+    }
+
+    .btn-default {
+        background: none;
+        border: none;
     }
 </style>
 <script>
@@ -38,6 +44,10 @@
 </script>
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
+<link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+
+
 
 <?php
 $attributes = array('id' => 'form1', 'name' => 'myform', 'onsubmit' => 'return validateform()');
