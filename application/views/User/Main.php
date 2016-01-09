@@ -183,8 +183,8 @@
 <ul class="table-view card ">
     <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
         <div class="col-lg-4"></div>
-        <div class="col-lg-4">
-            Achievement Of Jan 2016
+        <div align="center" class="col-lg-4">
+           <b> Achievement Of Jan 2016</b>
         </div>
         <div class="col-lg-4"></div>
     </li>
@@ -201,10 +201,10 @@
 
             <div class="demo" >        
                 <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi1,2);?>%</span>
+                <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1,2);?>%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
 
-                <span style="margin-left: 41px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+                <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
 
             </div>
         </div>
@@ -215,7 +215,7 @@
                 <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                 <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2,2);?>%</span>
                 <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
-                <span style="margin-left: 41px;position: absolute;margin-top: -30px;">Doctor Engaged in Activity / Planned</span>
+                <span style="margin-left: 0px;position: absolute;margin-top: -30px;">Doctor Engaged in Activity / Planned</span>
             </div>
         </div>
     </li>
@@ -303,7 +303,7 @@
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($kpi1,2);?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',
@@ -315,7 +315,7 @@
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($kpi2,2);?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',

@@ -345,8 +345,14 @@ class User extends MY_Controller {
     }
 
     public function PlanMenu() {
-        $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
+        if ($this->is_logged_in()) {
+            $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
     }
 
     public function password() {
