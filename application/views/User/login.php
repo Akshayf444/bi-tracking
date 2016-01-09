@@ -8,9 +8,7 @@
         <div class="col-lg-6 col-lg-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading" style="text-align: center">
-
                     <img  src="<?php echo asset_url() ?>images/travels.png" width="45%" >
-
                 </div>
                 <div class="panel-body">
                     <?php echo form_open('User/index') ?>
