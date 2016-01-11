@@ -182,10 +182,17 @@ class User extends MY_Controller {
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (empty($check)) {
                 $this->User_model->Set_Target($data1);
+                 echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been saved successfully! Thank you!.');
                 redirect('User/Set_Target', 'refresh');
             } elseif ($check['Status'] == 'Draft') {
                 $this->User_model->Set_Target_update2($data1);
+               echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been set successfully! Thank you!');
+
                 redirect('User/Set_Target', 'refresh');
+            }else
+            {
+                echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.date('M',  strtotime($this->nextMonth)).'  '. $this->nextYear .' is already submitted, cant overwrite it. Thank you!');
+
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -559,7 +566,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Target') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {
@@ -567,7 +574,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Planning') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {
