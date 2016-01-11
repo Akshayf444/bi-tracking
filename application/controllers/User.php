@@ -130,8 +130,12 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
+            if($current_month_planned['planned_rx']>0){
             $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            }
+            if($activity_planned ['activity_planned']>0){
             $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
+            }
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
@@ -182,10 +186,17 @@ class User extends MY_Controller {
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (empty($check)) {
                 $this->User_model->Set_Target($data1);
+                 echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been saved successfully! Thank you!.');
                 redirect('User/Set_Target', 'refresh');
             } elseif ($check['Status'] == 'Draft') {
                 $this->User_model->Set_Target_update2($data1);
+               echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been set successfully! Thank you!');
+
                 redirect('User/Set_Target', 'refresh');
+            }else
+            {
+                echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.date('M',  strtotime($this->nextMonth)).'  '. $this->nextYear .' is already submitted, cant overwrite it. Thank you!');
+
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -585,7 +596,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Target') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {
@@ -593,7 +604,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Planning') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {
