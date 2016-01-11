@@ -1,3 +1,6 @@
+
+
+
 <style>
     .table-view .table-view-cell {
         background-position: 0px 100%;
@@ -52,8 +55,8 @@ echo form_open('User/Planning', $attributes);
     <div class="panel panel-default">
         <div class="panel-heading">Planning</div>
         <div class="panel-body">
-
-<?php echo isset($doctorList) ? $doctorList : '' ?>
+                <?php echo isset($doctorList) ? $doctorList : '' ?>
+           
         </div>
 
         <div class="panel-footer">
@@ -65,9 +68,16 @@ echo form_open('User/Planning', $attributes);
     </div>
 </div>
 </form>
+<script src="<?php echo asset_url() ?>Stupid-Table-Plugin-master/stupidtable.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/jquery.tablesorter.min.js" type="text/javascript"></script>
 <script>
 
     $(document).ready(function () {
+
+
+
+
+
         $(".val").keyup(function () {
             RemainingBalance();
         });
@@ -112,4 +122,13 @@ echo form_open('User/Planning', $attributes);
             }
         });
     });
+
+
+</script>
+<script>
+    $(document).ready(function () {
+
+       $('#keywords').tablesorter(); 
+    })
+    ;
 </script>

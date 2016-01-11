@@ -12,6 +12,7 @@
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
+        
 
         <style>
             .form-control{

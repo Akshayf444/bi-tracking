@@ -318,7 +318,7 @@ class User_model extends CI_Model {
                 $hospital = "Doctor";
             }
 
-            $html .= '<table class="table table-bordered datatable">
+            $html .= '<table class="table table-bordered datatable" id="keywords" class="tablesorter">
                 <thead>
     <tr>
         <th>' . $hospital . ' List</th>';

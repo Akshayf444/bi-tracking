@@ -74,7 +74,13 @@
         </li>
     </ul>
 </div>-->
-
+<?php 
+if($this->Product_Id == '-1' || $this->Product_Id == '')
+{
+    
+}
+else
+    {?>
 <div class="item card" style="text-align: center" > 
 
 
@@ -164,6 +170,7 @@
     </li>
 </ul>
 </div>
+    <?php }?>
 <style>
     .progress{
         height: 25px;
@@ -180,6 +187,13 @@
         padding: 11px 15px 11px 15px;
     }
 </style>
+<?php 
+if($this->Product_Id == '-1' || $this->Product_Id == '')
+{
+    
+}
+else
+    {?>
 <ul class="table-view card ">
     <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
         <div class="col-lg-4"></div>
@@ -220,6 +234,7 @@
         </div>
     </li>
 </ul>
+<?php }?>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
                     $(document).ready(function () {

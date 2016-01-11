@@ -24,7 +24,7 @@
                 if ($prio_dr['doctor_id'] == 0) {
                     echo "0</br><span style='color:red'><b>No Doctor Prioritized</b></span>";
                 } else {
-                    $prio_dr['doctor_id'];
+                   echo $prio_dr['doctor_id'];
                 }
                 ?> </span>
         </li>

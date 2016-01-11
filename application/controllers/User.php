@@ -93,8 +93,13 @@ class User extends MY_Controller {
             $data = array();
             $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
+            if($this->Product_Id == '-1' || $this->Product_Id == ''){
+                $data['tab1']="";
+            }
+            else
+            {
             $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
-
+            }
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('Product_Id');
                 $this->session->set_userdata('Product_Id', $this->input->post('Product_Id'));
