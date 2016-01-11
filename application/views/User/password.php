@@ -5,8 +5,8 @@
         $attribute=array('id' => 'activate');
         echo form_open('User/password',$attribute); ?>
         <div class="form-group panel-body">
-            <input type="text" name="password" class="form-control" placeholder="Enter Your New Password"/>
-            <input type="text" name="password2" class="form-control" placeholder="Retype Your Password"/>
+            <input type="password" name="password" class="form-control" placeholder="Enter Your New Password"/>
+            <input type="password" name="password2" class="form-control" placeholder="Retype Your Password"/>
         </div>
         <div class="form-group panel-footer">
             <input type="submit" class="btn btn-positive"/>
