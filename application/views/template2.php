@@ -31,6 +31,9 @@
                 font-size: 18px;
                 font-weight: bold;
             }
+            a{
+                cursor: pointer;
+            }
         </style>
 
         <?php

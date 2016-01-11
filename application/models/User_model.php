@@ -235,11 +235,15 @@ class User_model extends CI_Model {
     }
 
     public function getActivityDoctor() {
-        $this->db->select('*');
+        $this->db->select('Distinct(dp.Doctor_Id) As Doctor_Id,dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
-        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            $this->db->where(array('dp.Product_Id' => 4, 'dp.Product_Id' => 6, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        } else {
+            $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
 //echo $this->db->last_query();
@@ -248,10 +252,13 @@ class User_model extends CI_Model {
 
     public function getPlannedActivityDoctor() {
         $this->db->select('*');
-        $this->db->from('Activity_Planning dp');
+        $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
-        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
+//echo $this->db->last_query();
         return $query->result();
     }
 
@@ -313,27 +320,26 @@ class User_model extends CI_Model {
                 $hospital = "Doctor";
             }
 
-            $html .= '<table class="table table-bordered datatable" id="keywords" class="tablesorter">
+            $html .= '<table class="table table-bordered" id="datatable">
                 <thead>
-    <tr>
-        <th>' . $hospital . ' List</th>';
-            if ($type == 'Planning') {
-                $html .= '<th>Winability</th><th>Dependency</th>
-        <th>BI Market Share</th>';
-            }
+                <tr>
+                    <th>' . $hospital . ' List</th>';
+                    if ($type == 'Planning') {
+                        $html .= '<th>Winability</th><th>Dependency</th>
+                            <th>BI Market Share</th>';
+                    }
 
-            $html .= '
-        <th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
-        <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
-        <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
-        <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
-            if ($type == 'Planning') {
-                $html .= '</tr></thead>';
-            } elseif ($type == 'Actual') {
-                $html .= '<th>Actual</th></tr></thead>';
-            } else {
-                $html .= '</tr></thead>';
-            }
+                    $html .= '<th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
+                            <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
+                            <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
+                            <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
+                    if ($type == 'Planning') {
+                        $html .= '</tr></thead><tbody>';
+                    } elseif ($type == 'Actual') {
+                        $html .= '<th>Actual</th></tr></thead><tbody>';
+                    } else {
+                        $html .= '</tr></thead><tbody>';
+                    }
 
 
             $month = date('n', strtotime('-1 month'));
@@ -368,30 +374,29 @@ class User_model extends CI_Model {
                     }
 
                     if ($priority == 'true') {
-                        $html .= '<tbody><tr>
-                <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
+                        $html .= '<tr>
+                        <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
                     } else {
-                        $html .= '<tbody><tr>
-                <td><a >' . $doctor->Account_Name . '</a>';
+                        $html .= '<tr>
+                        <td><a >' . $doctor->Account_Name . '</a>';
                     }
+                    
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td>' . $winability . '</td><td><a class = "control-item">' . $dependancy . '%</a></td>
-                <td><a class = "control-item">' . $BI_Share . '</a></td>';
+                                   <td><a class = "control-item">' . $BI_Share . '</a></td>';
                     }
 
-                    $html .= '
-                <td><a class = "control-item">' . $month1rx . '</a></td>
-                <td><a class = "control-item">' . $month2rx . '</a></td>
-                <td> <a class = "control-item">' . $month3rx . '</a></td>';
+                    $html .='<td><a class = "control-item">' . $month1rx . '</a></td>
+                            <td><a class = "control-item">' . $month2rx . '</a></td>
+                            <td> <a class = "control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td> <input name = "value[]" class = "val" type = "text" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td style = "display:none"> <a class = "control-item" ></a></td>
-                </tr>';
+                                </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
-                </tr>';
+                                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
+                                </tr>';
                     }
                 }
             }
@@ -657,12 +662,17 @@ class User_model extends CI_Model {
     public function prio_dr($VEEVA_Employee_ID, $Product_id) {
         $this->db->select('COUNT(`Doctor_Id`) AS doctor_id');
         $this->db->from('`Actual_Doctor_Priority`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        if ($this->Product_Id == 4 && $this->Product_Id == 6) {
+            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => 4, 'Product_Id' => 6));
+        } else {
+            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        }
+
         $query = $this->db->get();
         return $query->row_array();
     }
 
-    public function generateActivityTable($result = "") {
+    public function generateActivityTable($result = array(), $type = "") {
         $HTML = '';
         if ($this->Product_Id == 1) {
             $hospital = "Hospital";
@@ -670,15 +680,18 @@ class User_model extends CI_Model {
             $hospital = "Doctor";
         }
         $Activities = $this->getActivityList();
-        $result = $this->getActivityDoctor();
+
         if (!empty($result)) {
             $HTML = '<table class="table table-bordered">';
             $HTML .= '<tr>
                                 <th>
                                     ' . $hospital . ' Name
                                 </th>
-                                <th>Activity</th>
-                            </tr>';
+                                <th>Activity</th>';
+            if ($type == 'Reporting') {
+                $HTML .= '<th>Action</th>';
+            }
+            $HTML .= '</tr>';
             foreach ($result as $value) {
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
@@ -686,7 +699,31 @@ class User_model extends CI_Model {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
-                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $doctor->Doctor_Id . '" ></td><td><select class="form-control" name="Doctor_Id[]"><option value="">Select Activity</option>' . $ActivityList . '</select></td>';
+                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
+                if ($type == 'Reporting') {
+                    $HTML .= '<td><select class="form-control" readonly="readonly" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .='<td><div class="col-xs-8">
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span></label>    
+                        </div>
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span></label>
+                        </div>
+                    </div>
+                    <div id="heading' . $value->Account_ID . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Detail" placeholder="Activity Details"></textarea> </div> 
+                        </div> 
+                    </div>
+                    <div id="reason' . $value->Account_ID . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Reason" placeholder="Reason"></textarea> </div> 
+                        </div> 
+                    </div></td>';
+                } else {
+                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                }
+
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';
@@ -698,6 +735,22 @@ class User_model extends CI_Model {
     function ReportingExist($Doctor_Id = "") {
         $this->db->select('*');
         $this->db->from('Rx_Actual');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function ActivityReportingExist($Doctor_Id = "") {
+        $this->db->select('*');
+        $this->db->from('Activity_Reporting');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function ActivityPlanned($Doctor_Id = "") {
+        $this->db->select('*');
+        $this->db->from('Activity_Planning');
         $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
         $query = $this->db->get();
         return $query->row();
