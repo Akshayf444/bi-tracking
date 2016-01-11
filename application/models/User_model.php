@@ -246,10 +246,13 @@ class User_model extends CI_Model {
 
     public function getPlannedActivityDoctor() {
         $this->db->select('*');
-        $this->db->from('Activity_Planning dp');
+        $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
-        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
+//echo $this->db->last_query();
         return $query->result();
     }
 
@@ -660,7 +663,7 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function generateActivityTable($result = "") {
+    public function generateActivityTable($result = array(), $type = "") {
         $HTML = '';
         if ($this->Product_Id == 1) {
             $hospital = "Hospital";
@@ -668,15 +671,18 @@ class User_model extends CI_Model {
             $hospital = "Doctor";
         }
         $Activities = $this->getActivityList();
-        $result = $this->getActivityDoctor();
+
         if (!empty($result)) {
             $HTML = '<table class="table table-bordered">';
             $HTML .= '<tr>
                                 <th>
                                     ' . $hospital . ' Name
                                 </th>
-                                <th>Activity</th>
-                            </tr>';
+                                <th>Activity</th>';
+            if ($type == 'Reporting') {
+                $HTML .= '<th>Action</th>';
+            }
+            $HTML .= '</tr>';
             foreach ($result as $value) {
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
@@ -684,7 +690,31 @@ class User_model extends CI_Model {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
-                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $doctor->Doctor_Id . '" ></td><td><select class="form-control" name="Doctor_Id[]"><option value="">Select Activity</option>' . $ActivityList . '</select></td>';
+                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
+                if ($type == 'Reporting') {
+                    $HTML .= '<td><select class="form-control" readonly="readonly" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .='<td><div class="col-xs-8">
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span></label>    
+                        </div>
+                        <div class="toggle">
+                            <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span></label>
+                        </div>
+                    </div>
+                    <div id="heading' . $value->Account_ID . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Detail" placeholder="Activity Details"></textarea> </div> 
+                        </div> 
+                    </div>
+                    <div id="reason' . $value->Account_ID . '" class="custom-collapse " style="display: none">
+                        <div class="row row-margin-top">
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Reason" placeholder="Reason"></textarea> </div> 
+                        </div> 
+                    </div></td>';
+                } else {
+                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                }
+
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';

@@ -19,13 +19,7 @@
                     echo "Rx";
                 }
                 ?> For Jan 2016 : <b><?php echo isset($show4['target']) ? $show4['target'] : 0; ?></b></span><br>
-            <span class="pull-left">Balanced <?php
-                if ($this->Product_Id == '1') {
-                    echo "Vials";
-                } else {
-                    echo "Rx";
-                }
-                ?> To Plan For Jan 2016: <b></b></span>
+
             <span class="pull-right">
                 Sort By
                 <select class="form-control">
@@ -54,10 +48,52 @@
         <li class="table-view-cell">
             <br/>
             <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
-            <button type="submit" class="btn btn-positive">Submit</button>
+            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
 
     </ul>
 </div>
 </form>
+<script>
+    $("#Submit").click(function () {
+        $.ajax({
+            type: 'POST',
+            data: {'Table_Name': 'Rx_Actual'},
+            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
+            success: function (data) {
+                //alert(data);
+                if (data != '404') {
+                    alert('Data Submitted Successfully.');
+                }
+
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $(".val").keyup(function () {
+            RemainingBalance();
+        });
+
+    });
+
+    $(window).load(function () {
+        RemainingBalance();
+    });
+
+    function RemainingBalance() {
+        var finalval = 0;
+        $(".val").each(function () {
+            var actual = parseInt($(this).val(), 10) || 0;
+            finalval = parseInt(finalval, 10) + actual;
+        });
+
+        var grandTotal = $('.ck').val() - finalval;
+        $('.ckk').html(grandTotal);
+        if (grandTotal == 0) {
+            $("#Save").show();
+            $("#Submit").show();
+        }
+    }
+</script>

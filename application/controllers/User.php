@@ -310,14 +310,14 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-
-        $data['doctorList'] = $this->User_model->generateActivityTable();
+        $result = $this->User_model->getActivityDoctor();
+        $data['doctorList'] = $this->User_model->generateActivityTable($result);
 
         if ($this->input->post()) {
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                 $docid = $this->input->post('Doctor_Id');
-                $Activity = $this->input->post('Activity_id');
-                if (trim($Activity[$i]) != '') {
+                $Activity = $this->input->post('Activity_Id');
+                if (trim($Activity[$i]) != '-1') {
                     $data2 = array(
                         'Activity_Id' => $Activity[$i],
                         'Doctor_Id' => $docid[$i],
@@ -338,6 +338,7 @@ class User extends MY_Controller {
                     }
                 }
             }
+            redirect('User/ActivityPlanning', 'refresh');
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
         $this->load->view('template2', $data);
@@ -382,16 +383,6 @@ class User extends MY_Controller {
         } else {
             $this->logout();
         }
-    }
-
-    public function view_status() {
-        $data = array('title' => 'View_status', 'content' => 'User/view_status', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
-    }
-
-    public function rep_doc() {
-        $data = array('title' => 'Reporting Doctor', 'content' => 'User/reporting_doctor', 'view_data' => 'blank');
-        $this->load->view('template2', $data);
     }
 
     public function Reporting() {
@@ -468,24 +459,32 @@ class User extends MY_Controller {
 
     public function ActivityReporting() {
         $result = $this->User_model->getPlannedActivityDoctor();
-        $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
-        if ($this->input->get('Doctor_Id')) {
-            $data['ActiviyList'] = $this->User_model->getPlannedActivityList($this->input->get('Doctor_Id'));
-        }
+        $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
         if ($this->input->post()) {
-            foreach ($data['ActiviyList'] as $Activity) {
-                if ($this->input->post($Activity->Activity_id)) {
+            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
+                $docid = $this->input->post('Doctor_Id');
+                $Activity = $this->input->post('Activity_id');
+                if (trim($Activity[$i]) != '') {
                     $data2 = array(
-                        'Activity_Id' => $Activity->Activity_id,
-                        'Doctor_Id' => $this->input->post('Doctor_Id'),
+                        'Activity_Id' => $Activity[$i],
+                        'Doctor_Id' => $docid[$i],
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                        'Activity_Detail' => $this->input->post($this->VEEVA_Employee_ID . 'Detail'),
+                        'Reason' => $this->input->post($this->VEEVA_Employee_ID . 'Reason'),
                         'Product_Id' => $this->Product_Id,
-                        'Activity_detail' => $this->input->post($Activity->Activity_id . 'Detail'),
-                        'Reason' => $this->input->post($Activity->Activity_id . 'Reason'),
                         'created_at' => date('Y-m-d H:i:s'),
-                        'Status' => $this->input->post($Activity->Activity_id)
+                        'Status' => 'Draft'
                     );
-                    $this->db->insert('Activity_Planning', $data2);
+
+
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                        $data2['Product_Id'] = 4;
+                        $this->db->insert('Activity_Reporting', $data2);
+                        $data2['Product_Id'] = 6;
+                        $this->db->insert('Activity_Reporting', $data2);
+                    } else {
+                        $this->db->insert('Activity_Reporting', $data2);
+                    }
                 }
             }
         }
@@ -561,6 +560,14 @@ class User extends MY_Controller {
                 echo '404';
             }
         } elseif ($Table_Name == 'Rx_Planning') {
+            $data = array('Status' => 'Submitted');
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
+            if ($this->db->update($Table_Name, $data)) {
+                echo 'Success';
+            } else {
+                echo '404';
+            }
+        } elseif ($Table_Name == 'Rx_Actual') {
             $data = array('Status' => 'Submitted');
             $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID));
             if ($this->db->update($Table_Name, $data)) {
