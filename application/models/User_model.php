@@ -156,6 +156,8 @@ class User_model extends CI_Model {
             $data['Actual'] = $this->Actual_Rx_Count();
         }
 
+        $activity_planned = $this->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+        $prio_dr = $this->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
         $target = isset($data['show4']['target']) ? $data['show4']['target'] : 0;
         $Planned = isset($data['Planned']['Planned_Rx']) ? $data['Planned']['Planned_Rx'] : 0;
         $Actual = isset($data['Actual']['Actual_Rx']) ? $data['Actual']['Actual_Rx'] : 0;
@@ -202,7 +204,7 @@ class User_model extends CI_Model {
                             </a>
                             <div class="demo pull-right">
                                 <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 92px;position: absolute;margin-top: -46px;">30/100</span>
+                                <span style="margin-left: 92px;position: absolute;margin-top: -46px;">' . $activity_planned["activity_planned"] . '/' . $prio_dr["doctor_id"]. '</span>
                             </div>
                         </li>
                     </ul>
