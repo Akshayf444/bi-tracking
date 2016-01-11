@@ -9,6 +9,7 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
+<?php echo isset($message) ? $message : ''; ?>
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">

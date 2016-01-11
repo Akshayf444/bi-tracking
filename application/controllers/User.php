@@ -93,12 +93,10 @@ class User extends MY_Controller {
             $data = array();
             $result = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name');
-            if($this->Product_Id == '-1' || $this->Product_Id == ''){
-                $data['tab1']="";
-            }
-            else
-            {
-            $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
+            if ($this->Product_Id == '-1' || $this->Product_Id == '') {
+                $data['tab1'] = "";
+            } else {
+                $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
             }
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('Product_Id');
@@ -130,15 +128,15 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            if($current_month_planned['planned_rx']>0){
-            $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            if ($current_month_planned['planned_rx'] > 0) {
+                $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
             }
-            if($activity_planned ['activity_planned']>0){
-            $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
+            if ($activity_planned ['activity_planned'] > 0) {
+                $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
             }
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
-           
+
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -187,17 +185,15 @@ class User extends MY_Controller {
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (empty($check)) {
                 $this->User_model->Set_Target($data1);
-                 echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been saved successfully! Thank you!.');
+                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . $this->nextMonth . '' . $this->nextYear . ' has been saved successfully! Thank you!.','success');
                 redirect('User/Set_Target', 'refresh');
             } elseif ($check['Status'] == 'Draft') {
                 $this->User_model->Set_Target_update2($data1);
-               echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.$this->nextMonth.''. $this->nextYear .' has been set successfully! Thank you!');
+                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . $this->nextMonth . '' . $this->nextYear . ' has been set successfully! Thank you!','success');
 
                 redirect('User/Set_Target', 'refresh');
-            }else
-            {
-                echo $this->Master_Model->DisplayAlert('No of New Rx Targeted for '.date('M',  strtotime($this->nextMonth)).'  '. $this->nextYear .' is already submitted, cant overwrite it. Thank you!');
-
+            } else {
+                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!','danger');
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -222,6 +218,7 @@ class User extends MY_Controller {
         $data['month_ends'] = date('M', strtotime('-1 month'));
         $data['current_month'] = date('M');
         $data['Product_Id'] = $this->Product_Id;
+      
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
@@ -261,7 +258,7 @@ class User extends MY_Controller {
                         }
                     }
                 }
-                echo $this->Master_Model->DisplayAlert('Planning Data Added Successfully.');
+                echo $this->Master_Model->DisplayAlert('Planning Data Added Successfully.','success');
             }
             $current_month = $this->nextMonth;
             $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
@@ -294,7 +291,7 @@ class User extends MY_Controller {
                         $this->db->insert('Profiling', $_POST);
                         redirect('User/Profiling', 'refresh');
                     }
-                    echo $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.');
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.','success');
                 } elseif ($check['Status'] == 'Draft') {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
@@ -308,9 +305,9 @@ class User extends MY_Controller {
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                     }
-                    echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.');
+                    echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.','success');
                 } else {
-                    echo $this->Master_Model->DisplayAlert('Data Already Submitted.');
+                    echo $this->Master_Model->DisplayAlert('Data Already Submitted.','danger');
                 }
             }
 
@@ -370,11 +367,6 @@ class User extends MY_Controller {
             redirect('User/ActivityPlanning', 'refresh');
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
-        $this->load->view('template2', $data);
-    }
-
-    public function addRx() {
-        $data = array('title' => 'Report', 'content' => 'User/Report', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
 
@@ -597,7 +589,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Target') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {
@@ -605,7 +597,7 @@ class User extends MY_Controller {
             }
         } elseif ($Table_Name == 'Rx_Planning') {
             $data = array('Status' => 'Submitted');
-            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'month'=>  $this->nextMonth,'Year'=>  $this->nextYear));
+            $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
             if ($this->db->update($Table_Name, $data)) {
                 echo 'Success';
             } else {

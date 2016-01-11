@@ -221,28 +221,27 @@ echo form_open('User/Profiling', $attributes);
                     $("input[name='Patient_Rxbed_In_Month']").val(obj.Patient_Rxbed_In_Month);
                     $("input[name='Patient_Rxbed_In_Week']").val(obj.Patient_Rxbed_In_Week);
                     $("input[name='No_Of_Beds']").val(obj.No_Of_Beds);
-                    $("input[name='CT_MRI_available']").val(obj.CT_MRI_available);
 
                     if (obj.CT_MRI_available == 'Yes') {
-                        $("#CT_MRI_available_yes").attr('checked', true);
+                        $("#CT_MRI_available_yes").prop('checked', true);
                     } else if (obj.CT_MRI_available == 'No') {
-                        $("#CT_MRI_available_no").attr('checked', true);
+                        $("#CT_MRI_available_no").prop('checked', true);
                     }
 
                     if (obj.Win_Q1 == 'Yes') {
-                        $("#Win_Q1_yes").attr('checked', true);
+                        $("#Win_Q1_yes").prop('checked', true);
                     } else if (obj.Win_Q1 == 'No') {
-                        $("#Win_Q1_no").attr('checked', true);
+                        $("#Win_Q1_no").prop('checked', true);
                     }
                     if (obj.Win_Q2 == 'Yes') {
-                        $("#Win_Q2_yes").attr('checked', true);
+                        $("#Win_Q2_yes").prop('checked', true);
                     } else if (obj.Win_Q2 == 'No') {
-                        $("#Win_Q2_no").attr('checked', true);
+                        $("#Win_Q2_no").prop('checked', true);
                     }
                     if (obj.Win_Q3 == 'Yes') {
-                        $("#Win_Q3_yes").attr('checked', true);
+                        $("#Win_Q3_yes").prop('checked', true);
                     } else if (obj.Win_Q3 == 'No') {
-                        $("#Win_Q3_no").attr('checked', true);
+                        $("#Win_Q3_no").prop('checked', true);
                     }
 
                     $("input[name='Primary_indication']").each(function () {
@@ -250,10 +249,27 @@ echo form_open('User/Profiling', $attributes);
                             $(this).attr("selected", "selected");
                         }
                     });
+                } else {
+                    $("input[name='Patient_Seen']").val('');
+                    $("input[name='Patient_Seen_month']").val('');
+                    $("input[name='Patient_Rxbed_In_Month']").val('');
+                    $("input[name='Patient_Rxbed_In_Week']").val('');
+                    $("input[name='No_Of_Beds']").val('');
 
-                    if (obj.Status == 'Submitted') {
-                        $('#Save').attr('readonly', 'readonly');
-                    }
+                    $("#CT_MRI_available_yes").prop('checked', false);
+                    $("#CT_MRI_available_no").prop('checked', false);
+                    $("#Win_Q1_yes").prop('checked', false);
+                    $("#Win_Q1_no").prop('checked', false);
+                    $("#Win_Q2_yes").prop('checked', false);
+                    $("#Win_Q2_no").prop('checked', false);
+                    $("#Win_Q3_yes").prop('checked', false);
+                    $("#Win_Q3_no").prop('checked', false);
+
+                    $("input[name='Primary_indication']").each(function () {
+                        if ($(this).val() == obj.Primary_indication) {
+                            //$(this).attr("selected", "selected");
+                        }
+                    });
                 }
 
                 $('#loader').hide();

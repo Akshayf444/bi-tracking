@@ -12,8 +12,7 @@
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
-        
-
+        <script src='<?php echo asset_url() ?>js/jquery.bootstrap-growl.min.js' type='text/javascript'></script>
         <style>
             .form-control{
                 height: 32px;
@@ -105,6 +104,7 @@
             }
         </script>
         <div class="content" style="padding-right: 0px;padding-left: 0px">
+            
             <?php $this->load->view($content, $view_data); ?>
         </div>
 
