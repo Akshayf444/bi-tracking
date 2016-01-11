@@ -233,11 +233,15 @@ class User_model extends CI_Model {
     }
 
     public function getActivityDoctor() {
-        $this->db->select('*');
+        $this->db->select('Distinct(dp.Doctor_Id) As Doctor_Id,*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
-        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            $this->db->where(array('dp.Product_Id' => 4, 'dp.Product_Id' => 6, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        } else {
+            $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
 //echo $this->db->last_query();
@@ -726,6 +730,22 @@ class User_model extends CI_Model {
     function ReportingExist($Doctor_Id = "") {
         $this->db->select('*');
         $this->db->from('Rx_Actual');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function ActivityReportingExist($Doctor_Id = "") {
+        $this->db->select('*');
+        $this->db->from('Activity_Reporting');
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function ActivityPlanned($Doctor_Id = "") {
+        $this->db->select('*');
+        $this->db->from('Activity_Planning');
         $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
         $query = $this->db->get();
         return $query->row();

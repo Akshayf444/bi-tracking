@@ -324,17 +324,31 @@ class User extends MY_Controller {
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                         'Product_Id' => $this->Product_Id,
                         'created_at' => date('Y-m-d H:i:s'),
-                        'Status' => 'Draft'
+                        'Status' => 'Draft',
+                        'Year' => $this->nextYear,
+                        'month' => $this->nextMonth
                     );
 
-
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-                        $data2['Product_Id'] = 4;
-                        $this->db->insert('Activity_Planning', $data2);
-                        $data2['Product_Id'] = 6;
-                        $this->db->insert('Activity_Planning', $data2);
-                    } else {
-                        $this->db->insert('Activity_Planning', $data2);
+                    $result = $this->User_model->ActivityPlanned($docid[$i]);
+                    if (empty($result)) {
+                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                            $data2['Product_Id'] = 4;
+                            $this->db->insert('Activity_Planning', $data2);
+                            $data2['Product_Id'] = 6;
+                            $this->db->insert('Activity_Planning', $data2);
+                        } else {
+                            $this->db->insert('Activity_Planning', $data2);
+                        }
+                    } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Planning', $data2);
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Planning', $data2);
+                        } else {
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Planning', $data2);
+                        }
                     }
                 }
             }
@@ -463,8 +477,8 @@ class User extends MY_Controller {
         if ($this->input->post()) {
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                 $docid = $this->input->post('Doctor_Id');
-                $Activity = $this->input->post('Activity_id');
-                if (trim($Activity[$i]) != '') {
+                $Activity = $this->input->post('Activity_Id');
+                if (trim($Activity[$i]) != '-1') {
                     $data2 = array(
                         'Activity_Id' => $Activity[$i],
                         'Doctor_Id' => $docid[$i],
@@ -472,18 +486,33 @@ class User extends MY_Controller {
                         'Activity_Detail' => $this->input->post($this->VEEVA_Employee_ID . 'Detail'),
                         'Reason' => $this->input->post($this->VEEVA_Employee_ID . 'Reason'),
                         'Product_Id' => $this->Product_Id,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'Status' => 'Draft'
+                        'Status' => 'Draft',
+                        'Year' => $this->nextYear,
+                        'month' => $this->nextMonth
                     );
 
-
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-                        $data2['Product_Id'] = 4;
-                        $this->db->insert('Activity_Reporting', $data2);
-                        $data2['Product_Id'] = 6;
-                        $this->db->insert('Activity_Reporting', $data2);
-                    } else {
-                        $this->db->insert('Activity_Reporting', $data2);
+                    $result = $this->User_model->ActivityReportingExist($docid[$i]);
+                    if (empty($result)) {
+                        $data2['created_at'] = date('Y-m-d H:i:s');
+                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                            $data2['Product_Id'] = 4;
+                            $this->db->insert('Activity_Reporting', $data2);
+                            $data2['Product_Id'] = 6;
+                            $this->db->insert('Activity_Reporting', $data2);
+                        } else {
+                            $this->db->insert('Activity_Reporting', $data2);
+                        }
+                    } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                        $data2['updated_at'] = date('Y-m-d H:i:s');
+                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Reporting', $data2);
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Reporting', $data2);
+                        } else {
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                            $this->db->update('Activity_Reporting', $data2);
+                        }
                     }
                 }
             }
