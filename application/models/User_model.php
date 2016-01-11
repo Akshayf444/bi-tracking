@@ -662,7 +662,12 @@ class User_model extends CI_Model {
     public function prio_dr($VEEVA_Employee_ID, $Product_id) {
         $this->db->select('COUNT(`Doctor_Id`) AS doctor_id');
         $this->db->from('`Actual_Doctor_Priority`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        if ($this->Product_Id == 4 && $this->Product_Id == 6) {
+            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => 4, 'Product_Id' => 6));
+        } else {
+            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        }
+
         $query = $this->db->get();
         return $query->row_array();
     }

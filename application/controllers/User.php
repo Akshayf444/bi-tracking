@@ -261,8 +261,6 @@ class User extends MY_Controller {
         }
     }
 
-    /*     * ************* Almost Completed ****************** */
-
     public function Profiling() {
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
