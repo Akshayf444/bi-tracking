@@ -8,10 +8,11 @@ class Admin extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
-         $this->load->library('Csvimport');
+        $this->load->library('Csvimport');
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
+
 //       $this->ADMIN_ID= $this->session->set_userdata('admin_id', $validadmin['admin_id']);
     }
 
@@ -34,21 +35,32 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-         
-        
+        $data['show'] = $this->admin_model->count();
+        $data['plan'] = $this->admin_model->count_planned();
+        $data['achive'] = $this->admin_model->count_achive();
+        $DoctorClass = array('A', 'B', 'A++', 'A+', 'Z');
+        foreach ($DoctorClass as $value) {
+            $class = $value;
+            $data['Count'] = $this->admin_model->count_doc($class);
+           
+            $dataString = "['" . $class . "'," . $data . "]";
+
+            $myurl[] = $dataString;
+        }
+        $data['count_doc'] = $this->admin_model->count_doc();
 
 
-
-$data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Admin', 'view_data' => 'blank');
+        $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
         $this->load->view('template3', $data);
 //        }
     }
- public function emp_view(){
-      $data['show'] = $this->admin_model->emp_view();
-        $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+
+    public function emp_view() {
+        $data['show'] = $this->admin_model->emp_view();
+        $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
-    
- }
+    }
+
     public function logout() {
         redirect('admin/index', 'refresh');
     }
@@ -97,7 +109,7 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
         $data['region'] = $this->Master_Model->generateDropdown($result, 'Region', 'Region');
         $result = $this->admin_model->find_Designation();
         $data['Designation'] = $this->Master_Model->generateDropdown($result, 'Designation', 'Designation');
-        $data = array('title' => 'Login', 'content' => 'admin/emp_add', 'view_data' => $data);
+        $data = array('title' => 'Add Employee', 'content' => 'admin/emp_add', 'page_title' => 'Add Employee', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -145,23 +157,22 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
                 'Status' => '1',
             );
             $this->admin_model->update_emp($empid, $data);
-            redirect('admin/update_emp', 'refresh');
+            redirect('admin/emp_view', 'refresh');
         }
 
 
-        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
+        $data = array('title' => 'Update Employee', 'content' => 'admin/update_emp', 'page_title' => 'Update Employee', 'view_data' => $data);
         $this->load->view('template3', $data);
 
 //        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
 //        $this->load->view('admin/update_emp', $data);
-
     }
 
     public function emp_del() {
         $id = $_GET['id'];
         $data = array('status' => 0);
         $this->admin_model->del_emp($id, $data);
-        redirect('admin/dashboard', 'refresh');
+        redirect('admin/ emp_view', 'refresh');
     }
 
     public function edit() {
@@ -201,7 +212,7 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
 
     public function view_activity() {
         $data['show'] = $this->admin_model->view_activity();
-        $data = array('title' => 'Login', 'content' => 'admin/activity_view', 'page_title' => 'Activity Master', 'view_data' => $data);
+        $data = array('title' => 'View_Activity', 'content' => 'admin/activity_view', 'page_title' => 'Activity Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -250,17 +261,21 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
                 'updated_at' => date('Y-m-d'),
             );
             $this->admin_model->update_act($actid, $data);
-            redirect('admin/update_act', 'refresh');
+            redirect('admin/view_activity', 'refresh');
         }
 
-        $data = array('title' => 'Login', 'content' => 'admin/update_activity', 'page_title' => 'Update Activity', 'view_data' => $data);
+        $data = array('title' => 'Upadte Activity', 'content' => 'admin/update_activity', 'page_title' => 'Update Activity', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
     public function profile_view() {
+        if (isset($_POST['tab1'])) {
+            $this->load->admin_model->Tab1();
+            redirect('admin/profile_view', 'refresh');
+        }
         $data['show'] = $this->admin_model->view_profile_controller();
 
-        $data = array('title' => 'Login', 'content' => 'admin/profile_controller', 'view_data' => $data);
+        $data = array('title' => 'Control Access', 'content' => 'admin/profile_controller', 'page_title' => 'Control Access', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -296,7 +311,7 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
     public function doc_view() {
         $data['show'] = $this->admin_model->doc_view();
 
-        $data = array('title' => 'Login', 'content' => 'admin/doctor_view', 'page_title' => 'Doctor Master', 'view_data' => $data);
+        $data = array('title' => 'Doctor', 'content' => 'admin/doctor_view', 'page_title' => 'Doctor Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -354,90 +369,198 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
     }
 
     public function emp_csv() {
-        $data = array('title' => 'View_Employee', 'content' => 'admin/add_emp', 'view_data' => 'blank');
+        $data = array('title' => 'View_Employee', 'content' => 'admin/emp_csv', 'page_title' => 'Import FILES', 'view_data' => 'blank');
         $this->load->view('template3', $data);
 
         if ($this->input->post()) {
+
             $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            $count = 0;
             while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
-                $data = array(
-                    'VEEVA_Employee_ID' => $row['0'],
-                    'Local_Employee_ID' => $row['1'],
-                    'First_Name' => $row['2'],
-                    'Middle_Name' => $row['3'],
-                    'Last_Name' => $row['4'],
-                    'Full_Name' => $row['5'],
-                    'Territory' => $row['6'],
-                    'Gender' => $row['7'],
-                    'Mobile' => $row['8'],
-                    'Email_ID' => $row['9'],
-                    'Username' => $row['10'],
-                    'Password' => $row['11'],
-                    'Last_Login' => $row['12'],
-                    'Address_1' => $row['13'],
-                    'Address_2' => $row['14'],
-                    'City' => $row['15'],
-                    'State' => $row['16'],
-                    'Division' => $row['17'],
-                    'Product' => $row['18'],
-                    'Zone' => $row['19'],
-                    'Region' => $row['20'],
-                    'Profile' => $row['21'],
-                    'Designation' => $row['22'],
-                    'Created_By' => $row['23'],
-                    'created_date' => date('Y-m-d'),
-                    'Modified_By' => $row['25'],
-                    'Modified_Date' => $row['26'],
-                    'Date_of_Joining' => $row['27'],
-                    'DOB' => $row['28'],
-                    'Reporting_To' => $row['29'],
-                    'Reporting_VEEVA_ID' => $row['30'],
-                    'Reporting_Local_ID' => $row['31'],
-                    'Status' => $row['32'],
-                );
-                //insert csv data into mysql table
-                $sql = $this->admin_model->insert_csv($data);
+
+
+                $count++;
+                if ($count == 1) {
+                    continue;
+                }
+                $firstline = true;
+                $check['show'] = $this->admin_model->emp_duplicate($row['0']);
+//                var_dump($check);
+                if (!empty($check) && $check != '') {
+                    $data = array(
+                        'VEEVA_Employee_ID' => $row['0'],
+                        'Local_Employee_ID' => $row['1'],
+                        'First_Name' => $row['2'],
+                        'Middle_Name' => $row['3'],
+                        'Last_Name' => $row['4'],
+                        'Full_Name' => $row['5'],
+                        'Territory' => $row['6'],
+                        'Gender' => $row['7'],
+                        'Mobile' => $row['8'],
+                        'Email_ID' => $row['9'],
+                        'Username' => $row['10'],
+                        'Password' => $row['11'],
+                        'Last_Login' => $row['12'],
+                        'Address_1' => $row['13'],
+                        'Address_2' => $row['14'],
+                        'City' => $row['15'],
+                        'State' => $row['16'],
+                        'Division' => $row['17'],
+                        'Product' => $row['18'],
+                        'Zone' => $row['19'],
+                        'Region' => $row['20'],
+                        'Profile' => $row['21'],
+                        'Designation' => $row['22'],
+                        'Created_By' => $row['23'],
+                        'created_date' => date('Y-m-d'),
+                        'Modified_By' => $row['25'],
+                        'Modified_Date' => $row['26'],
+                        'Date_of_Joining' => $row['27'],
+                        'DOB' => $row['28'],
+                        'Reporting_To' => $row['29'],
+                        'Reporting_VEEVA_ID' => $row['30'],
+                        'Reporting_Local_ID' => $row['31'],
+                        'Status' => 1,
+                    );
+
+                    $sql = $this->admin_model->insert_csv($data);
+                }
+
+
+//insert csv data into mysql table
             }
         }
     }
 
+//
     public function doc_csv() {
-        $data = array('title' => 'Doctor_view', 'content' => 'admin/add_emp', 'view_data' => 'blank');
+        $data = array('title' => 'Import ', 'content' => 'admin/emp_csv', 'page_title' => 'Import csv', 'view_data' => 'blank');
         $this->load->view('template3', $data);
 
         if ($this->input->post()) {
             $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            $count = 0;
             while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
-                $data = array(
-                    'Account_ID' => $row['0'],
-                    'Salutation' => $row['1'],
-                    'First_Name' => $row['2'],
-                    'Last_Name' => $row['3'],
-                    'Account_Name' => $row['4'],
-                    'Specialty' => $row['5'],
-                    'Specialty_2' => $row['6'],
-                    'Specialty_3' => $row['7'],
-                    'Specialty_4' => $row['8'],
-                    'Individual_Type' => $row['9'],
-                    'Email' => $row['10'],
-                    'Gender' => $row['11'],
-                    'Mobile' => $row['12'],
-                    'Status' => $row['13'],
-                    'Created_Date' => $row['14'],
-                    'Created_By' => $row['15'],
-                    'Modified_Date' => $row['16'],
-                    'Modified_By' => $row['17'],
-                    'City' => $row['18'],
-                    'State' => $row['19'],
-                    'Pin_Code' => $row['20'],
-                    'Address' => $row['21'],
-                    'Designation' => $row['22'],
-                    
-                );
-                //insert csv data into mysql table
-                $sql = $this->admin_model->insert_csv($data);
+                $count++;
+                if ($count == 1) {
+                    continue;
+                }
+                $check['show'] = $this->admin_model->emp_duplicate($row['0']);
+//                var_dump($check);
+//                echo $row['0'];
+                if (!empty($check) && $check != '') {
+                    $data = array(
+                        'Account_ID' => $row['0'],
+                        'Salutation' => $row['1'],
+                        'First_Name' => $row['2'],
+                        'Last_Name' => $row['3'],
+                        'Account_Name' => $row['4'],
+                        'Specialty' => $row['5'],
+                        'Specialty_2' => $row['6'],
+                        'Specialty_3' => $row['7'],
+                        'Specialty_4' => $row['8'],
+                        'Individual_Type' => $row['9'],
+                        'Email' => $row['10'],
+                        'Gender' => $row['11'],
+                        'Mobile' => $row['12'],
+                        'Status' => $row['13'],
+                        'Created_Date' => $row['14'],
+                        'Created_By' => $row['15'],
+                        'Modified_Date' => $row['16'],
+                        'Modified_By' => $row['17'],
+                        'City' => $row['18'],
+                        'State' => $row['19'],
+                        'Pin_Code' => $row['20'],
+                        'Address' => $row['21'],
+                    );
+//insert csv data into mysql table
+                    $sql = $this->admin_model->insert_csv_doc($data);
+                }
             }
         }
+    }
+
+    public function add_doc() {
+        if ($_POST) {
+            $data = array(
+                'Account_ID' => $row['0'],
+                'Salutation' => $row['1'],
+                'First_Name' => $row['2'],
+                'Last_Name' => $row['3'],
+                'Account_Name' => $row['4'],
+                'Specialty' => $row['5'],
+                'Specialty_2' => $row['6'],
+                'Specialty_3' => $row['7'],
+                'Specialty_4' => $row['8'],
+                'Individual_Type' => $row['9'],
+                'Email' => $row['10'],
+                'Gender' => $row['11'],
+                'Mobile' => $row['12'],
+                'Status' => $row['13'],
+                'Created_Date' => $row['14'],
+                'Created_By' => $row['15'],
+                'Modified_Date' => $row['16'],
+                'Modified_By' => $row['17'],
+                'City' => $row['18'],
+                'State' => $row['19'],
+                'Pin_Code' => $row['20'],
+                'Address' => $row['21'],
+            );
+            $this->admin_model->insert_activity($data);
+            redirect('admin/view_activity', 'refresh');
+        }
+
+        $data = array('title' => 'Login', 'content' => 'admin/', 'page_title' => 'Add Activity', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function doc_del() {
+        $id = $_GET['id'];
+        $data = array('status' => 0);
+        $this->admin_model->del_act($id, $data);
+        redirect('admin/doc_view', 'refresh');
+    }
+
+    public function update_doc() {
+        $id = $_GET['id'];
+        $data['rows'] = $this->admin_model->find_by_docid($id);
+        if ($this->input->post()) {
+            $actid = $this->input->post('Act_id');
+            $data = array(
+                'Account_ID' => $this->input->post('Account_ID'),
+                'Salutation' => $this->input->post('Salutation'),
+                'First_Name' => $this->input->post('First_Name'),
+                'Last_Name' => $this->input->post('Last_Name'),
+                'Account_Name' => $this->input->post('Account_Name'),
+                'Specialty' => $this->input->post('Specialty'),
+                'Specialty_2' => $this->input->post('Specialty_2'),
+                'Specialty_3' => $this->input->post('Specialty_3'),
+                'Specialty_4' => $this->input->post('Specialty_4'),
+                'Individual_Type' => $this->input->post('Individual_Type'),
+                'Email' => $this->input->post('Email'),
+                'Gender' => $this->input->post('Gender'),
+                'Mobile' => $this->input->post('Mobile'),
+                'Status' => $this->input->post('Status'),
+                'Created_Date' => $this->input->post('Activity_Name'),
+                'Created_By' => $this->input->post('Activity_Name'),
+                'Modified_Date' => $this->input->post('Activity_Name'),
+                'Modified_By' => $this->input->post('Activity_Name'),
+                'City' => $this->input->post('City'),
+                'State' => $this->input->post('State'),
+                'Pin_Code' => $this->input->post('Pin_Code'),
+                'Address' => $this->input->post('Address'),
+            );
+
+            $this->admin_model->update_act($actid, $data);
+            redirect('admin/update_act', 'refresh');
+        }
+
+        $data = array('title' => 'Upadte Activity', 'content' => 'admin/', 'page_title' => 'Update Activity', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function control_access() {
+        
     }
 
 }

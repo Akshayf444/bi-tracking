@@ -1,3 +1,8 @@
+<?php
+$myurl3[] = $plan;
+$myurl4[] = $plan;
+
+?>
 <div class="row">
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-primary">
@@ -7,7 +12,12 @@
                         <i class="fa fa-comments fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"> <?php echo  77 ; ?></div>
+                        <div class="huge"> <?php
+                       
+        if (!empty($show)) {
+           
+
+                        echo $show['COUNT'] ;} ?></div>
                         <div>Total Doctors</div>
                     </div>
                 </div>
@@ -51,7 +61,7 @@
                         <i class="fa fa-shopping-cart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><?php echo  77 ; ?></div>
+                        <div class="huge"><?php    echo $plan['TOTAL']  ; ?></div>
                         <div>Planned Till Date </div>
                     </div>
                 </div>
@@ -73,10 +83,9 @@
                         <i class="fa fa-support fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><?php
-//                            $Activity = zone::count_by_bm_zoneid($zone_id);
-                            echo  77 ;
-                            ?></div>
+                        <div class="huge">                       <?php    echo $achive['TOTAL']  ; ?>
+                           
+                           </div>
                         <div>Achievement Till Date</div>
                     </div>
                 </div>
@@ -321,8 +330,10 @@
                 text: 'Monthly Business'
             },
             xAxis: {
-                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    
+                 
             },
             yAxis: {
                 title: {
@@ -351,7 +362,7 @@
              series: [{
                         name: 'Planned',
                       
-                        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        data: [<?php echo join(",", $plan); ?>]
                     }, {
                         color: ' #5cb85c',
                         data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
@@ -403,6 +414,7 @@
                 }]
         });
     });
+    
 
 
 
