@@ -8,7 +8,12 @@
     .table-view-cell {
         padding: 11px 12px 11px 15px;
     }
+
+    #datatable_filter{
+        display: none;
+    }
 </style>
+<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
 <script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <div class="card">
@@ -30,11 +35,12 @@
                 ?> To Plan For Jan 2016: <b class="ckk"></b></span>
             <span class="pull-right">
                 Sort By
-                <select class="form-control">
-                    <option>Winability</option>
-                    <option>Dependency/Rx For Last Month</option>
-                    <option>BI Market Share</option>
-                    <option>Planned <?php
+                <select class="form-control" id="TableSort">
+                    <option value="1">Select Filter</option>
+                    <option value="1">Winability</option>
+                    <option value="2">Dependency/Rx For Last Month</option>
+                    <option value="3">BI Market Share</option>
+                    <option value="4">Planned <?php
                         if ($this->Product_Id == '1') {
                             echo "Vials";
                         } else {
@@ -65,19 +71,32 @@ echo form_open('User/Planning', $attributes);
     </div>
 </div>
 </form>
+<style>
+    table.dataTable tbody tr {
+        background-color: transparent;
+    }
+</style>
 <script>
+
 
     $(document).ready(function () {
         $(".val").keyup(function () {
             RemainingBalance();
         });
 
-        $('#datatable').dataTable({
+        var oTable = $('#datatable').dataTable({
             "bPaginate": false,
-            "bInfo": false
+            "bInfo": false,
+            "info": false
         });
+        $('#TableSort').on('change', function () {
+            var selectedValue = $(this).val();
 
+            oTable.fnFilter("^" + selectedValue + "$", 0, true); //Exact value, column, reg
+        });
     });
+
+
 
     $(window).load(function () {
         RemainingBalance();
