@@ -130,8 +130,12 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
+            if($current_month_planned['planned_rx']>0){
             $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            }
+            if($activity_planned ['activity_planned']>0){
             $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
+            }
             $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
