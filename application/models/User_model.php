@@ -233,7 +233,7 @@ class User_model extends CI_Model {
     }
 
     public function getActivityDoctor() {
-        $this->db->select('Distinct(dp.Doctor_Id) As Doctor_Id,*');
+        $this->db->select('Distinct(dp.Doctor_Id) As Doctor_Id,dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
@@ -318,27 +318,26 @@ class User_model extends CI_Model {
                 $hospital = "Doctor";
             }
 
-            $html .= '<table class="table table-bordered datatable" id="keywords" class="tablesorter">
+            $html .= '<table class="table table-bordered" id="datatable">
                 <thead>
-    <tr>
-        <th>' . $hospital . ' List</th>';
-            if ($type == 'Planning') {
-                $html .= '<th>Winability</th><th>Dependency</th>
-        <th>BI Market Share</th>';
-            }
+                <tr>
+                    <th>' . $hospital . ' List</th>';
+                    if ($type == 'Planning') {
+                        $html .= '<th>Winability</th><th>Dependency</th>
+                            <th>BI Market Share</th>';
+                    }
 
-            $html .= '
-        <th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
-        <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
-        <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
-        <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
-            if ($type == 'Planning') {
-                $html .= '</tr></thead>';
-            } elseif ($type == 'Actual') {
-                $html .= '<th>Actual</th></tr></thead>';
-            } else {
-                $html .= '</tr></thead>';
-            }
+                    $html .= '<th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
+                            <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
+                            <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
+                            <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
+                    if ($type == 'Planning') {
+                        $html .= '</tr></thead><tbody>';
+                    } elseif ($type == 'Actual') {
+                        $html .= '<th>Actual</th></tr></thead><tbody>';
+                    } else {
+                        $html .= '</tr></thead><tbody>';
+                    }
 
 
             $month = date('n', strtotime('-1 month'));
@@ -373,30 +372,29 @@ class User_model extends CI_Model {
                     }
 
                     if ($priority == 'true') {
-                        $html .= '<tbody><tr>
-                <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
+                        $html .= '<tr>
+                        <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
                     } else {
-                        $html .= '<tbody><tr>
-                <td><a >' . $doctor->Account_Name . '</a>';
+                        $html .= '<tr>
+                        <td><a >' . $doctor->Account_Name . '</a>';
                     }
+                    
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td>' . $winability . '</td><td><a class = "control-item">' . $dependancy . '%</a></td>
-                <td><a class = "control-item">' . $BI_Share . '</a></td>';
+                                   <td><a class = "control-item">' . $BI_Share . '</a></td>';
                     }
 
-                    $html .= '
-                <td><a class = "control-item">' . $month1rx . '</a></td>
-                <td><a class = "control-item">' . $month2rx . '</a></td>
-                <td> <a class = "control-item">' . $month3rx . '</a></td>';
+                    $html .='<td><a class = "control-item">' . $month1rx . '</a></td>
+                            <td><a class = "control-item">' . $month2rx . '</a></td>
+                            <td> <a class = "control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td> <input name = "value[]" class = "val" type = "text" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td style = "display:none"> <a class = "control-item" ></a></td>
-                </tr>';
+                                </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
-                </tr>';
+                                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
+                                </tr>';
                     }
                 }
             }

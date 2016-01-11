@@ -1,6 +1,3 @@
-
-
-
 <style>
     .table-view .table-view-cell {
         background-position: 0px 100%;
@@ -12,6 +9,8 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
+<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>
+<script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
@@ -55,10 +54,8 @@ echo form_open('User/Planning', $attributes);
     <div class="panel panel-default">
         <div class="panel-heading">Planning</div>
         <div class="panel-body">
-                <?php echo isset($doctorList) ? $doctorList : '' ?>
-           
+            <?php echo isset($doctorList) ? $doctorList : '' ?>
         </div>
-
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
             <button type="submit" id="Save" style="display:none" class="btn btn-primary">Save</button>
@@ -68,18 +65,16 @@ echo form_open('User/Planning', $attributes);
     </div>
 </div>
 </form>
-<script src="<?php echo asset_url() ?>Stupid-Table-Plugin-master/stupidtable.js" type="text/javascript"></script>
-<script src="<?php echo asset_url() ?>js/jquery.tablesorter.min.js" type="text/javascript"></script>
 <script>
 
     $(document).ready(function () {
-
-
-
-
-
         $(".val").keyup(function () {
             RemainingBalance();
+        });
+
+        $('#datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false
         });
 
     });
@@ -99,6 +94,9 @@ echo form_open('User/Planning', $attributes);
         if (grandTotal == 0) {
             $("#Save").show();
             $("#Submit").show();
+        } else {
+            $("#Save").hide();
+            $("#Submit").hide();
         }
     }
 
@@ -124,11 +122,4 @@ echo form_open('User/Planning', $attributes);
     });
 
 
-</script>
-<script>
-    $(document).ready(function () {
-
-       $('#keywords').tablesorter(); 
-    })
-    ;
 </script>
