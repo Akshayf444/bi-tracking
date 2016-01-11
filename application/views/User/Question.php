@@ -46,9 +46,6 @@
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-
-
-
 <?php
 $attributes = array('id' => 'form1', 'name' => 'myform', 'onsubmit' => 'return validateform()');
 echo validation_errors();

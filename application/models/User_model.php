@@ -758,6 +758,7 @@ class User_model extends CI_Model {
 
     function SaveReporting($data = array()) {
         $this->db->insert('Rx_Actual', $data);
+        return $this->db->insert_id();
     }
 
 }

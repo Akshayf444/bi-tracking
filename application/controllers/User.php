@@ -185,15 +185,15 @@ class User extends MY_Controller {
             $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             if (empty($check)) {
                 $this->User_model->Set_Target($data1);
-                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . $this->nextMonth . '' . $this->nextYear . ' has been saved successfully! Thank you!.','success');
+                $data['message'] = $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success');
                 redirect('User/Set_Target', 'refresh');
             } elseif ($check['Status'] == 'Draft') {
                 $this->User_model->Set_Target_update2($data1);
-                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . $this->nextMonth . '' . $this->nextYear . ' has been set successfully! Thank you!','success');
+                $data['message'] = $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success');
 
                 redirect('User/Set_Target', 'refresh');
             } else {
-                $data['message'] =  $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!','danger');
+                $data['message'] = $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!', 'danger');
             }
         }
         $month_start = date('n', strtotime('-4 month'));
@@ -218,12 +218,13 @@ class User extends MY_Controller {
         $data['month_ends'] = date('M', strtotime('-1 month'));
         $data['current_month'] = date('M');
         $data['Product_Id'] = $this->Product_Id;
-      
+
         $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
     public function Planning() {
+        $messages = array();
         if ($this->is_logged_in()) {
             $data['doctorList'] = $this->User_model->generatePlanningTab();
             // echo($data['doctorList']);
@@ -250,16 +251,25 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                             'Planning_Status' => 'Draft'
                         );
-                        $this->User_model->Save_Planning($doc);
+                        if ($this->User_model->Save_Planning($doc)) {
+                            array_push($this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+                        }
                     } else {
                         if (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
-                            $this->db->update('Rx_Planning', $data);
+                            if ($this->db->update('Rx_Planning', $data)) {
+                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
+                            }
+                        } else {
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Submitted ! Thank you!.', 'success'));
                         }
                     }
                 }
-                echo $this->Master_Model->DisplayAlert('Planning Data Added Successfully.','success');
             }
+            if (!empty($messages)) {
+                $data['message'] = array_unique($messages);
+            }
+
             $current_month = $this->nextMonth;
             $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
@@ -271,6 +281,7 @@ class User extends MY_Controller {
     }
 
     public function Profiling() {
+        $messages = array();
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
 
@@ -286,12 +297,15 @@ class User extends MY_Controller {
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 6;
                         $this->db->insert('Profiling', $_POST);
+                        $data['message'] = $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.', 'success');
+
                         redirect('User/Profiling', 'refresh');
                     } else {
                         $this->db->insert('Profiling', $_POST);
+                        $data['message'] = $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.', 'success');
+
                         redirect('User/Profiling', 'refresh');
                     }
-                    echo $this->Master_Model->DisplayAlert('Doctor Profile Added Successfully.','success');
                 } elseif ($check['Status'] == 'Draft') {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
@@ -301,13 +315,14 @@ class User extends MY_Controller {
                         $_POST['Product_id'] = 6;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
+                        $data['message'] = $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.', 'success');
                     } else {
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
+                        $data['message'] = $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.', 'success');
                     }
-                    echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.','success');
                 } else {
-                    echo $this->Master_Model->DisplayAlert('Data Already Submitted.','danger');
+                    $data['message'] = $this->Master_Model->DisplayAlert('Data Already Submitted.', 'danger');
                 }
             }
 
@@ -322,6 +337,7 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
+        $messages = array();
         $result = $this->User_model->getActivityDoctor();
         $data['doctorList'] = $this->User_model->generateActivityTable($result);
 
@@ -348,8 +364,10 @@ class User extends MY_Controller {
                             $this->db->insert('Activity_Planning', $data2);
                             $data2['Product_Id'] = 6;
                             $this->db->insert('Activity_Planning', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Planned Successfully.', 'success'));
                         } else {
                             $this->db->insert('Activity_Planning', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Planned Successfully.', 'success'));
                         }
                     } elseif (isset($result->Status) && $result->Status == 'Draft') {
                         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
@@ -357,12 +375,19 @@ class User extends MY_Controller {
                             $this->db->update('Activity_Planning', $data2);
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                             $this->db->update('Activity_Planning', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Updated Successfully.', 'success'));
                         } else {
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                             $this->db->update('Activity_Planning', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Updated Successfully.', 'success'));
                         }
+                    } elseif (isset($result->Status) && $result->Status == 'Submitted') {
+                        array_push($messages, $this->Master_Model->DisplayAlert('Data Already Submitted.', 'danger'));
                     }
                 }
+            }
+            if (!empty($messages)) {
+                $data['message'] = array_unique($messages);
             }
             redirect('User/ActivityPlanning', 'refresh');
         }
@@ -407,6 +432,7 @@ class User extends MY_Controller {
     }
 
     public function Reporting() {
+        $messges = array();
         if ($this->is_logged_in()) {
             $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
             if ($this->input->post()) {
@@ -428,14 +454,22 @@ class User extends MY_Controller {
                             'Doctor_Id' => $doc_id[$i],
                             'Status' => 'Draft'
                         );
-                        $this->User_model->SaveReporting($doc);
+                        if ($this->User_model->SaveReporting($doc)) {
+                            array_push($messges, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
+                        }
                     } else {
                         if (isset($result->Status) && $result->Status == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                             $this->db->update('Rx_Actual', $data);
+                            array_push($messges, $this->Master_Model->DisplayAlert('Reporting Data Updated Successfully.', 'success'));
+                        } elseif (isset($result->Status) && $result->Status == 'Submitted') {
+                            array_push($messges, $this->Master_Model->DisplayAlert('Reporting Already Submitted.', 'danger'));
                         }
                     }
                 }
+            }
+            if (!empty($messages)) {
+                $data['message'] = array_unique($messages);
             }
             //echo $data['doctorList'] ;
             $current_month = date('n');
