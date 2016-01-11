@@ -294,6 +294,8 @@ class User extends MY_Controller {
                         $this->db->update('Profiling', $_POST);
                     }
                     echo $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.');
+                } else {
+                    echo $this->Master_Model->DisplayAlert('Data Already Submitted.');
                 }
             }
 
@@ -308,9 +310,9 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-        $data['doctorList'] = $this->User_model->getActivityDoctor();
-        $result = $this->User_model->getActivityList();
-        $data['ActivityList'] = $this->Master_Model->generateDropdown($result, 'Activity_id', 'Activity_Name');
+
+        $data['doctorList'] = $this->User_model->generateActivityTable();
+
         if ($this->input->post()) {
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                 $docid = $this->input->post('Doctor_Id');
@@ -324,6 +326,8 @@ class User extends MY_Controller {
                         'created_at' => date('Y-m-d H:i:s'),
                         'Status' => 'Draft'
                     );
+
+
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $data2['Product_Id'] = 4;
                         $this->db->insert('Activity_Planning', $data2);
@@ -397,17 +401,28 @@ class User extends MY_Controller {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
                     $value = $this->input->post('value');
                     $doc_id = $this->input->post('doc_id');
-                    $doc_id = $doc_id[$i];
-                    $current_date = date('Y-m-d');
-                    $next_date = date('M');
-
-                    $doc = array(
-                        'Actual_Rx' => $value[$i],
-                        $next_date => $value[$i],
-                        'Actual_Created' => date('Y-m-d H:i:s'),
-                    );
-
-                    $this->User_model->Save_Planning_prescription($doc, $this->VEEVA_Employee_ID, $doc_id, $this->Product_Id, $this->nextMonth, $this->nextYear);
+                    $result = $this->User_model->ReportingExist($doc_id[$i]);
+                    if (empty($result)) {
+                        $current_date = date('Y-m-d');
+                        $next_date = date('M');
+                        $doc = array(
+                            'Actual_Rx' => $value[$i],
+                            'Year' => $this->nextYear,
+                            'month' => $this->nextMonth,
+                            $next_date => $value[$i],
+                            'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Product_Id' => $this->Product_Id,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'Doctor_Id' => $doc_id[$i],
+                            'Status' => 'Draft'
+                        );
+                        $this->User_model->SaveReporting($doc);
+                    } else {
+                        if (isset($result->Status) && $result->Status == 'Draft') {
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
+                            $this->db->update('Rx_Actual', $data);
+                        }
+                    }
                 }
             }
             //echo $data['doctorList'] ;
