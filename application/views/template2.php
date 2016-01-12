@@ -13,6 +13,9 @@
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
         <script src='<?php echo asset_url() ?>js/jquery.bootstrap-growl.min.js' type='text/javascript'></script>
+        <?php echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
+        $this->session->unset_userdata('message');
+        ?>
         <style>
             .form-control{
                 height: 32px;
@@ -104,10 +107,7 @@
             }
         </script>
         <div class="content" style="padding-right: 0px;padding-left: 0px">
-            <?php 
-            echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
-            $this->session->unset_userdata('message');
-            ?>
+
             <?php $this->load->view($content, $view_data); ?>
         </div>
 

@@ -13,9 +13,8 @@
         display: none;
     }
 </style>
-<?php echo isset($message) ? $message : ''; ?>
 <link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
-<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>
+<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <div class="card">
     <ul class="table-view">

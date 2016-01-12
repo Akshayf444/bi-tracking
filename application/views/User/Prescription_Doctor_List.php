@@ -39,21 +39,18 @@
     </ul>
 </div>
 <?php echo form_open('User/Reporting'); ?>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Planning</li>
-        <li class="table-view-cell ">
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Reporting</div>
+        <div class="panel-body">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
             <input type="hidden" id="Status" name="Status" value="Draft">
-        </li>
-        <li class="table-view-cell">
-            <br/>
-            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <br/>
-        </li>
-
-    </ul>
+        </div>
+    </div>
 </div>
 </form>
 <script>
