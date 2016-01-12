@@ -293,7 +293,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($tot);?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',
@@ -306,7 +306,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($tot1);?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',

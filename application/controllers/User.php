@@ -130,11 +130,33 @@ class User extends MY_Controller {
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
             if ($current_month_planned['planned_rx'] > 0) {
                 $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+            } else {
+                $data['kpi1'] = "";
             }
             if ($activity_planned ['activity_planned'] > 0) {
                 $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
+            } else {
+                $data['kpi2'] = "";
             }
-            $data['Product_Id'] = $this->Product_Id;
+
+            $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+            $prio_dr = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
+            if ($prio_dr["doctor_id"] > 0) {
+                $data['tot'] = ($activity_planned["activity_planned"] / $prio_dr["doctor_id"]) * 100;
+            } else {
+                $data['tot'] = 0;
+            }
+            if ($this->Product_Id > 0) {
+                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+                $data['Actual'] = $this->User_model->Actual_Rx_Count();
+            }
+            $target = isset($data['show4']['target']) ? $data['show4']['target'] : 0;
+            $Actual = isset($data['Actual']['Actual_Rx']) ? $data['Actual']['Actual_Rx'] : 0;
+            if ($target>0)
+            {
+                $data['tot1']=($Actual/$target)*100;
+            }
+                $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
 
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);

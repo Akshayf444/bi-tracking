@@ -199,12 +199,12 @@ class User_model extends CI_Model {
         $HTML .='<div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="    margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab4Location . '" >
-                                Reporting For Activities
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
+                                Reporting Of ' . $vials . '
                             </a>
                             <div class="demo pull-right">
-                                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 92px;position: absolute;margin-top: -46px;">' . $activity_planned["activity_planned"] . '/' . $prio_dr["doctor_id"]. '</span>
+                                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $Actual . '/' . $target . '</span>
                             </div>
                         </li>
                     </ul>
@@ -212,12 +212,12 @@ class User_model extends CI_Model {
                 <div class="card">
                     <ul class="table-view">
                         <li class="table-view-cell" style="    margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
-                                Reporting Of ' . $vials . '
+                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab4Location . '" >
+                                Reporting For Activities
                             </a>
                             <div class="demo pull-right">
-                                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $Actual . '/100</span>
+                                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $activity_planned["activity_planned"] . '/' . $prio_dr["doctor_id"] . '</span>
                             </div>
                         </li>
                     </ul>
@@ -324,22 +324,22 @@ class User_model extends CI_Model {
                 <thead>
                 <tr>
                     <th>' . $hospital . ' List</th>';
-                    if ($type == 'Planning') {
-                        $html .= '<th>Winability</th><th>Dependency</th>
+            if ($type == 'Planning') {
+                $html .= '<th>Winability</th><th>Dependency</th>
                             <th>BI Market Share</th>';
-                    }
+            }
 
-                    $html .= '<th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
+            $html .= '<th>' . date('M', strtotime('-3 month')) . $vials . ' </th>
                             <th>' . date('M', strtotime('-2 month')) . $vials . '</th>
                             <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
                             <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
-                    if ($type == 'Planning') {
-                        $html .= '</tr></thead><tbody>';
-                    } elseif ($type == 'Actual') {
-                        $html .= '<th>Actual</th></tr></thead><tbody>';
-                    } else {
-                        $html .= '</tr></thead><tbody>';
-                    }
+            if ($type == 'Planning') {
+                $html .= '</tr></thead><tbody>';
+            } elseif ($type == 'Actual') {
+                $html .= '<th>Actual</th></tr></thead><tbody>';
+            } else {
+                $html .= '</tr></thead><tbody>';
+            }
 
 
             $month = date('n', strtotime('-1 month'));
@@ -380,7 +380,7 @@ class User_model extends CI_Model {
                         $html .= '<tr>
                         <td><a >' . $doctor->Account_Name . '</a>';
                     }
-                    
+
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td>' . $winability . '</td><td><a class = "control-item">' . $dependancy . '%</a></td>
