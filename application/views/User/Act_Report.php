@@ -48,10 +48,11 @@
         <div class="panel-heading">Activity Reporting</div>
         <div class="panel-body">   
             <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : ''; ?>
+            <input type="hidden" id="Status" name="Status" value="Draft">
         </div>
         <div class="panel-footer">
             <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>
@@ -72,19 +73,10 @@
             $("#reason" + id).show();
         }
     });
-//
-//    function sendRequest(Doctor_ID) {
-//        alert(Doctor_ID);
-//        $.ajax({
-//            type: 'get',
-//            data: {'Doctor_Id': Doctor_ID},
-//            url: '<?php echo site_url('User/getActivityDetails'); ?>',
-//            success: function (data) {
-//                console.log(data);
-//                $('#result').append(data);
-//            }
-//        });
-//    }
-//
+    
+    $("#Submit").click(function () {
+        $("#Status").val('Submitted');
+        //$("#form1").submit();
+    });
 
 </script>
