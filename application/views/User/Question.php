@@ -195,9 +195,6 @@ echo form_open('User/Profiling', $attributes);
 //                        value: parseFloat(seen),
 //                        message: 'The value must be less than or equal to Patient Seen month'
 //                    }
-                        rules: {
-                             maxlength: $('#seen').val()
-                        }
                     }
                 },
                 No_of_Beds: {
