@@ -137,6 +137,7 @@ echo form_open('User/Profiling', $attributes);
 </script>
 <script>
     $('document').ready(function () {
+        var seen = parseFloat($('#seen').val());
         $('#form1').formValidation({
             message: 'This value is not valid',
             icon: {
@@ -163,7 +164,7 @@ echo form_open('User/Profiling', $attributes);
                         },
                     }
                 },
-                Patient_Seen: {
+                Patient_Seen_month: {
                     validators: {
                         notEmpty: {
                             message: 'Please Enter Value'
@@ -189,6 +190,13 @@ echo form_open('User/Profiling', $attributes);
                         notEmpty: {
                             message: 'Please Enter Value'
                         },
+//                        lessThan: {
+//                        value: parseFloat(seen),
+//                        message: 'The value must be less than or equal to Patient Seen month'
+//                    }
+                        rules: {
+                             maxlength: $('#seen').val()
+                        }
                     }
                 },
                 No_of_Beds: {

@@ -25,7 +25,15 @@
                 } else {
                     
                 }
-                ?> </span><br><span class="pull-right" style="margin-top: -15px;">No Of Prioritize Dr : <?php
+                ?> </span><br><span class="pull-right" style="margin-top: -15px;">No Of Prioritize <?php if($this->Product_Id == 1)
+                {
+                    echo "Hospital";
+                }
+                else
+                {
+                    echo "Dr";
+                }
+                    ?>  : <?php
                 if ($prio_dr['doctor_id'] == 0) {
                     if ($activity_planned['Status'] == 'Submit') {
                         echo "0</br><span style='color:red'><b>No Doctor Prioritized</b></span>";

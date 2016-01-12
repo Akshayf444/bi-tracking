@@ -47,7 +47,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Activity Reporting</div>
         <div class="panel-body">   
-            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : ''; ?>
+            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : '<h1>No Activity Planned</h1>'; ?>
         </div>
         <div class="panel-footer">
             <button type="submit" class="btn btn-primary">Save</button>
