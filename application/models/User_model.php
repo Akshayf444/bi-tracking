@@ -288,7 +288,7 @@ class User_model extends CI_Model {
                 . " INNER JOIN Doctor_Master dm ON dm.Account_ID = ed.VEEVA_Account_ID "
                 . " LEFT JOIN Rx_Planning rxp ON dm.Account_ID = rxp.Doctor_Id "
                 . " WHERE rxp.Doctor_Id IN (" . $doctor_id . ") AND rxp.Product_id = '$Product_id' AND emp.VEEVA_Employee_ID = '$VEEVA_Employee_ID' AND rxp.month = '$month' AND rxp.Year = '$Year' "
-                . " order by FIELD(rxp.Doctor_Id ," . $doctor_id . ")";
+                . " GROUP BY dm.Account_ID order by FIELD(rxp.Doctor_Id ," . $doctor_id . ")";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -375,8 +375,14 @@ class User_model extends CI_Model {
                     }
 
                     if ($priority == 'true') {
-                        $html .= '<tr>
+                        $result = $this->User_model->PriorityExist($doctor->Account_ID);
+                        if (!empty($result)) {
+                            $html .= '<tr>
+                        <td><input type = "checkbox" name = "priority[]" checked="checked" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '';
+                        } else {
+                            $html .= '<tr>
                         <td><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '';
+                        }
                     } else {
                         $html .= '<tr>
                         <td>' . $doctor->Account_Name . '';
@@ -512,6 +518,7 @@ class User_model extends CI_Model {
             }
         }
 
+        $doctors = array_unique($doctors);
         return $doctors2;
     }
 
