@@ -47,7 +47,7 @@
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
 <?php
-$attributes = array('id' => 'form1', 'name' => 'myform', 'onsubmit' => 'return validateform()');
+$attributes = array('id' => 'form1', 'name' => 'myform');
 echo validation_errors();
 echo form_open('User/Profiling', $attributes);
 ?>
@@ -68,6 +68,7 @@ echo form_open('User/Profiling', $attributes);
                     <option value="">Please Select</option>
                     <?php echo $doctorList; ?>        
                 </select> 
+                <input type="hidden" id="Status" name="Status" value="Draft">
             </div>
 
             <?php
@@ -276,17 +277,7 @@ echo form_open('User/Profiling', $attributes);
     });
 
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Doctor_Id': $("#Doctor_id").val(), 'Table_Name': 'Profiling'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted');
-                }
-
-            }
-        });
+        $("#Status").val('Submitted');
+        $("#form1").submit();
     });
 </script>

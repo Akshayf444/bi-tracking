@@ -289,7 +289,7 @@ class User extends MY_Controller {
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
                 $_POST['Product_id'] = $this->Product_Id;
                 $_POST['created_at'] = date('Y-m-d H:i:s');
-                $_POST['Status'] = 'Draft';
+                $_POST['Status'] = $this->input->post('Status');
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
@@ -321,7 +321,7 @@ class User extends MY_Controller {
                         $this->db->update('Profiling', $_POST);
                         $data['message'] = $this->Master_Model->DisplayAlert('Doctor Profile Updated Successfully.', 'success');
                     }
-                } else {
+                } elseif ($check['Status'] == 'Submitted') {
                     $data['message'] = $this->Master_Model->DisplayAlert('Data Already Submitted.', 'danger');
                 }
             }
