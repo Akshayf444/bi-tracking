@@ -392,11 +392,11 @@ class User_model extends CI_Model {
                             <td><a class = "control-item">' . $month2rx . '</a></td>
                             <td> <a class = "control-item">' . $month3rx . '</a></td>';
                     if ($type == 'Planning') {
-                        $html .= '<td> <input name = "value[]" class = "val" type = "text" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                        $html .= '<td> <input name = "value[]" class = "val" type = "number" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                                 </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                                <td> <input name = "value[]" type = "text" value = "' . $actual_rx . '"/></td>
+                                <td> <input name = "value[]" type = "number" value = "' . $actual_rx . '"/></td>
                                 </tr>';
                     }
                 }
