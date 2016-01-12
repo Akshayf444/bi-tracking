@@ -66,8 +66,7 @@ echo form_open('User/Planning', $attributes);
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" style="display:none" class="btn btn-positive">Submit</button>
-
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>
@@ -92,8 +91,7 @@ echo form_open('User/Planning', $attributes);
         });
         $('#TableSort').on('change', function () {
             var selectedValue = $(this).val();
-
-            oTable.fnFilter("^" + selectedValue + "$", 0, true); //Exact value, column, reg
+            oTable.fnSort([[selectedValue,'desc']]); //Exact value, column, reg
         });
     });
 
@@ -112,9 +110,9 @@ echo form_open('User/Planning', $attributes);
         var grandTotal = $('.ck').val() - finalval;
         $('.ckk').html(grandTotal);
         if (grandTotal == 0) {
-            $("#Submit").show();
+
         } else {
-            $("#Submit").hide();
+            $("#Submit").attr('type', 'button');
         }
     }
 
@@ -125,8 +123,27 @@ echo form_open('User/Planning', $attributes);
     });
 
     $("#Submit").click(function () {
+        var finalval = 0;
+        $(".val").each(function () {
+            var actual = parseInt($(this).val(), 10) || 0;
+            finalval = parseInt(finalval, 10) + actual;
+        });
+
+        var grandTotal = $('.ck').val() - finalval;
+        $('.ckk').html(grandTotal);
+        if (grandTotal == 0) {
+
+        } else {
+            var answer = confirm("Planned Rx is Less Than Set Target")
+            if (answer) {
+                $("#Submit").attr('type', 'submit');
+            }
+            else {
+                $("#Submit").attr('type', 'button');
+            }
+        }
+
         $("#Status").val('Submitted');
+
     });
-
-
 </script>

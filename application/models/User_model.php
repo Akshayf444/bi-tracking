@@ -72,7 +72,8 @@ class User_model extends CI_Model {
     }
 
     public function Save_Planning($data) {
-        return $this->db->insert('Rx_Planning', $data);
+        $this->db->insert('Rx_Planning', $data);
+        return $this->db->insert_id();
     }
 
     public function Save_Planning_prescription($data, $id, $doc_id, $pid, $month = 0, $year = 0) {
@@ -239,14 +240,14 @@ class User_model extends CI_Model {
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
-        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $this->db->where(array('dp.Product_Id' => 4, 'dp.Product_Id' => 6, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
-        } else {
+        //if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            //$this->db->where(array('dp.Product_Id' => 4, 'dp.Product_Id' => 6, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+        //} else {
             $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
-        }
+       // }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
-//echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -264,16 +265,11 @@ class User_model extends CI_Model {
 
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $this->db->select('rxp.*,dm.*,act.Actual_Rx');
-        $this->db->from('Employee_Master emp');
-        $this->db->join('Employee_Doc ed', 'ed.Local_Employee_ID = emp.VEEVA_Employee_ID');
-        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
+        $this->db->from('Employee_Doc ed');
+        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id', 'LEFT');
         $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id', 'LEFT');
-        if ($where == 'true') {
-            $this->db->where_in('rxp.Doctor_Id', $doctor_ids);
-        }
-
-        $this->db->where(array('rxp.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
+        $this->db->where(array('rxp.Product_id' => $Product_id, 'ed.Local_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
 
@@ -375,7 +371,7 @@ class User_model extends CI_Model {
                     }
 
                     if ($priority == 'true') {
-                        $result = $this->User_model->PriorityExist($doctor->Account_ID);
+                        $result = $this->User_model->ActualPriorityExist($doctor->Account_ID);
                         if (!empty($result)) {
                             $html .= '<tr>
                         <td><input type = "checkbox" name = "priority[]" checked="checked" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '';
@@ -570,6 +566,7 @@ class User_model extends CI_Model {
         $this->db->from('Rx_Planning');
         $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row();
     }
 
@@ -652,17 +649,18 @@ class User_model extends CI_Model {
     }
 
     public function activity_planned($VEEVA_Employee_ID, $Product_id) {
-        $this->db->select('COUNT(`Activity_Id`) AS activity_planned,Status');
+        $this->db->select('COUNT(`Activity_Id`) AS activity_planned');
         $this->db->from('`Activity_Planning`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'Year' => $this->nextYear, 'month' => $this->nextMonth, 'Status' => 'Submitted'));
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row_array();
     }
 
     public function activity_actual($VEEVA_Employee_ID, $Product_id) {
         $this->db->select('COUNT(`Activity_Id`) AS activity_actual');
         $this->db->from('`Activity_Reporting`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'Year' => $this->nextYear, 'month' => $this->nextMonth, 'Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -735,6 +733,8 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';
+        } else {
+            $HTML .= '<h1>Doctors Are Not Prioritesed</h1>';
         }
 
         return $HTML;
