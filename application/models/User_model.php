@@ -376,21 +376,21 @@ class User_model extends CI_Model {
 
                     if ($priority == 'true') {
                         $html .= '<tr>
-                        <td><a ><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '</a>';
+                        <td><input type = "checkbox" name = "priority[]" value = "' . $doctor->Account_ID . '" >   ' . $doctor->Account_Name . '';
                     } else {
                         $html .= '<tr>
-                        <td><a >' . $doctor->Account_Name . '</a>';
+                        <td>' . $doctor->Account_Name . '';
                     }
 
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
-                        $html .= '<td>' . $winability . '</td><td><a class = "control-item">' . $dependancy . '%</a></td>
-                                   <td><a class = "control-item">' . $BI_Share . '</a></td>';
+                        $html .= '<td>' . $winability . '</td><td>' . $dependancy . '%</td>
+                                   <td>' . $BI_Share . '</td>';
                     }
 
-                    $html .='<td><a class = "control-item">' . $month1rx . '</a></td>
-                            <td><a class = "control-item">' . $month2rx . '</a></td>
-                            <td> <a class = "control-item">' . $month3rx . '</a></td>';
+                    $html .='<td>' . $month1rx . '</td>
+                            <td>' . $month2rx . '</td>
+                            <td>' . $month3rx . '</td>';
                     if ($type == 'Planning') {
                         $html .= '<td> <input name = "value[]" class = "val" type = "number" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                                 </tr>';
