@@ -131,12 +131,12 @@ class User extends MY_Controller {
             if ($current_month_planned['planned_rx'] > 0) {
                 $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
             } else {
-                $data['kpi1'] = "";
+                $data['kpi1'] = 0;
             }
             if ($activity_planned ['activity_planned'] > 0) {
                 $data['kpi2'] = ($activitya_actual['activity_actual'] / $activity_planned ['activity_planned']) * 100;
             } else {
-                $data['kpi2'] = "";
+                $data['kpi2'] = 0;
             }
 
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
@@ -155,6 +155,10 @@ class User extends MY_Controller {
             if ($target>0)
             {
                 $data['tot1']=($Actual/$target)*100;
+            }
+            else
+            {
+                $data['tot1']=0;
             }
                 $data['Product_Id'] = $this->Product_Id;
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
