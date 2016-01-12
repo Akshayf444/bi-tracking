@@ -223,7 +223,6 @@ echo form_open('User/Profiling', $attributes);
                     $("input[name='Patient_Seen_month']").val(obj.Patient_Seen_month);
                     $("input[name='Patient_Rxbed_In_Month']").val(obj.Patient_Rxbed_In_Month);
                     $("input[name='Patient_Rxbed_In_Week']").val(obj.Patient_Rxbed_In_Week);
-                    $("input[name='No_Of_Beds']").val(obj.No_Of_Beds);
 
                     if (obj.CT_MRI_available == 'Yes') {
                         $("#CT_MRI_available_yes").prop('checked', true);
@@ -247,18 +246,22 @@ echo form_open('User/Profiling', $attributes);
                         $("#Win_Q3_no").prop('checked', true);
                     }
 
-                    $("input[name='Primary_indication']").each(function () {
-                        if ($(this).val() == obj.Primary_indication) {
-                            $(this).attr("selected", "selected");
+                    $(".spaf1 > option").each(function () {
+                        if (this.value == obj.Primary_indication) {
+                            $(this).attr("selected", true);
                         }
                     });
+                    $("#Beds > option").each(function () {
+                        if (this.value == obj.No_Of_Beds) {
+                            $(this).attr("selected", true);
+                        }
+                    });
+
                 } else {
                     $("input[name='Patient_Seen']").val('');
                     $("input[name='Patient_Seen_month']").val('');
                     $("input[name='Patient_Rxbed_In_Month']").val('');
                     $("input[name='Patient_Rxbed_In_Week']").val('');
-                    $("input[name='No_Of_Beds']").val('');
-
                     $("#CT_MRI_available_yes").prop('checked', false);
                     $("#CT_MRI_available_no").prop('checked', false);
                     $("#Win_Q1_yes").prop('checked', false);
@@ -268,10 +271,8 @@ echo form_open('User/Profiling', $attributes);
                     $("#Win_Q3_yes").prop('checked', false);
                     $("#Win_Q3_no").prop('checked', false);
 
-                    $("input[name='Primary_indication']").each(function () {
-                        if ($(this).val() == obj.Primary_indication) {
-                            //$(this).attr("selected", "selected");
-                        }
+                    $(".spaf1 > option").each(function () {
+                        $(this).attr("selected", false);
                     });
                 }
 

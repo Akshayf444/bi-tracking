@@ -236,15 +236,16 @@ class User_model extends CI_Model {
     }
 
     public function getActivityDoctor() {
-        $this->db->select('Distinct(dp.Doctor_Id) As Doctor_Id,dm.*,ap.*');
+        $this->db->select('dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
-        //if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            //$this->db->where(array('dp.Product_Id' => 4, 'dp.Product_Id' => 6, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
-        //} else {
+        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            $where = "dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='4' OR dp.Product_id='6' AND dp.month = '$this->nextMonth' ";
+            $this->db->where($where);
+        } else {
             $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
-       // }
+        }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -252,10 +253,11 @@ class User_model extends CI_Model {
     }
 
     public function getPlannedActivityDoctor() {
-        $this->db->select('*');
+        $this->db->select('dm.*,ap.*,rp.Activity_Detail,rp.reason,rp.Activity_Done');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID');
         $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
@@ -331,7 +333,7 @@ class User_model extends CI_Model {
                             <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
                             <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
             if ($type == 'Planning') {
-                $html .= '</tr></thead><tbody>';
+                $html .= '<th>Planned Rx</th></tr></thead><tbody>';
             } elseif ($type == 'Actual') {
                 $html .= '<th>Actual</th></tr></thead><tbody>';
             } else {
@@ -394,7 +396,7 @@ class User_model extends CI_Model {
                             <td>' . $month2rx . '</td>
                             <td>' . $month3rx . '</td>';
                     if ($type == 'Planning') {
-                        $html .= '<td> <input name = "value[]" class = "val" type = "number" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
+                        $html .= '<td>' . $planned_rx . '</td><td> <input name = "value[]" class = "val" type = "number" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                                 </tr>';
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
@@ -666,15 +668,17 @@ class User_model extends CI_Model {
     }
 
     public function prio_dr($VEEVA_Employee_ID, $Product_id) {
-        $this->db->select('COUNT(`Doctor_Id`) AS doctor_id');
+        $this->db->select('COUNT(DISTINCT(`Doctor_Id`)) AS doctor_id');
         $this->db->from('`Actual_Doctor_Priority`');
-        if ($this->Product_Id == 4 && $this->Product_Id == 6) {
-            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => 4, 'Product_Id' => 6));
+        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            $where = "VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='4' OR Product_id='6'";
+            $this->db->where($where);
         } else {
             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
         }
 
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row_array();
     }
 
@@ -698,7 +702,9 @@ class User_model extends CI_Model {
                 $HTML .= '<th>Action</th>';
             }
             $HTML .= '</tr>';
+
             foreach ($result as $value) {
+                
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
                 } else {
@@ -707,23 +713,37 @@ class User_model extends CI_Model {
 
                 $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
                 if ($type == 'Reporting') {
-                    $HTML .= '<td><select class="form-control" readonly="readonly" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
+                    $reason = isset($value->Reason) ? $value->Reason : '';
+                    $Activity_Done = isset($value->Activity_Done) ? $value->Activity_Done : '';
+
+                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
                     $HTML .='<td><div class="col-xs-8">
-                        <div class="toggle">
-                            <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span></label>    
+                        <div class="toggle">';
+                    if ($Activity_Done == "Yes") {
+                        $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="Yes"><span class="input-checked" id="' . $value->Account_ID . '-1 ">Yes</span>';
+                    } else {
+                        $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span>';
+                    }
+                    $HTML .='</label>    
                         </div>
-                        <div class="toggle">
-                            <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span></label>
+                        <div class="toggle">';
+                    if ($Activity_Done == "No") {
+                        $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="No"><span class="input-checked" id="' . $value->Account_ID . '-2 " >No</span>';
+                    } else {
+                        $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span>';
+                    }
+                    $HTML .='</label>
                         </div>
                     </div>
                     <div id="heading' . $value->Account_ID . '" class="custom-collapse " style="display: none">
                         <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Detail" placeholder="Activity Details"></textarea> </div> 
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="Activity_Detail[]"  placeholder="Activity Details">' . $activity_detail . '</textarea> </div> 
                         </div> 
                     </div>
                     <div id="reason' . $value->Account_ID . '" class="custom-collapse " style="display: none">
                         <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $value->Account_ID . 'Reason" placeholder="Reason"></textarea> </div> 
+                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="Reason[]"  placeholder="Reason">' . $reason . '</textarea> </div> 
                         </div> 
                     </div></td>';
                 } else {

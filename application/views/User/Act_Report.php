@@ -74,7 +74,7 @@
             $("#reason" + id).show();
         }
     });
-    
+
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
         //$("#form1").submit();

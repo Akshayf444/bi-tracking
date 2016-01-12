@@ -40,7 +40,7 @@
                     <option value="1">Winability</option>
                     <option value="2">Dependency/Rx For Last Month</option>
                     <option value="3">BI Market Share</option>
-                    <option value="4">Planned <?php
+                    <option value="7">Planned <?php
                         if ($this->Product_Id == '1') {
                             echo "Vials";
                         } else {
@@ -87,11 +87,17 @@ echo form_open('User/Planning', $attributes);
         var oTable = $('#datatable').dataTable({
             "bPaginate": false,
             "bInfo": false,
-            "info": false
+            "info": false,
+            "columnDefs": [
+                {
+                    "targets": [7],
+                    "visible": false
+                }
+            ]
         });
         $('#TableSort').on('change', function () {
             var selectedValue = $(this).val();
-            oTable.fnSort([[selectedValue,'desc']]); //Exact value, column, reg
+            oTable.fnSort([[selectedValue, 'desc']]); //Exact value, column, reg
         });
     });
 
@@ -133,8 +139,16 @@ echo form_open('User/Planning', $attributes);
         $('.ckk').html(grandTotal);
         if (grandTotal == 0) {
 
-        } else {
+        } else if (grandTotal > 0) {
             var answer = confirm("Planned Rx is Less Than Set Target")
+            if (answer) {
+                $("#Submit").attr('type', 'submit');
+            }
+            else {
+                $("#Submit").attr('type', 'button');
+            }
+        } else if (grandTotal < 0) {
+            var answer = confirm("Planned Rx is More Than Set Target")
             if (answer) {
                 $("#Submit").attr('type', 'submit');
             }

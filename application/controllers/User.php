@@ -68,7 +68,7 @@ class User extends MY_Controller {
 
                 $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
 
-                if (is_null($check_password['password_status'])) {
+                if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
                     if ($check_password['Designation'] == 'ASM') {
@@ -561,17 +561,20 @@ class User extends MY_Controller {
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                 $docid = $this->input->post('Doctor_Id');
                 $Activity = $this->input->post('Activity_Id');
+                $Activity_Detail = $this->input->post('Activity_Detail');
+                $Reason = $this->input->post('Reason');
                 if (trim($Activity[$i]) != '-1') {
                     $data2 = array(
                         'Activity_Id' => $Activity[$i],
                         'Doctor_Id' => $docid[$i],
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
-                        'Activity_Detail' => $this->input->post($this->VEEVA_Employee_ID . 'Detail'),
-                        'Reason' => $this->input->post($this->VEEVA_Employee_ID . 'Reason'),
+                        'Activity_Detail' => $Activity_Detail[$i],
+                        'Reason' => $Reason[$i],
                         'Product_Id' => $this->Product_Id,
                         'Status' => $this->input->post('Status'),
                         'Year' => $this->nextYear,
-                        'month' => $this->nextMonth
+                        'month' => $this->nextMonth,
+                        'Activity_Done' => $this->input->post($docid[$i])
                     );
 
                     $result = $this->User_model->ActivityReportingExist($docid[$i]);

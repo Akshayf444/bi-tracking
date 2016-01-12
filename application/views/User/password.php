@@ -1,17 +1,27 @@
 <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="panel panel-default col-lg-6">
-        <?php 
-        $attribute=array('id' => 'activate');
-        echo form_open('User/password',$attribute); ?>
-        <div class="form-group panel-body">
-            <input type="password" name="password" class="form-control" placeholder="Enter Your New Password"/>
-            <input type="password" name="password2" class="form-control" placeholder="Retype Your Password"/>
+    <div class="col-lg-3 col-md-3"></div>
+    <div class="col-lg-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Change Password
+            </div>
+            <?php
+            $attribute = array('id' => 'activate');
+            echo form_open('User/password', $attribute);
+            ?>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Enter Your New Password"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" autocomplete="off" class="form-control" placeholder="Retype Your Password"/>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <input type="submit" class="btn btn-positive"/>
+            </div>
+            </form>
         </div>
-        <div class="form-group panel-footer">
-            <input type="submit" class="btn btn-positive"/>
-        </div>
-        </form>
     </div>
     <div class="col-lg-3"></div>
 </div>
@@ -23,24 +33,32 @@
             icon: {
             },
             fields: {
-                
                 password: {
                     validators: {
-                        identical: {
-                            field: 'password2',
-                            message: 'The password and its Repeat are not the same'
+                        regexp: {
+                            regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
+                            message: 'Password Must Contain 8 characters with  1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
+                        },
+                        notEmpty: {
+                            message: 'Please Enter Value'
                         }
                     }
                 },
                 password2: {
                     validators: {
+                        regexp: {
+                            regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
+                            message: 'Password Must Contain 8 characters with 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
+                        },
                         identical: {
                             field: 'password',
                             message: 'The password and its Repeat are not the same'
+                        },
+                        notEmpty: {
+                            message: 'Please Enter Value'
                         }
                     }
                 },
-               
             }
         });
     });
