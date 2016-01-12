@@ -162,7 +162,7 @@ class User extends MY_Controller {
             $data['productList'] = $this->Master_Model->generateDropdown($result, 'id', 'Brand_Name', $this->Product_Id);
 
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
-            $this->load->view('template2', $data);
+          $this->load->view('template2', $data);
         } else {
             $this->logout();
         }
@@ -517,6 +517,7 @@ class User extends MY_Controller {
     }
 
     public function Priority() {
+        $messages = array();
         $doctor_ids = $this->User_model->PriorityIds();
         //var_dump($doctor_ids);
         if (!empty($doctor_ids)) {
@@ -537,9 +538,14 @@ class User extends MY_Controller {
                 );
                 if (empty($result)) {
                     $this->db->insert('Actual_Doctor_Priority', $data2);
+                    array_push($messages, $this->Master_Model->DisplayAlert('Doctor Priority Added .', 'success'));
+                } else {
+                    array_push($messages, $this->Master_Model->DisplayAlert('Doctor Priority Updated .', 'success'));
                 }
             }
-
+            if (!empty($messages)) {
+                $this->session->set_userdata('message', join(" ", array_unique($messages)));
+            }
             redirect('User/Priority', 'refresh');
         }
 
