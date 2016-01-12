@@ -644,7 +644,7 @@ class User_model extends CI_Model {
     }
 
     public function activity_planned($VEEVA_Employee_ID, $Product_id) {
-        $this->db->select('COUNT(`Activity_Id`) AS activity_planned');
+        $this->db->select('COUNT(`Activity_Id`) AS activity_planned,Status');
         $this->db->from('`Activity_Planning`');
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
         $query = $this->db->get();
