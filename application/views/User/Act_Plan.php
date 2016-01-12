@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Activity Planning</div>
         <div class="panel-body">   
-            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : ''; ?>
+            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : '<h1>Please Select Priority Doctor First</h1>'; ?>
             <input type="hidden" id="Status" name="Status" value="Draft">
         </div>
         <div class="panel-footer">

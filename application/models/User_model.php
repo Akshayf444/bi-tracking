@@ -98,7 +98,7 @@ class User_model extends CI_Model {
         $tabs = $this->Tabs($VEEVA_Employee_ID);
         $this->load->model('Doctor_Model');
         $doctorCount = $this->Doctor_Model->CountDoctor($VEEVA_Employee_ID, $this->Individual_Type);
-        $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $Product_id);
+        $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $this->Product_Id);
         $rxlabel = $this->Product_Id == 1 ? 'Vials' : 'Rx';
         $hospital = $this->Product_Id == 1 ? 'Hospital' : 'Doctor';
 

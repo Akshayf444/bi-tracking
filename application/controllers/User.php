@@ -595,7 +595,7 @@ class User extends MY_Controller {
                             array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                         }
                     } elseif (isset($result->Status) && $result->Status == 'Submitted') {
-                        array_push($messages, $this->Master_Model->DisplayAlert('Activities Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'success'));
+                        array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
                     }
                 }
             }
