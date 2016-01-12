@@ -104,7 +104,10 @@
             }
         </script>
         <div class="content" style="padding-right: 0px;padding-left: 0px">
-            <?php echo isset($message) ? $message : ''; ?>
+            <?php 
+            echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
+            $this->session->unset_userdata('message');
+            ?>
             <?php $this->load->view($content, $view_data); ?>
         </div>
 

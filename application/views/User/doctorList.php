@@ -62,11 +62,12 @@ echo form_open('User/Planning', $attributes);
         <div class="panel-heading">Planning</div>
         <div class="panel-body">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
+            <input type="hidden" id="Status" name="Planning_Status" value="Draft">
         </div>
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
-            <button type="submit" id="Save" style="display:none" class="btn btn-primary">Save</button>
-            <button type="button" id="Submit" style="display:none" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Save" class="btn btn-primary">Save</button>
+            <button type="submit" id="Submit" style="display:none" class="btn btn-positive">Submit</button>
 
         </div>
     </div>
@@ -112,10 +113,8 @@ echo form_open('User/Planning', $attributes);
         var grandTotal = $('.ck').val() - finalval;
         $('.ckk').html(grandTotal);
         if (grandTotal == 0) {
-            $("#Save").show();
             $("#Submit").show();
         } else {
-            $("#Save").hide();
             $("#Submit").hide();
         }
     }
@@ -127,18 +126,7 @@ echo form_open('User/Planning', $attributes);
     });
 
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Table_Name': 'Rx_Planning'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted Successfully.');
-                }
-
-            }
-        });
+        $("#Status").val('Submitted');
     });
 
 

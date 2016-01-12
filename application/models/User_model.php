@@ -274,8 +274,9 @@ class User_model extends CI_Model {
         }
 
         $this->db->where(array('rxp.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rxp.month' => $month, 'rxp.Year' => $Year));
+        $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
-        //echo $this->db->last_query();
+
         return $query->result();
     }
 

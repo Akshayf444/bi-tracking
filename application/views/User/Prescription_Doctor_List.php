@@ -44,11 +44,12 @@
         <li class="table-view-cell table-view-divider">Planning</li>
         <li class="table-view-cell ">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
+            <input type="hidden" id="Status" name="Status" value="Draft">
         </li>
         <li class="table-view-cell">
             <br/>
-            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
-            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
             <br/>
         </li>
 
@@ -57,18 +58,7 @@
 </form>
 <script>
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Table_Name': 'Rx_Actual'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted Successfully.');
-                }
-
-            }
-        });
+        $("#Status").val('Submitted');
     });
 
     $(document).ready(function () {
