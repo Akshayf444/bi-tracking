@@ -548,6 +548,7 @@ class User extends MY_Controller {
     }
 
     public function ActivityReporting() {
+        $messages = array();
         $result = $this->User_model->getPlannedActivityDoctor();
         $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
         if ($this->input->post()) {
@@ -575,8 +576,10 @@ class User extends MY_Controller {
                             $this->db->insert('Activity_Reporting', $data2);
                             $data2['Product_Id'] = 6;
                             $this->db->insert('Activity_Reporting', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
                         } else {
                             $this->db->insert('Activity_Reporting', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
                         }
                     } elseif (isset($result->Status) && $result->Status == 'Draft') {
                         $data2['updated_at'] = date('Y-m-d H:i:s');
@@ -585,13 +588,21 @@ class User extends MY_Controller {
                             $this->db->update('Activity_Reporting', $data2);
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                             $this->db->update('Activity_Reporting', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                         } else {
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                             $this->db->update('Activity_Reporting', $data2);
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                         }
+                    } elseif (isset($result->Status) && $result->Status == 'Submitted') {
+                        array_push($messages, $this->Master_Model->DisplayAlert('Activities Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'success'));
                     }
                 }
             }
+            if (!empty($messages)) {
+                $this->session->set_userdata('message', join(" ", array_unique($messages)));
+            }
+            redirect('User/ActivityReporting');
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'view_data' => $data);
         $this->load->view('template2', $data);
