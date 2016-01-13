@@ -74,103 +74,101 @@
         </li>
     </ul>
 </div>-->
-<?php 
-if($this->Product_Id == '-1' || $this->Product_Id == '')
-{
+<?php
+if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
-}
-else
-    {?>
-<div class="item card" style="text-align: center" > 
-
-
-    <?php
-    $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
-    if ($this->Product_Id == '1') {
-        echo "<ul class='table-view' style='background-color: #79B61C;'>";
-    } elseif ($this->Product_Id == '2') {
-        echo "<ul class='table-view' style='background-color: #4E88BC;'>";
-    } elseif ($this->Product_Id == '3') {
-        echo "<ul class='table-view' style='background-color: #EFC083;'>";
-    } elseif ($this->Product_Id == '4') {
-        echo "<ul class='table-view' style='background-color:  #87CEEB'>";
-    } elseif ($this->Product_Id == '5') {
-        echo "<ul class='table-view' style='background-color: #20B2AA;'>";
-    } elseif ($this->Product_Id == '6') {
-        echo "<ul class='table-view' style='background-color: #9999FF;'>";
-    }
+} else {
     ?>
+    <div class="item card" style="text-align: center" > 
 
 
-
-    <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+        <?php
+        $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
         if ($this->Product_Id == '1') {
-            echo "Actilyse";
+            echo "<ul class='table-view' style='background-color: #79B61C;'>";
         } elseif ($this->Product_Id == '2') {
-            echo "Pradaxa";
+            echo "<ul class='table-view' style='background-color: #4E88BC;'>";
         } elseif ($this->Product_Id == '3') {
-            echo "Metalyse";
+            echo "<ul class='table-view' style='background-color: #EFC083;'>";
         } elseif ($this->Product_Id == '4') {
-            echo "Trajenta Family";
+            echo "<ul class='table-view' style='background-color:  #87CEEB'>";
         } elseif ($this->Product_Id == '5') {
-            echo "Jardiance";
+            echo "<ul class='table-view' style='background-color: #20B2AA;'>";
         } elseif ($this->Product_Id == '6') {
-            echo "Trajenta Duo";
+            echo "<ul class='table-view' style='background-color: #9999FF;'>";
         }
-        ?></li>
-    <li class="table-view-cell media">
-        <table class="slider-table table" style="margin-left: -87px;">
-            <tr>
+        ?>
 
-                <th  style="text-align:right"><?php
-                    if ($this->Product_Id == '1') {
 
-                        echo "Actilyse";
-                    } elseif ($this->Product_Id == '2') {
-                        echo "Pradaxa";
-                    } elseif ($this->Product_Id == '3') {
-                        echo "Metalyse";
-                    } elseif ($this->Product_Id == '4') {
-                        echo "Trajenta Family";
-                    } elseif ($this->Product_Id == '5') {
-                        echo "Jardiance";
-                    } elseif ($this->Product_Id == '6') {
-                        echo "Trajenta duo";
-                    }
-                    ?></th>
-                <th  style="text-align:center">Sep</th>
-                <th  style="text-align:center">Oct</th>
-                <th  style="text-align:center">Nov</th>
-                <th>Dec</th>
-            </tr>
 
-            <tr>
-                <th  style="text-align:right">Users</th>
-                <td style="text-align:center"><?php echo $user4['doctor_count'] ?></td>
-                <td style="text-align:center"><?php echo $user3['doctor_count'] ?></td>
-                <td style="text-align:center"><?php echo $user2['doctor_count'] ?></td>
-                <td><?php echo $user1['doctor_count'] ?></td>
-            </tr>
-            <tr>
-                <th  style="text-align:right"><?php
-                    if ($this->Product_Id == '1') {
-                        echo "Vials";
-                    } else {
-                        echo "Rx";
-                    }
-                    ?></th>
-                
-                
-                <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
-                <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
-                <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
-                <td><?php echo $month1['actual_rx'] ?></td>
-            </tr>
-        </table>
-    </li>
-</ul>
-</div>
-    <?php }?>
+        <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+            if ($this->Product_Id == '1') {
+                echo "Actilyse";
+            } elseif ($this->Product_Id == '2') {
+                echo "Pradaxa";
+            } elseif ($this->Product_Id == '3') {
+                echo "Metalyse";
+            } elseif ($this->Product_Id == '4') {
+                echo "Trajenta Family";
+            } elseif ($this->Product_Id == '5') {
+                echo "Jardiance";
+            } elseif ($this->Product_Id == '6') {
+                echo "Trajenta Duo";
+            }
+            ?></li>
+        <li class="table-view-cell media">
+            <table class="slider-table table" style="margin-left: -87px;">
+                <tr>
+
+                    <th  style="text-align:right"><?php
+                        if ($this->Product_Id == '1') {
+
+                            echo "Actilyse";
+                        } elseif ($this->Product_Id == '2') {
+                            echo "Pradaxa";
+                        } elseif ($this->Product_Id == '3') {
+                            echo "Metalyse";
+                        } elseif ($this->Product_Id == '4') {
+                            echo "Trajenta Family";
+                        } elseif ($this->Product_Id == '5') {
+                            echo "Jardiance";
+                        } elseif ($this->Product_Id == '6') {
+                            echo "Trajenta duo";
+                        }
+                        ?></th>
+                    <th  style="text-align:center">Sep</th>
+                    <th  style="text-align:center">Oct</th>
+                    <th  style="text-align:center">Nov</th>
+                    <th>Dec</th>
+                </tr>
+
+                <tr>
+                    <th  style="text-align:right">Users</th>
+                    <td style="text-align:center"><?php echo $user4['doctor_count'] ?></td>
+                    <td style="text-align:center"><?php echo $user3['doctor_count'] ?></td>
+                    <td style="text-align:center"><?php echo $user2['doctor_count'] ?></td>
+                    <td><?php echo $user1['doctor_count'] ?></td>
+                </tr>
+                <tr>
+                    <th  style="text-align:right"><?php
+                        if ($this->Product_Id == '1') {
+                            echo "Vials";
+                        } else {
+                            echo "Rx";
+                        }
+                        ?></th>
+
+
+                    <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
+                    <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
+                    <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
+                    <td><?php echo $month1['actual_rx'] ?></td>
+                </tr>
+            </table>
+        </li>
+    </ul>
+    </div>
+<?php } ?>
 <style>
     .progress{
         height: 25px;
@@ -187,54 +185,58 @@ else
         padding: 11px 15px 11px 15px;
     }
 </style>
-<?php 
-if($this->Product_Id == '-1' || $this->Product_Id == '')
-{
+<?php
+if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
-}
-else
-    {?>
-<ul class="table-view card ">
-    <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
-        <div class="col-lg-4"></div>
-        <div align="center" class="col-lg-4">
-           <b> Achievement Of Jan 2016</b>
-        </div>
-        <div class="col-lg-4"></div>
-    </li>
-    <li class="table-view-cell achievement">
-
-        <div class="col-lg-1">
-            <select class="form-control">
-                <option>Jan 2016</option>
-                <option>Cycle 1</option>
-            </select>
-        </div>
-        <div class="col-lg-4">
-
-
-            <div class="demo" >        
-                <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1,2);?>%</span>
-                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
-
-                <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
-
+} else {
+    ?>
+    <ul class="table-view card ">
+        <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
+            <div class="col-lg-4"></div>
+            <div align="center" class="col-lg-4">
+                <b> Achievement Of Jan 2016</b>
             </div>
-        </div>
+            <div class="col-lg-4"></div>
+        </li>
+        <li class="table-view-cell achievement">
 
-        <div class="col-lg-4">
-
-            <div class="demo" >       
-                <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2,2);?>%</span>
-                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
-                <span style="margin-left: 0px;position: absolute;margin-top: -30px;">Doctor Engaged in Activity / Planned</span>
+            <div class="col-lg-1">
+                <select class="form-control">
+                    <option>Jan 2016</option>
+                    <option>Cycle 1</option>
+                </select>
             </div>
-        </div>
-    </li>
-</ul>
-<?php }?>
+            <div class="col-lg-4">
+
+
+                <div class="demo" >        
+                    <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                    <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1, 2); ?>%</span>
+                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
+
+                    <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="demo" >       
+                    <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                    <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2, 2); ?>%</span>
+                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
+                    <span style="margin-left: 0px;position: absolute;margin-top: -30px;"><?php
+                        if ($this->Product_Id == 1) {
+                            echo "Hospital";
+                        } else {
+                            echo "Doctor";
+                        }
+                        ?> Engaged in Activity / Planned</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+<?php } ?>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
                     $(document).ready(function () {
@@ -293,7 +295,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($tot); ?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',
@@ -306,7 +308,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = 20;
+                        var initval = <?php echo round($tot1); ?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',
@@ -318,7 +320,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = <?php echo round($kpi1,2);?>;
+                        var initval = <?php echo round($kpi1, 2); ?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',
@@ -330,7 +332,7 @@ else
                         });
                     });
                     $(document).ready(function () {
-                        var initval = <?php echo round($kpi2,2);?>;
+                        var initval = <?php echo round($kpi2, 2); ?>;
                         $({value: 0}).animate({value: initval}, {
                             duration: 1000,
                             easing: 'swing',

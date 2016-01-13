@@ -15,7 +15,7 @@ class MY_Controller extends CI_Controller {
     public $nextMonth;
     public $nextYear;
     public $Individual_Type;
-
+    public $message;
     function __construct() {
         parent::__construct();
         $this->VEEVA_Employee_ID = $this->session->userdata('VEEVA_Employee_ID');
@@ -34,10 +34,11 @@ class MY_Controller extends CI_Controller {
         } else {
             $this->Individual_Type = 'Doctor';
         }
+        
     }
 
     function is_logged_in() {
-        if (!is_null($this->VEEVA_Employee_ID) && $this->VEEVA_Employee_ID != '') {
+        if (!is_null($this->session->userdata('VEEVA_Employee_ID')) && $this->session->userdata('VEEVA_Employee_ID') != '') {
             return TRUE;
         } else {
             return FALSE;

@@ -29,7 +29,7 @@ class Doctor_Model extends MY_model {
     }
 
     public function CountDoctor($VEEVA_Employee_ID = 0, $type) {
-        $this->db->select('COUNT(dm.Account_ID) AS DoctorCount');
+        $this->db->select('COUNT(DISTINCT(dm.Account_ID)) AS DoctorCount');
         $this->db->from('Doctor_Master dm');
         $this->db->join('Employee_Doc ed', 'ed.VEEVA_Account_ID = dm.Account_ID');
         $this->db->where(array('ed.Local_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $type));

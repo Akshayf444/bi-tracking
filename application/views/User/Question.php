@@ -46,11 +46,8 @@
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-
-
-
 <?php
-$attributes = array('id' => 'form1', 'name' => 'myform', 'onsubmit' => 'return validateform()');
+$attributes = array('id' => 'form1', 'name' => 'myform');
 echo validation_errors();
 echo form_open('User/Profiling', $attributes);
 ?>
@@ -71,6 +68,7 @@ echo form_open('User/Profiling', $attributes);
                     <option value="">Please Select</option>
                     <?php echo $doctorList; ?>        
                 </select> 
+                <input type="hidden" id="Status" name="Status" value="Draft">
             </div>
 
             <?php
@@ -88,7 +86,7 @@ echo form_open('User/Profiling', $attributes);
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>
@@ -140,6 +138,7 @@ echo form_open('User/Profiling', $attributes);
 </script>
 <script>
     $('document').ready(function () {
+
         $('#form1').formValidation({
             message: 'This value is not valid',
             icon: {
@@ -160,6 +159,13 @@ echo form_open('User/Profiling', $attributes);
                     }
                 },
                 Win_Q3: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
+                Patient_Seen_month: {
                     validators: {
                         notEmpty: {
                             message: 'Please Enter Value'
@@ -200,8 +206,26 @@ echo form_open('User/Profiling', $attributes);
                             message: 'Please Enter Value'
                         },
                     }
+                },
+                CT_MRI_available: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
                 }
 
+            }
+        });
+
+        $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
+            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen']").val())) {
+                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
+            }
+        });
+        $("input[name='Patient_Rxbed_In_Month']").keyup(function () {
+            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen_month']").val())) {
+                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
             }
         });
     });
@@ -220,40 +244,57 @@ echo form_open('User/Profiling', $attributes);
                     $("input[name='Patient_Seen_month']").val(obj.Patient_Seen_month);
                     $("input[name='Patient_Rxbed_In_Month']").val(obj.Patient_Rxbed_In_Month);
                     $("input[name='Patient_Rxbed_In_Week']").val(obj.Patient_Rxbed_In_Week);
-                    $("input[name='No_Of_Beds']").val(obj.No_Of_Beds);
-                    $("input[name='CT_MRI_available']").val(obj.CT_MRI_available);
 
                     if (obj.CT_MRI_available == 'Yes') {
-                        $("#CT_MRI_available_yes").attr('checked', true);
+                        $("#CT_MRI_available_yes").prop('checked', true);
                     } else if (obj.CT_MRI_available == 'No') {
-                        $("#CT_MRI_available_no").attr('checked', true);
+                        $("#CT_MRI_available_no").prop('checked', true);
                     }
 
                     if (obj.Win_Q1 == 'Yes') {
-                        $("#Win_Q1_yes").attr('checked', true);
+                        $("#Win_Q1_yes").prop('checked', true);
                     } else if (obj.Win_Q1 == 'No') {
-                        $("#Win_Q1_no").attr('checked', true);
+                        $("#Win_Q1_no").prop('checked', true);
                     }
                     if (obj.Win_Q2 == 'Yes') {
-                        $("#Win_Q2_yes").attr('checked', true);
+                        $("#Win_Q2_yes").prop('checked', true);
                     } else if (obj.Win_Q2 == 'No') {
-                        $("#Win_Q2_no").attr('checked', true);
+                        $("#Win_Q2_no").prop('checked', true);
                     }
                     if (obj.Win_Q3 == 'Yes') {
-                        $("#Win_Q3_yes").attr('checked', true);
+                        $("#Win_Q3_yes").prop('checked', true);
                     } else if (obj.Win_Q3 == 'No') {
-                        $("#Win_Q3_no").attr('checked', true);
+                        $("#Win_Q3_no").prop('checked', true);
                     }
 
-                    $("input[name='Primary_indication']").each(function () {
-                        if ($(this).val() == obj.Primary_indication) {
-                            $(this).attr("selected", "selected");
+                    $(".spaf1 > option").each(function () {
+                        if (this.value == obj.Primary_indication) {
+                            $(this).attr("selected", true);
+                        }
+                    });
+                    $("#Beds > option").each(function () {
+                        if (this.value == obj.No_Of_Beds) {
+                            $(this).attr("selected", true);
                         }
                     });
 
-                    if (obj.Status == 'Submitted') {
-                        $('#Save').attr('readonly', 'readonly');
-                    }
+                } else {
+                    $("input[name='Patient_Seen']").val('');
+                    $("input[name='Patient_Seen_month']").val('');
+                    $("input[name='Patient_Rxbed_In_Month']").val('');
+                    $("input[name='Patient_Rxbed_In_Week']").val('');
+                    $("#CT_MRI_available_yes").prop('checked', false);
+                    $("#CT_MRI_available_no").prop('checked', false);
+                    $("#Win_Q1_yes").prop('checked', false);
+                    $("#Win_Q1_no").prop('checked', false);
+                    $("#Win_Q2_yes").prop('checked', false);
+                    $("#Win_Q2_no").prop('checked', false);
+                    $("#Win_Q3_yes").prop('checked', false);
+                    $("#Win_Q3_no").prop('checked', false);
+
+                    $(".spaf1 > option").each(function () {
+                        $(this).attr("selected", false);
+                    });
                 }
 
                 $('#loader').hide();
@@ -263,17 +304,6 @@ echo form_open('User/Profiling', $attributes);
     });
 
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Doctor_Id': $("#Doctor_id").val(), 'Table_Name': 'Profiling'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted');
-                }
-
-            }
-        });
+        $("#Status").val('Submitted');
     });
 </script>

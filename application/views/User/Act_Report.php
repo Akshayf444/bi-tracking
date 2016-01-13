@@ -21,7 +21,7 @@
 
     .toggle label span {
         text-align: center;
-        padding: 3px 11px 5px 13px;
+        padding: 0px 11px 5px 13px;
         display: block;
         cursor: pointer;
         overflow: hidden;
@@ -43,81 +43,41 @@
     }
 </style>
 <?php echo form_open('User/ActivityReporting'); ?>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">Activity Reporting</li>
-<!--        <li class="table-view-cell">
-            <b>Select Doctor</b>
+<div class="col-lg-12 col-md-12 ">
+    <div class="panel panel-default">
+        <div class="panel-heading">Activity Reporting</div>
+        <div class="panel-body">   
+            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : '<h1>No Activity Planned</h1>'; ?>
 
-
-            <select class="form-control" name="Doctor_Id" onchange="sendRequest(this.value)">     
-                <option>Select Doctor</option>
-                <?php echo isset($doctorList) ? $doctorList : ''; ?>
-            </select>
-
-        </li>-->
-<!--        <li class="table-view-cell"><b>Select Activity</b></li>-->
-<!--        <li id="result"></li>-->
-        <li class="table-view-cell">
-            <table class="table table-bordered">
-                <tr>
-                    <th><?PHP if($this->Product_Id == '1')
-                    {
-                        echo "Hospital";
-                    }
-                    else
-                    {
-                        echo "Doctor";
-                    }
-                    ?> Details</th>
-                    <th>Activity</th>
-                </tr>
-                <tr>
-                    <td>Abc</td>
-                    <td><input type="checkbox" name="one"/> Activity 1<br>
-                    <input type="checkbox" name="one"/>   Activity 2</td>
-                </tr>
-            </table>
-        </li>
-        <li class="table-view-cell">
-            <br/>
-            <button type="submit" style="    margin-right: 77px;" class="btn btn-primary">Save</button>
-            <button type="submit" class="btn btn-positive">Submit</button>
-            <br/>
-        </li>
-    </ul>
+            <input type="hidden" id="Status" name="Status" value="Draft">
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+        </div>
+    </div>
 </div>
-
 </form>
 <script>
-//    $('label').click(function () {
-//        $(this).children('span').addClass('input-checked');
-//        $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
-//
-//        var id = $(this).children('span').attr('id').split("-");
-//        id = id[0];
-//
-//        if ($(this).children('span').text() === 'Yes') {
-//            $("#heading" + id).show();
-//            $("#reason" + id).hide();
-//        } else if ($(this).children('span').text() === 'No') {
-//            $("#heading" + id).hide();
-//            $("#reason" + id).show();
-//        }
-//    });
-//
-//    function sendRequest(Doctor_ID) {
-//        alert(Doctor_ID);
-//        $.ajax({
-//            type: 'get',
-//            data: {'Doctor_Id': Doctor_ID},
-//            url: '<?php echo site_url('User/getActivityDetails'); ?>',
-//            success: function (data) {
-//                console.log(data);
-//                $('#result').append(data);
-//            }
-//        });
-//    }
-//
+    $('label').click(function () {
+        $(this).children('span').addClass('input-checked');
+        $(this).parent('.toggle').siblings('.toggle').children('label').children('span').removeClass('input-checked');
+
+        var id = $(this).children('span').attr('id').split("-");
+        id = id[0];
+
+        if ($(this).children('span').text() === 'Yes') {
+            $("#heading" + id).show();
+            $("#reason" + id).hide();
+        } else if ($(this).children('span').text() === 'No') {
+            $("#heading" + id).hide();
+            $("#reason" + id).show();
+        }
+    });
+
+    $("#Submit").click(function () {
+        $("#Status").val('Submitted');
+        //$("#form1").submit();
+    });
 
 </script>

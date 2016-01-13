@@ -1,7 +1,3 @@
-
-<script src="<?php echo asset_url(); ?>jquery-latest.js" type="text/javascript"></script>
-<script src="<?php echo asset_url(); ?>jquery.tablesorter.js" type="text/javascript"></script>
-<script src="<?php echo asset_url(); ?>jquery.tablesorter.min.js" type="text/javascript"></script>
 <style>
     .table-view .table-view-cell {
         background-position: 0px 100%;
@@ -12,7 +8,14 @@
     .table-view-cell {
         padding: 11px 12px 11px 15px;
     }
+
+    #datatable_filter{
+        display: none;
+    }
 </style>
+<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
+<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
+<script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <div class="card">
     <ul class="table-view">
         <li class="table-view-cell table-view-divider">
@@ -32,11 +35,12 @@
                 ?> To Plan For Jan 2016: <b class="ckk"></b></span>
             <span class="pull-right">
                 Sort By
-                <select class="form-control">
-                    <option>Winability</option>
-                    <option>Dependency/Rx For Last Month</option>
-                    <option>BI Market Share</option>
-                    <option>Planned <?php
+                <select class="form-control" id="TableSort">
+                    <option value="1">Select Filter</option>
+                    <option value="1">Winability</option>
+                    <option value="2">Dependency/Rx For Last Month</option>
+                    <option value="3">BI Market Share</option>
+                    <option value="7">Planned <?php
                         if ($this->Product_Id == '1') {
                             echo "Vials";
                         } else {
@@ -56,33 +60,48 @@ echo form_open('User/Planning', $attributes);
     <div class="panel panel-default">
         <div class="panel-heading">Planning</div>
         <div class="panel-body">
-
             <?php echo isset($doctorList) ? $doctorList : '' ?>
+            <input type="hidden" id="Status" name="Planning_Status" value="Draft">
         </div>
-
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
-            <button type="submit" id="Save" style="display:none" class="btn btn-primary">Save</button>
-            <button type="button" id="Submit" style="display:none" class="btn btn-positive">Submit</button>
-
+            <button type="submit" id="Save" class="btn btn-primary">Save</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>
     </div>
 </div>
 </form>
-
+<style>
+    table.dataTable tbody tr {
+        background-color: transparent;
+    }
+</style>
 <script>
 
+
     $(document).ready(function () {
-
-
-
-
-
         $(".val").keyup(function () {
             RemainingBalance();
         });
 
+        var oTable = $('#datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false,
+            "info": false,
+            "columnDefs": [
+                {
+                    "targets": [7],
+                    "visible": false
+                }
+            ]
+        });
+        $('#TableSort').on('change', function () {
+            var selectedValue = $(this).val();
+            oTable.fnSort([[selectedValue, 'desc']]); //Exact value, column, reg
+        });
     });
+
+
 
     $(window).load(function () {
         RemainingBalance();
@@ -97,8 +116,9 @@ echo form_open('User/Planning', $attributes);
         var grandTotal = $('.ck').val() - finalval;
         $('.ckk').html(grandTotal);
         if (grandTotal == 0) {
-            $("#Save").show();
-            $("#Submit").show();
+
+        } else {
+            $("#Submit").attr('type', 'button');
         }
     }
 
@@ -109,26 +129,35 @@ echo form_open('User/Planning', $attributes);
     });
 
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Table_Name': 'Rx_Planning'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted Successfully.');
-                }
-
-            }
+        var finalval = 0;
+        $(".val").each(function () {
+            var actual = parseInt($(this).val(), 10) || 0;
+            finalval = parseInt(finalval, 10) + actual;
         });
+
+        var grandTotal = $('.ck').val() - finalval;
+        $('.ckk').html(grandTotal);
+        if (grandTotal == 0) {
+
+        } else if (grandTotal > 0) {
+            var answer = confirm("Planned Rx is Less Than Set Target")
+            if (answer) {
+                //$("#Submit").attr('type', 'submit');
+            }
+            else {
+                $("#Submit").attr('type', 'button');
+            }
+        } else if (grandTotal < 0) {
+            var answer = confirm("Planned Rx is More Than Set Target")
+            if (answer) {
+               // $("#Submit").attr('type', 'submit');
+            }
+            else {
+                $("#Submit").attr('type', 'button');
+            }
+        }
+
+        $("#Status").val('Submitted');
+
     });
-
-
-</script>
-<script>
-    $(document).ready(function ()
-    {
-        $("#myTable").tablesorter();
-    }
-    );
 </script>

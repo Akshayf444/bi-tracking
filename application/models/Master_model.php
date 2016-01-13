@@ -43,8 +43,16 @@ class Master_model extends MY_model {
         return $query->result();
     }
 
-    function DisplayAlert($message) {
-        return '<script>alert("' . $message . '");</script>';
+    function DisplayAlert($message = "", $type = 'success') {
+        $html = "<script>setTimeout(function() {
+                    $.bootstrapGrowl('" . $message . "', {
+                        type: '" . $type . "',
+                        align: 'center',
+                        width: 'auto',
+                        allow_dismiss: true
+                    });
+                }, 2000);</script>";
+        return $html;
     }
 
 }

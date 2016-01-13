@@ -9,9 +9,8 @@ class Admin extends CI_Controller {
 
         parent::__construct();
 
-        $this->load->library('Csvimport');
 
-        //$this->load->library('csvimport');
+        $this->load->library('Csvimport');
 
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
@@ -39,20 +38,34 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
+
         $doctor_count = $this->admin_model->count();
         $planing_count = $this->admin_model->count_planned();
         $actual_count = $this->admin_model->count_achive();
         $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
         $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
         $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
-        
+        $division = 'Diabetes';
+        $division1 = 'ThromBI';
+        $data['dr_by_product'] = $this->admin_model->dr_by_product($division);
+        $data['total_target_by_product1'] = $this->admin_model->total_target_by_product(1);
+        $data['total_target_by_product2'] = $this->admin_model->total_target_by_product(2);
+        $data['total_target_by_product3'] = $this->admin_model->total_target_by_product(3);
+        $data['total_actualrx_by_product1'] = $this->admin_model->total_actualrx_by_product(1);
+        $data['total_actualrx_by_product2'] = $this->admin_model->total_actualrx_by_product(2);
+        $data['total_actualrx_by_product3'] = $this->admin_model->total_actualrx_by_product(3);
+        $data['total_convertion_by_product1'] = $this->admin_model->total_convertion_by_product(1);
+        $data['total_convertion_by_product2'] = $this->admin_model->total_convertion_by_product(2);
+        $data['total_convertion_by_product3'] = $this->admin_model->total_convertion_by_product(3);
         $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
- $this->load->view('template3', $data);
+        $this->load->view('template3', $data);
+
 //        }
     }
 
     public function emp_view() {
         $data['show'] = $this->admin_model->emp_view();
+
         $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
@@ -477,6 +490,7 @@ class Admin extends CI_Controller {
                     'State' => $row['19'],
                     'Pin_Code' => $row['20'],
                     'Address' => $row['21'],
+                    'Designation' => $row['22'],
                 );
 //                $data = array(
 //                    'Account_ID' => $row['5'],

@@ -9,6 +9,7 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
+<?php echo isset($message) ? $message : ''; ?>
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">
@@ -20,15 +21,15 @@
     <div class="panel panel-default">
         <div class="panel-heading">Set Expected <?php echo $rxlabel; ?></div>
         <div class="panel-body">
-
             <div class="form-group">
                 No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
-                <input type="number" name="value">
+                <input type="number" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
             </div>
+            <input type="hidden" id="Status" name="Status" value="Draft">
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>
         </form>
     </div>
@@ -141,17 +142,6 @@
         });
     });
     $("#Submit").click(function () {
-        $.ajax({
-            type: 'POST',
-            data: {'Table_Name': 'Rx_Target'},
-            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
-            success: function (data) {
-                //alert(data);
-                if (data != '404') {
-                    alert('Data Submitted');
-                }
-
-            }
-        });
+        $("#Status").val('Submitted');
     });
 </script>

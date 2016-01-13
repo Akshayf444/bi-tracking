@@ -21,7 +21,7 @@
                 <span class="info-box-icon bg-aqua"><i class="fa fa-user-md"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Doctors </span>
-                  <span class="info-box-number">96852</span>
+                  <span class="info-box-number"><?php echo $Doctor_Count ?>2</span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->
@@ -30,7 +30,7 @@
                 <span class="info-box-icon bg-red"><i class="fa fa-medkit"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Target</span>
-                  <span class="info-box-number">41,410</span>
+                  <span class="info-box-number"><?php echo $Planning_Count ?></span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->
@@ -43,7 +43,7 @@
                 <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Sales</span>
-                  <span class="info-box-number">760</span>
+                  <span class="info-box-number"><?php echo $Actual_Count ?></span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->

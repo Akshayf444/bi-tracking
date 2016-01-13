@@ -12,8 +12,11 @@
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
-        
-
+        <script src='<?php echo asset_url() ?>js/jquery.bootstrap-growl.min.js' type='text/javascript'></script>
+        <?php
+        echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
+        $this->session->unset_userdata('message');
+        ?>
         <style>
             .form-control{
                 height: 32px;
@@ -30,6 +33,9 @@
                 text-align: center;
                 font-size: 18px;
                 font-weight: bold;
+            }
+            a{
+                cursor: pointer;
             }
         </style>
 
@@ -89,7 +95,7 @@
                 <img style="height: 99%" onclick="window.location = '<?php echo site_url('User/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
                 <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php if ($title != 'Main') { ?>
-                    <a class="fa fa-2x fa-arrow-left pull-left" onclick="goback()" style="padding:8px 0px 0px 0px"></a>
+                <a class="fa fa-2x fa-arrow-left pull-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php }
                 ?>
                 </div>
@@ -102,6 +108,7 @@
             }
         </script>
         <div class="content" style="padding-right: 0px;padding-left: 0px">
+
             <?php $this->load->view($content, $view_data); ?>
         </div>
 
