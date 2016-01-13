@@ -138,7 +138,7 @@ echo form_open('User/Profiling', $attributes);
 </script>
 <script>
     $('document').ready(function () {
-        var seen = parseFloat($('#seen').val());
+
         $('#form1').formValidation({
             message: 'This value is not valid',
             icon: {
@@ -172,6 +172,13 @@ echo form_open('User/Profiling', $attributes);
                         },
                     }
                 },
+                Patient_Seen: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
+                },
                 Patient_Rxbed_In_Week: {
                     validators: {
                         notEmpty: {
@@ -191,10 +198,6 @@ echo form_open('User/Profiling', $attributes);
                         notEmpty: {
                             message: 'Please Enter Value'
                         },
-//                        lessThan: {
-//                        value: parseFloat(seen),
-//                        message: 'The value must be less than or equal to Patient Seen month'
-//                    }
                     }
                 },
                 No_of_Beds: {
@@ -203,8 +206,26 @@ echo form_open('User/Profiling', $attributes);
                             message: 'Please Enter Value'
                         },
                     }
+                },
+                CT_MRI_available: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        },
+                    }
                 }
 
+            }
+        });
+
+        $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
+            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen']").val())) {
+                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
+            }
+        });
+        $("input[name='Patient_Rxbed_In_Month']").keyup(function () {
+            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen_month']").val())) {
+                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
             }
         });
     });

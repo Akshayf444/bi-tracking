@@ -158,6 +158,8 @@ class User_model extends CI_Model {
         }
 
         $activity_planned = $this->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+        $activity_actual = $this->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
+        
         $prio_dr = $this->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
         $target = isset($data['show4']['target']) ? $data['show4']['target'] : 0;
         $Planned = isset($data['Planned']['Planned_Rx']) ? $data['Planned']['Planned_Rx'] : 0;
@@ -218,7 +220,7 @@ class User_model extends CI_Model {
                             </a>
                             <div class="demo pull-right">
                                 <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $activity_planned["activity_planned"] . '/' . $prio_dr["doctor_id"] . '</span>
+                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
                             </div>
                         </li>
                     </ul>
@@ -239,9 +241,9 @@ class User_model extends CI_Model {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID', 'left');
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.Product_Id = ' . $this->Product_Id, 'left');
         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='4' OR dp.Product_id='6' AND dp.month = '$this->nextMonth' ";
+            $where = "dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ";
             $this->db->where($where);
         } else {
             $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
@@ -253,15 +255,14 @@ class User_model extends CI_Model {
     }
 
     public function getPlannedActivityDoctor() {
-        $this->db->select('dm.*,ap.*,rp.Activity_Detail,rp.reason,rp.Activity_Done');
-        $this->db->from('Actual_Doctor_Priority dp');
-        $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID');
-        $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
-        $this->db->group_by('dp.Doctor_Id');
+        $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
+        $this->db->from('Activity_Planning ap');
+        $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID AND rp.Product_Id = ' . $this->Product_Id, 'LEFT');
+        $this->db->where(array('ap.Product_Id' => $this->Product_Id, 'ap.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'ap.month' => $this->nextMonth));
+        $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
-//echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -333,7 +334,7 @@ class User_model extends CI_Model {
                             <th>' . date('M', strtotime('-1 month')) . $vials . '</th>
                             <th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th>';
             if ($type == 'Planning') {
-                $html .= '<th>Planned Rx</th></tr></thead><tbody>';
+                $html .= '<th>New ' . $vials . ' Targeted For ' . date('M', strtotime($this->nextMonth)) . ' </th></tr></thead><tbody>';
             } elseif ($type == 'Actual') {
                 $html .= '<th>Actual</th></tr></thead><tbody>';
             } else {
@@ -366,11 +367,20 @@ class User_model extends CI_Model {
                     else {
                         $dependancy = 0;
                     }
-                    if (isset($getPlan->Patient_Rxbed_In_Month) && $getPlan->Patient_Rxbed_In_Month > 0) {
-                        $BI_Share = round(($month3rx / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                    if ($this->Product_Id == 1) {
+                        if (isset($getPlan->Patient_Seen_month) && $getPlan->Patient_Seen_month > 0) {
+                            $BI_Share = round(($month3rx / $getPlan->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        } else {
+                            $BI_Share = '';
+                        }
                     } else {
-                        $BI_Share = '';
+                        if (isset($getPlan->Patient_Rxbed_In_Month) && $getPlan->Patient_Rxbed_In_Month > 0) {
+                            $BI_Share = round(($month3rx / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        } else {
+                            $BI_Share = '';
+                        }
                     }
+
 
                     if ($priority == 'true') {
                         $result = $this->User_model->ActualPriorityExist($doctor->Account_ID);
@@ -671,7 +681,7 @@ class User_model extends CI_Model {
         $this->db->select('COUNT(DISTINCT(`Doctor_Id`)) AS doctor_id');
         $this->db->from('`Actual_Doctor_Priority`');
         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='4' OR Product_id='6'";
+            $where = "VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='4' OR VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='6'";
             $this->db->where($where);
         } else {
             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id));
@@ -704,7 +714,7 @@ class User_model extends CI_Model {
             $HTML .= '</tr>';
 
             foreach ($result as $value) {
-                
+
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
                 } else {

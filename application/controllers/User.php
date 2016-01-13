@@ -140,9 +140,10 @@ class User extends MY_Controller {
             }
 
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
+            $activity_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
             $prio_dr = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
-            if ($prio_dr["doctor_id"] > 0) {
-                $data['tot'] = ($activity_planned["activity_planned"] / $prio_dr["doctor_id"]) * 100;
+            if ($activity_planned["activity_planned"] > 0) {
+                $data['tot'] = ($activity_actual['activity_actual'] / $activity_planned["activity_planned"]) * 100;
             } else {
                 $data['tot'] = 0;
             }
@@ -246,7 +247,7 @@ class User extends MY_Controller {
         $data['current_month'] = date('M');
         $data['Product_Id'] = $this->Product_Id;
 
-        $data = array('title' => 'Report', 'content' => 'User/addDelta', 'view_data' => $data);
+        $data = array('title' => 'Report', 'content' => 'User/addDelta', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -300,7 +301,7 @@ class User extends MY_Controller {
             $data['Product_Id'] = $this->Product_Id;
             $data['doctorList'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
             $data['questionList'] = $this->Master_Model->getQuestions($this->Product_Id);
-            $data = array('title' => 'Question', 'content' => 'User/Question', 'view_data' => $data);
+            $data = array('title' => 'Question', 'content' => 'User/Question', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -357,7 +358,7 @@ class User extends MY_Controller {
             $current_month = $this->nextMonth;
             $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
             $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
-            $data = array('title' => 'Planning', 'content' => 'User/doctorList', 'view_data' => $data);
+            $data = array('title' => 'Planning', 'content' => 'User/doctorList', 'backUrl' => 'User/PlanMenu', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -423,7 +424,7 @@ class User extends MY_Controller {
             redirect('User/ActivityPlanning', 'refresh');
         }
 
-        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'view_data' => $data);
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Plan', 'backUrl' => 'User/PlanMenu', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -431,7 +432,7 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
-            $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'view_data' => $data);
+            $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -510,7 +511,7 @@ class User extends MY_Controller {
 
             //echo $data['doctorList'] ;
 
-            $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'view_data' => $data);
+            $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -549,7 +550,7 @@ class User extends MY_Controller {
             redirect('User/Priority', 'refresh');
         }
 
-        $data = array('title' => 'Set Priority', 'content' => 'User/Priority', 'view_data' => $data);
+        $data = array('title' => 'Set Priority', 'content' => 'User/Priority', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
@@ -615,7 +616,7 @@ class User extends MY_Controller {
             }
             redirect('User/ActivityReporting');
         }
-        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'view_data' => $data);
+        $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
