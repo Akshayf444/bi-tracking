@@ -17,9 +17,7 @@
 <div class="row">
     <div class="col-lg-12">
         <button class="btn btn-primary">Add Doctor</button>
-<!--       <button type="button" class="btn btn-primary  pull-right" data-toggle="modal" data-target="#myModal">
- Import
-       </button>-->
+
 <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/doc_csv'); ?>';"> Import</a>
 </div>
 </div>

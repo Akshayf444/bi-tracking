@@ -13,35 +13,30 @@
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
 <div class="col-lg-12 col-md-12 ">
     <?php
+    $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
     $attributes = array('id' => 'form1', 'name' => 'myform');
     echo form_open('User/Set_Target', $attributes)
     ?>
     <div class="panel panel-default">
-        <div class="panel-heading">Set Expected Rx</div>
+        <div class="panel-heading">Set Expected <?php echo $rxlabel; ?></div>
         <div class="panel-body">
 
             <div class="form-group">
-                No Of New Rx Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
+                No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
                 <input type="number" name="value">
             </div>
-            <div class="form-group">
-                <div class="col-sm-2">
-                    <input type="submit" name="save" class="btn btn-primary" value="Save"/>
-                </div>
-                <div class="col-sm-2">
-                    <input type="submit"  class="btn btn-positive" value="Submit"/>
-                </div>
-            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="submit" id="Save" class="btn btn-primary">Save</button>
+            <button type="button" id="Submit" class="btn btn-positive">Submit</button>
         </div>
         </form>
-
-
     </div>
 
 </form>
 <ul class="table-view">
     <li class="table-view-cell" align="center">
-        <h5>New Rx Generated</h5>
+        <h5>New <?php echo $rxlabel; ?> Generated</h5>
     </li>
     <li class="table-view-cell">
 
@@ -84,7 +79,13 @@
             </tr>-->
             <tr>
                 <td>
-                    Actual Rx
+                    Actual <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?>
                 </td>
                 <td><?php
                     foreach ($Actual1 as $sh1) {
@@ -139,5 +140,18 @@
             }
         });
     });
+    $("#Submit").click(function () {
+        $.ajax({
+            type: 'POST',
+            data: {'Table_Name': 'Rx_Target'},
+            url: '<?php echo site_url('User/updateDraftStatus'); ?>',
+            success: function (data) {
+                //alert(data);
+                if (data != '404') {
+                    alert('Data Submitted');
+                }
 
+            }
+        });
+    });
 </script>

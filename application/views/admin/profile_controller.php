@@ -19,7 +19,8 @@
     <div class="col-lg-9">
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/profile_view'); ?>';"> Control Access</a>
     </div>
-  
+  <!--<a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/empdoc_csv'); ?>';"> Empdoc</a>-->
+ <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/tab_csv'); ?>';"> tab</a>
 </div>
 </div>
 <div class="row">

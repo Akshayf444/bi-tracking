@@ -8,7 +8,11 @@ class Admin extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
+
         $this->load->library('Csvimport');
+
+        //$this->load->library('csvimport');
+
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
@@ -35,23 +39,15 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-        $data['show'] = $this->admin_model->count();
-        $data['plan'] = $this->admin_model->count_planned();
-        $data['achive'] = $this->admin_model->count_achive();
-        $DoctorClass = array('A', 'B', 'A++', 'A+', 'Z');
-        foreach ($DoctorClass as $value) {
-            $class = $value;
-            $data['Count'] = $this->admin_model->count_doc($class);
-           
-            $dataString = "['" . $class . "'," . $data . "]";
-
-            $myurl[] = $dataString;
-        }
-        $data['count_doc'] = $this->admin_model->count_doc();
-
-
+        $doctor_count = $this->admin_model->count();
+        $planing_count = $this->admin_model->count_planned();
+        $actual_count = $this->admin_model->count_achive();
+        $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
+        $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
+        $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
+        
         $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
-        $this->load->view('template3', $data);
+ $this->load->view('template3', $data);
 //        }
     }
 
@@ -172,7 +168,7 @@ class Admin extends CI_Controller {
         $id = $_GET['id'];
         $data = array('status' => 0);
         $this->admin_model->del_emp($id, $data);
-        redirect('admin/ emp_view', 'refresh');
+        redirect('admin/emp_view', 'refresh');
     }
 
     public function edit() {
@@ -368,6 +364,24 @@ class Admin extends CI_Controller {
         }
     }
 
+    public function BrandMaster() {
+        try {
+            $crud = new grocery_CRUD();
+
+            $crud->set_theme('flexigrid');
+            $crud->set_table('Brand_Master');
+            $crud->set_subject('Product');
+            $output = $crud->render();
+            $data['output'] = $output->output;
+            $data['css_files'] = $output->css_files;
+            $data['js_files'] = $output->js_files;
+            $data = array('title' => 'Profile_Completion', 'content' => 'admin/GroceryCrud', 'page_title' => 'Question Master', 'view_data' => $data);
+            $this->load->view('template3', $data);
+        } catch (Exception $e) {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+        }
+    }
+
     public function emp_csv() {
         $data = array('title' => 'View_Employee', 'content' => 'admin/emp_csv', 'page_title' => 'Import FILES', 'view_data' => 'blank');
         $this->load->view('template3', $data);
@@ -383,7 +397,7 @@ class Admin extends CI_Controller {
                 if ($count == 1) {
                     continue;
                 }
-                $firstline = true;
+
                 $check['show'] = $this->admin_model->emp_duplicate($row['0']);
 //                var_dump($check);
                 if (!empty($check) && $check != '') {
@@ -391,36 +405,32 @@ class Admin extends CI_Controller {
                         'VEEVA_Employee_ID' => $row['0'],
                         'Local_Employee_ID' => $row['1'],
                         'First_Name' => $row['2'],
-                        'Middle_Name' => $row['3'],
-                        'Last_Name' => $row['4'],
-                        'Full_Name' => $row['5'],
-                        'Territory' => $row['6'],
-                        'Gender' => $row['7'],
-                        'Mobile' => $row['8'],
-                        'Email_ID' => $row['9'],
-                        'Username' => $row['10'],
-                        'Password' => $row['11'],
-                        'Last_Login' => $row['12'],
-                        'Address_1' => $row['13'],
-                        'Address_2' => $row['14'],
-                        'City' => $row['15'],
-                        'State' => $row['16'],
-                        'Division' => $row['17'],
-                        'Product' => $row['18'],
-                        'Zone' => $row['19'],
-                        'Region' => $row['20'],
-                        'Profile' => $row['21'],
-                        'Designation' => $row['22'],
-                        'Created_By' => $row['23'],
+                        'Last_Name' => $row['3'],
+                        'Full_Name' => $row['4'],
+                        'Territory' => $row['5'],
+                        'Gender' => $row['6'],
+                        'Mobile' => $row['7'],
+                        'Email_ID' => $row['8'],
+                        'Username' => $row['9'],
+                        'Password' => $row['10'],
+                        'Last_Login' => $row['11'],
+                        'Address_1' => $row['12'],
+                        'Address_2' => $row['13'],
+                        'City' => $row['14'],
+                        'State' => $row['15'],
+                        'Division' => $row['16'],
+                        'Zone' => $row['17'],
+                        'Region' => $row['18'],
+                        'Profile' => $row['19'],
+                        'Designation' => $row['20'],
+                        'Created_By' => 'System',
                         'created_date' => date('Y-m-d'),
-                        'Modified_By' => $row['25'],
-                        'Modified_Date' => $row['26'],
-                        'Date_of_Joining' => $row['27'],
-                        'DOB' => $row['28'],
-                        'Reporting_To' => $row['29'],
-                        'Reporting_VEEVA_ID' => $row['30'],
-                        'Reporting_Local_ID' => $row['31'],
-                        'Status' => 1,
+                        'Modified_By' => $row['23'],
+                        'Modified_Date' => $row['24'],
+                        'Reporting_To' => $row['25'],
+                        'Reporting_VEEVA_ID' => $row['26'],
+                        'Reporting_Local_ID' => $row['27'],
+                        'Status' => '1',
                     );
 
                     $sql = $this->admin_model->insert_csv($data);
@@ -445,37 +455,40 @@ class Admin extends CI_Controller {
                 if ($count == 1) {
                     continue;
                 }
-                $check['show'] = $this->admin_model->emp_duplicate($row['0']);
-//                var_dump($check);
-//                echo $row['0'];
-                if (!empty($check) && $check != '') {
-                    $data = array(
-                        'Account_ID' => $row['0'],
-                        'Salutation' => $row['1'],
-                        'First_Name' => $row['2'],
-                        'Last_Name' => $row['3'],
-                        'Account_Name' => $row['4'],
-                        'Specialty' => $row['5'],
-                        'Specialty_2' => $row['6'],
-                        'Specialty_3' => $row['7'],
-                        'Specialty_4' => $row['8'],
-                        'Individual_Type' => $row['9'],
-                        'Email' => $row['10'],
-                        'Gender' => $row['11'],
-                        'Mobile' => $row['12'],
-                        'Status' => $row['13'],
-                        'Created_Date' => $row['14'],
-                        'Created_By' => $row['15'],
-                        'Modified_Date' => $row['16'],
-                        'Modified_By' => $row['17'],
-                        'City' => $row['18'],
-                        'State' => $row['19'],
-                        'Pin_Code' => $row['20'],
-                        'Address' => $row['21'],
-                    );
+//
+                $data = array(
+                    'Account_ID' => $row['0'],
+                    'Salutation' => $row['1'],
+                    'First_Name' => $row['2'],
+                    'Last_Name' => $row['3'],
+                    'Account_Name' => $row['4'],
+                    'Specialty' => $row['5'],
+                    'Specialty_2' => $row['6'],
+                    'Specialty_3' => $row['7'],
+                    'Specialty_4' => $row['8'],
+                    'Individual_Type' => $row['9'],
+                    'Email' => $row['10'],
+                    'Gender' => $row['11'],
+                    'Mobile' => $row['12'],
+                    'Status' => $row['13'],
+                    'Created_Date' => date('Y-m-d'),
+                    'Created_By' => 'ADMIN',
+                    'City' => $row['18'],
+                    'State' => $row['19'],
+                    'Pin_Code' => $row['20'],
+                    'Address' => $row['21'],
+                );
+//                $data = array(
+//                    'Account_ID' => $row['5'],
+//                    'Account_Name' => $row['4'],
+//                    'Individual_Type' => $row['7'],
+//                    'Status' => $row['8'],
+//                    'City' => $row['2'],
+//                    'State' => $row['1'],
+//                    'Address' => $row['6'],
+//                );
 //insert csv data into mysql table
-                    $sql = $this->admin_model->insert_csv_doc($data);
-                }
+                $sql = $this->admin_model->insert_csv_doc($data);
             }
         }
     }
@@ -483,34 +496,34 @@ class Admin extends CI_Controller {
     public function add_doc() {
         if ($_POST) {
             $data = array(
-                'Account_ID' => $row['0'],
-                'Salutation' => $row['1'],
-                'First_Name' => $row['2'],
-                'Last_Name' => $row['3'],
-                'Account_Name' => $row['4'],
-                'Specialty' => $row['5'],
-                'Specialty_2' => $row['6'],
-                'Specialty_3' => $row['7'],
-                'Specialty_4' => $row['8'],
-                'Individual_Type' => $row['9'],
-                'Email' => $row['10'],
-                'Gender' => $row['11'],
-                'Mobile' => $row['12'],
-                'Status' => $row['13'],
-                'Created_Date' => $row['14'],
-                'Created_By' => $row['15'],
-                'Modified_Date' => $row['16'],
-                'Modified_By' => $row['17'],
-                'City' => $row['18'],
-                'State' => $row['19'],
-                'Pin_Code' => $row['20'],
-                'Address' => $row['21'],
+                'Account_ID' => $this->input->post('Account_ID'),
+                'Salutation' => $this->input->post('Salutation'),
+                'First_Name' => $this->input->post('First_Name'),
+                'Last_Name' => $this->input->post('Last_Name'),
+                'Account_Name' => $this->input->post('Account_Name'),
+                'Specialty' => $this->input->post('Specialty'),
+                'Specialty_2' => $this->input->post('Specialty_2'),
+                'Specialty_3' => $this->input->post('Specialty_3'),
+                'Specialty_4' => $this->input->post('Specialty_4'),
+                'Individual_Type' => $this->input->post('Individual_Type'),
+                'Email' => $this->input->post('Email'),
+                'Gender' => $this->input->post('Gender'),
+                'Mobile' => $this->input->post('Mobile'),
+                'Status' => $this->input->post('Status'),
+                'Created_Date' => $this->input->post('Activity_Name'),
+                'Created_By' => $this->input->post('Activity_Name'),
+                'Modified_Date' => $this->input->post('Activity_Name'),
+                'Modified_By' => $this->input->post('Activity_Name'),
+                'City' => $this->input->post('City'),
+                'State' => $this->input->post('State'),
+                'Pin_Code' => $this->input->post('Pin_Code'),
+                'Address' => $this->input->post('Address')
             );
             $this->admin_model->insert_activity($data);
             redirect('admin/view_activity', 'refresh');
         }
 
-        $data = array('title' => 'Login', 'content' => 'admin/', 'page_title' => 'Add Activity', 'view_data' => $data);
+        $data = array('title' => 'Login', 'content' => 'admin/', 'page_title' => 'Add Activity', 'view_data' => 'blank');
         $this->load->view('template3', $data);
     }
 
@@ -561,6 +574,107 @@ class Admin extends CI_Controller {
 
     public function control_access() {
         
+    }
+
+    public function empdoc_csv() {
+        $data = array('title' => 'View_Employee', 'content' => 'admin/emp_csv', 'page_title' => 'Import FILES', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+
+        if ($this->input->post()) {
+
+            $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            $count = 0;
+            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+
+
+                $count++;
+                if ($count == 1) {
+                    continue;
+                }
+
+//                var_dump($check);
+
+                $data = array(
+                    'Local_Employee_ID' => $row['1'],
+                    'VEEVA_Employee_ID' => $row['2'],
+                    'Employee_Name' => $row['3'],
+                    'VEEVA_Account_ID' => $row['4'],
+                    'Account_Name' => $row['5'],
+                    'SAP_ID' => $row['10'],
+                    'Status' => 'Active',
+                    'Specialty' => $row['7'],
+                );
+
+                $sql = $this->admin_model->insert_empdoc_csv($data);
+            }
+        }
+    }
+
+    public function hospital_csv() {
+        $data = array('title' => 'View_Employee', 'content' => 'admin/emp_csv', 'page_title' => 'Import FILES', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+
+        if ($this->input->post()) {
+
+            $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            $count = 0;
+            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+
+
+                $count++;
+                if ($count == 1) {
+                    continue;
+                }
+
+
+//                var_dump($check);
+
+                $data = array(
+                    'NEWS_region' => $row['1'],
+                    'VEEVA_Employee_ID' => $row['2'],
+                    'Employee_Name' => $row['3'],
+                    'VEEVA_Account_ID' => $row['4'],
+                    'Account_Name' => $row['5'],
+                    'SAP_ID' => $row['10'],
+                    'Status' => 'Active',
+                    'Specialty' => $row['7'],
+                );
+
+                $sql = $this->admin_model->insert_hospital($data);
+            }
+        }
+    }
+
+    public function tab_csv() {
+        $data = array('title' => 'View_Employee', 'content' => 'admin/emp_csv', 'page_title' => 'Import FILES', 'view_data' => 'blank');
+        $this->load->view('template3', $data);
+
+        if ($this->input->post()) {
+
+            $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
+            $count = 0;
+            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+
+
+                $count++;
+                if ($count == 1) {
+                    continue;
+                }
+
+
+//                var_dump($check);
+
+                $data = array(
+                    'VEEVA_Employee_ID' => $row['0'],
+                );
+
+                $sql = $this->admin_model->insert_tab($data);
+
+
+
+//insert csv data into mysql table
+            }
+        }
     }
 
 }

@@ -43,4 +43,8 @@ class Master_model extends MY_model {
         return $query->result();
     }
 
+    function DisplayAlert($message) {
+        return '<script>alert("' . $message . '");</script>';
+    }
+
 }

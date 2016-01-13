@@ -11,6 +11,8 @@
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
+        <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
+        
 
         <style>
             .form-control{
@@ -68,12 +70,18 @@
             ?>
             <style>
                 .table-view,.panel-body{
-                    background-color: #9999ff;
+                    background-color: #20B2AA;
                 }
             </style>
             <?php
-        }
-        ?>
+        } elseif ($this->session->userdata('Product_Id') == 6) {
+            ?>
+            <style>
+                .table-view,.panel-body{
+                    background-color: #9999ff;
+                }
+            </style>
+        <?php } ?>
     </head>
     <body>
         <header class="bar bar-nav">

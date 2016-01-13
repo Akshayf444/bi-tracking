@@ -18,7 +18,7 @@ class admin_model extends CI_Model {
     public function emp_view() {
         $sql = "select * from Employee_Master where status='1'";
         $query = $this->db->query($sql);
-       
+
         return $query->result();
     }
 
@@ -141,7 +141,7 @@ class admin_model extends CI_Model {
     }
 
     public function view_profile_controller() {
-        $sql="SELECT  Tab_Control.*,Territory, Zone FROM Employee_Master Left Join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID GROUP BY Zone";
+        $sql = "SELECT  Tab_Control.*,Territory, Zone FROM Employee_Master Left Join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID GROUP BY Zone";
 //        $sql = "select  Tab_Control.*, Employee_Master.Full_Name from Employee_Master left join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID ";
         $query = $this->db->query($sql);
         return $query->result();
@@ -152,7 +152,7 @@ class admin_model extends CI_Model {
         $query = $this->db->update('Tab_Control', $data);
         return $query;
     }
- 
+
     public function lock() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='0',`Tab2`='0',`Tab3`='0',`Tab4`='0',`Tab5`='0'";
         $query = $this->db->query($sql);
@@ -164,52 +164,62 @@ class admin_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query;
     }
-    public  function  active_profile($id,$data){
+
+    public function active_profile($id, $data) {
         $query = $this->db->where('VEEVA_Employee_ID', $id);
         $query = $this->db->update('Tab_Control', $data);
         return $query;
-    
     }
-     public function doc_view(){
-         $sql="select * from Doctor_Master";
-     $query = $this->db->query($sql);
+
+    public function doc_view() {
+        $sql = "select * from Doctor_Master";
+        $query = $this->db->query($sql);
         return $query->result();
     }
-     public function insert_csv($data) {
+
+    public function insert_csv($data) {
         return $this->db->insert('Employee_Master', $data);
     }
-     public function insert_csv_doc($data) {
+
+    public function insert_csv_doc($data) {
         return $this->db->insert('Doctor_Master', $data);
     }
-     public  function  emp_duplicate($id){
-         $sql= " select * from  Employee_Master WHERE VEEVA_Employee_ID='$id'";
-          $query = $this->db->query($sql);
+
+    public function emp_duplicate($id) {
+        $sql = " select * from  Employee_Master WHERE VEEVA_Employee_ID='$id'";
+        $query = $this->db->query($sql);
         return $query->row_array();
-     }
-     public  function  doc_duplicate($id){
-         $sql= " select * from  Doctor_Master WHERE Account_ID='$id'";
-         
-          $query = $this->db->query($sql);
-       return $query->row_array();
-     }
-      public function insert_doc($data) {
+    }
+
+    public function doc_duplicate($id) {
+        $sql = " select * from  Doctor_Master WHERE Account_ID='$id'";
+
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
+    public function insert_doc($data) {
         return $this->db->insert('Doctor_Master', $data);
     }
-     public function update_doc($id, $data) {
+
+    public function update_doc($id, $data) {
         $query = $this->db->where('Account_ID', $id);
         $query = $this->db->update('Doctor_Master', $data);
         return $query;
     }
-public function del_doc($id, $data) {
+
+    public function del_doc($id, $data) {
         $query = $this->db->where('Account_ID', $id);
         $query = $this->db->update('Doctor_Master', $data);
         return $query;
     }
+
     public function find_by_docid($id) {
         $sql = "select * from Doctor_Master where Account_ID='$id'  ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+
     public function count() {
         $sql = "SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Doctor_Master
 LEFT JOIN  Employee_Doc ON Employee_Doc.VEEVA_Account_ID=Doctor_Master.Account_ID
@@ -217,48 +227,65 @@ LEFT JOIN  Employee_Doc ON Employee_Doc.VEEVA_Account_ID=Doctor_Master.Account_I
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-      public function count_planned() {
+
+    public function count_planned() {
         $sql = "SELECT SUM(Rx_Planning.Planned_RX) AS TOTAL FROM Employee_Master
-LEFT JOIN Rx_Planning ON Employee_Master.VEEVA_Employee_ID=Rx_Planning.VEEVA_Employee_ID
- WHERE Employee_Master.status='1' ";
+            LEFT JOIN Rx_Planning ON Employee_Master.VEEVA_Employee_ID=Rx_Planning.VEEVA_Employee_ID
+             WHERE Employee_Master.status='1' ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+
     public function count_achive() {
-        $sql = "SELECT SUM(Rx_Planning.Actual_RX) AS TOTAL FROM Employee_Master
-LEFT JOIN Rx_Planning ON Employee_Master.VEEVA_Employee_ID=Rx_Planning.VEEVA_Employee_ID
+        $sql = "SELECT SUM(Rx_Actual.Actual_Rx) AS TOTAL FROM Rx_Actual
+ LEFT JOIN Employee_Master ON Employee_Master.VEEVA_Employee_ID=Rx_Actual.VEEVA_Employee_ID
  WHERE Employee_Master.status='1' ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+
     public function Tab1() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='1',`Tab2`='1',`Tab3`='1',`Tab4`='1',`Tab5`='1'";
         $query = $this->db->query($sql);
-          return $query->result();
+        return $query->result();
     }
+
     public function Tab2() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='1',`Tab2`='1',`Tab3`='1',`Tab4`='1',`Tab5`='1'";
         $query = $this->db->query($sql);
-           return $query->result();
+        return $query->result();
     }
+
     public function Tab3() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='1',`Tab2`='1',`Tab3`='1',`Tab4`='1',`Tab5`='1'";
         $query = $this->db->query($sql);
-          return $query->result();
+        return $query->result();
     }
+
     public function Tab4() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='1',`Tab2`='1',`Tab3`='1',`Tab4`='1',`Tab5`='1'";
         $query = $this->db->query($sql);
-          return $query->result();
+        return $query->result();
     }
+
     public function Tab5() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='1',`Tab2`='1',`Tab3`='1',`Tab4`='1',`Tab5`='1'";
         $query = $this->db->query($sql);
-           return $query->result();
-    }
-     public function count_doc(){
-         $sql="SELECT COUNT(DISTINCT(Specialty)) FROM Doctor_Master GROUP BY Specialty";
-          $query = $this->db->query($sql);
         return $query->result();
-     }
+    }
+
+    public function count_doc($class) {
+        $sql = "SELECT COUNT(DISTINCT(Specialty)) FROM Doctor_Master GROUP BY Specialty where Specialty=$class";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function insert_empdoc_csv($data) {
+        return $this->db->insert('Employee_Doc', $data);
+    }
+
+    public function insert_tab($data) {
+        return $this->db->insert('Tab_Control', $data);
+    }
+
 }
