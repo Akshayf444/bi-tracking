@@ -109,7 +109,7 @@
                                         }
                                         ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-aqua" style="width: 70%"></div>
+                                        <div class="progress-bar progress-bar-aqua" style="width: 0.08%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
@@ -128,7 +128,7 @@
                                         }
                                         ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-red" style="width: <?php echo $tot1;?>%"></div>
+                                        <div class="progress-bar progress-bar-red" style="width: 0.05%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
@@ -147,7 +147,7 @@
                                         }
                                         ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-green" style="width: <?php echo $tot2;?>%"></div>
+                                        <div class="progress-bar progress-bar-green" style="width: 0.02%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
@@ -166,7 +166,7 @@
                                         }
                                         ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-yellow" style="width: <?php echo $tot3?>%"></div>
+                                        <div class="progress-bar progress-bar-yellow" style="width: 0.00%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                             </div><!-- /.col -->

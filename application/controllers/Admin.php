@@ -55,17 +55,17 @@ class Admin extends CI_Controller {
         $data['profiling_by_product2'] = $this->admin_model->profiling_by_product(2);
         $data['profiling_by_product3'] = $this->admin_model->profiling_by_product(3);
         if ($data['profiling_by_product1']['profiling_by_product'] > 0) {
-            $data['tot1'] = ( $data['profiling_by_product1']['profiling_by_product']/$data['Over_all_count']['over_all']) * 100;
+            $data['tot1'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product1']['profiling_by_product']) * 100;
         } else {
             $data['tot1'] = 0;
         }
         if ($data['profiling_by_product2']['profiling_by_product'] > 0) {
-            $data['tot2'] = ($data['profiling_by_product2']['profiling_by_product']/$data['Over_all_count']['over_all']) * 100;
+            $data['tot2'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product2']['profiling_by_product']) * 100;
         } else {
             $data['tot2'] = 0;
         }
         if ($data['profiling_by_product3']['profiling_by_product'] > 0) {
-            $data['tot3'] = ($data['profiling_by_product3']['profiling_by_product']/$data['Over_all_count']['over_all']) * 100;
+            $data['tot3'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product3']['profiling_by_product']) * 100;
         } else {
             $data['tot3'] = 0;
         }
