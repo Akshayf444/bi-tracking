@@ -18,7 +18,7 @@ class admin_model extends CI_Model {
     public function emp_view() {
         $sql = "select * from Employee_Master where status='1'";
         $query = $this->db->query($sql);
-       
+
         return $query->result();
     }
 
@@ -151,7 +151,7 @@ class admin_model extends CI_Model {
         $query = $this->db->update('Tab_Control', $data);
         return $query;
     }
- 
+
     public function lock() {
         $sql = "UPDATE `Tab_Control` SET `Tab1`='0',`Tab2`='0',`Tab3`='0',`Tab4`='0',`Tab5`='0'";
         $query = $this->db->query($sql);
@@ -163,15 +163,49 @@ class admin_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query;
     }
-    public  function  active_profile($id,$data){
+
+    public function active_profile($id, $data) {
         $query = $this->db->where('VEEVA_Employee_ID', $id);
         $query = $this->db->update('Tab_Control', $data);
         return $query;
-    
     }
-     public function doc_view(){
-         $sql="select * from Doctor_Master";
-     $query = $this->db->query($sql);
+
+    public function doc_view() {
+        $sql = "select * from Doctor_Master";
+        $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function dr_by_product($division) {
+        $sql = "SELECT COUNT(dm.Account_id) AS Division_dr FROM `Doctor_Master` dm
+                INNER JOIN `Employee_Doc` ed
+                ON ed.VEEVA_Account_ID=dm.Account_ID
+                INNER JOIN `Employee_Master` em
+                ON em.VEEVA_Employee_ID=ed.Local_Employee_ID
+                WHERE em.Division='$division'";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
+    public function total_target_by_product($product_id) {
+        $sql = "SELECT SUM(`target`) AS total_target FROM `Rx_Target`
+                WHERE `Product_Id`= $product_id";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
+    public function total_actualrx_by_product($product_id) {
+        $sql = "SELECT SUM(`Actual_Rx`) AS total_actual_rx FROM `Rx_Actual`
+                WHERE `Product_Id`= $product_id";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
+    public function total_convertion_by_product($product_id) {
+        $sql = "SELECT COUNT(`Doctor_Id`) AS total_convertion FROM `Rx_Actual`
+                WHERE `Product_Id`= $product_id";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
 }

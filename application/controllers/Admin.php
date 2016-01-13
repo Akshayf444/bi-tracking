@@ -8,7 +8,7 @@ class Admin extends CI_Controller {
     public function __construct() {
 
         parent::__construct();
-         //$this->load->library('csvimport');
+        //$this->load->library('csvimport');
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
@@ -34,21 +34,31 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-         
-        
 
 
-
-$data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Admin', 'view_data' => 'blank');
+        $division = 'Diabetes';
+        $division1 = 'ThromBI';
+        $data['dr_by_product'] = $this->admin_model->dr_by_product($division);
+        $data['total_target_by_product1'] = $this->admin_model->total_target_by_product(1);
+        $data['total_target_by_product2'] = $this->admin_model->total_target_by_product(2);
+        $data['total_target_by_product3'] = $this->admin_model->total_target_by_product(3);
+        $data['total_actualrx_by_product1'] = $this->admin_model->total_actualrx_by_product(1);
+        $data['total_actualrx_by_product2'] = $this->admin_model->total_actualrx_by_product(2);
+        $data['total_actualrx_by_product3'] = $this->admin_model->total_actualrx_by_product(3);
+        $data['total_convertion_by_product1'] = $this->admin_model->total_convertion_by_product(1);
+        $data['total_convertion_by_product2'] = $this->admin_model->total_convertion_by_product(2);
+        $data['total_convertion_by_product3'] = $this->admin_model->total_convertion_by_product(3);
+        $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' => 'Admin', 'view_data' => 'blank');
         $this->load->view('template3', $data);
 //        }
     }
- public function emp_view(){
-      $data['show'] = $this->admin_model->emp_view();
+
+    public function emp_view() {
+        $data['show'] = $this->admin_model->emp_view();
         $data = array('title' => 'Login', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
-    
- }
+    }
+
     public function logout() {
         redirect('admin/index', 'refresh');
     }
@@ -154,7 +164,6 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
 
 //        $data = array('title' => 'Login', 'content' => 'admin/update_emp', 'view_data' => $data);
 //        $this->load->view('admin/update_emp', $data);
-
     }
 
     public function emp_del() {
@@ -352,6 +361,7 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
+
     public function BrandMaster() {
         try {
             $crud = new grocery_CRUD();
@@ -449,7 +459,6 @@ $data = array('title' => 'Login', 'content' => 'admin/dashboard', 'page_title' =
                     'Pin_Code' => $row['20'],
                     'Address' => $row['21'],
                     'Designation' => $row['22'],
-                    
                 );
                 //insert csv data into mysql table
                 $sql = $this->admin_model->insert_csv($data);
