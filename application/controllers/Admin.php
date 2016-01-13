@@ -45,6 +45,7 @@ class Admin extends CI_Controller {
         $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
         $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
         $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
+     
         $division = 'Diabetes';
         $division1 = 'ThromBI';
         $data['dr_by_product'] = $this->admin_model->dr_by_product($division);

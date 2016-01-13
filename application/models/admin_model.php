@@ -208,6 +208,7 @@ return $query->result();
     public function total_target_by_product($product_id) {
         $sql = "SELECT SUM(`target`) AS total_target FROM `Rx_Target`
                 WHERE `Product_Id`= $product_id";
+        $query=  $this->db->query($sql);
         return $query->row_array();
     }
 
