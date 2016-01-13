@@ -95,67 +95,115 @@
                                 </p>
                                 <div class="progress-group">
                                     <span class="progress-text">Overall</span>
-                                    <span class="progress-number"><b>160</b>/200</span>
+                                    <span class="progress-number"><b><?php
+                                        if ($Over_all_count['over_all'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $Over_all_count['over_all'];
+                                        }
+                                        ?></b>/<?php
+                                        if ($dr_by_product['Division_dr'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $dr_by_product['Division_dr'];
+                                        }
+                                        ?></span>
                                     <div class="progress sm">
                                         <div class="progress-bar progress-bar-aqua" style="width: 70%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Actylase</span>
-                                    <span class="progress-number"><b>310</b>/400</span>
+                                    <span class="progress-number"><b><?php
+                                        if ($profiling_by_product1['profiling_by_product'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $profiling_by_product1['profiling_by_product'];
+                                        }
+                                        ?></b>/<?php
+                                        if ($dr_by_product['Division_dr'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $dr_by_product['Division_dr'];
+                                        }
+                                        ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-red" style="width: 40%"></div>
+                                        <div class="progress-bar progress-bar-red" style="width: <?php echo $tot1;?>%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Pradaxa</span>
-                                    <span class="progress-number"><b>480</b>/800</span>
+                                    <span class="progress-number"><b><?php
+                                        if ($profiling_by_product2['profiling_by_product'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $profiling_by_product2['profiling_by_product'];
+                                        }
+                                        ?></b>/<?php
+                                        if ($dr_by_product['Division_dr'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $dr_by_product['Division_dr'];
+                                        }
+                                        ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-green" style="width: 650%"></div>
+                                        <div class="progress-bar progress-bar-green" style="width: <?php echo $tot2;?>%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                                 <div class="progress-group">
                                     <span class="progress-text">Metalyse</span>
-                                    <span class="progress-number"><b>250</b>/500</span>
+                                    <span class="progress-number"><b><?php
+                                        if ($profiling_by_product3['profiling_by_product'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $profiling_by_product3['profiling_by_product'];
+                                        }
+                                        ?></b>/<?php
+                                        if ($dr_by_product['Division_dr'] == 0) {
+                                            echo 0;
+                                        } else {
+                                            echo $dr_by_product['Division_dr'];
+                                        }
+                                        ?></span>
                                     <div class="progress sm">
-                                        <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                                        <div class="progress-bar progress-bar-yellow" style="width: <?php echo $tot3?>%"></div>
                                     </div>
                                 </div><!-- /.progress-group -->
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- ./box-body -->
-                    <div class="box-footer">
+<!--                    <div class="box-footer">
                         <div class="row">
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                     <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
                                     <h5 class="description-header"> 35,210.43</h5>
                                     <span class="description-text">TOTAL Target</span>
-                                </div><!-- /.description-block -->
-                            </div><!-- /.col -->
+                                </div> /.description-block 
+                            </div> /.col 
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                     <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
                                     <h5 class="description-header">10,390.90</h5>
                                     <span class="description-text">TOTAL Achievement </span>
-                                </div><!-- /.description-block -->
-                            </div><!-- /.col -->
+                                </div> /.description-block 
+                            </div> /.col 
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block border-right">
                                     <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
                                     <h5 class="description-header">2498</h5>
                                     <span class="description-text">TOTAL Activities Planned</span>
-                                </div><!-- /.description-block -->
-                            </div><!-- /.col -->
+                                </div> /.description-block 
+                            </div> /.col 
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
                                     <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
                                     <h5 class="description-header">1200</h5>
                                     <span class="description-text">Total Activities Executed</span>
-                                </div><!-- /.description-block -->
+                                </div> /.description-block 
                             </div>
-                        </div><!-- /.row -->
-                    </div><!-- /.box-footer -->
+                        </div> /.row 
+                    </div> /.box-footer -->
                 </div><!-- /.box -->
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -211,16 +259,13 @@
                         <span class="info-box-icon"><i class="ion ion-ios-cart-outline"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Sales</span>
-                            <span class="info-box-number"><?php 
-                            if($total_actualrx_by_product1['total_actual_rx']==0)
-                            {
-                                echo 0;
-                            }
-                            else
-                            {
-                                echo $total_actualrx_by_product1['total_actual_rx'];
-                            }
-                            ?></span>
+                            <span class="info-box-number"><?php
+                                if ($total_actualrx_by_product1['total_actual_rx'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_actualrx_by_product1['total_actual_rx'];
+                                }
+                                        ?></span>
                             <div class="progress">
                                 <div class="progress-bar" style="width: 50%"></div>
                             </div>
@@ -235,16 +280,13 @@
                         <span class="info-box-icon"><i class="ion ion-ios-people-outline"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">New Conversion</span>
-                            <span class="info-box-number"><?php 
-                            if($total_convertion_by_product1['total_convertion'] == 0)
-                            {
-                                echo 0;
-                            }
-                            else
-                            {
-                                echo $total_convertion_by_product1['total_convertion'];
-                            }
-                            ?></span>
+                            <span class="info-box-number"><?php
+                                if ($total_convertion_by_product1['total_convertion'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_convertion_by_product1['total_convertion'];
+                                }
+                                        ?></span>
                             <div class="progress">
                                 <div class="progress-bar" style="width: 50%"></div>
                             </div>
@@ -282,13 +324,13 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Target</span>
                                 <span class="info-box-number"><?php
-                                        if ($total_target_by_product2['total_target'] == 0) {
-                                            echo 0;
-                                        } else {
+                                if ($total_target_by_product2['total_target'] == 0) {
+                                    echo 0;
+                                } else {
 
 
-                                            echo $total_target_by_product2['total_target'];
-                                        }
+                                    echo $total_target_by_product2['total_target'];
+                                }
                                         ?></span>
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 50%"></div>
@@ -308,16 +350,13 @@
                             <span class="info-box-icon"><i class="ion ion-ios-cart-outline"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Sales</span>
-                                <span class="info-box-number"><?php 
-                            if($total_actualrx_by_product2['total_actual_rx']==0)
-                            {
-                                echo 0;
-                            }
-                            else
-                            {
-                                echo $total_actualrx_by_product2['total_actual_rx'];
-                            }
-                            ?></span>
+                                <span class="info-box-number"><?php
+                                if ($total_actualrx_by_product2['total_actual_rx'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_actualrx_by_product2['total_actual_rx'];
+                                }
+                                        ?></span>
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 50%"></div>
                                 </div>
@@ -370,13 +409,13 @@
                                 <div class="info-box-content">
                                     <span class="info-box-text">Target</span>
                                     <span class="info-box-number"><?php
-                                        if ($total_target_by_product3['total_target'] == 0) {
-                                            echo 0;
-                                        } else {
+                                if ($total_target_by_product3['total_target'] == 0) {
+                                    echo 0;
+                                } else {
 
 
-                                            echo $total_target_by_product3['total_target'];
-                                        }
+                                    echo $total_target_by_product3['total_target'];
+                                }
                                         ?></span>
                                     <div class="progress">
                                         <div class="progress-bar" style="width: 50%"></div>
@@ -396,16 +435,13 @@
                                 <span class="info-box-icon"><i class="ion ion-ios-cart-outline"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Sales</span>
-                                    <span class="info-box-number"><?php 
-                            if($total_actualrx_by_product3['total_actual_rx'] == 0)
-                            {
-                                echo 0;
-                            }
-                            else
-                            {
-                                echo $total_actualrx_by_product3['total_actual_rx'];
-                            }
-                            ?></span>
+                                    <span class="info-box-number"><?php
+                                if ($total_actualrx_by_product3['total_actual_rx'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_actualrx_by_product3['total_actual_rx'];
+                                }
+                                        ?></span>
                                     <div class="progress">
                                         <div class="progress-bar" style="width: 50%"></div>
                                     </div>

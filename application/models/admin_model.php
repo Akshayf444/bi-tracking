@@ -303,6 +303,27 @@ LEFT JOIN  Employee_Doc ON Employee_Doc.VEEVA_Account_ID=Doctor_Master.Account_I
         $query = $this->db->query($sql);
         return $query->result();
     }
+    public function BDM_show($class) {
+        $sql = "SELECT em.`Full_Name`,em.`Region`,em.`State`,ra.`Actual_Rx`,ra.`Product_Id`,em.`VEEVA_Employee_ID` FROM `Employee_Master` em
+LEFT JOIN `Rx_Actual` ra
+ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID`
+WHERE em.`Designation`='BDM' AND ra.`month`=1
+GROUP BY em.`VEEVA_Employee_ID`";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    public function Over_all_count() {
+        $sql = "SELECT COUNT(p.Doctor_Id) AS over_all FROM `Profiling` p
+                WHERE p.Product_Id IN(1,2,3)";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+    public function profiling_by_product($data) {
+        $sql = "SELECT COUNT(p.Doctor_Id) AS profiling_by_product FROM `Profiling` p
+                WHERE p.Product_Id = $data";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
 
     public function insert_empdoc_csv($data) {
         return $this->db->insert('Employee_Doc', $data);
