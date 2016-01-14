@@ -23,7 +23,7 @@
         <div class="panel-body">
             <div class="form-group">
                 No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
-                <input type="number" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
+                <input type="number" min="1" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
             </div>
             <input type="hidden" id="Status" name="Status" value="Draft">
         </div>

@@ -150,10 +150,10 @@ echo form_open('User/Planning', $attributes);
         } else if (grandTotal < 0) {
             var answer = confirm("Planned Rx is More Than Set Target")
             if (answer) {
-               // $("#Submit").attr('type', 'submit');
+                $("#Submit").attr('type', 'submit');
             }
             else {
-                $("#Submit").attr('type', 'button');
+                $("#Submit").attr('type', 'submit');
             }
         }
 
