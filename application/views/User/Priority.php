@@ -1,5 +1,4 @@
 <link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
-<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <?php echo form_open('User/Priority'); ?>
 <div class="col-lg-12 col-md-12 ">
@@ -36,6 +35,8 @@
             }
         ]
     });
+
+    oTable.fnSort([[7, 'desc']]); //Exact value, column, reg
 
     $("#Submit").click(function () {
         $("#Status").val('Submitted');

@@ -260,8 +260,9 @@ class User extends MY_Controller {
     public function Profiling() {
 
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
+
         $messages = array();
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
@@ -321,7 +322,7 @@ class User extends MY_Controller {
     public function Planning() {
 
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
         $messages = array();
         if ($this->is_logged_in()) {
@@ -382,7 +383,7 @@ class User extends MY_Controller {
     public function ActivityPlanning() {
 
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
         $messages = array();
         $result = $this->User_model->getActivityDoctor();
@@ -485,7 +486,7 @@ class User extends MY_Controller {
     public function Reporting() {
 
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
         $messages = array();
         $current_month = date('n');
@@ -517,9 +518,9 @@ class User extends MY_Controller {
                         }
                     } else {
                         if (isset($result->Status) && $result->Status == 'Draft') {
-                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
-                            $this->db->update('Rx_Actual', $doc);
-                            array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Updated Successfully.', 'success'));
+                            if ($this->User_model->SaveReporting($doc)) {
+                                array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
+                            }
                         } elseif (isset($result->Status) && $result->Status == 'Submitted') {
                             array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
                         }
@@ -543,7 +544,7 @@ class User extends MY_Controller {
     public function Priority() {
 
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
         $messages = array();
         $doctor_ids = $this->User_model->PriorityIds();
@@ -586,9 +587,9 @@ class User extends MY_Controller {
     }
 
     public function ActivityReporting() {
-        
+
         if ($this->Product_Id == 1) {
-            $alertLabel = "Hospital";
+            $this->alertLabel = "Hospital";
         }
         $messages = array();
         $result = $this->User_model->getPlannedActivityDoctor();
@@ -652,43 +653,6 @@ class User extends MY_Controller {
             redirect('User/dashboard', 'refresh');
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
-        $this->load->view('template2', $data);
-    }
-
-    public function getActivityDetails() {
-        $ActiviyList = $this->User_model->getPlannedActivityList($this->input->post('Doctor_Id'));
-        $html = '';
-        if (isset($ActiviyList) && !empty($ActiviyList)) {
-            foreach ($ActiviyList as $Activity) {
-                $html .= '<li class="table-view-cell">
-                    <div class="col-xs-4">' . $Activity->Activity_Name . '</div>
-                    <div class="col-xs-8">
-                        <div class="toggle">
-                            <label><input type="radio" name="' . $Activity->Activity_id . '" value="Yes"><span id="' . $Activity->Activity_id . '-1 ">Yes</span></label>    
-                        </div>
-                        <div class="toggle">
-                            <label><input type="radio" name="' . $Activity->Activity_id . '" value="No"><span id="' . $Activity->Activity_id . '-2 " >No</span></label>
-                        </div>
-                    </div>
-                    <div id="heading ' . $Activity->Activity_id . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name=" ' . $Activity->Activity_id . 'Detail" placeholder="Activity Details"></textarea> </div> 
-                        </div> 
-                    </div>
-                    <div id="reason ' . $Activity->Activity_id . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea class="form-control" name="' . $Activity->Activity_id . 'Reason " placeholder="Reason"></textarea> </div> 
-                        </div> 
-                    </div>
-                </li>';
-            }
-        }
-
-        echo $html;
-    }
-
-    public function Profiling_thnx() {
-        $data = array('title' => 'Activity Planning', 'content' => 'User/Profiling_thnx', 'view_data' => 'blank');
         $this->load->view('template2', $data);
     }
 

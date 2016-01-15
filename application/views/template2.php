@@ -13,6 +13,10 @@
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
         <script src='<?php echo asset_url() ?>js/jquery.bootstrap-growl.min.js' type='text/javascript'></script>
+        <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
         <?php
         echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
         $this->session->unset_userdata('message');
@@ -95,7 +99,7 @@
                 <img style="height: 99%" onclick="window.location = '<?php echo site_url('User/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
                 <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php if ($title != 'Main') { ?>
-                <a class="fa fa-2x fa-arrow-left pull-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
+                    <a class="fa fa-2x fa-arrow-left pull-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php }
                 ?>
                 </div>
