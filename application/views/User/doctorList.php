@@ -138,7 +138,7 @@ echo form_open('User/Planning', $attributes);
         var grandTotal = $('.ck').val() - finalval;
         $('.ckk').html(grandTotal);
         if (grandTotal == 0) {
-
+            $("#Submit").attr('type', 'submit');
         } else if (grandTotal > 0) {
             var answer = confirm("Planned Rx is Less Than Set Target")
             if (answer) {

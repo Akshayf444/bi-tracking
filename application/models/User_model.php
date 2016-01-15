@@ -450,7 +450,7 @@ class User_model extends CI_Model {
         $this->db->from('Doctor_Master dm', 'rx.Doctor_Id = dm.Account_ID');
         $this->db->where(array('rx.Product_id' => $this->Product_Id, 'rx.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'rx.month' => $month, 'rx.Year' => '2015'));
         $query = $this->db->get();
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->row();
     }
 
