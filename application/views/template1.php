@@ -9,7 +9,10 @@
         <link href="<?php echo asset_url() ?>css/ratchet.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo asset_url() ?>css/ratchet-theme-ios.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
-
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
         <div class="content" style="padding-right: 0px;padding-left: 0px">
@@ -17,7 +20,6 @@
         </div>
         <?php //$this->load->view('footer'); ?>
 
-        <script src="<?php echo asset_url() ?>js/ratchet.min.js" type="text/javascript"></script>
     </body>
 </html>
 

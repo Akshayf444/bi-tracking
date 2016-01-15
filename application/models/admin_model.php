@@ -239,12 +239,13 @@ class admin_model extends CI_Model {
     }
 
     public function count() {
+
 //    $sql="SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Employee_Doc  ";
         $sql = "SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Doctor_Master  
             Left Join Employee_Doc on Employee_Doc.VEEVA_Account_ID=Doctor_Master.Account_ID 
                  where Doctor_Master.Status='ACTIVE' ";
-                
-                
+
+
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -275,7 +276,8 @@ class admin_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-     public function count_planned_month() {
+
+    public function count_planned_month() {
         $sql = "SELECT SUM(Rx_Planning.Planned_RX) AS TOTAL FROM Employee_Master
             LEFT JOIN Rx_Planning ON Employee_Master.VEEVA_Employee_ID=Rx_Planning.VEEVA_Employee_ID
              WHERE Employee_Master.status='1' GROUP BY Rx_Planning.month  ";
@@ -287,15 +289,16 @@ class admin_model extends CI_Model {
         $sql = "SELECT SUM(Rx_Actual.Actual_Rx) AS TOTAL FROM Rx_Actual
  LEFT JOIN Employee_Master ON Employee_Master.VEEVA_Employee_ID=Rx_Actual.VEEVA_Employee_ID
  WHERE Employee_Master.status='1' ";
-       
+
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-     public function count_achive_month() {
+
+    public function count_achive_month() {
         $sql = "SELECT SUM(Rx_Actual.Actual_Rx) AS TOTAL FROM Rx_Actual
  LEFT JOIN Employee_Master ON Employee_Master.VEEVA_Employee_ID=Rx_Actual.VEEVA_Employee_ID
  WHERE Employee_Master.status='1' GROUP BY  Rx_Actual.month ";
-       
+
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -336,9 +339,9 @@ class admin_model extends CI_Model {
         return $query->result();
     }
 
-    public function BDM_show() {
-        $sql = "SELECT em.`Full_Name`,em.`Region`,em.`State`,ra.`Actual_Rx`,ra.`Product_Id`,em.`VEEVA_Employee_ID` FROM `Rx_Actual`ra
-LEFT JOIN   `Employee_Master` em
+    public function BDM_show($class) {
+        $sql = "SELECT em.`Full_Name`,em.`Region`,em.`State`,ra.`Actual_Rx`,ra.`Product_Id`,em.`VEEVA_Employee_ID` FROM `Employee_Master` em
+LEFT JOIN `Rx_Actual` ra
 ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID`
 WHERE em.`Designation`='BDM' 
 GROUP BY em.`VEEVA_Employee_ID`";
@@ -367,7 +370,9 @@ GROUP BY em.`VEEVA_Employee_ID`";
     public function insert_tab($data) {
         return $this->db->insert('Tab_Control', $data);
     }
- public function bdm_list(){
-     
- }
+
+    public function bdm_list() {
+        
+    }
+
 }

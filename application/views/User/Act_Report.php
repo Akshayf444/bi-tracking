@@ -42,6 +42,7 @@
         transition: 0.15s ease-out;
     }
 </style>
+<script src="<?php echo asset_url();?>js/bootstrap.min_1.js" type="text/javascript"></script>
 <?php echo form_open('User/ActivityReporting'); ?>
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
@@ -68,10 +69,14 @@
 
         if ($(this).children('span').text() === 'Yes') {
             $("#heading" + id).show();
+            $("#act" + id).attr('required', true);
             $("#reason" + id).hide();
+            $("#res" + id).attr('required', false);
         } else if ($(this).children('span').text() === 'No') {
             $("#heading" + id).hide();
+            $("#res" + id).attr('required', true);
             $("#reason" + id).show();
+            $("#act" + id).attr('required', false);
         }
     });
 

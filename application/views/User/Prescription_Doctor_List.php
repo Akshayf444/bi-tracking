@@ -91,6 +91,8 @@
         if (grandTotal == 0) {
             $("#Save").show();
             $("#Submit").show();
+        }else if(finalval == 0){
+            alert('Reporting Rx Should Be Greater Than 0');
         }
     }
 

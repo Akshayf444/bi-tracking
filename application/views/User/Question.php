@@ -189,7 +189,7 @@ echo form_open('User/Profiling', $attributes);
                 Doctor_id: {
                     validators: {
                         notEmpty: {
-                            message: 'Please Enter Value'
+                            message: 'Please Select Value'
                         },
                     }
                 },
@@ -200,7 +200,14 @@ echo form_open('User/Profiling', $attributes);
                         },
                     }
                 },
-                No_of_Beds: {
+                No_Of_Beds: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please Select Value'
+                        },
+                    }
+                },
+                Primary_indication: {
                     validators: {
                         notEmpty: {
                             message: 'Please Enter Value'
@@ -221,11 +228,21 @@ echo form_open('User/Profiling', $attributes);
         $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
             if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen']").val())) {
                 alert('Patient Prescribed Should Not be Greater Than Patient Seen');
+                $("#Save").attr('disabled',true);
+                $("#Submit").attr('disabled',true);
+            }else{
+                $("#Save").attr('disabled',false);
+                $("#Submit").attr('disabled',false);
             }
         });
         $("input[name='Patient_Rxbed_In_Month']").keyup(function () {
             if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen_month']").val())) {
                 alert('Patient Prescribed Should Not be Greater Than Patient Seen');
+                $("#Save").attr('disabled',true);
+                $("#Submit").attr('disabled',true);
+            }else{
+                $("#Save").attr('disabled',false);
+                $("#Submit").attr('disabled',false);
             }
         });
     });
@@ -302,8 +319,29 @@ echo form_open('User/Profiling', $attributes);
         });
 
     });
+    $("input[type='number']").each(function () {
+        $(this).attr('min', '0');
+    });
 
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
     });
 </script>
+<?php if (isset($Product_Id) && $Product_Id == 1) { ?>
+    <script>
+        $("input[name='Win_Q1']").change(function () {
+            //alert($("#Win_Q1_no").is(':checked'));            
+            if ($("#Win_Q1_no").is(':checked') == true) {
+                $("#Win_Q2_no").prop('checked', true);
+                $("input[name='Win_Q2']").attr('disabled', true);
+                $("#Win_Q3_no").prop('checked', true);
+                $("input[name='Win_Q3']").attr('disabled', true);
+            } else {
+                $("input[name='Win_Q2']").attr('disabled', false);
+                $("input[name='Win_Q3']").attr('disabled', false);
+                $("#Win_Q2_no").prop('checked', false);
+                $("#Win_Q3_no").prop('checked', false);
+            }
+        });
+    </script>
+<?php } ?>
