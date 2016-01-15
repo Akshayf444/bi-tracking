@@ -39,15 +39,23 @@ class Admin extends CI_Controller {
 
     public function dashboard() {
 
-        $doctor_count = $this->admin_model->count();
-        $planing_count = $this->admin_model->count_planned();
-        $actual_count = $this->admin_model->count_achive();
-        $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
-        $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
-        $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
-
+//        $data['Doctor_Count'] = $this->admin_model->count();
+//        $planing_count = $this->admin_model->count_planned();
+//        $actual_count = $this->admin_model->count_achive();
+////        $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
+//        $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
+//        $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
+        $data['Doctor_Count'] = $this->admin_model->count();
+        $data['Target_Count'] = $this->admin_model->total_target();
+        $data['Actual_Count'] = $this->admin_model->count_achive();
+        $data['Con_Count'] = $this->admin_model->total_convertion();
+        $data['Planning_Count'] = $this->admin_model->count_planned();
         $division = 'Diabetes';
         $division1 = 'ThromBI';
+//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '12');
+        $data['count_achive_month'] = $this->admin_model->count_achive_month();
+        $data['plan_month'] = $this->admin_model->count_planned_month();
+
         $data['dr_by_product'] = $this->admin_model->dr_by_product($division);
         $data['Over_all_count'] = $this->admin_model->Over_all_count();
         $data['profiling_by_product1'] = $this->admin_model->profiling_by_product(1);
@@ -88,6 +96,13 @@ class Admin extends CI_Controller {
         $data['show'] = $this->admin_model->emp_view();
 
         $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function bdm_wise() {
+        $data['show'] = $this->admin_model->BDM_show();
+
+        $data = array('title' => 'Employee View', 'content' => 'admin/bdm_wise', 'page_title' => 'Employee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -484,7 +499,7 @@ class Admin extends CI_Controller {
         if ($this->input->post()) {
             $fp = fopen($_FILES['csv']['tmp_name'], 'r+');
             $count = 0;
-            while (($row = fgetcsv($fp, "500", ",")) != FALSE) {
+            while (($row = fgetcsv($fp, "5000", ",")) != FALSE) {
                 $count++;
                 if ($count == 1) {
                     continue;
@@ -505,13 +520,14 @@ class Admin extends CI_Controller {
                     'Gender' => $row['11'],
                     'Mobile' => $row['12'],
                     'Status' => $row['13'],
-                    'Created_Date' => date('Y-m-d'),
-                    'Created_By' => 'ADMIN',
+                    'Created_Date' => $row['14'],
+                    'Created_By' => $row['15'],
+                    'Modified_Date' => $row['16'],
+                    'Modified_By' => $row['17'],
                     'City' => $row['18'],
                     'State' => $row['19'],
                     'Pin_Code' => $row['20'],
-                    'Address' => $row['21'],
-                    'Designation' => $row['22'],
+                    'Address' => $row['21']
                 );
 //                $data = array(
 //                    'Account_ID' => $row['5'],

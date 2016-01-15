@@ -169,25 +169,7 @@ class User extends MY_Controller {
         }
     }
 
-    public function ASM_dashboard() {
-        if ($this->is_logged_in()) {
-
-            $data = array('title' => 'Main', 'content' => 'User/ASM_dashboard', 'view_data' => $data);
-            $this->load->view('template2', $data);
-        } else {
-            $this->logout();
-        }
-    }
-
-    public function ASM_hospital_profiling() {
-        if ($this->is_logged_in()) {
-
-            $data = array('title' => 'Main', 'content' => 'User/ASM_hospital_profiling', 'view_data' => $data);
-            $this->load->view('template2', $data);
-        } else {
-            $this->logout();
-        }
-    }
+ 
 
     public function productSel() {
         $data = array('title' => 'Select Product', 'content' => 'User/Product', 'view_data' => 'blank');
