@@ -15,7 +15,7 @@ class Master_model extends MY_model {
         $dropdown = '';
         if (!empty($result)) {
             foreach ($result as $item) {
-                if ($id == $item->{$fieldid}) {
+                if ($id === $item->{$fieldid}) {
                     $dropdown .= '<option value="' . $item->{$fieldid} . '" selected>' . $item->{$fieldname} . '</option>';
                 } else {
                     $dropdown .= '<option value="' . $item->{$fieldid} . '" >' . $item->{$fieldname} . '</option>';

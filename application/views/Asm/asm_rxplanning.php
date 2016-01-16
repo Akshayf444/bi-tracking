@@ -23,40 +23,44 @@
         </li>
     </ul>
 </div>
-
-<div class="row">
-    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+<?php echo form_open('ASM/ApprovePlanning'); ?>
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <?php if (!empty($show)) { ?>
         <div class="table-responsive">
             <table class="table table-bordered table-hover ">
-                <tr>
+
                 <tr style="background-color: #428BCA">
-                    <?php                   if (!empty($show)) {?>
-                    <th>BDM Name</th>
+
                     <th>Doctor Name</th>
-
-                    <th> Activity</th>
-
-
+                    <th>Planned Rx</th>
                     <th><input type="checkbox" id="check-all"></th>
                 </tr>
-                <tr>
-                    <?php               foreach ($show as $row) :
-                    ?><tr>  
-                    <td></td>
-                    <td><?php echo $row->Account_Name;  ?></td>  
-                    <td><?php echo $row->Planned_RX;  ?>  </td>
-                    <td><input type="checkbox" id="check-all"></td>  
 
-                   
-                </tr>
-
-
-            </table>
-            <button class=" btn btn-primary pull-right" > Approve</button>
-             <?php
-                            endforeach;
-                        }
+                <?php foreach ($show as $row) :
                     ?>
-        </div>
+                    <tr>  
+
+                        <td><?php echo $row->Account_Name; ?></td>  
+                        <td><?php echo $row->Planned_Rx; ?> <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
+                        <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="checkbox" id="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve[]" value="<?php echo $row->Account_ID ?>"></td>
+                    </tr>
+
+
+                    <?php
+                endforeach;
+                echo '</table> 
+        <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
+            }
+            else {
+                echo '<h3>Data Not Available</h3>';
+            }
+            ?>
+
     </div>
+
 </div>
+<script>
+    $('#check-all').click(function (e) {
+        $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+    });
+</script>

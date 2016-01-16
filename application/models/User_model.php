@@ -279,6 +279,18 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    function getPlanningAproval($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
+        $this->db->select('rxp.*,dm.*');
+        $this->db->from('Employee_Doc ed');
+        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
+        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
+        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $this->db->group_by('dm.Account_ID');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
     function getPlanning2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
 
         $doctor_id = join(",", $doctor_ids);
@@ -366,9 +378,11 @@ class User_model extends CI_Model {
                     $month = date('n', strtotime('-1 month'));
                     $month3 = $this->getMonthwiseRx($doctor->Account_ID, $month);
 
+                    $currentMonth = $this->getMonthwiseRx($doctor->Account_ID, $this->nextMonth, '2016');
                     $month1rx = isset($month1->Actual_Rx) ? $month1->Actual_Rx : 0;
                     $month2rx = isset($month2->Actual_Rx) ? $month2->Actual_Rx : 0;
                     $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
+                    $month4rx = isset($currentMonth->Actual_Rx) ? $currentMonth->Actual_Rx : 0;
                     if ($lastMonthRx->Actual_Rx > 0)
                         $dependancy = round(($month3rx / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
                     else {
@@ -422,7 +436,7 @@ class User_model extends CI_Model {
                         }
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
-                                <td>' . $actual_rx . '</td>
+                                <td>' . $month4rx . '</td>
                                 <td> <input name = "value[]" type = "number" min="0" value = ""/></td>
                                 </tr>';
                     }
@@ -436,10 +450,10 @@ class User_model extends CI_Model {
         return $html;
     }
 
-    function getMonthwiseRx($Doctor_Id = 0, $month = 0) {
+    function getMonthwiseRx($Doctor_Id = 0, $month = 0, $Year = '2015') {
         $this->db->select('*');
         $this->db->from('Rx_Actual');
-        $this->db->where(array('Doctor_id' => $Doctor_Id, 'Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month, 'Year' => '2015'));
+        $this->db->where(array('Doctor_id' => $Doctor_Id, 'Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month, 'Year' => $Year));
         $query = $this->db->get();
         return $query->row();
     }

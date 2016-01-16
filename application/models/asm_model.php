@@ -31,4 +31,13 @@ class asm_model extends CI_Model {
         return $query->result();
     }
 
+    public function getTarget() {
+        $this->db->select('*');
+        $this->db->from('Employee_Master em');
+        $this->db->join('Rx_Target rt', 'em.VEEVA_Employee_ID = rt.VEEVA_Employee_ID', 'left');
+        $this->db->where(array('rt.Product_Id' => $this->Product_Id, 'Reporting_VEEVA_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

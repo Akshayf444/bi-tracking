@@ -86,8 +86,6 @@ class ASM extends MY_Controller {
 
     public function dashboard() {
         if ($this->is_logged_in()) {
-
-
             $data = array('title' => 'Main', 'content' => 'ASM/ASM_dashboard', 'view_data' => 'blank');
             $this->load->view('template2', $data);
         } else {
@@ -104,7 +102,15 @@ class ASM extends MY_Controller {
 
     public function target() {
         if ($this->is_logged_in()) {
-            $data = array('title' => 'Target', 'content' => 'ASM/target', 'backUrl' => 'ASM/dashboard', 'view_data' => 'blank');
+            $result2 = $this->asm_model->product();
+            $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
+            if ($this->input->post()) {
+                $this->Product_Id = $this->input->post('product_id');
+                $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $this->Product_Id);
+                $data['result'] = $this->asm_model->getTarget();
+            }
+
+            $data = array('title' => 'Target', 'content' => 'ASM/target', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         }
     }
@@ -118,23 +124,57 @@ class ASM extends MY_Controller {
 
     public function asm_rx_planning() {
         if ($this->is_logged_in()) {
-            $id = $this->session->userdata('VEEVA_Employee_ID');
-//            echo $id;
-            $result = $this->asm_model->rx_view($id);
-
+            $id2 = $this->session->userdata('VEEVA_Employee_ID');
+            $result = $this->asm_model->rx_view($id2);
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
-
             $result2 = $this->asm_model->product();
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
 
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
-                $data['show'] = $this->User_model->getPlanning($id, $product);
+                
+                $result = $this->asm_model->rx_view($id2);
+                $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
+                $result2 = $this->asm_model->product();
+                $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
+                $data['show'] = $this->User_model->getPlanningAproval($id, $product,  $this->nextMonth);
                 //var_dump($data);
             }
             $data = array('title' => 'Report', 'content' => 'ASM/Asm_rxplanning', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
-            //$this->load->view('template2', $data);
+            $this->load->view('template2', $data);
+        }
+    }
+
+    public function approveTarget() {
+        if ($this->input->post()) {
+            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
+                $empid = $this->input->post('approve');
+                $data = array(
+                    'VEEVA_Employee_Id' => $empid[$i],
+                    'Approve_Status' => 'Approved'
+                );
+                $this->db->where(array('VEEVA_Employee_ID' => $empid[$i], 'Product_Id' => $this->input->post('product')));
+                $this->db->update('Rx_Target', $data);
+                // echo $this->db->last_query();
+            }
+            redirect('ASM/target', 'refresh');
+        }
+    }
+
+    public function ApprovePlanning() {
+        if ($this->input->post()) {
+            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
+                $empid = $this->input->post('approve');
+                $data = array(
+                    'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
+                    'Approve_Status' => 'Approved'
+                );
+                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $empid[$i], 'Product_Id' => $this->input->post('product')));
+                $this->db->update('Rx_Planning', $data);
+                // echo $this->db->last_query();
+            }
+            redirect('ASM/asm_rx_planning', 'refresh');
         }
     }
 

@@ -3,17 +3,11 @@
         <li class="table-view-cell">
             <div class="col-sm-4"></div>
 
-            <?php echo form_open('ASM/asm_rx_planning'); ?>
+            <?php echo form_open('ASM/target'); ?>
             <div class="col-sm-3"  >
-                <select name="rx_id" class="form-control">
-                    <option value="-1">Select BDM </option>
-                    <?php // echo $bdm; ?>
-                </select>
-            </div>
-            <div class="col-sm-3"  >
-                <select name="product_id" class="form-control">
+                <select id="product_id" name="product_id" class="form-control">
                     <option value="-1">Select Product</option>
-                    <?php // echo $product; ?>
+                    <?php echo $product; ?>
                 </select>
             </div>
             <div class="col-sm-2"  >
@@ -24,37 +18,58 @@
     </ul>
 </div>
 
-<div class="row">
+<?php echo form_open('ASM/approveTarget'); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <div class="table-responsive">
-    <table class="table table-bordered table-hover ">
-      <tr>
-      <tr style="background-color: #428BCA">
-             <?php
-//                    if (!empty($show)) {?>
-                    <th>BDM Name</th>
-                    <th> Target Set</th>
+        <table class="table table-bordered table-hover ">
+            <tr>
+            <tr style="background-color: #428BCA">
 
-                    
-                    <th><input type="checkbox" id="check-all"></th>
-                </tr>
-                <tr>
-                 <?php
-//                        foreach ($show as $row) :
-                            ?><tr>  
-                            <td> sadhna<?php // echo $row->Account_Name; ?></td>  
-                            <td> 40<?php // echo $row->Planned_RX; ?>  </td>
-                            <td><input type="checkbox" id="check-all"></td>  
-                           
-                                <?php
-//                            endforeach;
-//                        }
-                        ?>
-                </tr>
+                <th>BDM Name</th>
+                <th> Target Set</th>
+                <th><input type="checkbox" id="check-all"></th>
+            </tr>
 
-       
+            <?php
+            if (isset($result) && !empty($result)) {
+                foreach ($result as $value) {
+                    ?>
+                    <tr>
+                        <td><?php echo $value->Full_Name ?></td>
+                        <td><?php echo $value->target ?></td>
+                        <td><input type="checkbox" class="approve" <?php echo isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve[]" value="<?php echo $value->VEEVA_Employee_ID ?>"><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"></td>
+                    <tr>  
+                        <?php
+                    }
+                }
+                ?>
+
+            </tr>
+
+
         </table>
-        <button class="btn-primary pull-right" > Approve</button>
+
     </div>
+
+    <button type="submit" class="btn btn-primary pull-right" >Approve</button>
+
 </div>
-</div>
+</form>
+<script>
+    $('#product_id').change(function () {
+        $('input[name="product"]').val($(this).val());
+    });
+
+    $("#check-all").change(function () {
+        alert();
+        if ($(this).prop('checked', true)) {
+            $('.approve').each(function () {
+                $(this).prop('checked', true);
+            });
+        } else {
+            $('.approve').each(function () {
+                $(this).prop('checked', false);
+            });
+        }
+    });
+</script>

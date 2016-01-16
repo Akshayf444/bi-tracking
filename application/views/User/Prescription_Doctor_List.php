@@ -8,7 +8,7 @@
     .table-view-cell {
         padding: 11px 12px 11px 15px;
     }
-    
+
     #datatable_filter{
         display: none;
     }
@@ -66,6 +66,24 @@
 <script>
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
+
+        var finalval = 0;
+        $(".val").each(function () {
+            var actual = parseInt($(this).val(), 10) || 0;
+            finalval = parseInt(finalval, 10) + actual;
+        });
+
+        var grandTotal = $('.ck').val() - finalval;
+        $('.ckk').html(grandTotal);
+        if (grandTotal == 0) {
+            $("#Save").show();
+            $("#Submit").show();
+        } else if (finalval == 0) {
+            $("#Submit").attr('type', 'button');
+            alert('Reporting Rx Should Be Greater Than 0');
+        }else{
+            $("#Submit").attr('type', 'submit');
+        }
     });
 
     $(document).ready(function () {
@@ -91,8 +109,6 @@
         if (grandTotal == 0) {
             $("#Save").show();
             $("#Submit").show();
-        }else if(finalval == 0){
-            alert('Reporting Rx Should Be Greater Than 0');
         }
     }
 

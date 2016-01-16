@@ -73,8 +73,8 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
-                    if ($check_password['Designation'] == 'ASM') {
-                        redirect('User/ASM_dashboard', 'refresh');
+                    if ($check_password['Designation'] === 'ASM') {
+                        redirect('ASM/dashboard', 'refresh');
                     } else {
                         redirect('User/dashboard', 'refresh');
                     }
@@ -452,13 +452,13 @@ class User extends MY_Controller {
                     $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
                     $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
                     if ($check_password['Designation'] == 'ASM') {
-                        redirect('User/ASM_dashboard', 'refresh');
+                        redirect('ASM/dashboard', 'refresh');
                     } else {
                         redirect('User/dashboard', 'refresh');
                     }
                 }
             }
-            $data = array('title' => 'Report', 'content' => 'User/password', 'view_data' => 'blank');
+            $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
             $this->load->view('template2', $data);
         } else {
             $this->logout();
