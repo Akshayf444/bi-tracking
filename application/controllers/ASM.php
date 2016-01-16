@@ -179,11 +179,34 @@ class ASM extends MY_Controller {
     }
 
     public function activity_planning() {
+        
         if ($this->is_logged_in()) {
-            $data = array('title' => 'Planning', 'content' => 'ASM/activity_planning', 'backUrl' => 'ASM/dashboard', 'view_data' => 'blank');
+            $id2 = $this->session->userdata('VEEVA_Employee_ID');
+            $result = $this->asm_model->rx_view($id2);
+            $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
+            $result2 = $this->asm_model->product();
+            $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
+
+            if ($this->input->post()) {
+                $product = $this->input->post('product_id');
+                $id = $this->input->post('rx_id');
+                
+                $result = $this->asm_model->rx_view($id2);
+                $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
+                $result2 = $this->asm_model->product();
+                $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
+                $result = $this->User_model->getActivityDoctor($id, $product,  $this->nextMonth);
+                var_dump($result);
+                 $data['show'] = $this->User_model->generateActivityTable2($result);
+             
+                var_dump($data);
+            }
+            $data = array('title' => 'Report', 'content' => 'ASM/activity_planning', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         }
     }
+        
+    
 
     public function reporting_rx() {
         if ($this->is_logged_in()) {
