@@ -918,13 +918,14 @@ class User_model extends CI_Model {
             $HTML .= '</tr>';
 
             foreach ($result as $value) {
-
+                $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'checked' : '';
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
                 } else {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
+<<<<<<< HEAD
                 $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
                 if ($type == 'Reporting') {
                     $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
@@ -987,11 +988,17 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>'
 
                 ;
+=======
+                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
+                $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                $HTML .= '<td><input type="checkbox" id="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="' . $value->Account_ID . '"></td>';
+                $HTML .= '</tr>';
+>>>>>>> a5644b320ba301ea1156f7f465fd236bf4dc0a15
             }
             $HTML .= '</table>'
                     . ' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
         } else {
-            $HTML .= '<h1></h1>';
+            $HTML .= '<h1>Data Not Available.</h1>';
         }
 
         return $HTML;

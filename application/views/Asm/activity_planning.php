@@ -23,6 +23,7 @@
         </li>
     </ul>
 </div>
+<<<<<<< HEAD
 
 <?php echo form_open('ASM/ApproveActivity'); ?>
 <?php
@@ -68,6 +69,19 @@ echo $Doctorlist;}
     </div>
 
 </div>-->
+=======
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <?php
+    echo form_open('ASM/ApproveActivity');
+    if (!empty($Doctorlist)) {
+        echo $Doctorlist;
+    }
+    ?>
+    <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>">
+    <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
+    </form>
+</div>
+>>>>>>> a5644b320ba301ea1156f7f465fd236bf4dc0a15
 <script>
     $('#check-all').click(function (e) {
         $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);

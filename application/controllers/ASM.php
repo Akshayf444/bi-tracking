@@ -222,7 +222,17 @@ class ASM extends MY_Controller {
                 if ($this->input->post('approve_' . $doctorId[$i])) {
                     $data['Approve_Status'] = 'Approved';
                     $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+<<<<<<< HEAD
                 $this->db->update('Activity_Planning', $data);
+=======
+                    $this->db->update('Activity_Planning', $data);
+                } else {
+                    $data['Approve_Status'] = 'Un-Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                }
+
+>>>>>>> a5644b320ba301ea1156f7f465fd236bf4dc0a15
                 // echo $this->db->last_query();
             }
             else {
@@ -233,6 +243,7 @@ class ASM extends MY_Controller {
             }
             redirect('ASM/activity_planning', 'refresh');
         }
+
     }
 
     public function reporting_rx() {
