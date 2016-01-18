@@ -283,6 +283,18 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    public function getPlannedActivityDoctor2($id, $Product_Id) {
+        $this->db->select('dm.*, `ap`.*,rp.Approve_Status,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
+        $this->db->from('Activity_Planning ap');
+        $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
+        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth));
+        $this->db->group_by('ap.Doctor_Id');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month');
         $this->db->from('Employee_Doc ed');
@@ -904,18 +916,15 @@ class User_model extends CI_Model {
 
         if (!empty($result)) {
             $HTML = '<table class="table table-bordered">';
-            $HTML .= '<tr>
-                                <th>
+            $HTML .= '<tr><th>
                                     ' . $hospital . ' Name
-                                </th>
+                            </th>
                                 <th>Activity</th>
-                                <th><input type="checkbox" id="check-all"></th>
-                               
-';
+                                ';
             if ($type == 'Reporting') {
-                $HTML .= '<th>Action</th>';
+                $HTML .= '<th>Activity Done</th>';
             }
-            $HTML .= '</tr>';
+            $HTML .= '<th><input type="checkbox" id="check-all"></th></tr>';
 
             foreach ($result as $value) {
                 $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'checked' : '';
@@ -927,6 +936,9 @@ class User_model extends CI_Model {
 
                 $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
                 $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                if ($type == 'Reporting') {
+                    $HTML .= '<td>'.$value->Activity_Done.'</td>';
+                }
                 $HTML .= '<td><input type="checkbox" id="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="' . $value->Account_ID . '"></td>';
                 $HTML .= '</tr>';
             }
