@@ -763,8 +763,8 @@ class User_model extends CI_Model {
     }
 
     public function product_detail_user($VEEVA_Employee_ID, $Product_id, $month, $year) {
-        $this->db->select('COUNT(`Doctor_Id`) AS doctor_count');
-        $this->db->from('`Rx_Planning`');
+        $this->db->select('COUNT(DISTINCT(`Doctor_Id`)) AS doctor_count');
+        $this->db->from('`Rx_Actual`');
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year));
         $query = $this->db->get();
         return $query->row_array();
