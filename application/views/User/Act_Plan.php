@@ -15,7 +15,8 @@ echo form_open('User/ActivityPlanning', $attributes);
             <?php if (isset($doctorList) && !empty($doctorList)) { ?>
                 <button type="submit" class="btn btn-primary">Save</button>
                 <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <?php } else {
+            <?php
+            } else {
                 
             }
             ?>
@@ -37,37 +38,17 @@ echo form_open('User/ActivityPlanning', $attributes);
             icon: {
             },
             fields: {
-                Activity_Id[]: {
+                'Activity_Id[]': {
                     validators: {
                         notEmpty: {
-                            message: 'Please Enter Value'
+                            message: 'Please Select Activity'
                         },
                     }
-                },               
+                }
 
             }
         });
 
-        $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
-            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen']").val())) {
-                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
-                $("#Save").attr('disabled', true);
-                $("#Submit").attr('disabled', true);
-            } else {
-                $("#Save").attr('disabled', false);
-                $("#Submit").attr('disabled', false);
-            }
-        });
-        $("input[name='Patient_Rxbed_In_Month']").keyup(function () {
-            if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen_month']").val())) {
-                alert('Patient Prescribed Should Not be Greater Than Patient Seen');
-                $("#Save").attr('disabled', true);
-                $("#Submit").attr('disabled', true);
-            } else {
-                $("#Save").attr('disabled', false);
-                $("#Submit").attr('disabled', false);
-            }
-        });
     });
 
     $("#Doctor_id").change(function () {

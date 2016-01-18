@@ -253,7 +253,8 @@ class User_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
- public function getActivityDoctor2($id,$product_id) {
+
+    public function getActivityDoctor2($id, $product_id) {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
@@ -269,6 +270,7 @@ class User_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
+
     public function getPlannedActivityDoctor() {
         $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
         $this->db->from('Activity_Planning ap');
@@ -418,7 +420,7 @@ class User_model extends CI_Model {
                             $count ++;
                         }
                     }
-
+                    $winability = isset($doctor->Winability) ? $doctor->Winability : '';
                     $month4rx = $month4Actual;
                     if ($lastMonthRx->Actual_Rx > 0) {
                         $dependancy = round(($month3Actual / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
@@ -453,8 +455,8 @@ class User_model extends CI_Model {
                         $html .= '<tr>
                         <td>' . $doctor->Account_Name . '';
                     }
-                    $winability = isset($doctor->Winability) ? $doctor->Winability : '';
-                    
+
+
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td>' . $winability . '</td><td>' . $dependancy . '%</td>
@@ -528,10 +530,9 @@ class User_model extends CI_Model {
                AND `Doctor_id` =  '$Doctor_ID'
                AND `Product_id` =  '$this->Product_Id'
                AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
-               AND `Year` =  '$year4'
-                   
-               ORDER BY MONTH ASC";
+               AND `Year` =  '$year4'    ";
         $query = $this->db->query($sql);
+        //echo $this->db->last
         return $query->result();
     }
 
@@ -884,7 +885,7 @@ class User_model extends CI_Model {
                     }
                     $HTML .='</td>';
                 } else {
-                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .= '<td><div class="form-group"><select class="form-control" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></div></td>';
                 }
 
                 $HTML .= '</tr>';
@@ -896,6 +897,7 @@ class User_model extends CI_Model {
 
         return $HTML;
     }
+
     public function generateActivityTable2($result = array(), $type = "") {
         $HTML = '';
         if ($this->Product_Id == 1) {
@@ -988,14 +990,12 @@ class User_model extends CI_Model {
                 }
 
                 $HTML .= '</tr>'
-                        
-                        ;
+
+                ;
             }
             $HTML .= '</table>'
-                    .' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
-                    
-           
-       } else {
+                    . ' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
+        } else {
             $HTML .= '<h1></h1>';
         }
 

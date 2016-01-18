@@ -228,21 +228,21 @@ echo form_open('User/Profiling', $attributes);
         $("input[name='Patient_Rxbed_In_Week']").keyup(function () {
             if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen']").val())) {
                 alert('Patient Prescribed Should Not be Greater Than Patient Seen');
-                $("#Save").attr('disabled',true);
-                $("#Submit").attr('disabled',true);
-            }else{
-                $("#Save").attr('disabled',false);
-                $("#Submit").attr('disabled',false);
+                $("#Save").attr('type', 'button');
+                $("#Submit").attr('type', 'button');
+            } else {
+                $("#Save").attr('type', 'submit');
+                $("#Submit").attr('type', 'submit');
             }
         });
         $("input[name='Patient_Rxbed_In_Month']").keyup(function () {
             if (parseInt($(this).val()) > parseInt($("input[name='Patient_Seen_month']").val())) {
                 alert('Patient Prescribed Should Not be Greater Than Patient Seen');
-                $("#Save").attr('disabled',true);
-                $("#Submit").attr('disabled',true);
-            }else{
-                $("#Save").attr('disabled',false);
-                $("#Submit").attr('disabled',false);
+                $("#Save").attr('type', 'button');
+                $("#Submit").attr('type', 'button');
+            } else {
+                $("#Save").attr('type', 'submit');
+                $("#Submit").attr('type', 'submit');
             }
         });
     });
