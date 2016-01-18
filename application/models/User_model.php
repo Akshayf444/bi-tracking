@@ -253,7 +253,8 @@ class User_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
- public function getActivityDoctor2($id,$product_id) {
+
+    public function getActivityDoctor2($id, $product_id) {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Actual_Doctor_Priority dp');
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
@@ -269,6 +270,7 @@ class User_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
+
     public function getPlannedActivityDoctor() {
         $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
         $this->db->from('Activity_Planning ap');
@@ -282,9 +284,10 @@ class User_model extends CI_Model {
     }
 
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
-        $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx');
+        $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
+        $this->db->join('Profiling pf', 'dm.Account_ID = pf.Doctor_Id', 'LEFT');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
         $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
         $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
@@ -309,9 +312,10 @@ class User_model extends CI_Model {
     function getPlanning2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
 
         $doctor_id = join(",", $doctor_ids);
-        $sql = "SELECT rxp.*,dm.* FROM Employee_Master emp "
+        $sql = "SELECT rxp.*,dm.*,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month FROM Employee_Master emp "
                 . " INNER JOIN Employee_Doc ed ON ed.VEEVA_Employee_ID = emp.VEEVA_Employee_ID "
                 . " INNER JOIN Doctor_Master dm ON dm.Account_ID = ed.VEEVA_Account_ID "
+                . " LEFT JOIN Profiling pf ON dm.Account_ID = pf.Doctor_ID "
                 . " LEFT JOIN Rx_Planning rxp ON dm.Account_ID = rxp.Doctor_Id "
                 . " WHERE rxp.Doctor_Id IN (" . $doctor_id . ") AND rxp.Product_id = '$Product_id' AND emp.VEEVA_Employee_ID = '$VEEVA_Employee_ID' AND rxp.month = '$month' AND rxp.Year = '$Year' "
                 . " GROUP BY dm.Account_ID order by FIELD(rxp.Doctor_Id ," . $doctor_id . ")";
@@ -383,35 +387,53 @@ class User_model extends CI_Model {
                 foreach ($result as $doctor) {
                     $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
                     $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
-                    $getPlan = $this->getWinability($doctor->Account_ID);
-                    $winability = $this->calcWinability($getPlan);
 
-                    $month = date('n', strtotime('-3 month'));
-                    $month1 = $this->getMonthwiseRx($doctor->Account_ID, $month);
-                    $month = date('n', strtotime('-2 month'));
-                    $month2 = $this->getMonthwiseRx($doctor->Account_ID, $month);
-                    $month = date('n', strtotime('-1 month'));
-                    $month3 = $this->getMonthwiseRx($doctor->Account_ID, $month);
 
-                    $currentMonth = $this->getMonthwiseRx($doctor->Account_ID, $this->nextMonth, '2016');
-                    $month1rx = isset($month1->Actual_Rx) ? $month1->Actual_Rx : 0;
-                    $month2rx = isset($month2->Actual_Rx) ? $month2->Actual_Rx : 0;
-                    $month3rx = isset($month3->Actual_Rx) ? $month3->Actual_Rx : 0;
-                    $month4rx = isset($currentMonth->Actual_Rx) ? $currentMonth->Actual_Rx : 0;
-                    if ($lastMonthRx->Actual_Rx > 0)
-                        $dependancy = round(($month3rx / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
-                    else {
+                    $month1 = date('n', strtotime('-3 month'));
+                    $month2 = date('n', strtotime('-2 month'));
+                    $month3 = date('n', strtotime('-1 month'));
+                    $month4 = date('n');
+                    $year1 = date('Y', strtotime('-3 month'));
+                    $year2 = date('Y', strtotime('-2 month'));
+                    $year3 = date('Y', strtotime('-1 month'));
+                    $year4 = date('Y');
+
+                    $month1Actual = 0;
+                    $month2Actual = 0;
+                    $month3Actual = 0;
+                    $month4Actual = 0;
+
+                    $last3MonthRx = $this->Last3MonthsRx($month1, $month2, $month3, $month4, $year1, $year2, $year3, $year4, $doctor->Account_ID);
+                    if (!empty($last3MonthRx)) {
+                        $count = 1;
+                        foreach ($last3MonthRx as $value) {
+                            if ($value->month === $month1) {
+                                $month1Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month2) {
+                                $month2Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month3) {
+                                $month3Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month4) {
+                                $month4Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            }
+                        }
+                    }
+                    $winability = isset($doctor->Winability) ? $doctor->Winability : '';
+                    $month4rx = $month4Actual;
+                    if ($lastMonthRx->Actual_Rx > 0) {
+                        $dependancy = round(($month3Actual / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
+                    } else {
                         $dependancy = 0;
                     }
                     if ($this->Product_Id == 1) {
-                        if (isset($getPlan->Patient_Seen_month) && $getPlan->Patient_Seen_month > 0) {
-                            $BI_Share = round(($month3rx / $getPlan->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        if (isset($doctor->Patient_Seen_month) && $doctor->Patient_Seen_month > 0) {
+                            $BI_Share = round(($month3Actual / $doctor->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
                         } else {
                             $BI_Share = '';
                         }
                     } else {
-                        if (isset($getPlan->Patient_Rxbed_In_Month) && $getPlan->Patient_Rxbed_In_Month > 0) {
-                            $BI_Share = round(($month3rx / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        if (isset($doctor->Patient_Rxbed_In_Month) && $doctor->Patient_Rxbed_In_Month > 0) {
+                            $BI_Share = round(($month3Actual / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
                         } else {
                             $BI_Share = '';
                         }
@@ -432,15 +454,16 @@ class User_model extends CI_Model {
                         <td>' . $doctor->Account_Name . '';
                     }
 
+
                     $html .='<p>Speciality : ' . $doctor->Specialty . '</p></a></td>';
                     if ($type == 'Planning') {
                         $html .= '<td>' . $winability . '</td><td>' . $dependancy . '%</td>
                                    <td>' . $BI_Share . '</td>';
                     }
 
-                    $html .='<td>' . $month1rx . '</td>
-                            <td>' . $month2rx . '</td>
-                            <td>' . $month3rx . '</td>';
+                    $html .='<td>' . $month1Actual . '</td>
+                            <td>' . $month2Actual . '</td>
+                            <td>' . $month3Actual . '</td>';
                     if ($type == 'Planning') {
                         if ($priority == 'true') {
                             $html .= '<td>' . $planned_rx . '</td><td> <input name = "value[]" min="0" disabled="disabled" class = "val" type = "number" value = "' . $planned_rx . '"/><input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
@@ -470,14 +493,49 @@ class User_model extends CI_Model {
         $this->db->from('Rx_Actual');
         $this->db->where(array('Doctor_id' => $Doctor_Id, 'Product_id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $month, 'Year' => $Year));
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row();
     }
 
-    function countLastMonthRx($month = 0) {
+    function Last3MonthsRx($month1, $month2, $month3, $month4, $year1, $year2, $year3, $year4, $Doctor_ID) {
+        $sql = "SELECT
+                SUM(Actual_Rx) AS Actual_Rx,month
+
+               FROM (`Rx_Actual`)
+               WHERE 
+               `Doctor_id` =  '$Doctor_ID'
+               AND `Product_id` =  '$this->Product_Id'
+               AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
+               AND `month` =  '$month1'
+               AND `Year` =  '$year1'
+
+               OR `month` =  '$month2'
+               AND `Doctor_id` =  '$Doctor_ID'
+               AND `Product_id` =  '$this->Product_Id'
+               AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
+               AND `Year` =  '$year2'
+
+               OR `month` =  '$month3'
+               AND `Doctor_id` =  '$Doctor_ID'
+               AND `Product_id` =  '$this->Product_Id'
+               AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
+               AND `Year` =  '$year3'
+                   
+                OR `month` =  '$month4'
+               AND `Doctor_id` =  '$Doctor_ID'
+               AND `Product_id` =  '$this->Product_Id'
+               AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
+               AND `Year` =  '$year4' GROUP BY month   ";
+        $query = $this->db->query($sql);
+        //echo $this->db->last_query();
+        return $query->result();
+    }
+
+    function countLastMonthRx($month = 0, $Year = '2015') {
         $this->db->select('SUM(Actual_Rx) AS Actual_Rx');
         $this->db->from('Rx_Actual rx');
-        $this->db->from('Doctor_Master dm', 'rx.Doctor_Id = dm.Account_ID');
-        $this->db->where(array('rx.Product_id' => $this->Product_Id, 'rx.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'rx.month' => $month, 'rx.Year' => '2015'));
+        $this->db->join('Doctor_Master dm', 'rx.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('rx.Product_id' => $this->Product_Id, 'rx.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'rx.month' => $month, 'rx.Year' => $Year));
         $query = $this->db->get();
         //echo $this->db->last_query();
         return $query->row();
@@ -500,31 +558,32 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
-    function calcWinability($result) {
+    function calcWinability($Win_Q1, $Win_Q2, $Win_Q3) {
+
         $winabilty = '';
-        if (!empty($result)) {
-            if ($this->Product_Id == 1) {
-                if ($result->Win_Q1 == 'No') {
-                    $winabilty = '<a class = "control-item badge badge-negative">L</a>';
-                } elseif ($result->Win_Q1 == 'Yes') {
-                    if ($result->Win_Q2 == 'No') {
-                        $winabilty = '<a class = "control-item badge badge-primary">M</a>';
-                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
-                        $winabilty = '<a class = "control-item badge badge-primary">M</a>';
-                    } elseif ($result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
-                        $winabilty = '<a class = "control-item badge badge-positive">H</a>';
-                    }
-                }
-            } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5 || $this->Product_Id == 6) {
-                if ($result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No') {
-                    $winabilty = '<a class = "control-item badge badge-positive">H</a>';
-                } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'Yes' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
+
+        if ($this->Product_Id == 1) {
+            if ($Win_Q1 == 'No') {
+                $winabilty = '<a class = "control-item badge badge-negative">L</a>';
+            } elseif ($Win_Q1 == 'Yes') {
+                if ($Win_Q2 == 'No') {
                     $winabilty = '<a class = "control-item badge badge-primary">M</a>';
-                } elseif ($result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'No' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'No' && $result->Win_Q3 == 'Yes' || $result->Win_Q1 == 'No' && $result->Win_Q2 == 'Yes' && $result->Win_Q3 == 'Yes') {
-                    $winabilty = '<a class = "control-item badge badge-negative">L</a>';
+                } elseif ($Win_Q2 == 'Yes' && $Win_Q3 == 'No') {
+                    $winabilty = '<a class = "control-item badge badge-primary">M</a>';
+                } elseif ($Win_Q2 == 'Yes' && $Win_Q3 == 'Yes') {
+                    $winabilty = '<a class = "control-item badge badge-positive">H</a>';
                 }
             }
+        } elseif ($this->Product_Id == 2 || $this->Product_Id == 3 || $this->Product_Id == 4 || $this->Product_Id == 5 || $this->Product_Id == 6) {
+            if ($Win_Q1 == 'Yes' && $Win_Q2 == 'Yes' && $Win_Q3 == 'No') {
+                $winabilty = '<a class = "control-item badge badge-positive">H</a>';
+            } elseif ($Win_Q1 == 'No' && $Win_Q2 == 'Yes' && $Win_Q3 == 'No' || $Win_Q1 == 'Yes' && $Win_Q2 == 'No' && $Win_Q3 == 'No' || $Win_Q1 == 'Yes' && $Win_Q2 == 'No' && $Win_Q3 == 'Yes' || $Win_Q1 == 'Yes' && $Win_Q2 == 'Yes' && $Win_Q3 == 'Yes') {
+                $winabilty = '<a class = "control-item badge badge-primary">M</a>';
+            } elseif ($Win_Q1 == 'No' && $Win_Q2 == 'No' && $Win_Q3 == 'No' || $Win_Q1 == 'No' && $Win_Q2 == 'No' && $Win_Q3 == 'Yes' || $Win_Q1 == 'No' && $Win_Q2 == 'Yes' && $Win_Q3 == 'Yes') {
+                $winabilty = '<a class = "control-item badge badge-negative">L</a>';
+            }
         }
+
         return $winabilty;
     }
 
@@ -699,8 +758,8 @@ class User_model extends CI_Model {
     }
 
     public function product_detail_user($VEEVA_Employee_ID, $Product_id, $month, $year) {
-        $this->db->select('COUNT(`Doctor_Id`) AS doctor_count');
-        $this->db->from('`Rx_Planning`');
+        $this->db->select('COUNT(DISTINCT(`Doctor_Id`)) AS doctor_count');
+        $this->db->from('`Rx_Actual`');
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year));
         $query = $this->db->get();
         return $query->row_array();
@@ -773,7 +832,7 @@ class User_model extends CI_Model {
                     $reason = isset($value->Reason) ? $value->Reason : '';
                     $Activity_Done = isset($value->Activity_Done) ? $value->Activity_Done : '';
                     $Status = isset($value->Status) && $value->Status == 'Submitted' ? 'Submitted' : '';
-                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></td>';
                     $HTML .='<td><div class="col-xs-8">
                         <div class="toggle">';
                     if ($Activity_Done == "Yes" && $Status == 'Submitted') {
@@ -821,7 +880,7 @@ class User_model extends CI_Model {
                     }
                     $HTML .='</td>';
                 } else {
-                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .= '<td><div class="form-group"><select class="form-control" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></div></td>';
                 }
 
                 $HTML .= '</tr>';
@@ -833,6 +892,7 @@ class User_model extends CI_Model {
 
         return $HTML;
     }
+
     public function generateActivityTable2($result = array(), $type = "") {
         $HTML = '';
         if ($this->Product_Id == 1) {
@@ -925,14 +985,12 @@ class User_model extends CI_Model {
                 }
 
                 $HTML .= '</tr>'
-                        
-                        ;
+
+                ;
             }
             $HTML .= '</table>'
-                    .' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
-                    
-           
-       } else {
+                    . ' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
+        } else {
             $HTML .= '<h1></h1>';
         }
 
