@@ -59,7 +59,7 @@ echo form_open('User/Planning', $attributes);
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
         <div class="panel-heading">Planning</div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
             <input type="hidden" id="Status" name="Planning_Status" value="Draft">
         </div>

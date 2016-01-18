@@ -284,7 +284,7 @@ class User_model extends CI_Model {
     }
 
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
-        $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability');
+        $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
         $this->db->join('Profiling pf', 'dm.Account_ID = pf.Doctor_Id', 'LEFT');
@@ -312,7 +312,7 @@ class User_model extends CI_Model {
     function getPlanning2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
 
         $doctor_id = join(",", $doctor_ids);
-        $sql = "SELECT rxp.*,dm.*,pf.Winability FROM Employee_Master emp "
+        $sql = "SELECT rxp.*,dm.*,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month FROM Employee_Master emp "
                 . " INNER JOIN Employee_Doc ed ON ed.VEEVA_Employee_ID = emp.VEEVA_Employee_ID "
                 . " INNER JOIN Doctor_Master dm ON dm.Account_ID = ed.VEEVA_Account_ID "
                 . " LEFT JOIN Profiling pf ON dm.Account_ID = pf.Doctor_ID "
@@ -407,17 +407,15 @@ class User_model extends CI_Model {
                     if (!empty($last3MonthRx)) {
                         $count = 1;
                         foreach ($last3MonthRx as $value) {
-                            if ($count == 1) {
-                                $month1Actual = $value->m1;
-                            } elseif ($count == 2) {
-                                $month2Actual = $value->m2;
-                            } elseif ($count == 3) {
-                                $month3Actual = $value->m3;
-                            } elseif ($count == 4) {
-                                $month4Actual = $value->m4;
-                                break;
+                            if ($value->month === $month1) {
+                                $month1Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month2) {
+                                $month2Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month3) {
+                                $month3Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
+                            } elseif ($value->month === $month4) {
+                                $month4Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : '';
                             }
-                            $count ++;
                         }
                     }
                     $winability = isset($doctor->Winability) ? $doctor->Winability : '';
@@ -428,13 +426,13 @@ class User_model extends CI_Model {
                         $dependancy = 0;
                     }
                     if ($this->Product_Id == 1) {
-                        if (isset($getPlan->Patient_Seen_month) && $getPlan->Patient_Seen_month > 0) {
-                            $BI_Share = round(($month3Actual / $getPlan->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                        if (isset($doctor->Patient_Seen_month) && $doctor->Patient_Seen_month > 0) {
+                            $BI_Share = round(($month3Actual / $doctor->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
                         } else {
                             $BI_Share = '';
                         }
                     } else {
-                        if (isset($getPlan->Patient_Rxbed_In_Month) && $getPlan->Patient_Rxbed_In_Month > 0) {
+                        if (isset($doctor->Patient_Rxbed_In_Month) && $doctor->Patient_Rxbed_In_Month > 0) {
                             $BI_Share = round(($month3Actual / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
                         } else {
                             $BI_Share = '';
@@ -501,10 +499,7 @@ class User_model extends CI_Model {
 
     function Last3MonthsRx($month1, $month2, $month3, $month4, $year1, $year2, $year3, $year4, $Doctor_ID) {
         $sql = "SELECT
-                (CASE WHEN MONTH = '$month1' THEN `Actual_Rx` ELSE 0 END ) AS m1,
-               (CASE WHEN MONTH = '$month2' THEN `Actual_Rx`  ELSE 0 END ) AS m2,
-               (CASE WHEN MONTH = '$month3' THEN `Actual_Rx`  ELSE 0 END ) AS m3,
-               (CASE WHEN MONTH = '$month4' THEN `Actual_Rx`  ELSE 0 END ) AS m4
+                SUM(Actual_Rx) AS Actual_Rx,month
 
                FROM (`Rx_Actual`)
                WHERE 
@@ -530,9 +525,9 @@ class User_model extends CI_Model {
                AND `Doctor_id` =  '$Doctor_ID'
                AND `Product_id` =  '$this->Product_Id'
                AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
-               AND `Year` =  '$year4'    ";
+               AND `Year` =  '$year4' GROUP BY month   ";
         $query = $this->db->query($sql);
-        //echo $this->db->last
+        //echo $this->db->last_query();
         return $query->result();
     }
 
