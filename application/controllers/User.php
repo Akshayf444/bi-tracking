@@ -171,8 +171,6 @@ class User extends MY_Controller {
         }
     }
 
- 
-
     public function productSel() {
         $data = array('title' => 'Select Product', 'content' => 'User/Product', 'view_data' => 'blank');
         $this->load->view('template2', $data);
@@ -218,11 +216,7 @@ class User extends MY_Controller {
         $month_ends = date('n', strtotime('-1 month'));
         $current_month = date('n');
         $year = date('Y');
-        $data['show1'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start, $year);
-        $data['show2'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
-        $data['show3'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends, $year);
-        $data['show4'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month, $year);
-        $data['show5'] = $this->User_model->Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_mid, $year);
+        $year = '2015';
         $data['Actual1'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start, $year);
         $data['Actual2'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_mid, $year);
         $data['Actual3'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
@@ -254,6 +248,8 @@ class User extends MY_Controller {
                 $_POST['Product_id'] = $this->Product_Id;
                 $_POST['created_at'] = date('Y-m-d H:i:s');
                 $_POST['Status'] = $this->input->post('Status');
+                $_POST['Winability'] = $this->User_model->calcWinability($_POST['Win_Q1'], $_POST['Win_Q2'], $_POST['Win_Q3']);
+                
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
@@ -375,7 +371,7 @@ class User extends MY_Controller {
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                 $docid = $this->input->post('Doctor_Id');
                 $Activity = $this->input->post('Activity_Id');
-                if (trim($Activity[$i]) != '-1') {
+                if (trim($Activity[$i]) != '') {
                     $data2 = array(
                         'Activity_Id' => $Activity[$i],
                         'Doctor_Id' => $docid[$i],

@@ -1,5 +1,26 @@
 <link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
+<div class="card">
+    <ul class="table-view">
+        <li class="table-view-cell table-view-divider">
+            <span class="pull-right">
+                Sort By
+                <select class="form-control" id="TableSort">
+                    <option value="1">Select Filter</option>
+                    <option value="2">Dependency/Rx For Last Month</option>
+                    <option value="3">BI Market Share</option>
+                    <option value="7">Planned <?php
+                        if ($this->Product_Id == '1') {
+                            echo "Vials";
+                        } else {
+                            echo "Rx";
+                        }
+                        ?> Of Present Month</option>
+                </select>
+            </span>
+        </li>
+    </ul>
+</div>
 <?php echo form_open('User/Priority'); ?>
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
@@ -34,6 +55,10 @@
                 "visible": false
             }
         ]
+    });
+    $('#TableSort').on('change', function () {
+        var selectedValue = $(this).val();
+        oTable.fnSort([[selectedValue, 'desc']]); //Exact value, column, reg
     });
 
     oTable.fnSort([[7, 'desc']]); //Exact value, column, reg
