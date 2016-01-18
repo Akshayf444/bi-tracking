@@ -214,18 +214,26 @@ class ASM extends MY_Controller {
 
     public function ApproveActivity() {
         if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
-                $empid = $this->input->post('approve');
+            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
+                $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
-                    'Approve_Status' => 'Approved'
                 );
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $empid[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Activity_Planning', $data);
+                if ($this->input->post('approve_' . $doctorId[$i])) {
+                    $data['Approve_Status'] = 'Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                } else {
+                    $data['Approve_Status'] = 'Un-Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                }
+
                 // echo $this->db->last_query();
             }
             redirect('ASM/activity_planning', 'refresh');
         }
+
     }
 
     public function reporting_rx() {

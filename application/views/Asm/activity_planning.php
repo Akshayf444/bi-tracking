@@ -23,50 +23,17 @@
         </li>
     </ul>
 </div>
-<?php
-if(!empty($Doctorlist)){
-echo $Doctorlist;}
- ?>
-<?php echo form_open('ASM/ApproveActivity'); ?>
-<input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>">
-  <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
-
-
-<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php // if (!empty($Docctorlist)) { ?>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover ">
-
-                <tr style="background-color: #428BCA">
-
-                    <th>Doctor Name</th>
-                   
-                    <th><input type="checkbox" id="check-all"></th>
-                </tr>
-
-                <?php // foreach ($Doctorlist as $row) :
-                    ?>
-                    <tr>  
-
-                        <td><?php // echo $row->Account_Name; ?></td>  
-                       
-                        <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="checkbox" id="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve[]" value="<?php echo $row->Account_ID ?>"></td>
-                    </tr>
-
-
-                    <?php
-//                endforeach;
-//                echo '</table> 
-//        <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
-//            }
-//            else {
-//                echo '<h3>Data Not Available</h3>';
-//            }
-            ?>
-
-    </div>
-
-</div>-->
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <?php
+    echo form_open('ASM/ApproveActivity');
+    if (!empty($Doctorlist)) {
+        echo $Doctorlist;
+    }
+    ?>
+    <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>">
+    <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
+    </form>
+</div>
 <script>
     $('#check-all').click(function (e) {
         $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);

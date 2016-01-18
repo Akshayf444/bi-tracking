@@ -918,80 +918,22 @@ class User_model extends CI_Model {
             $HTML .= '</tr>';
 
             foreach ($result as $value) {
-
+                $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'checked' : '';
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
                 } else {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
-                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
-                if ($type == 'Reporting') {
-                    $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
-                    $reason = isset($value->Reason) ? $value->Reason : '';
-                    $Activity_Done = isset($value->Activity_Done) ? $value->Activity_Done : '';
-                    $Status = isset($value->Status) && $value->Status == 'Submitted' ? 'Submitted' : '';
-                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
-                    $HTML .='<td><div class="col-xs-8">
-                        <div class="toggle">';
-                    if ($Activity_Done == "Yes" && $Status == 'Submitted') {
-                        $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="Yes"><span class="input-checked" id="' . $value->Account_ID . '-1 ">Yes</span>';
-                    } else {
-                        $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span>';
-                    }
-                    $HTML .='</label>    
-                        </div>
-                        <div class="toggle">';
-                    if ($Activity_Done == "No" && $Status == 'Submitted') {
-                        $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="No"><span class="input-checked" id="' . $value->Account_ID . '-2 " >No</span>';
-                    } else {
-                        $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span>';
-                    }
-                    $HTML .='</label>
-                        </div>
-                    </div>';
-                    if ($Activity_Done == "Yes" && $Status == 'Submitted') {
-                        $HTML .= $activity_detail;
-                    } else {
-                        $HTML .='<div id="heading' . $value->Account_ID . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea id="act' . $value->Account_ID . '" class="form-control" name="Activity_Detail[]"  placeholder="Activity Details">' . $activity_detail . '</textarea> </div> 
-                        </div> 
-                    </div><div id="reason' . $value->Account_ID . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea id="res' . $value->Account_ID . '" class="form-control" name="Reason[]"  placeholder="Reason">' . $reason . '</textarea> </div> 
-                        </div> 
-                    </div>';
-                    }
-
-                    if ($Activity_Done == "No" && $Status == 'Submitted') {
-                        $HTML .=$reason;
-                    } else {
-                        $HTML .='<div id="heading' . $value->Account_ID . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea id="act' . $value->Account_ID . '" class="form-control" name="Activity_Detail[]"  placeholder="Activity Details">' . $activity_detail . '</textarea> </div> 
-                        </div> 
-                    </div> <div id="reason' . $value->Account_ID . '" class="custom-collapse " style="display: none">
-                        <div class="row row-margin-top">
-                            <div class="col-xs-12 col-lg-12"><textarea id="res' . $value->Account_ID . '" class="form-control" name="Reason[]"  placeholder="Reason">' . $reason . '</textarea> </div> 
-                        </div> 
-                    </div>';
-                    }
-                    $HTML .='</td>';
-                } else {
-                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>
-                            
-        ';
-                }
-
-                $HTML .= '</tr>'
-
-                ;
+                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
+                $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                $HTML .= '<td><input type="checkbox" id="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="' . $value->Account_ID . '"></td>';
+                $HTML .= '</tr>';
             }
             $HTML .= '</table>'
                     . ' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
         } else {
-            $HTML .= '<h1></h1>';
+            $HTML .= '<h1>Data Not Available.</h1>';
         }
 
         return $HTML;
