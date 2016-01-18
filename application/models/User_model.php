@@ -919,9 +919,9 @@ class User_model extends CI_Model {
                     }
                     $HTML .='</td>';
                 } else {
-                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>
-                            
-        ';
+                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>  
+                              <td><input type="checkbox" id="check-all" '.  isset($Doctorlist->Approve_Status) && $Doctorlist->Approve_Status == 'Approved' ? 'checked' : '' .' name="approve[]" value="'. $Doctorlist->Account_ID.'"></td>';
+      
                 }
 
                 $HTML .= '</tr>'

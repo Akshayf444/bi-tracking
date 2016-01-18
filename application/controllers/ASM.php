@@ -286,7 +286,7 @@ class ASM extends MY_Controller {
                 $this->db->update('Activity_Reporting', $data);
                 // echo $this->db->last_query();
             }
-            redirect('ASM/reporting_activity', 'refresh');
+            redirect('ASM/Reporting_Activity', 'refresh');
         }
     }
       public function reporting_activity() {

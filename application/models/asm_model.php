@@ -62,9 +62,5 @@ AND `ar`.`VEEVA_Employee_ID` = '$id' AND `ar`.`month` = '$this->nextMonth' AND `
         return $query->result();
         ;
     }
-     public function status_change($id, $data) {
-        $query = $this->db->where('Act_Plan', $id);
-        $query = $this->db->update('Employee_Master', $data);
-        return $query;
-    }
+    
 }

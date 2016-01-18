@@ -45,7 +45,7 @@
                         
                         <td><?php echo $row->Activity_Done; ?>
                              <td><?php echo $row->Activity_Name; ?>
-                                 <input type="hidden" name="act_id" value="<?php echo $row->Act_Plan;?> "
+                               
                             <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
                         <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="checkbox" id="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve[]" value="<?php echo $row->Account_ID ?>"></td>
                     </tr>

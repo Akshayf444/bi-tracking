@@ -23,11 +23,12 @@
         </li>
     </ul>
 </div>
+
+<?php echo form_open('ASM/ApproveActivity'); ?>
 <?php
 if(!empty($Doctorlist)){
 echo $Doctorlist;}
  ?>
-<?php echo form_open('ASM/ApproveActivity'); ?>
 <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>">
   <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
 
