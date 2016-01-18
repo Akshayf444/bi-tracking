@@ -64,7 +64,7 @@ echo form_open('User/Planning', $attributes);
             <input type="hidden" id="Status" name="Planning_Status" value="Draft">
         </div>
         <div class="panel-footer">
-            <button type="button" id="Priority" class="btn btn-negative">Prioritize</button>        
+            <button type="button" id="Priority" class="btn btn-negative">Prioritize for activities</button>        
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
         </div>

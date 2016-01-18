@@ -828,7 +828,7 @@ class User_model extends CI_Model {
             }
             $HTML .= '</table>';
         } else {
-            $HTML .= '<h1></h1>';
+            $HTML .= '';
         }
 
         return $HTML;
