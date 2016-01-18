@@ -253,7 +253,22 @@ class User_model extends CI_Model {
         //echo $this->db->last_query();
         return $query->result();
     }
-
+ public function getActivityDoctor2($id,$product_id) {
+        $this->db->select('dm.*,ap.*');
+        $this->db->from('Actual_Doctor_Priority dp');
+        $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.Product_Id = ' . $this->Product_Id, 'left');
+        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+            $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ";
+            $this->db->where($where);
+        } else {
+            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth));
+        }
+        $this->db->group_by('dp.Doctor_Id');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
+    }
     public function getPlannedActivityDoctor() {
         $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
         $this->db->from('Activity_Planning ap');
@@ -833,7 +848,10 @@ class User_model extends CI_Model {
                                 <th>
                                     ' . $hospital . ' Name
                                 </th>
-                                <th>Activity</th>';
+                                <th>Activity</th>
+                                <th><input type="checkbox" id="check-all"></th>
+                               
+';
             if ($type == 'Reporting') {
                 $HTML .= '<th>Action</th>';
             }
@@ -901,13 +919,20 @@ class User_model extends CI_Model {
                     }
                     $HTML .='</td>';
                 } else {
-                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    $HTML .= '<td><select class="form-control" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>
+                            
+        ';
                 }
 
-                $HTML .= '</tr>';
+                $HTML .= '</tr>'
+                        
+                        ;
             }
-            $HTML .= '</table>';
-        } else {
+            $HTML .= '</table>'
+                    .' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
+                    
+           
+       } else {
             $HTML .= '<h1></h1>';
         }
 
