@@ -40,4 +40,31 @@ class asm_model extends CI_Model {
         return $query->result();
     }
 
+    public function report_rx($id, $product_id) {
+        $sql = "
+     SELECT `dm`.*, `rt`.* FROM (`Doctor_Master` dm) 
+LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` WHERE `rt`.`Product_Id` = '$product_id' 
+AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth' AND `rt`.`Status` = 'Submitted' AND `rt`.`Year` = '$this->nextYear'";
+     
+        $query = $this->db->query($sql);
+        return $query->result();
+        ;
+    }
+  public function report_Activity($id, $product_id) {
+        $sql = "
+            SELECT `dm`.*, `ar`.*,am.*  FROM (`Doctor_Master` dm) 
+LEFT JOIN `Activity_Reporting` ar ON `dm`.`Account_ID` = `ar`.`Doctor_Id` 
+inner JOIN `Activity_Master` am ON `am`.`Activity_Id` = `ar`.`Activity_id`
+WHERE `ar`.`Product_Id` = '$product_id' 
+AND `ar`.`VEEVA_Employee_ID` = '$id' AND `ar`.`month` = '$this->nextMonth' AND `ar`.`Status` = 'Submitted' AND `ar`.`Year` = '$this->nextYear'";
+    
+        $query = $this->db->query($sql);
+        return $query->result();
+        ;
+    }
+     public function status_change($id, $data) {
+        $query = $this->db->where('Act_Plan', $id);
+        $query = $this->db->update('Employee_Master', $data);
+        return $query;
+    }
 }

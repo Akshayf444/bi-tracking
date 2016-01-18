@@ -12,8 +12,13 @@ echo form_open('User/ActivityPlanning', $attributes);
             <input type="hidden" id="Status" name="Status" value="Draft">
         </div>
         <div class="panel-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+            <?php if (isset($doctorList) && !empty($doctorList)) { ?>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+            <?php } else {
+                
+            }
+            ?>
         </div>
     </div>
 </div>
