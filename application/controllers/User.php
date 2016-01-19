@@ -249,7 +249,7 @@ class User extends MY_Controller {
                 $_POST['created_at'] = date('Y-m-d H:i:s');
                 $_POST['Status'] = $this->input->post('Status');
                 $_POST['Winability'] = $this->User_model->calcWinability($_POST['Win_Q1'], $_POST['Win_Q2'], $_POST['Win_Q3']);
-                
+
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
@@ -332,13 +332,17 @@ class User extends MY_Controller {
                         'Product_Id' => $this->Product_Id,
                         'created_at' => date('Y-m-d H:i:s'),
                         'Doctor_Id' => $doc_id[$i],
-                        'Planning_Status' => $this->input->post('Planning_Status')
+                        'Planning_Status' => $this->input->post('Planning_Status'),
+                        'Approve_Status' => $this->input->post('Approve_Status'),
                     );
                     if (empty($result)) {
                         if ($this->User_model->Save_Planning($doc)) {
                             array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                         }
                     } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
+                        if ($result->Planned_Rx != $value[$i]) {
+                            $doc['Approve_Status'] = 'SFA';
+                        }
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                         $this->db->update('Rx_Planning', $doc);
                         array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));

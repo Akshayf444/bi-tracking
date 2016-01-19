@@ -62,12 +62,13 @@ echo form_open('User/Planning', $attributes);
         <div class="panel-body table-responsive">
             <?php echo isset($doctorList) ? $doctorList : '' ?>
             <input type="hidden" id="Status" name="Planning_Status" value="Draft">
+            <input type="hidden" id="Approve_Status" name="Approve_Status" value="SFA">
         </div>
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-negative">Prioritize for activities</button>        
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <button type="submit" id="Approve_Status" class="btn btn-primary">Save Approved</button>
+            <button type="submit" id="Approve" class="btn btn-primary">Save Approved</button>
         </div>
     </div>
 </div>
@@ -160,5 +161,8 @@ echo form_open('User/Planning', $attributes);
 
         $("#Status").val('Submitted');
 
+    });
+    $('#Approve').click(function(){
+        $("#Approve_Status").val('SFA');
     });
 </script>
