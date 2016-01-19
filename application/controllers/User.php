@@ -252,10 +252,12 @@ class User extends MY_Controller {
                 
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
                         $_POST['Product_id'] = 4;
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 6;
+                        $this->db->insert('Profiling', $_POST);
+                        $_POST['Product_id'] = 5;
                         $this->db->insert('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
@@ -265,12 +267,15 @@ class User extends MY_Controller {
                         redirect('User/Profiling', 'refresh');
                     }
                 } elseif ($check['Status'] == 'Draft') {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
                         $_POST['Product_id'] = 4;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
 
                         $_POST['Product_id'] = 6;
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $_POST);
+                        $_POST['Product_id'] = 5;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
