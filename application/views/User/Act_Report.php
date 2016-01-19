@@ -58,8 +58,7 @@
                 <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
                 <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
             </div>
-        <?php }
-        ?>
+        <?php } ?>
     </div>
 </div>
 </form>
