@@ -202,6 +202,7 @@ class User extends MY_Controller {
                 $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                 redirect('User/dashboard', 'refresh');
             } elseif ($check['Status'] == 'Draft') {
+                
                 $this->User_model->Set_Target_update2($data1);
                 $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success'));
                 redirect('User/dashboard', 'refresh');
@@ -388,6 +389,7 @@ class User extends MY_Controller {
                         'Product_Id' => $this->Product_Id,
                         'created_at' => date('Y-m-d H:i:s'),
                         'Status' => $this->input->post('Status'),
+                        'Approve_Status' => $this->input->post('Approve_Status'),
                         'Year' => $this->nextYear,
                         'month' => $this->nextMonth
                     );
@@ -405,6 +407,9 @@ class User extends MY_Controller {
                             array_push($messages, $this->Master_Model->DisplayAlert('Activity Planned Successfully.', 'success'));
                         }
                     } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                        if($result->Activity_id!=$Activity[$i]){
+                            $data2['Approve_Status'] = "SFA";
+                        }
                         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                             $data2['Product_Id'] = 4;
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
