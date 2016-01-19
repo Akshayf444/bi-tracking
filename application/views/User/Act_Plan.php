@@ -15,6 +15,7 @@ echo form_open('User/ActivityPlanning', $attributes);
             <?php if (isset($doctorList) && !empty($doctorList)) { ?>
                 <button type="submit" class="btn btn-primary">Save</button>
                 <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+                <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
             <?php
             } else {
                 

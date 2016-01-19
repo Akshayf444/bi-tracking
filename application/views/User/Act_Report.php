@@ -55,6 +55,7 @@
         <div class="panel-footer">
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
         </div>
     </div>
 </div>

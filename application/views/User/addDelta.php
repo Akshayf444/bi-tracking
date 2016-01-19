@@ -26,10 +26,12 @@
                 <input type="number" min="1" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
             </div>
             <input type="hidden" id="Status" name="Status" value="Draft">
+            <input type="hidden" id="Approve_Status" name="Approve_Status" value="Approve for ASM">
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" id="approved" class="btn btn-negative">Save Approved</button>
         </div>
         </form>
     </div>
@@ -143,5 +145,8 @@
     });
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
+    });
+    $("#approved").click(function () {
+        $("#Approve_Status").val('Approved For ASM');
     });
 </script>
