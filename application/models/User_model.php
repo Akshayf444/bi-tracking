@@ -15,6 +15,15 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function All_data($VEEVA_Employee_ID) {
+        $sql = "SELECT em.`Full_Name`,em.`Mobile`,em.`password`,em.`Territory`,em.`DOB`,em.`Date_of_Joining`,(em2.`Reporting_To`) AS ZSM,(em.`Reporting_To`) AS ASM  FROM `employee_master`em
+                INNER JOIN `employee_master`em2
+                ON em.`Reporting_VEEVA_ID`= em2.`VEEVA_Employee_ID`
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+
     public function profiling_by_id($Doctor_id, $VEEVA_Employee_ID, $Product_id) {
         $this->db->select('*');
         $this->db->from('Profiling');
@@ -979,6 +988,14 @@ class User_model extends CI_Model {
     function SaveReporting($data = array()) {
         $this->db->insert('Rx_Actual', $data);
         return $this->db->insert_id();
+    }
+    function Update_mobile($VEEVA_Employee_ID,$data) {
+        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
+        return $this->db->update($this->table_name,$data);
+    }
+    function Update_password($VEEVA_Employee_ID,$data) {
+        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
+        return $this->db->update($this->table_name,$data);
     }
 
 }
