@@ -214,14 +214,21 @@ class ASM extends MY_Controller {
 
     public function ApproveActivity() {
         if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
-                $empid = $this->input->post('approve');
+            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
+                $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
-                    'Approve_Status' => 'Approved'
                 );
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $empid[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Activity_Planning', $data);
+                if ($this->input->post('approve_' . $doctorId[$i])) {
+                    $data['Approve_Status'] = 'Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                } else {
+                    $data['Approve_Status'] = 'Un-Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                }
+
                 // echo $this->db->last_query();
             }
             redirect('ASM/activity_planning', 'refresh');
@@ -272,17 +279,24 @@ class ASM extends MY_Controller {
 
     public function Approve_reporting_Activity() {
         if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
-                $empid = $this->input->post('approve');
-
+            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
+                $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
-                    'Approve_Status' => 'Approved'
+                    'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
                 );
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $empid[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Activity_Reporting', $data);
+                if ($this->input->post('approve_' . $doctorId[$i])) {
+                    $data['Approve_Status'] = 'Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Reporting', $data);
+                } else {
+                    $data['Approve_Status'] = 'Un-Approved';
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Reporting', $data);
+                }
+
                 // echo $this->db->last_query();
             }
-            redirect('ASM/reporting_activity', 'refresh');
+            redirect('ASM/activity_planning', 'refresh');
         }
     }
 
@@ -305,7 +319,8 @@ class ASM extends MY_Controller {
                 $result2 = $this->asm_model->product();
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
 
-                $data['show'] = $this->asm_model->report_Activity($id, $product);
+                $result = $this->User_model->getPlannedActivityDoctor2($id, $product);
+                $data['Doctorlist'] = $this->User_model->generateActivityTable2($result, 'Reporting');
             }
 
             $data = array('title' => 'Report', 'content' => 'ASM/reporting_activity', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
