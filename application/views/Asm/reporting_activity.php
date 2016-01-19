@@ -25,6 +25,7 @@
 </div>
 <?php echo form_open('ASM/Approve_reporting_Activity'); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
     <?php
     if (!empty($Doctorlist)) {
         echo $Doctorlist;
@@ -32,7 +33,6 @@
     ?>
     <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>">
     <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
-    </form>
 </div>
 </form>
 <script>

@@ -34,6 +34,7 @@
     <input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
     </form>
 </div>
+
 <script>
     $('#check-all').click(function (e) {
         $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);

@@ -934,10 +934,11 @@ class User_model extends CI_Model {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
+
                 $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
                 $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
                 if ($type == 'Reporting') {
-                    $HTML .= '<td>'.$value->Activity_Done.'</td>';
+                    $HTML .= '<td>' . $value->Activity_Done . '</td>';
                 }
                 $HTML .= '<td><input type="checkbox" id="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="' . $value->Account_ID . '"></td>';
                 $HTML .= '</tr>';

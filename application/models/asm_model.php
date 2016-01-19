@@ -43,7 +43,7 @@ class asm_model extends CI_Model {
     public function report_rx($id, $product_id) {
         $sql = "SELECT `dm`.*,rt.Rxplan_id,rt.Approve_Status,SUM(rt.Actual_Rx) as Actual_Rx FROM (`Employee_Doc` ed) 
             INNER JOIN Doctor_Master dm ON ed.VEEVA_Account_ID = dm.Account_ID
-            LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth'  AND `rt`.`Year` = '$this->nextYear' AND Status = 'Submitted' "
+            LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth'  AND `rt`.`Year` = '$this->nextYear' "
                 . " WHERE `rt`.`Product_Id` = '$product_id' GROUP BY rt.Doctor_Id ";
         $query = $this->db->query($sql);
         return $query->result();
@@ -59,6 +59,7 @@ class asm_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+
 
     public function status_change($id, $data) {
         $query = $this->db->where('Act_Plan', $id);
