@@ -689,4 +689,47 @@ class User extends MY_Controller {
         }
     }
 
+    public function BDM_update() {
+        if ($this->is_logged_in()) {
+            if ($this->input->post()) {
+                $number = $this->input->post('mobile');
+
+                $mobile = array('Mobile' => $number);
+                $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
+                $data['error'] = "Successfully Updated";
+            }
+            $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
+            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
+    }
+
+    public function pwd_update() {
+        if ($this->is_logged_in()) {
+            if ($this->input->post()) {
+
+                $old = $this->input->post('old');
+                $new = $this->input->post('new');
+                $pass = $this->User_model->All_data($this->VEEVA_Employee_ID);
+                if (!empty($pass)) {
+                    if ($old == $pass['password']) {
+                        $mobile = array('password' => $new);
+                        $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
+                        $data['error'] = "Successfully Updated";
+                    } else {
+                        $data['error'] = "Old Password Not Matched";
+                    }
+                }
+            }
+
+            $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
+            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
+    }
+
 }
