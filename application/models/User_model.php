@@ -263,7 +263,7 @@ class User_model extends CI_Model {
             $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ,ap.Approve_Status= 'SFA'";
             $this->db->where($where);
         } else {
-            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth,'ap.Approve_Status'=>'SFA'));
+            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth, 'ap.Approve_Status' => 'SFA'));
         }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
@@ -900,9 +900,7 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';
-        } else {
-            $HTML .= '';
-        }
+        } 
 
         return $HTML;
     }
@@ -1012,6 +1010,13 @@ class User_model extends CI_Model {
     function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
         $sql = "SELECT * FROM `actual_doctor_priority`
                 WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function Activity_reporting_check($VEEVA_Employee_ID, $Product_Id, $Status) {
+        $sql = "SELECT * FROM `activity_planning`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND Status= '$Status' AND `Product_Id`=$Product_Id";
         $query = $this->db->query($sql);
         return $query->result();
     }
