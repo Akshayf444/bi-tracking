@@ -7,7 +7,7 @@ class User extends MY_Controller {
 
     public $alertLabel = 'Doctor';
     public $doctorIds = array();
-    
+
     public function __construct() {
         parent::__construct();
         $this->load->helper();
@@ -312,7 +312,8 @@ class User extends MY_Controller {
         }
         $messages = array();
         if ($this->is_logged_in()) {
-            $data['doctorList'] = $this->User_model->generatePlanningTab();
+            //$data['doctorList'] = $this->User_model->generatePlanningTab();
+            $data['result'] = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
             // echo($data['doctorList']);
             if ($this->input->post()) {
                 $currentPlanned = array_sum($this->input->post('value'));
@@ -330,22 +331,24 @@ class User extends MY_Controller {
                         'Planned_Rx' => $value[$i],
                         'Year' => $this->nextYear,
                         'month' => $this->nextMonth,
-                        $next_date => $value[$i],
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                         'Product_Id' => $this->Product_Id,
-                        'created_at' => date('Y-m-d H:i:s'),
                         'Doctor_Id' => $doc_id[$i],
                         'Planning_Status' => $this->input->post('Planning_Status'),
                         'Approve_Status' => $this->input->post('Approve_Status'),
                     );
                     if (empty($result)) {
+                        $doc['created_at'] = date('Y-m-d H:i:s');
                         if ($this->User_model->Save_Planning($doc)) {
                             array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                         }
                     } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
                         if ($result->Planned_Rx != $value[$i]) {
                             $doc['Approve_Status'] = 'SFA';
+                        } else {
+                            $doc['Approve_Status'] = $result->Approve_Status;
                         }
+                        $doc['updated_at'] = date('Y-m-d H:i:s');
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                         $this->db->update('Rx_Planning', $doc);
                         array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
@@ -482,6 +485,7 @@ class User extends MY_Controller {
         $current_month = date('n');
         $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
         if ($this->is_logged_in()) {
+
             $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
             if ($this->input->post()) {
                 for ($i = 0; $i < count($this->input->post('value')); $i++) {
@@ -493,22 +497,23 @@ class User extends MY_Controller {
                         'Actual_Rx' => $value[$i],
                         'Year' => $this->nextYear,
                         'month' => $this->nextMonth,
-                        $next_date => $value[$i],
                         'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                         'Product_Id' => $this->Product_Id,
-                        'created_at' => date('Y-m-d H:i:s'),
                         'Doctor_Id' => $doc_id[$i],
                         'Status' => $this->input->post('Status')
                     );
 
                     $result = $this->User_model->ReportingExist($doc_id[$i]);
                     if (empty($result)) {
+                        $doc['created_at'] = date('Y-m-d H:i:s');
                         if ($this->User_model->SaveReporting($doc)) {
                             array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
                         }
                     } else {
                         if (isset($result->Status) && $result->Status == 'Draft') {
-                            if ($this->User_model->SaveReporting($doc)) {
+                            $doc['updated_at'] = date('Y-m-d H:i:s');
+                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i], 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
+                            if ($this->db->update('Rx_Actual', $doc)) {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Submitted') {

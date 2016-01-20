@@ -298,10 +298,12 @@ class User_model extends CI_Model {
     function getPlanning($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $this->db->select('rxp.*,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month');
         $this->db->from('Employee_Doc ed');
-        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
+        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
         $this->db->join('Profiling pf', 'dm.Account_ID = pf.Doctor_Id', 'LEFT');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
         $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
+
+        //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
         $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
@@ -314,7 +316,7 @@ class User_model extends CI_Model {
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
+        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'rxp.Approve_Status' => 'SFA'));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -539,7 +541,7 @@ class User_model extends CI_Model {
                AND `VEEVA_Employee_ID` =  '$this->VEEVA_Employee_ID'
                AND `Year` =  '$year4' GROUP BY month   ";
         $query = $this->db->query($sql);
-        //echo $this->db->last_query();
+        ///echo $this->db->last_query();
         return $query->result();
     }
 
@@ -955,7 +957,7 @@ class User_model extends CI_Model {
     function ReportingExist($Doctor_Id = "") {
         $this->db->select('*');
         $this->db->from('Rx_Actual');
-        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $this->db->where(array('Product_Id' => $this->Product_Id, 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear, 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
         $query = $this->db->get();
         return $query->row();
     }
