@@ -81,97 +81,97 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
-<div class="col-lg-12">
-    <div class="panel panel-default" style="text-align: center" > 
-
-
-        
+    <div class="col-lg-12">
+        <div class="panel panel-default" style="text-align: center" > 
 
 
 
-        <div class="panel-header" style="background-color: white;    padding: 12px;"><?php
+
+
+
+            <div class="panel-header" style="background-color: white;    padding: 12px;"><?php
+                if ($this->Product_Id == '1') {
+                    echo "<b>Actilyse</b>";
+                } elseif ($this->Product_Id == '2') {
+                    echo "<b>Pradaxa</b>";
+                } elseif ($this->Product_Id == '3') {
+                    echo "<b>Metalyse</b>";
+                } elseif ($this->Product_Id == '4') {
+                    echo "<b>Trajenta Family</b>";
+                } elseif ($this->Product_Id == '5') {
+                    echo "<b>Jardiance</b>";
+                } elseif ($this->Product_Id == '6') {
+                    echo "<b>Trajenta Duo</b>";
+                }
+                ?></div>
+            <?php
+            $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
             if ($this->Product_Id == '1') {
-                echo "Actilyse";
+                echo "<div class='panel-body' style='background-color: #79B61C;'>";
             } elseif ($this->Product_Id == '2') {
-                echo "Pradaxa";
+                echo "<div class='panel-body' style='background-color: #4E88BC;'>";
             } elseif ($this->Product_Id == '3') {
-                echo "Metalyse";
+                echo "<div class='panel-body' style='background-color: #EFC083;'>";
             } elseif ($this->Product_Id == '4') {
-                echo "Trajenta Family";
+                echo "<div class='panel-body' style='background-color:  #87CEEB'>";
             } elseif ($this->Product_Id == '5') {
-                echo "Jardiance";
+                echo "<div class='panel-body' style='background-color: #20B2AA;'>";
             } elseif ($this->Product_Id == '6') {
-                echo "Trajenta Duo";
+                echo "<div class='panel-body' style='background-color: #9999FF;'>";
             }
-            ?></div>
-        <?php
-        $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
-        if ($this->Product_Id == '1') {
-            echo "<div class='panel-body' style='background-color: #79B61C;'>";
-        } elseif ($this->Product_Id == '2') {
-            echo "<div class='panel-body' style='background-color: #4E88BC;'>";
-        } elseif ($this->Product_Id == '3') {
-            echo "<div class='panel-body' style='background-color: #EFC083;'>";
-        } elseif ($this->Product_Id == '4') {
-            echo "<div class='panel-body' style='background-color:  #87CEEB'>";
-        } elseif ($this->Product_Id == '5') {
-            echo "<div class='panel-body' style='background-color: #20B2AA;'>";
-        } elseif ($this->Product_Id == '6') {
-            echo "<div class='panel-body' style='background-color: #9999FF;'>";
-        }
-        ?>
-        <div class="panel-body">
-            <table class=" table" style="margin-left: -87px;">
-                <tr>
+            ?>
+            <div class="panel-body">
+                <table class=" table" style="margin-left: -87px;">
+                    <tr>
 
-                    <th  style="text-align:right"><?php
-                        if ($this->Product_Id == '1') {
+                        <th  style="text-align:right"><?php
+                            if ($this->Product_Id == '1') {
 
-                            echo "Actilyse";
-                        } elseif ($this->Product_Id == '2') {
-                            echo "Pradaxa";
-                        } elseif ($this->Product_Id == '3') {
-                            echo "Metalyse";
-                        } elseif ($this->Product_Id == '4') {
-                            echo "Trajenta Family";
-                        } elseif ($this->Product_Id == '5') {
-                            echo "Jardiance";
-                        } elseif ($this->Product_Id == '6') {
-                            echo "Trajenta duo";
-                        }
-                        ?></th>
-                    <th  style="text-align:center">Sep</th>
-                    <th  style="text-align:center">Oct</th>
-                    <th  style="text-align:center">Nov</th>
-                    <th>Dec</th>
-                </tr>
+                                echo "Actilyse";
+                            } elseif ($this->Product_Id == '2') {
+                                echo "Pradaxa";
+                            } elseif ($this->Product_Id == '3') {
+                                echo "Metalyse";
+                            } elseif ($this->Product_Id == '4') {
+                                echo "Trajenta Family";
+                            } elseif ($this->Product_Id == '5') {
+                                echo "Jardiance";
+                            } elseif ($this->Product_Id == '6') {
+                                echo "Trajenta duo";
+                            }
+                            ?></th>
+                        <th  style="text-align:center">Sep</th>
+                        <th  style="text-align:center">Oct</th>
+                        <th  style="text-align:center">Nov</th>
+                        <th>Dec</th>
+                    </tr>
 
-                <tr>
-                    <th  style="text-align:right">Users</th>
-                    <td style="text-align:center"><?php echo $user4['doctor_count'] ?></td>
-                    <td style="text-align:center"><?php echo $user3['doctor_count'] ?></td>
-                    <td style="text-align:center"><?php echo $user2['doctor_count'] ?></td>
-                    <td><?php echo $user1['doctor_count'] ?></td>
-                </tr>
-                <tr>
-                    <th  style="text-align:right"><?php
-                        if ($this->Product_Id == '1') {
-                            echo "Vials";
-                        } else {
-                            echo "Rx";
-                        }
-                        ?></th>
+                    <tr>
+                        <th  style="text-align:right">Users</th>
+                        <td style="text-align:center"><?php echo $user4['doctor_count'] ?></td>
+                        <td style="text-align:center"><?php echo $user3['doctor_count'] ?></td>
+                        <td style="text-align:center"><?php echo $user2['doctor_count'] ?></td>
+                        <td><?php echo $user1['doctor_count'] ?></td>
+                    </tr>
+                    <tr>
+                        <th  style="text-align:right"><?php
+                            if ($this->Product_Id == '1') {
+                                echo "Vials";
+                            } else {
+                                echo "Rx";
+                            }
+                            ?></th>
 
 
-                    <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
-                    <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
-                    <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
-                    <td><?php echo $month1['actual_rx'] ?></td>
-                </tr>
-            </table>
+                        <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
+                        <td><?php echo $month1['actual_rx'] ?></td>
+                    </tr>
+                </table>
 
 
-        </div>
+            </div>
         </div>
     </div>
 <?php } ?>
@@ -202,54 +202,60 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
-<div class="col-lg-12">
-    <div class="panel panel-default ">
-        <div class="panel-header" style="background-color: white;    padding: 10px;    padding-bottom: 30px;">
-            <div class="col-lg-4"></div>
-            <div align="center" class="col-lg-4">
-                <b> Achievement Of Jan 2016</b>
+
+        <div class="panel panel-default" style="text-align: center" > 
+
+
+
+
+
+
+            <div class="panel-header" style="background-color: white;    padding: 10px;    padding-bottom: 30px;">
+                <div class="col-lg-4"></div>
+                <div align="center" class="col-lg-4">
+                    <b> Achievement Of Jan 2016</b>
+                </div>
+                <div class="col-lg-4"></div>
             </div>
-            <div class="col-lg-4"></div>
+            <div class="panel-body ">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-1">
+                    <select class="form-control">
+                        <option>Jan 2016</option>
+                        <option>Cycle 1</option>
+                    </select>
+                </div>
+                <div class="col-lg-4">
+
+
+                    <div class="demo" >        
+                        <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                        <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1, 2); ?>%</span>
+                        <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
+
+                        <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="demo" >       
+                        <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                        <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2, 2); ?>%</span>
+                        <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
+                        <span style="margin-left: 0px;position: absolute;margin-top: -30px;"><?php
+                            if ($this->Product_Id == 1) {
+                                echo "Hospital";
+                            } else {
+                                echo "Doctor";
+                            }
+                            ?> Engaged in Activity / Planned</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body achievement">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-1">
-                <select class="form-control">
-                    <option>Jan 2016</option>
-                    <option>Cycle 1</option>
-                </select>
-            </div>
-            <div class="col-lg-4">
-
-
-                <div class="demo" >        
-                    <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                    <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1, 2); ?>%</span>
-                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
-
-                    <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
-
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-
-                <div class="demo" >       
-                    <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                    <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2, 2); ?>%</span>
-                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
-                    <span style="margin-left: 0px;position: absolute;margin-top: -30px;"><?php
-                        if ($this->Product_Id == 1) {
-                            echo "Hospital";
-                        } else {
-                            echo "Doctor";
-                        }
-                        ?> Engaged in Activity / Planned</span>
-                </div>
-            </div>
-            </div>
-    </div>
-    </div>
+   
 <?php } ?>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
