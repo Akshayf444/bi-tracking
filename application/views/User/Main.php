@@ -36,9 +36,10 @@
         font-weight: bold;
     }
 </style>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell">
+<div align="center" class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
             <div class="col-sm-4"></div>
 
             <?php echo form_open('User/dashboard'); ?>
@@ -50,8 +51,9 @@
             </div>
             <div class="col-sm-4"></div>
             </form>
-        </li>
-    </ul>
+
+        </div>
+    </div>
 </div>
 <?php echo isset($tab1) ? $tab1 : ''; ?>
 
@@ -79,29 +81,15 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
-    <div class="item card" style="text-align: center" > 
+<div class="col-lg-12">
+    <div class="panel panel-default" style="text-align: center" > 
 
 
-        <?php
-        $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
-        if ($this->Product_Id == '1') {
-            echo "<ul class='table-view' style='background-color: #79B61C;'>";
-        } elseif ($this->Product_Id == '2') {
-            echo "<ul class='table-view' style='background-color: #4E88BC;'>";
-        } elseif ($this->Product_Id == '3') {
-            echo "<ul class='table-view' style='background-color: #EFC083;'>";
-        } elseif ($this->Product_Id == '4') {
-            echo "<ul class='table-view' style='background-color:  #87CEEB'>";
-        } elseif ($this->Product_Id == '5') {
-            echo "<ul class='table-view' style='background-color: #20B2AA;'>";
-        } elseif ($this->Product_Id == '6') {
-            echo "<ul class='table-view' style='background-color: #9999FF;'>";
-        }
-        ?>
+        
 
 
 
-        <li class="table-view-cell table-view-divider" style="font-weight: 700;"><?php
+        <div class="panel-header" style="background-color: white;    padding: 12px;"><?php
             if ($this->Product_Id == '1') {
                 echo "Actilyse";
             } elseif ($this->Product_Id == '2') {
@@ -115,9 +103,25 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
             } elseif ($this->Product_Id == '6') {
                 echo "Trajenta Duo";
             }
-            ?></li>
-        <li class="table-view-cell media">
-            <table class="slider-table table" style="margin-left: -87px;">
+            ?></div>
+        <?php
+        $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
+        if ($this->Product_Id == '1') {
+            echo "<div class='panel-body' style='background-color: #79B61C;'>";
+        } elseif ($this->Product_Id == '2') {
+            echo "<div class='panel-body' style='background-color: #4E88BC;'>";
+        } elseif ($this->Product_Id == '3') {
+            echo "<div class='panel-body' style='background-color: #EFC083;'>";
+        } elseif ($this->Product_Id == '4') {
+            echo "<div class='panel-body' style='background-color:  #87CEEB'>";
+        } elseif ($this->Product_Id == '5') {
+            echo "<div class='panel-body' style='background-color: #20B2AA;'>";
+        } elseif ($this->Product_Id == '6') {
+            echo "<div class='panel-body' style='background-color: #9999FF;'>";
+        }
+        ?>
+        <div class="panel-body">
+            <table class=" table" style="margin-left: -87px;">
                 <tr>
 
                     <th  style="text-align:right"><?php
@@ -165,8 +169,10 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                     <td><?php echo $month1['actual_rx'] ?></td>
                 </tr>
             </table>
-        </li>
-    </ul>
+
+
+        </div>
+        </div>
     </div>
 <?php } ?>
 <style>
@@ -184,22 +190,29 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     .achievement {
         padding: 11px 15px 11px 15px;
     }
+    #kp2{
+        display: none
+    }
+    #kp1{
+        display: none
+    }
 </style>
 <?php
 if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
-    <ul class="table-view card ">
-        <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
+<div class="col-lg-12">
+    <div class="panel panel-default ">
+        <div class="panel-header" style="background-color: white;    padding: 10px;    padding-bottom: 30px;">
             <div class="col-lg-4"></div>
             <div align="center" class="col-lg-4">
                 <b> Achievement Of Jan 2016</b>
             </div>
             <div class="col-lg-4"></div>
-        </li>
-        <li class="table-view-cell achievement">
-
+        </div>
+        <div class="panel-body achievement">
+            <div class="col-lg-1"></div>
             <div class="col-lg-1">
                 <select class="form-control">
                     <option>Jan 2016</option>
@@ -234,8 +247,9 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                         ?> Engaged in Activity / Planned</span>
                 </div>
             </div>
-        </li>
-    </ul>
+            </div>
+    </div>
+    </div>
 <?php } ?>
 <script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
 <script>
