@@ -989,13 +989,28 @@ class User_model extends CI_Model {
         $this->db->insert('Rx_Actual', $data);
         return $this->db->insert_id();
     }
-    function Update_mobile($VEEVA_Employee_ID,$data) {
-        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
-        return $this->db->update($this->table_name,$data);
+
+    function Update_mobile($VEEVA_Employee_ID, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        return $this->db->update($this->table_name, $data);
     }
-    function Update_password($VEEVA_Employee_ID,$data) {
-        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
-        return $this->db->update($this->table_name,$data);
+
+    function Update_password($VEEVA_Employee_ID, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        return $this->db->update($this->table_name, $data);
+    }
+
+    function check_planning($VEEVA_Employee_ID, $Product_Id, $nextMonth, $nextYear) {
+        $sql = "SELECT * FROM `rx_planning`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear";
+        $query=$this->db->query($sql);
+        return $query->result();
+    }
+    function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
+        $sql = "SELECT * FROM `actual_doctor_priority`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
+        $query=$this->db->query($sql);
+        return $query->result();
     }
 
 }

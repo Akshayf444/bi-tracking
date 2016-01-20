@@ -29,7 +29,7 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>Mobile</th>
-                        <td><input type="text" class="form-control" name="mobile" value="<?php echo $detail['Mobile']; ?>"/></td>
+                        <td><input type="text" class="form-control" maxlength="10" minlength="10" name="mobile" value="<?php echo $detail['Mobile']; ?>"/></td>
                     </tr>
                     <tr>
                         <th>Reporting ASM</th>
