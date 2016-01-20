@@ -48,7 +48,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Activity Reporting</div>
         <div class="panel-body">   
-            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : '<h1>No Activity Planned</h1>'; ?>
+            <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : ''; ?>
 
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">

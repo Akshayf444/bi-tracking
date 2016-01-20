@@ -287,8 +287,8 @@ class User_model extends CI_Model {
         $this->db->select('dm.*, `ap`.*,rp.Approve_Status,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
         $this->db->from('Activity_Planning ap');
         $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
-        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth));
+        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID  AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
+        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth, 'rp.Approve_Status' => 'SFA'));
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -915,8 +915,6 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';
-        } else {
-            $HTML .= '';
         }
 
         return $HTML;
@@ -1027,6 +1025,13 @@ class User_model extends CI_Model {
     function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
         $sql = "SELECT * FROM `actual_doctor_priority`
                 WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function Activity_reporting_check($VEEVA_Employee_ID, $Product_Id, $Status) {
+        $sql = "SELECT * FROM `activity_planning`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND Status= '$Status' AND `Product_Id`=$Product_Id";
         $query = $this->db->query($sql);
         return $query->result();
     }

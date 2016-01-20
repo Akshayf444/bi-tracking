@@ -607,78 +607,85 @@ class User extends MY_Controller {
     }
 
     public function ActivityReporting() {
+        $Status = "Submitted";
+        $check = $this->User_model->Activity_reporting_check($this->VEEVA_Employee_ID, $this->Product_Id, $Status);
+        if (!empty($check)) {
+            if ($this->Product_Id == 1) {
+                $this->alertLabel = "Hospital";
+            }
 
-        if ($this->Product_Id == 1) {
-            $this->alertLabel = "Hospital";
-        }
-        $messages = array();
-        $result = $this->User_model->getPlannedActivityDoctor();
-        $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
-        if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
-                $docid = $this->input->post('Doctor_Id');
-                $Activity = $this->input->post('Activity_Id');
-                $Activity_Detail = $this->input->post('Activity_Detail');
-                $Reason = $this->input->post('Reason');
-                if (trim($Activity[$i]) != '-1') {
-                    $data2 = array(
-                        'Activity_Id' => $Activity[$i],
-                        'Doctor_Id' => $docid[$i],
-                        'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
-                        'Activity_Detail' => $Activity_Detail[$i],
-                        'Reason' => $Reason[$i],
-                        'Product_Id' => $this->Product_Id,
-                        'Status' => $this->input->post('Status'),
-                        'Approve_Status' => $this->input->post('Approve_Status'),
-                        'Year' => $this->nextYear,
-                        'month' => $this->nextMonth,
-                        'Activity_Done' => $this->input->post($docid[$i])
-                    );
+            $messages = array();
+            $result = $this->User_model->getPlannedActivityDoctor();
+            $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
+            if ($this->input->post()) {
+                for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
+                    $docid = $this->input->post('Doctor_Id');
+                    $Activity = $this->input->post('Activity_Id');
+                    $Activity_Detail = $this->input->post('Activity_Detail');
+                    $Reason = $this->input->post('Reason');
+                    if (trim($Activity[$i]) != '-1') {
+                        $data2 = array(
+                            'Activity_Id' => $Activity[$i],
+                            'Doctor_Id' => $docid[$i],
+                            'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Activity_Detail' => $Activity_Detail[$i],
+                            'Reason' => $Reason[$i],
+                            'Product_Id' => $this->Product_Id,
+                            'Status' => $this->input->post('Status'),
+                            'Approve_Status' => $this->input->post('Approve_Status'),
+                            'Year' => $this->nextYear,
+                            'month' => $this->nextMonth,
+                            'Activity_Done' => $this->input->post($docid[$i])
+                        );
 
-                    $result = $this->User_model->ActivityReportingExist($docid[$i]);
-                    if (empty($result)) {
-                        $data2['created_at'] = date('Y-m-d H:i:s');
-                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-                            $data2['Product_Id'] = 4;
-                            $this->db->insert('Activity_Reporting', $data2);
-                            $data2['Product_Id'] = 6;
-                            $this->db->insert('Activity_Reporting', $data2);
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
-                        } else {
-                            $this->db->insert('Activity_Reporting', $data2);
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
-                        }
-                    } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                        $result = $this->User_model->ActivityReportingExist($docid[$i]);
+                        if (empty($result)) {
+                            $data2['created_at'] = date('Y-m-d H:i:s');
+                            if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                                $data2['Product_Id'] = 4;
+                                $this->db->insert('Activity_Reporting', $data2);
+                                $data2['Product_Id'] = 6;
+                                $this->db->insert('Activity_Reporting', $data2);
+                                array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
+                            } else {
+                                $this->db->insert('Activity_Reporting', $data2);
+                                array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
+                            }
+                        } elseif (isset($result->Status) && $result->Status == 'Draft') {
 
-                        $data2['updated_at'] = date('Y-m-d H:i:s');
-                        if ($this->input->post($docid[$i]) != $result->Activity_Done) {
-                            $data2['Approve_Status'] = "SFA";
-                        } else {
-                            $data2['Approve_Status'] = $result->Approve_Status;
+                            $data2['updated_at'] = date('Y-m-d H:i:s');
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done) {
+                                $data2['Approve_Status'] = "SFA";
+                            } else {
+                                $data2['Approve_Status'] = $result->Approve_Status;
+                            }
+
+                            if ($this->Product_Id == 4 || $this->Product_Id == 6) {
+                                $data2['Product_Id'] = 4;
+                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->update('Activity_Reporting', $data2);
+                                $data2['Product_Id'] = 6;
+                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->update('Activity_Reporting', $data2);
+                                array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
+                            } else {
+                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->update('Activity_Reporting', $data2);
+                                array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
+                            }
+                        } elseif (isset($result->Status) && $result->Status == 'Submitted') {
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
                         }
-                        
-                        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-                            $data2['Product_Id'] = 4;
-                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
-                            $this->db->update('Activity_Reporting', $data2);
-                            $data2['Product_Id'] = 6;
-                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
-                            $this->db->update('Activity_Reporting', $data2);
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
-                        } else {
-                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
-                            $this->db->update('Activity_Reporting', $data2);
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
-                        }
-                    } elseif (isset($result->Status) && $result->Status == 'Submitted') {
-                        array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
                     }
                 }
+                redirect('User/dashboard', 'refresh');
             }
             if (!empty($messages)) {
                 $this->session->set_userdata('message', join(" ", array_unique($messages)));
             }
-            redirect('User/dashboard', 'refresh');
+            
+        } else {
+            $data['doctorList'] = "Activity Planning Not Submitted";
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
