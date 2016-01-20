@@ -1002,4 +1002,18 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
+    function check_planning($VEEVA_Employee_ID, $Product_Id, $nextMonth, $nextYear) {
+        $sql = "SELECT * FROM `rx_planning`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
+        $sql = "SELECT * FROM `actual_doctor_priority`
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
 }

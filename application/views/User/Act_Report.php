@@ -42,7 +42,7 @@
         transition: 0.15s ease-out;
     }
 </style>
-<script src="<?php echo asset_url();?>js/bootstrap.min_1.js" type="text/javascript"></script>
+<script src="<?php echo asset_url(); ?>js/bootstrap.min_1.js" type="text/javascript"></script>
 <?php echo form_open('User/ActivityReporting'); ?>
 <div class="col-lg-12 col-md-12 ">
     <div class="panel panel-default">
@@ -52,11 +52,13 @@
 
             <input type="hidden" id="Status" name="Status" value="Draft">
         </div>
-        <div class="panel-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
-        </div>
+        <?php if (isset($doctorList) && $doctorList!='') { ?>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+                <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
+            </div>
+        <?php } ?>
     </div>
 </div>
 </form>
