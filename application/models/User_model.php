@@ -263,7 +263,7 @@ class User_model extends CI_Model {
             $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ,ap.Approve_Status= 'SFA'";
             $this->db->where($where);
         } else {
-            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth,'ap.Approve_Status'=>'SFA'));
+            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth, 'ap.Approve_Status' => 'SFA'));
         }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
@@ -860,11 +860,11 @@ class User_model extends CI_Model {
                     $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
                     $reason = isset($value->Reason) ? $value->Reason : '';
                     $Activity_Done = isset($value->Activity_Done) ? $value->Activity_Done : '';
-                    $Status = isset($value->Status) && $value->Status == 'Submitted' ? 'Submitted' : '';
-                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></td>';
+                    $Status = isset($value->Status) && $value->Status != '' ? $value->Status : '';
+                    $HTML .= '<td><input type="hidden" value="' . $value->Activity_Id . '" name="Activity_Id[]" ><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></td>';
                     $HTML .='<td><div class="col-xs-8">
                         <div class="toggle">';
-                    if ($Activity_Done == "Yes" && $Status == 'Submitted') {
+                    if ($Activity_Done == "Yes" && $Status == 'Submitted' || $Activity_Done == "Yes" && $Status == 'Draft') {
                         $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="Yes"><span class="input-checked" id="' . $value->Account_ID . '-1 ">Yes</span>';
                     } else {
                         $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span>';
@@ -872,7 +872,7 @@ class User_model extends CI_Model {
                     $HTML .='</label>    
                         </div>
                         <div class="toggle">';
-                    if ($Activity_Done == "No" && $Status == 'Submitted') {
+                    if ($Activity_Done == "No" && $Status == 'Submitted' || $Activity_Done == "No" && $Status == 'Draft') {
                         $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="No"><span class="input-checked" id="' . $value->Account_ID . '-2 " >No</span>';
                     } else {
                         $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span>';
