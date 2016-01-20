@@ -148,8 +148,9 @@
                                 <td><?php echo $month3Actual; ?></td>
                                 <td><?php echo $planned_rx ?><input type = "hidden" name = "doc_id[]" value = "<?php $doctor->Account_ID ?>"/></td>
                                 <td><?php echo $month4rx ?></td>
+                                <td><?php echo isset($doctor->Daily_Actual_Rx) ? $doctor->Daily_Actual_Rx : ''; ?></td>
                                 <td> <input name = "value[]" type = "number" class="val" min="0" value = ""/></td>
-                                </tr>
+                            </tr>
                             </tr>
                             <?php
                         }
