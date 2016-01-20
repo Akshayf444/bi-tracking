@@ -36,14 +36,14 @@
         font-weight: bold;
     }
 </style>
-<div align="center" class="col-lg-12">
+<div align="center" class="col-lg-12 col-md-12 col-sm-12">
     <div class="panel panel-default">
         <div class="panel-body">
 
-            <div class="col-sm-4"></div>
+            <div class="col-sm-4 col-md-4 col-lg-4"></div>
 
             <?php echo form_open('User/dashboard'); ?>
-            <div class="col-sm-4" style="margin-right: -199px;" >
+            <div class="col-sm-4 col-md-4 col-lg-4">
                 <select name="Product_Id" class="form-control" onchange="this.form.submit()">
                     <option value="-1">Select Product</option>
                     <?php echo $productList ?>

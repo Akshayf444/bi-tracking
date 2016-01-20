@@ -41,6 +41,12 @@
             a{
                 cursor: pointer;
             }
+
+            .nav>li>a {
+                position: relative;
+                display: block;
+                padding: 0px 6px;
+            }
         </style>
 
         <?php
@@ -97,13 +103,28 @@
         <header class="bar bar-nav">
             <h1 class="title" >  
                 <img style="height: 99%" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
-                <a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>
+                <ul class="nav navbar-right top-nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo isset($this->Full_Name) ? ' ' . $this->Full_Name : ''; ?><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a onclick="window.location = '<?php echo site_url('User/BDM_update'); ?>';"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            </li>
+
+                            <li><a href="#" onclick="window.location = '<?php echo site_url('User/logout'); ?>';"  ><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!--                
+
+<a class="fa fa-2x fa-power-off pull-right" onclick="window.location = '<?php echo site_url('User/logout'); ?>';" style="padding:8px 0px 0px 0px"></a>-->
                 <?php if ($title != 'Main') { ?>
                     <a class="fa fa-2x fa-arrow-left pull-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
                 <?php }
                 ?>
                 </div>
             </h1>
+
         </header>
         <script>
             function goback() {
