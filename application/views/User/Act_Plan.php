@@ -10,7 +10,7 @@ echo form_open('User/ActivityPlanning', $attributes);
         <div class="panel-body">   
             <?php echo isset($doctorList) && !empty($doctorList) ? $doctorList : ''; ?>
             <input type="hidden" id="Status" name="Status" value="Draft">
-             <input type="hidden" id="Approve_Status" name="Approve_Status" value="SFA">
+             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
         </div>
         <div class="panel-footer">
             <?php if (isset($doctorList) && !empty($doctorList)) { ?>

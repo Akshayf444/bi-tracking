@@ -416,6 +416,9 @@ class User extends MY_Controller {
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
                             if ($result->Activity_id != $Activity[$i]) {
                                 $data2['Approve_Status'] = "SFA";
+                            }else
+                            {
+                                $data2['Approve_Status']=$result->Approve_Status;
                             }
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
