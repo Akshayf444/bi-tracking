@@ -37,5 +37,16 @@ class Doctor_Model extends MY_model {
         
         return $query->row_array();
     }
+    
+    public function generateDoctorId($result){
+        $doctors = array();
+        if (!empty($result)) {
+            foreach ($result as $value) {
+                array_push($doctors, "'" . $value->Account_ID . "'");
+            }
+        }
+        
+        return $doctors;
+    }
 
 }

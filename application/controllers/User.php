@@ -6,7 +6,8 @@ if (!defined('BASEPATH'))
 class User extends MY_Controller {
 
     public $alertLabel = 'Doctor';
-
+    public $doctorIds = array();
+    
     public function __construct() {
         parent::__construct();
         $this->load->helper();
@@ -166,6 +167,8 @@ class User extends MY_Controller {
 
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
+            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
+            $this->doctorIds = $this->Doctor_Model->generateDoctorId($result);
         } else {
             $this->logout();
         }

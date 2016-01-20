@@ -15,15 +15,6 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function All_data($VEEVA_Employee_ID) {
-        $sql = "SELECT em.`Full_Name`,em.`Mobile`,em.`password`,em.`Territory`,em.`DOB`,em.`Date_of_Joining`,(em2.`Reporting_To`) AS ZSM,(em.`Reporting_To`) AS ASM  FROM `employee_master`em
-                INNER JOIN `employee_master`em2
-                ON em.`Reporting_VEEVA_ID`= em2.`VEEVA_Employee_ID`
-                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
-        $query = $this->db->query($sql);
-        return $query->row_array();
-    }
-
     public function profiling_by_id($Doctor_id, $VEEVA_Employee_ID, $Product_id) {
         $this->db->select('*');
         $this->db->from('Profiling');
@@ -252,10 +243,10 @@ class User_model extends CI_Model {
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.Product_Id = ' . $this->Product_Id, 'left');
         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ";
+            $where = "dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$this->VEEVA_Employee_ID' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' AND 'dm.Individual_Type' = '$this->Individual_Type' ";
             $this->db->where($where);
         } else {
-            $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth));
+            $this->db->where(array('dp.Product_Id' => $this->Product_Id, 'dp.VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'dp.month' => $this->nextMonth, 'dm.Individual_Type' => $this->Individual_Type));
         }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
@@ -311,7 +302,7 @@ class User_model extends CI_Model {
         $this->db->join('Profiling pf', 'dm.Account_ID = pf.Doctor_Id', 'LEFT');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
         $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -323,7 +314,7 @@ class User_model extends CI_Model {
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
         $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -454,7 +445,7 @@ class User_model extends CI_Model {
                         }
                     } else {
                         if (isset($doctor->Patient_Rxbed_In_Month) && $doctor->Patient_Rxbed_In_Month > 0) {
-                            $BI_Share = round(($month3Actual / $getPlan->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                            $BI_Share = round(($month3Actual / $doctor->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
                         } else {
                             $BI_Share = '';
                         }
@@ -496,7 +487,7 @@ class User_model extends CI_Model {
                     } elseif ($type == 'Actual') {
                         $html .= '<td>' . $planned_rx . '<input type = "hidden" name = "doc_id[]" value = "' . $doctor->Account_ID . '"/></td>
                                 <td>' . $month4rx . '</td>
-                                <td> <input name = "value[]" type = "number" min="0" value = ""/></td>
+                                <td> <input name = "value[]" type = "number" class="val" min="0" value = ""/></td>
                                 </tr>';
                     }
                 }
@@ -667,7 +658,7 @@ class User_model extends CI_Model {
     function Planned_Rx_Count() {
         $this->db->select('SUM(`Planned_Rx`) AS Planned_Rx');
         $this->db->from('Rx_Planning');
-        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Planning_Status' => 'Submitted'));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear, 'Planning_Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -675,7 +666,7 @@ class User_model extends CI_Model {
     function Actual_Rx_Count() {
         $this->db->select('SUM(`Actual_Rx`) AS Actual_Rx');
         $this->db->from('Rx_Actual');
-        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Status' => 'Submitted'));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear, 'Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -989,13 +980,24 @@ class User_model extends CI_Model {
         $this->db->insert('Rx_Actual', $data);
         return $this->db->insert_id();
     }
-    function Update_mobile($VEEVA_Employee_ID,$data) {
-        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
-        return $this->db->update($this->table_name,$data);
+
+    function Update_mobile($VEEVA_Employee_ID, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        return $this->db->update($this->table_name, $data);
     }
-    function Update_password($VEEVA_Employee_ID,$data) {
-        $this->db->where(array('VEEVA_Employee_ID'=>$VEEVA_Employee_ID));
-        return $this->db->update($this->table_name,$data);
+
+    function Update_password($VEEVA_Employee_ID, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        return $this->db->update($this->table_name, $data);
+    }
+
+    public function All_data($VEEVA_Employee_ID) {
+        $sql = "SELECT em.`Full_Name`,em.`Mobile`,em.`password`,em.`Territory`,em.`DOB`,em.`Date_of_Joining`,(em2.`Reporting_To`) AS ZSM,(em.`Reporting_To`) AS ASM  FROM `employee_master`em
+                INNER JOIN `employee_master`em2
+                ON em.`Reporting_VEEVA_ID`= em2.`VEEVA_Employee_ID`
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
+        $query = $this->db->query($sql);
+        return $query->row_array();
     }
 
 }
