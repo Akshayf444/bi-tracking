@@ -394,7 +394,6 @@ class User extends MY_Controller {
                             'Doctor_Id' => $docid[$i],
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
-                            'created_at' => date('Y-m-d H:i:s'),
                             'Status' => $this->input->post('Status'),
                             'Approve_Status' => $this->input->post('Approve_Status'),
                             'Year' => $this->nextYear,
@@ -403,6 +402,7 @@ class User extends MY_Controller {
 
                         $result = $this->User_model->ActivityPlanned($docid[$i]);
                         if (empty($result)) {
+                            $data2['created_at'] = date('Y-m-d H:i:s');
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Planning', $data2);
@@ -414,11 +414,11 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Planned Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                            $data2['updated_at'] = date('Y-m-d H:i:s');
                             if ($result->Activity_Id != $Activity[$i]) {
                                 $data2['Approve_Status'] = "SFA";
-                            }else
-                            {
-                                $data2['Approve_Status']=$result->Approve_Status;
+                            } else {
+                                $data2['Approve_Status'] = $result->Approve_Status;
                             }
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
