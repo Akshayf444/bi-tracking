@@ -394,7 +394,6 @@ class User extends MY_Controller {
                             'Doctor_Id' => $docid[$i],
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
-                            'created_at' => date('Y-m-d H:i:s'),
                             'Status' => $this->input->post('Status'),
                             'Approve_Status' => $this->input->post('Approve_Status'),
                             'Year' => $this->nextYear,
@@ -403,6 +402,7 @@ class User extends MY_Controller {
 
                         $result = $this->User_model->ActivityPlanned($docid[$i]);
                         if (empty($result)) {
+                            $data2['created_at'] = date('Y-m-d H:i:s');
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Planning', $data2);
@@ -414,6 +414,7 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Planned Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                            $data2['updated_at'] = date('Y-m-d H:i:s');
                             if ($result->Activity_Id != $Activity[$i]) {
                                 $data2['Approve_Status'] = "SFA";
                             } else {
@@ -497,8 +498,7 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $check_planning = $this->User_model->check_planning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
             if (!empty($check_planning)) {
-
-                $data['doctorList'] = $this->User_model->generatePlanningTab('Actual');
+                $data['result'] = $this->User_model->getReporting($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 if ($this->input->post()) {
                     for ($i = 0; $i < count($this->input->post('value')); $i++) {
                         $value = $this->input->post('value');
@@ -523,6 +523,11 @@ class User extends MY_Controller {
                             }
                         } else {
                             if (isset($result->Status) && $result->Status == 'Draft') {
+                                if ($result->Actual_Rx != $value[$i]) {
+                                    $doc['Approve_Status'] = 'SFA';
+                                } else {
+                                    $doc['Approve_Status'] = $result->Approve_Status;
+                                }
                                 $doc['updated_at'] = date('Y-m-d H:i:s');
                                 $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i], 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
                                 if ($this->db->update('Rx_Actual', $doc)) {
