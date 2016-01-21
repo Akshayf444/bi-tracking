@@ -190,7 +190,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
             <div class="col-lg-1"></div>
             <div class="col-lg-1">
                 <select class="form-control">
-                    <option>Jan 2016</option>
+                    <option><?php echo date('M',  strtotime($this->nextMonth));?> <?php echo $this->nextMonth;?></option>
                     <option>Cycle 1</option>
                 </select>
             </div>
