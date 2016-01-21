@@ -19,7 +19,7 @@
                         foreach ($show as $row) :
                             ?><tr>  
                             <td><?php echo $row->Activity_Name; ?></td>  
-                            <td><?php echo $row->Division; ?>  
+                        
                             <td><?php echo $row->Brand_Name; ?></td>  
 
 

@@ -1,7 +1,4 @@
 <style>
-    .table-view .table-view-cell {
-        background-position: 0px 100%;
-    }
     .col-xs-9, .col-xs-3{
         padding: 0px;
     }
@@ -16,41 +13,41 @@
 <link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
 <!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">
-            <span class="pull-left">No Of New <?php
-                if ($this->Product_Id == '1') {
-                    echo "Vials";
-                } else {
-                    echo "Rx";
-                }
-                ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" readonly="readonly" style=" width: 67px;    border: none;" class="ck" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></span><br><br>
-            <span style="    margin-left: -327px;" class="pull-left">Balanced <?php
-                if ($this->Product_Id == '1') {
-                    echo "Vials";
-                } else {
-                    echo "Rx";
-                }
-                ?> To Plan For Jan 2016: <b class="ckk"></b></span>
-            <span class="pull-right">
-                Sort By
-                <select class="form-control" id="TableSort">
-                    <option value="1">Select Filter</option>
-                    <option value="1">Winability</option>
-                    <option value="2">Dependency/Rx For Last Month</option>
-                    <option value="3">BI Market Share</option>
-                    <option value="7">Planned <?php
-                        if ($this->Product_Id == '1') {
-                            echo "Vials";
-                        } else {
-                            echo "Rx";
-                        }
-                        ?> Of Present Month</option>
-                </select>
-            </span>
-        </li>
-    </ul>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+        <p>No Of New <?php
+            if ($this->Product_Id == '1') {
+                echo "Vials";
+            } else {
+                echo "Rx";
+            }
+            ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" readonly="readonly"  class="ck" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></p>
+        <p>Balanced <?php
+            if ($this->Product_Id == '1') {
+                echo "Vials";
+            } else {
+                echo "Rx";
+            }
+            ?> To Plan For Jan 2016: <b class="ckk"></b></p>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <span class="pull-right">
+            Sort By
+            <select class="form-control" id="TableSort">
+                <option value="1">Select Filter</option>
+                <option value="1">Winability</option>
+                <option value="2">Dependency/Rx For Last Month</option>
+                <option value="3">BI Market Share</option>
+                <option value="7">Planned <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> Of Present Month</option>
+            </select>
+        </span>
+    </div>
 </div>
 <?php
 $attributes = array('id' => 'ProfilingForm');
@@ -177,10 +174,10 @@ echo form_open('User/Planning', $attributes);
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
         </div>
         <div class="panel-footer">
-            <button type="button" id="Priority" class="btn btn-negative">Prioritize for activities</button>        
+            <button type="button" id="Priority" class="btn btn-danger">Prioritize for activities</button>        
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <button type="submit" id="Approve" class="btn btn-primary">Save For Approval</button>
+            <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+            <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
         </div>
     </div>
 </div>

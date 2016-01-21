@@ -9,12 +9,7 @@
         padding: 11px 12px 11px 15px;
     }
 </style>
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">Employee List </h1>
-    </div>
-    <!-- /.col-lg-12 -->
-</div>
+
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/lock'); ?>';"> Lock Profile</a>
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/unlock'); ?>';"> UnLock Profile</a>
