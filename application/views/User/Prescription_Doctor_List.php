@@ -7,13 +7,17 @@
     #datatable_filter{
         display: none;
     }
+
 </style>
 <link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
 <!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
-
-
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+<style>
+    table.dataTable tbody tr {
+        background-color: transparent;
+    }
+</style>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 well">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
         <span class="pull-left">Total Expected <?php
             if ($this->Product_Id == '1') {
@@ -66,6 +70,7 @@
                         <th><?php echo date('M', strtotime('-1 month')) . $vials; ?></th>
                         <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
                         <th>Cumulative Month to Date</th>
+                        <th>Today Count</th>
                         <th>Actual</th>
                     </tr>
                 </thead>
@@ -146,7 +151,6 @@
                                 <td><?php echo $month4rx ?></td>
                                 <td><?php echo isset($doctor->Daily_Actual_Rx) ? $doctor->Daily_Actual_Rx : ''; ?></td>
                                 <td> <input name = "value[]" type = "number" class="val" min="0" value = ""/></td>
-                            </tr>
                             </tr>
                             <?php
                         }
