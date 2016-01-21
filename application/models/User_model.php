@@ -287,8 +287,8 @@ class User_model extends CI_Model {
         $this->db->select('dm.*, `ap`.*,rp.Approve_Status,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
         $this->db->from('Activity_Planning ap');
         $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
-        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth));
+        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID  AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
+        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth, 'rp.Approve_Status' => 'SFA'));
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -860,11 +860,11 @@ class User_model extends CI_Model {
                     $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
                     $reason = isset($value->Reason) ? $value->Reason : '';
                     $Activity_Done = isset($value->Activity_Done) ? $value->Activity_Done : '';
-                    $Status = isset($value->Status) && $value->Status == 'Submitted' ? 'Submitted' : '';
-                    $HTML .= '<td><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></td>';
+                    $Status = isset($value->Status) && $value->Status != '' ? $value->Status : '';
+                    $HTML .= '<td><input type="hidden" value="' . $value->Activity_Id . '" name="Activity_Id[]" ><select class="form-control" readonly="readonly" disabled="disabled" name="Activity_Id[]"><option value>Select Activity</option>' . $ActivityList . '</select></td>';
                     $HTML .='<td><div class="col-xs-8">
                         <div class="toggle">';
-                    if ($Activity_Done == "Yes" && $Status == 'Submitted') {
+                    if ($Activity_Done == "Yes" && $Status == 'Submitted' || $Activity_Done == "Yes" && $Status == 'Draft') {
                         $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="Yes"><span class="input-checked" id="' . $value->Account_ID . '-1 ">Yes</span>';
                     } else {
                         $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="Yes"><span id="' . $value->Account_ID . '-1 ">Yes</span>';
@@ -872,7 +872,7 @@ class User_model extends CI_Model {
                     $HTML .='</label>    
                         </div>
                         <div class="toggle">';
-                    if ($Activity_Done == "No" && $Status == 'Submitted') {
+                    if ($Activity_Done == "No" && $Status == 'Submitted' || $Activity_Done == "No" && $Status == 'Draft') {
                         $HTML .=' <label><input type="radio" checked="checked" name="' . $value->Account_ID . '" value="No"><span class="input-checked" id="' . $value->Account_ID . '-2 " >No</span>';
                     } else {
                         $HTML .=' <label><input type="radio" name="' . $value->Account_ID . '" value="No"><span id="' . $value->Account_ID . '-2 " >No</span>';
@@ -915,7 +915,7 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>';
             }
             $HTML .= '</table>';
-        } 
+        }
 
         return $HTML;
     }

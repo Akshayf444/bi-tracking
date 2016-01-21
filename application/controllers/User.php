@@ -613,6 +613,7 @@ class User extends MY_Controller {
             if ($this->Product_Id == 1) {
                 $this->alertLabel = "Hospital";
             }
+
             $messages = array();
             $result = $this->User_model->getPlannedActivityDoctor();
             $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
@@ -631,6 +632,7 @@ class User extends MY_Controller {
                             'Reason' => $Reason[$i],
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
+                            'Approve_Status' => $this->input->post('Approve_Status'),
                             'Year' => $this->nextYear,
                             'month' => $this->nextMonth,
                             'Activity_Done' => $this->input->post($docid[$i])
@@ -650,7 +652,14 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
+
                             $data2['updated_at'] = date('Y-m-d H:i:s');
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done) {
+                                $data2['Approve_Status'] = "SFA";
+                            } else {
+                                $data2['Approve_Status'] = $result->Approve_Status;
+                            }
+
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
@@ -669,15 +678,14 @@ class User extends MY_Controller {
                         }
                     }
                 }
-                if (!empty($messages)) {
-                    $this->session->set_userdata('message', join(" ", array_unique($messages)));
-                }
                 redirect('User/dashboard', 'refresh');
             }
-            else
-            {
-                $data['doctorList']="Activity Planning Not Submitted";
+            if (!empty($messages)) {
+                $this->session->set_userdata('message', join(" ", array_unique($messages)));
             }
+            
+        } else {
+            $data['doctorList'] = "Activity Planning Not Submitted";
         }
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
