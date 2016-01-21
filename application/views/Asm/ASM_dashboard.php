@@ -36,62 +36,59 @@
         font-weight: bold;
     }
 </style>
-<div class="row"></div>
-<div class="col-lg-12">
+
+<div class="panel panel-default">
+    <div class="panel-body">
     <div class="col-lg-4">
 
-        <a class="btn btn-block" style="background-color: " onclick="window.location = '<?php echo site_url('ASM/target'); ?>';" >
+        <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/target'); ?>';" >
             Approve Target
         </a>
 
     </div>
     <div class="col-lg-4">
-        <a class="btn btn-block" style="background-color: " onclick="window.location = '<?php echo site_url('ASM/Planning'); ?>';" > Approve Planning </a>
+        <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/Planning'); ?>';" > Approve Planning </a>
 
     </div>
 
     <div class="col-lg-4">
-        <a class="btn btn-block" style="background-color: " onclick="window.location = '<?php echo site_url('ASM/reporting'); ?>';" > Approve Reporting </a>
+        <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/reporting'); ?>';" > Approve Reporting </a>
 
     </div>
 
 </div>
-<ul class="table-view card " style="margin-top:60px">
-    <li class="table-view-cell table-view-divider" style="padding: 11px 20px 11px 15px;">
-        <div class="col-lg-4"></div>
-        <div align="center" class="col-lg-4">
-            <b> Achievement Of Jan 2016</b>
-        </div>
-        <div class="col-lg-4"></div>
-    </li>
-    <li class="table-view-cell achievement">
+</div>
+<div class="panel panel-default"> 
+    <div class="panel-heading">
+        Achievement Of Jan 2016
+    </div>
 
-        <div class="col-lg-1">
+
+    <div class="panel-body " style="padding-bottom: 31px;">
+        <div class="col-lg-1 col-xs-2 col-md-2">
             <select class="form-control">
-                <option>Jan 2016</option>
+                <option><?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo $this->nextMonth; ?></option>
                 <option>Cycle 1</option>
             </select>
         </div>
-        <div class="col-lg-4">
-
+        <div class="col-lg-5 col-md-5 col-xs-5">
 
             <div class="demo" >        
-                <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php // echo round($kpi1, 2);   ?>%</span>
-                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
-
-                <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php // echo $rxlabel;   ?> Actual / <?php // echo $rxlabel;   ?> Planned</span>
+                <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php //echo round($kpi1, 2);  ?>%</span>
+                <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
+                <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;  ?> Actual / <?php //echo $rxlabel;  ?> Planned</span>
 
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-5 col-md-5 col-xs-5">
 
             <div class="demo" >       
-                <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php // echo round($kpi2, 2);   ?>%</span>
-                <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
-                <span style="margin-left: 0px;position: absolute;margin-top: -30px;"><?php
+                <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);  ?>%</span>
+                <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
+                <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                     if ($this->Product_Id == 1) {
                         echo "Hospital";
                     } else {
@@ -100,8 +97,8 @@
                     ?> Engaged in Activity / Planned</span>
             </div>
         </div>
-    </li>
-</ul>
+    </div>
+</div>
 
 
 

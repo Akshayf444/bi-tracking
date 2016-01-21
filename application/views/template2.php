@@ -5,7 +5,7 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-       
+
         <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
@@ -101,19 +101,24 @@
     <body>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <img style="" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                <div  class="navbar-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    
+                    <div  class="col-md-1 col-sm-1 col-xs-1">
+                        <a class="fa fa-2x fa-arrow-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
 
-                    <a class="fa fa-2x fa-arrow-left pull-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
-
-                </div>
-                <div class="dropdown pull-right">
+                    </div>
+                    <div align="middle" class="col-md-9 col-sm-9 col-xs-9"> 
+                        <img  style="" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                    </div>
+                    <div class="dropdown pull-right col-md-2 col-sm-2 col-xs-2">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo isset($this->Full_Name) ? ' ' . $this->Full_Name : ''; ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li> <a onclick="window.location = '<?php echo site_url('User/BDM_update'); ?>';"><i class="fa fa-fw fa-user"></i> Profile</a></li>
                         <li><a href="#" onclick="window.location = '<?php echo site_url('User/logout'); ?>';"  ><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
                     </ul>
                 </div>
+                </div>
+                
             </div>
 
         </nav>
