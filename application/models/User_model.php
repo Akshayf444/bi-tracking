@@ -212,7 +212,7 @@ class User_model extends CI_Model {
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body" >
                             <a onclick="window.location = ' . $Tab4Location . '" >

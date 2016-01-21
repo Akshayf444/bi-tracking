@@ -21,7 +21,7 @@
     a{
         color: #000;
     }
-    
+
     .panel{
         margin-bottom: 10px;
     }
@@ -52,9 +52,9 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
-    <div class="col-lg-12">
-        <div class="panel panel-default" style="text-align: center" > 
-            <div class="panel-header" style="background-color: white;    padding: 12px;"><?php
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default" > 
+            <div class="panel-heading"><?php
                 if ($this->Product_Id == '1') {
                     echo "<b>Actilyse</b>";
                 } elseif ($this->Product_Id == '2') {
@@ -168,30 +168,18 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
 } else {
     ?>
 
-    <div class="panel panel-default" style="text-align: center" > 
-
-
-
-
-
-
-        <div class="panel-header" style="background-color: white;    padding: 10px;    padding-bottom: 30px;">
-            <div class="col-lg-4"></div>
-            <div align="center" class="col-lg-4">
-                <b> Achievement Of Jan 2016</b>
-            </div>
-            <div class="col-lg-4"></div>
+    <div class="panel panel-default"> 
+        <div class="panel-heading">
+            Achievement Of Jan 2016
         </div>
         <div class="panel-body ">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-1">
+            <div class="col-lg-1 col-xs-2 col-md-2">
                 <select class="form-control">
                     <option>Jan 2016</option>
                     <option>Cycle 1</option>
                 </select>
             </div>
-            <div class="col-lg-4">
-
+            <div class="col-lg-5 col-md-5 col-xs-5">
 
                 <div class="demo" >        
                     <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
@@ -203,7 +191,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-5 col-md-5 col-xs-5">
 
                 <div class="demo" >       
                     <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
