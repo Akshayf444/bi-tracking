@@ -133,9 +133,9 @@
                             ?>
                             <tr <?php
                             if (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Approved') {
-                                echo 'style="background-color:#ff9999;"';
+                                echo 'style="background-color:#c6ebd9;"';
                             } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
-                                echo 'style="background-color: #c6ebd9;"';
+                                echo 'style="background-color: #ff9999;"';
                             }
                             ?>>
                                 <td><?php echo $doctor->Account_Name; ?><p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
