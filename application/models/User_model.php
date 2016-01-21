@@ -167,24 +167,24 @@ class User_model extends CI_Model {
 
         $HTML = '<div class="col-lg-12 col-md-12 col-xs-12">
                     <div class="panel panel-default" >
-                        <div class="panel-body" >
-                            <a onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
+                        <div class="panel-body" style="    height: 117px;    border-radius: 9px;" >
+                            <a style="position: absolute;margin: 28px 0px 0px 0px;" onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
-                                <span >' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
+                                <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
                         </div>
                     </div>
                 </div>';
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
                     <div class="panel panel-default" >
-                        <div class="panel-body" >                       
-                            <a onclick="window.location = ' . $Tab2Location . ';">
+                        <div class="panel-body" style="    height: 117px;    border-radius: 9px;">                       
+                            <a style="position: absolute;margin: 28px 0px 0px 0px;" onclick="window.location = ' . $Tab2Location . ';">
                                No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
                             </a>
                              <div class="pull-right">
-                                <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
+                                <span style="font-size: x-large;position: absolute;margin: 25px 0px 0px -62px;" class="pull-right"><b>' . $target . '</b></span>
                          </div>
                         </div>
                     </div>
@@ -192,8 +192,8 @@ class User_model extends CI_Model {
 
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12" >           
                      <div class="panel panel-default">
-                        <div class="panel-body" >
-                            <a  onclick="window.location = ' . $Tab3Location . '">
+                        <div class="panel-body" style="    height: 117px;    border-radius: 9px;">
+                            <a style="position: absolute;margin: 28px 0px 0px 0px;" onclick="window.location = ' . $Tab3Location . '">
                                 Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
                         </div>
                     </div>
@@ -201,26 +201,26 @@ class User_model extends CI_Model {
 
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
                     <div class="panel panel-default">
-                        <div class="panel-body" >
-                            <a onclick="window.location = ' . $Tab5Location . '" >
+                        <div class="panel-body" style="    height: 117px;    border-radius: 9px;">
+                            <a style="position: absolute;margin: 28px 0px 0px 0px;" onclick="window.location = ' . $Tab5Location . '" >
                                 Reporting Of ' . $vials . '
                             </a>
                             <div class="pull-right">
                                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span >' . $Actual . '/' . $target . '</span>
+                                <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $Actual . '/' . $target . '</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <div class="panel-body" >
-                            <a onclick="window.location = ' . $Tab4Location . '" >
+                    <div class="panel-body" style="    height: 117px;    border-radius: 9px;">
+                            <a style="position: absolute;margin: 28px 0px 0px 0px;" onclick="window.location = ' . $Tab4Location . '" >
                                 Reporting For Activities
                             </a>
                             <div class="pull-right">
                                 <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span >' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
+                                <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
                             </div>
                         </div>
                     </div>
