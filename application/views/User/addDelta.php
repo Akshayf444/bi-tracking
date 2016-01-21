@@ -12,7 +12,7 @@
 <?php echo isset($message) ? $message : ''; ?>
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>
-<div class="col-lg-12 col-md-12 ">
+<div class="col-lg-12 col-md-12 col-xs-12">
     <?php
     $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
     $attributes = array('id' => 'form1', 'name' => 'myform');
@@ -23,24 +23,24 @@
         <div class="panel-body">
             <div class="form-group">
                 No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
-                <input type="number" min="1" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
+                <input type="number" min="1" class="form-control" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
             </div>
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="Approve for ASM">
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
+            <button type="submit" id="Submit" class="btn btn-success">Submit</button>
         </div>
         </form>
     </div>
 
 </form>
-<ul class="table-view">
-    <li class="table-view-cell" align="center">
-        <h5>New <?php echo $rxlabel; ?> Generated</h5>
-    </li>
-    <li class="table-view-cell">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        New <?php echo $rxlabel; ?> Generated
+    </div>
+    <div class="panel-body">
 
         <table class="table table-bordered">
             <tr>
@@ -117,8 +117,8 @@
             </tr>
 
         </table>
-    </li>
-</ul>
+    </div>
+</div>
 
 </div>
 <script>
@@ -145,5 +145,5 @@
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
     });
-    
+
 </script>
