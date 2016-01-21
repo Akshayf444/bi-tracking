@@ -165,65 +165,65 @@ class User_model extends CI_Model {
         $Planned = isset($data['Planned']['Planned_Rx']) ? $data['Planned']['Planned_Rx'] : 0;
         $Actual = isset($data['Actual']['Actual_Rx']) ? $data['Actual']['Actual_Rx'] : 0;
 
-        $HTML = '<div class="card">
-                    <ul class="table-view">
-                        <li class="table-view-cell" style="margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;"  onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
-                            <div class="demo pull-right">
+        $HTML = '<div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="panel panel-default" >
+                        <div class="panel-body" >
+                            <a onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
+                            <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
                                 <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
-                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
+                                <span >' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
-                        </li>
-                    </ul>
-                    </div>';
-        $HTML .='<div class="card">
-                    <ul class="table-view">
-                        <li class="table-view-cell" style="margin-bottom: 0px;height: 92px;">
-                        <div style="margin-top: 17px;" class="">
-                         <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;color: #333333;" onclick="window.location = ' . $Tab2Location . ';">
-                            No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
-                        </a>
+                        </div>
+                    </div>
+                </div>';
+        $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="panel panel-default" >
+                        <div class="panel-body" >                       
+                            <a onclick="window.location = ' . $Tab2Location . ';">
+                               No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
+                            </a>
+                             <div class="pull-right">
                                 <span style="font-size: x-large;" class="pull-right"><b>' . $target . '</b></span>
                          </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>';
 
-        $HTML .='<div class="card">
-                    <ul class="table-view">
-                        <li class="table-view-cell" style="    margin-bottom: -32px;height: 120px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab3Location . '">
+        $HTML .='<div class="col-lg-12 col-md-12 col-xs-12" >           
+                     <div class="panel panel-default">
+                        <div class="panel-body" >
+                            <a  onclick="window.location = ' . $Tab3Location . '">
                                 Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>';
 
-        $HTML .='<div class="card">
-                    <ul class="table-view">
-                        <li class="table-view-cell" style="    margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab5Location . '" >
+        $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body" >
+                            <a onclick="window.location = ' . $Tab5Location . '" >
                                 Reporting Of ' . $vials . '
                             </a>
-                            <div class="demo pull-right">
+                            <div class="pull-right">
                                 <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $Actual . '/' . $target . '</span>
+                                <span >' . $Actual . '/' . $target . '</span>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <ul class="table-view">
-                        <li class="table-view-cell" style="    margin-bottom: -32px;">
-                            <a class="navigate-right" style="    margin-bottom: -61px;margin-top: 11px;" onclick="window.location = ' . $Tab4Location . '" >
+                <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body" >
+                            <a onclick="window.location = ' . $Tab4Location . '" >
                                 Reporting For Activities
                             </a>
-                            <div class="demo pull-right">
+                            <div class="pull-right">
                                 <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                <span style="margin-left: 100px;position: absolute;margin-top: -46px;">' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
+                                <span >' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>';
         return $HTML;
     }

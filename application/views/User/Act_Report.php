@@ -56,8 +56,8 @@
         <?php if (isset($doctorList) && $doctorList != '') { ?>
             <div class="panel-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
-                <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-                <button type="submit" id="Approve_Status" class="btn btn-negative">Save For Approval</button>
+                <button type="submit" id="Submit" class="btn btn-danger">Submit</button>
+                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
             </div>
         <?php } ?>
     </div>

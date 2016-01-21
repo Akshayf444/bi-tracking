@@ -1,12 +1,7 @@
 <style>
-    .table-view .table-view-cell {
-        background-position: 0px 100%;
-    }
+
     .col-xs-9, .col-xs-3{
         padding: 0px;
-    }
-    .table-view-cell {
-        padding: 11px 12px 11px 15px;
     }
 
     #datatable_filter{
@@ -18,32 +13,33 @@
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 
 
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell table-view-divider">
-            <span class="pull-left">Total Expected <?php
-                if ($this->Product_Id == '1') {
-                    echo "Vials";
-                } else {
-                    echo "Rx";
-                }
-                ?> For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo $this->nextYear ?> : <b><?php echo isset($show4['target']) ? $show4['target'] : 0; ?></b></span><br>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+        <span class="pull-left">Total Expected <?php
+            if ($this->Product_Id == '1') {
+                echo "Vials";
+            } else {
+                echo "Rx";
+            }
+            ?> For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo $this->nextYear ?> : <b><?php echo isset($show4['target']) ? $show4['target'] : 0; ?></b></span><br>
 
-            <span class="pull-right">
-                Sort By
-                <select class="form-control" id="TableSort">
-                    <option>Select Criteria</option>
-                    <option value="4">Planned <?php
-                        if ($this->Product_Id == '1') {
-                            echo "Vials";
-                        } else {
-                            echo "Rx";
-                        }
-                        ?> Of Present Month</option>
-                </select>
-            </span>
-        </li>
-    </ul>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+        <span class="pull-right">
+            Sort By
+            <select class="form-control" id="TableSort">
+                <option>Select Criteria</option>
+                <option value="4">Planned <?php
+                    if ($this->Product_Id == '1') {
+                        echo "Vials";
+                    } else {
+                        echo "Rx";
+                    }
+                    ?> Of Present Month</option>
+            </select>
+        </span>
+
+    </div>
 </div>
 <?php echo form_open('User/Reporting'); ?>
 <div class="col-lg-12 col-md-12 ">
@@ -164,8 +160,8 @@
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-positive">Submit</button>
-            <button type="submit" id="Approve_Status" class="btn btn-negative">Save Approved</button>
+            <button type="submit" id="Submit" class="btn btn-danger">Submit</button>
+            <button type="submit" id="Approve_Status" class="btn btn-info">Save Approved</button>
         </div>
     </div>
 </div>
