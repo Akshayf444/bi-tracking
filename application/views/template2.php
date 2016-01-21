@@ -5,6 +5,7 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        
 
 <!--        <link href="<?php echo asset_url() ?>css/ratchet.css" rel="stylesheet" type="text/css"/>-->
 <!--        <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >-->
@@ -104,13 +105,7 @@
     </head>
     <body>
 
-
-        <!DOCTYPE html>
-    <html lang="en">
-
-        <title>Bootstrap Case</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
 
 
 
