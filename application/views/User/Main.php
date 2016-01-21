@@ -5,8 +5,8 @@
     .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
         border-top: 0px solid #dddddd;
     }
-    audio, canvas, progress, video {
-        height: 90px;
+    audio, progress, video {
+
         margin-left: 208px;
         margin-top: 0px;
         margin-bottom: 0px;
@@ -24,12 +24,17 @@
 
     .panel{
         margin-bottom: 10px;
+        margin-top: 0px;
+    }
+    canvas{
+        width: 84px;
+        height: 89px;
     }
 
 </style>
 <div align="center" class="col-lg-12 col-md-12 col-sm-12">
-    <div class="panel panel-default">
-        <div class="panel-body">
+    <div class="panel panel-default" style="border-color: #fff;">
+        <div class="panel-body" style="    border-radius: 9px;">
 
             <div class="col-sm-4 col-md-4 col-lg-4"></div>
 
@@ -52,6 +57,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
+
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel panel-default" > 
             <div class="panel-heading"><?php
@@ -172,7 +178,8 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
         <div class="panel-heading">
             Achievement Of Jan 2016
         </div>
-        <div class="panel-body ">
+
+        <div class="panel-body " style="padding-bottom: 31px;">
             <div class="col-lg-1 col-xs-2 col-md-2">
                 <select class="form-control">
                     <option>Jan 2016</option>
@@ -183,10 +190,9 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
 
                 <div class="demo" >        
                     <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                    <span style="margin-left: 92px;position: absolute;margin-top: -84px;"><?php echo round($kpi1, 2); ?>%</span>
-                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 1</span>
-
-                    <span style="margin-left: 26px;position: absolute;margin-top: -30px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+                    <span style="margin-left: -48px;position: absolute;margin-top: 63px;"><?php echo round($kpi1, 2); ?>%</span>
+                    <span style="margin-left: -57px;position: absolute;margin-top: 80px;">KPI 1</span>
+                    <span style="margin-left: -109px;position: absolute;margin-top: 93px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
 
                 </div>
             </div>
@@ -195,9 +201,9 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
 
                 <div class="demo" >       
                     <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                    <span style="margin-left: 98px;position: absolute;margin-top: -84px;"><?php echo round($kpi2, 2); ?>%</span>
-                    <span style="margin-left: 95px;position: absolute;margin-top: -45px;">KPI 2</span>
-                    <span style="margin-left: 0px;position: absolute;margin-top: -30px;"><?php
+                    <span style="margin-left: -59px;position: absolute;margin-top: 69px;"><?php echo round($kpi2, 2); ?>%</span>
+                    <span style="margin-left: -62px;position: absolute;margin-top: 84px;">KPI 2</span>
+                    <span style="margin-left: -157px;position: absolute;margin-top: 96px;"><?php
                         if ($this->Product_Id == 1) {
                             echo "Hospital";
                         } else {
