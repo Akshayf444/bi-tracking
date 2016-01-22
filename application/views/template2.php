@@ -24,6 +24,7 @@
             .navbar {
                 border: 0px;
                 border-radius: 0px; 
+                    min-height: 46px;
             }
             .form-control{
                 height: 32px;
@@ -49,6 +50,9 @@
                 position: relative;
                 display: block;
                 padding: 0px 6px;
+            }
+            .col-md-3{
+                padding: 0;
             }
         </style>
 
@@ -105,16 +109,16 @@
     <body>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <div  class="navbar-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div  class="navbar-header col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0">
 
-                    <div  class="col-md-1 col-sm-1 col-xs-1 col-lg-1">
+                    <div  class="col-md-1 col-sm-1 col-xs-1 col-lg-1" style="padding: 0">
                         <a class="fa fa-2x fa-arrow-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
                     </div>
                     <div align="middle" class="col-md-8 col-sm-9 col-xs-9 col-lg-9"> 
                         <img  style="" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
                     </div>
                     <div class="col-md-3 col-sm-2 col-xs-3 col-lg-2">
-                        <div class="dropdown pull-right">
+                        <div class="dropdown pull-right" style="top:10px">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo isset($this->Full_Name) ? ' ' . $this->Full_Name : ''; ?><b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li> <a onclick="window.location = '<?php echo site_url('User/BDM_update'); ?>';"><i class="fa fa-fw fa-user"></i> Profile</a></li>
