@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 2em">
+<div class="container" style="margin-top: 2em;">
     <?php
     if (isset($message)) {
         echo '<div class="alert alert-danger" style="text-align:center">' .$message .'</div>';
@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <input type="password" class="form-control pword" placeholder="Password" name="password" />
                     </div>
-                    <input class="btn btn-positive btn-block" type="submit" vlaue="Sign In" >
+                    <input class="btn btn-success btn-block" type="submit" value="Sign In" >
 
                     </form>
                 </div>
