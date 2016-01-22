@@ -1,6 +1,5 @@
-<div class="card">
-    <ul class="table-view">
-        <li class="table-view-cell">
+<div class="panel panel-default">
+    <div class="panel-body">
             <div class="col-sm-4"></div>
 
             <?php echo form_open('ASM/reporting_rx'); ?>
@@ -20,8 +19,7 @@
                 <button type="submit" class="btn btn-primary" >FETCH</button>
             </div>
             </form>
-        </li>
-    </ul>
+    </div>
 </div>
 <?php echo form_open('ASM/Approvereporting'); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
