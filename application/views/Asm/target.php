@@ -1,8 +1,7 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-body">
             <div class="col-sm-4"></div>
-
             <?php echo form_open('ASM/target'); ?>
             <div class="col-sm-3"  >
                 <select id="product_id" name="product_id" class="form-control">
@@ -14,15 +13,15 @@
                 <button class="btn btn-primary" >FETCH</button>
             </div>
             </form>
+        </div>
     </div>
 </div>
-
 <?php echo form_open('ASM/approveTarget'); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
-            <tr>
-            <tr style="background-color: #428BCA">
+
+            <tr >
 
                 <th>BDM Name</th>
                 <th> Target Set</th>

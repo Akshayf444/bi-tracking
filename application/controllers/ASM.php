@@ -312,7 +312,7 @@ class ASM extends MY_Controller {
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
-                echo $id;
+                //echo $id;
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);

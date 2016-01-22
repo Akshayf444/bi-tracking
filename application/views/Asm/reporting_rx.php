@@ -1,5 +1,6 @@
-<div class="panel panel-default">
-    <div class="panel-body col-lg-12 col-sm-12 col-md-12 col-xs-12">
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-body ">
             <div class="col-sm-2"></div>
 
             <?php echo form_open('ASM/reporting_rx'); ?>
@@ -19,6 +20,7 @@
                 <button type="submit" class="btn btn-primary" >FETCH</button>
             </div>
             </form>
+        </div>
     </div>
 </div>
 <?php echo form_open('ASM/Approvereporting'); ?>
@@ -39,9 +41,9 @@
                     <tr>  
 
                         <td><?php echo $row->Account_Name; ?></td>  
-                        <input type="hidden" name="RXPLAN_ID" value="<?php echo $row->Rxplan_id ?>">
-                        <td><?php echo $row->Actual_Rx; ?> <input type="hidden" name="Doctor_Id[]" value="<?php echo $row->Account_ID ?>"> <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
-                        <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="checkbox" id="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="<?php echo $row->Account_ID ?>"></td>
+                    <input type="hidden" name="RXPLAN_ID" value="<?php echo $row->Rxplan_id ?>">
+                    <td><?php echo $row->Actual_Rx; ?> <input type="hidden" name="Doctor_Id[]" value="<?php echo $row->Account_ID ?>"> <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
+                    <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="checkbox" id="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="<?php echo $row->Account_ID ?>"></td>
                     </tr>
 
 

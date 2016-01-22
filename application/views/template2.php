@@ -106,7 +106,7 @@
             </style>
         <?php } ?>
     </head>
-    <body>
+    <body style="background: #ECEFF1">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div  class="navbar-header col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0">

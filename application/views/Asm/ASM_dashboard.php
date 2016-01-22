@@ -1,7 +1,3 @@
-
-<link href="<?php echo asset_url() ?>css/owl.carousel.css" rel="stylesheet" type="text/css"/>
-<link href="<?php echo asset_url() ?>css/owl.transitions.css" rel="stylesheet" type="text/css"/>
-<link href="<?php echo asset_url() ?>css/responsive.css" rel="stylesheet" type="text/css"/>
 <script src="<?php echo asset_url() ?>js/knob.js" type="text/javascript"></script>
 <script src="<?php echo asset_url() ?>js/jquery.knob.js" type="text/javascript"></script>
 <link href="<?php echo asset_url() ?>css/style.css" rel="stylesheet" type="text/css"/>
