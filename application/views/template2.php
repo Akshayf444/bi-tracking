@@ -22,9 +22,9 @@
         ?>
         <style>
             .navbar {
-                border: 0px;
+                border-bottom: 1px solid #e7e7e7;
                 border-radius: 0px; 
-                    min-height: 46px;
+                min-height: 46px;
             }
             .form-control{
                 height: 32px;
