@@ -779,5 +779,16 @@ class User extends MY_Controller {
             $this->logout();
         }
     }
+    public function BDM_Report() {
+        if ($this->is_logged_in()) {
+           
+
+            $data['detail'] = $this->User_model->bdm_doctor_rx($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear);
+            $data = array('title' => 'Profile Update', 'content' => 'User/BDM_Report', 'view_data' => $data);
+            $this->load->view('template2', $data);
+        } else {
+            $this->logout();
+        }
+    }
 
 }

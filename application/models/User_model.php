@@ -1046,5 +1046,20 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+    function bdm_doctor_rx($VEEVA_Employee_ID, $month, $year) {
+        $sql = "SELECT (dm.`Account_Name`) AS doctor_name,dm.`Account_ID`,COUNT(ra.`Actual_Rx`) AS rx_actual,COUNT(rp.`Planned_Rx`) AS rx_planned FROM `employee_master` em
+                LEFT JOIN `employee_doc` ed
+                ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
+                INNER JOIN `doctor_master`dm
+                ON ed.`VEEVA_Account_ID`=dm.`Account_ID`
+                LEFT JOIN rx_actual ra
+                ON dm.`Account_ID`=ra.`Doctor_Id` AND ra.`month`=$month AND ra.`Year`=$year
+                LEFT JOIN `rx_planning` rp
+                ON dm.`Account_ID`=rp.`Doctor_Id` AND rp.`month`=$month AND rp.`Year`=$year
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'
+                GROUP BY dm.`Account_ID`";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
 }
