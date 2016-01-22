@@ -1,3 +1,6 @@
+<!--<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">-->
+<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
+<script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <style>
     .col-xs-9, .col-xs-3{
         padding: 0px;
@@ -9,11 +12,12 @@
     #datatable_filter{
         display: none;
     }
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 2px 4px;
+    }
 </style>
-<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
-<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
-<script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 well">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
         <p>No Of New <?php
             if ($this->Product_Id == '1') {
@@ -21,7 +25,8 @@
             } else {
                 echo "Rx";
             }
-            ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" readonly="readonly"  class="ck" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></p>
+
+            ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" class="form-control" style="width:40%" readonly="readonly"  class="ck" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></p>
         <p>Balanced <?php
             if ($this->Product_Id == '1') {
                 echo "Vials";
@@ -53,122 +58,125 @@
 $attributes = array('id' => 'ProfilingForm');
 echo form_open('User/Planning', $attributes);
 ?>
-<div class="col-lg-12 col-md-12 ">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">Planning</div>
-        <div class="panel-body table-responsive">
-            <table class="table table-bordered" id="datatable">
-                <thead>
-                    <tr>
-                        <th>
-                            <?php
-                            if ($this->Product_Id == 1) {
-                                $vials = "Vials";
-                                $hospital = "Hospital";
-                            } else {
-                                $vials = "Rx";
-                                $hospital = "Doctor";
-                            } echo $hospital;
-                            ?> List</th>
-                        <th>Winability</th>
-                        <th>Dependency</th>
-                        <?php if ($this->Product_Id == 1) { ?>
-                            <th>LYSIS Share</th>
-                        <?php } else { ?>
-                            <th>BI Market Share</th>
-                        <?php } ?>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <?php
+                                if ($this->Product_Id == 1) {
+                                    $vials = "Vials";
+                                    $hospital = "Hospital";
+                                } else {
+                                    $vials = "Rx";
+                                    $hospital = "Doctor";
+                                } echo $hospital;
+                                ?> List</th>
+                            <th>Winability</th>
+                            <th>Dependency</th>
+                            <?php if ($this->Product_Id == 1) { ?>
+                                <th>LYSIS Share</th>
+                            <?php } else { ?>
+                                <th>BI Market Share</th>
+                            <?php } ?>
 
 
-                        <th><?php echo date('M', strtotime('-3 month')) . $vials; ?> </th>
-                        <th><?php echo date('M', strtotime('-2 month')) . $vials; ?></th>
-                        <th><?php echo date('M', strtotime('-1 month')) . $vials; ?></th>
-                        <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
-                        <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
-                    </tr>
-                </thead>
-                <tbody>
+                            <th><?php echo date('M', strtotime('-3 month')) . $vials; ?> </th>
+                            <th><?php echo date('M', strtotime('-2 month')) . $vials; ?></th>
+                            <th><?php echo date('M', strtotime('-1 month')) . $vials; ?></th>
+                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
+                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <?php
-                    $month = date('n', strtotime('-1 month'));
-                    $lastMonthRx = $this->User_model->countLastMonthRx($month);
-                    $currentMonthRx = $this->User_model->countPlannedRx(date('n'));
-                    if (isset($result) && !empty($result)) {
-                        foreach ($result as $doctor) {
-                            $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
-                            $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
+                        <?php
+                        $month = date('n', strtotime('-1 month'));
+                        $lastMonthRx = $this->User_model->countLastMonthRx($month);
+                        $currentMonthRx = $this->User_model->countPlannedRx(date('n'));
+                        if (isset($result) && !empty($result)) {
+                            foreach ($result as $doctor) {
+                                $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
+                                $actual_rx = isset($doctor->Actual_Rx) ? $doctor->Actual_Rx : "";
 
 
-                            $month1 = date('n', strtotime('-3 month'));
-                            $month2 = date('n', strtotime('-2 month'));
-                            $month3 = date('n', strtotime('-1 month'));
-                            $month4 = date('n');
-                            $year1 = date('Y', strtotime('-3 month'));
-                            $year2 = date('Y', strtotime('-2 month'));
-                            $year3 = date('Y', strtotime('-1 month'));
-                            $year4 = date('Y');
+                                $month1 = date('n', strtotime('-3 month'));
+                                $month2 = date('n', strtotime('-2 month'));
+                                $month3 = date('n', strtotime('-1 month'));
+                                $month4 = date('n');
+                                $year1 = date('Y', strtotime('-3 month'));
+                                $year2 = date('Y', strtotime('-2 month'));
+                                $year3 = date('Y', strtotime('-1 month'));
+                                $year4 = date('Y');
 
-                            $month1Actual = 0;
-                            $month2Actual = 0;
-                            $month3Actual = 0;
-                            $month4Actual = 0;
+                                $month1Actual = 0;
+                                $month2Actual = 0;
+                                $month3Actual = 0;
+                                $month4Actual = 0;
 
-                            $last3MonthRx = $this->User_model->Last3MonthsRx($month1, $month2, $month3, $month4, $year1, $year2, $year3, $year4, $doctor->Account_ID);
-                            if (!empty($last3MonthRx)) {
-                                $count = 1;
-                                foreach ($last3MonthRx as $value) {
-                                    if ($value->month === $month1) {
-                                        $month1Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
-                                    } elseif ($value->month === $month2) {
-                                        $month2Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
-                                    } elseif ($value->month === $month3) {
-                                        $month3Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
-                                    } elseif ($value->month === $month4) {
-                                        $month4Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
+                                $last3MonthRx = $this->User_model->Last3MonthsRx($month1, $month2, $month3, $month4, $year1, $year2, $year3, $year4, $doctor->Account_ID);
+                                if (!empty($last3MonthRx)) {
+                                    $count = 1;
+                                    foreach ($last3MonthRx as $value) {
+                                        if ($value->month === $month1) {
+                                            $month1Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
+                                        } elseif ($value->month === $month2) {
+                                            $month2Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
+                                        } elseif ($value->month === $month3) {
+                                            $month3Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
+                                        } elseif ($value->month === $month4) {
+                                            $month4Actual = isset($value->Actual_Rx) ? $value->Actual_Rx : 0;
+                                        }
                                     }
                                 }
-                            }
-                            $winability = isset($doctor->Winability) ? $doctor->Winability : '';
-                            $month4rx = $month4Actual;
-                            if ($lastMonthRx->Actual_Rx > 0) {
-                                $dependancy = round(($month3Actual / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
-                            } else {
-                                $dependancy = 0;
-                            }
-                            if ($this->Product_Id == 1) {
-                                if (isset($doctor->Patient_Seen_month) && $doctor->Patient_Seen_month > 0) {
-                                    $BI_Share = round(($month3Actual / $doctor->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                                $winability = isset($doctor->Winability) ? $doctor->Winability : '';
+                                $month4rx = $month4Actual;
+                                if ($lastMonthRx->Actual_Rx > 0) {
+                                    $dependancy = round(($month3Actual / $lastMonthRx->Actual_Rx ) * 100, 0, PHP_ROUND_HALF_EVEN);
                                 } else {
-                                    $BI_Share = '';
+                                    $dependancy = 0;
                                 }
-                            } else {
-                                if (isset($doctor->Patient_Rxbed_In_Month) && $doctor->Patient_Rxbed_In_Month > 0) {
-                                    $BI_Share = round(($month3Actual / $doctor->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                                if ($this->Product_Id == 1) {
+                                    if (isset($doctor->Patient_Seen_month) && $doctor->Patient_Seen_month > 0) {
+                                        $BI_Share = round(($month3Actual / $doctor->Patient_Seen_month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                                    } else {
+                                        $BI_Share = '';
+                                    }
                                 } else {
-                                    $BI_Share = '';
+                                    if (isset($doctor->Patient_Rxbed_In_Month) && $doctor->Patient_Rxbed_In_Month > 0) {
+                                        $BI_Share = round(($month3Actual / $doctor->Patient_Rxbed_In_Month) * 100, 0, PHP_ROUND_HALF_EVEN);
+                                    } else {
+                                        $BI_Share = '';
+                                    }
                                 }
+                                ?>
+                                <tr <?php
+                                if (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Approved') {
+                                    echo 'style="background-color:#c6ebd9;"';
+                                } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
+                                    echo 'style="background-color: #ff9999;"';
+                                }
+                                ?>>
+                                    <td><?php echo $doctor->Account_Name; ?><p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
+                                    <td><?php echo $winability; ?></td><td><?php echo $dependancy; ?>%</td>
+                                    <td><?php echo $BI_Share; ?></td>
+                                    <td><?php echo $month1Actual; ?></td>
+                                    <td><?php echo $month2Actual; ?></td>
+                                    <td><?php echo $month3Actual; ?></td>
+                                    <td><?php echo $planned_rx; ?></td>
+                                    <td> <input name = "value[]" min="0" class = "val" type = "number" value = "<?php echo $planned_rx; ?>"/><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID; ?>"/></td>
+                                </tr>
+                                <?php
                             }
-                            ?>
-                            <tr <?php
-                            if (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Approved') {
-                                echo 'style="background-color:#ff9999;"';
-                            } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
-                                echo 'style="background-color: #c6ebd9;"';
-                            }
-                            ?>>
-                                <td><?php echo $doctor->Account_Name; ?><p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
-                                <td><?php echo $winability; ?></td><td><?php echo $dependancy; ?>%</td>
-                                <td><?php echo $BI_Share; ?></td>
-                                <td><?php echo $month1Actual; ?></td>
-                                <td><?php echo $month2Actual; ?></td>
-                                <td><?php echo $month3Actual; ?></td>
-                                <td><?php echo $planned_rx; ?></td><td> <input name = "value[]" min="0" class = "val" type = "number" value = "<?php echo $planned_rx; ?>"/><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID; ?>"/></td>
-                            </tr>
-                            <?php
                         }
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
             <?php //echo isset($doctorList) ? $doctorList : ''     ?>
             <input type="hidden" id="Status" name="Planning_Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">

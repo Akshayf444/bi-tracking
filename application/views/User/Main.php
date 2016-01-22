@@ -31,6 +31,7 @@
         height: 89px;
     }
 
+
 </style>
 <div align="center" class="col-lg-12 col-md-12 col-sm-12">
     <div class="panel panel-default" style="border-color: #fff;">
@@ -51,16 +52,20 @@
         </div>
     </div>
 </div>
+
 <?php echo isset($tab1) ? $tab1 : ''; ?>
+
 <?php
 if ($this->Product_Id == '-1' || $this->Product_Id == '') {
     
 } else {
     ?>
 
+
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel panel-default" > 
             <div class="panel-heading"><?php
+
                 if ($this->Product_Id == '1') {
                     echo "<b>Actilyse</b>";
                 } elseif ($this->Product_Id == '2') {
@@ -194,8 +199,10 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                     <span style="margin-left: -57px;position: absolute;margin-top: 80px;">KPI 1</span>
                     <span style="margin-left: -109px;position: absolute;margin-top: 93px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
 
+
                 </div>
             </div>
+
 
             <div class="col-lg-5 col-md-5 col-xs-5">
 
@@ -204,6 +211,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                     <span style="margin-left: -59px;position: absolute;margin-top: 69px;"><?php echo round($kpi2, 2); ?>%</span>
                     <span style="margin-left: -62px;position: absolute;margin-top: 84px;">KPI 2</span>
                     <span style="margin-left: -157px;position: absolute;margin-top: 96px;"><?php
+
                         if ($this->Product_Id == 1) {
                             echo "Hospital";
                         } else {
@@ -218,6 +226,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
 <?php } ?>
 
 <script>
+
 
 
     $(document).ready(function () {

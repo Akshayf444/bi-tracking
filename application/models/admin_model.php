@@ -109,6 +109,7 @@ class admin_model extends CI_Model {
     }
 
     public function view_activity() {
+       
         $sql = "SELECT Brand_Master.id, Brand_Master.Brand_Name,Activity_Master.Activity_Name,Activity_Master.Division,Activity_Master.Activity_id
  FROM Activity_Master LEFT JOIN  Brand_Master  ON Brand_Master.id=Activity_Master.Product_ID  where Activity_Master.Status='1'
   ";
@@ -141,7 +142,7 @@ class admin_model extends CI_Model {
     }
 
     public function view_profile_controller() {
-        $sql = "SELECT  Tab_Control.*,Territory, Zone FROM Employee_Master Left Join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID GROUP BY Zone";
+        $sql = "SELECT  Tab_Control.*,Employee_Master.Territory, Employee_Master.Zone,Employee_Master.Full_Name FROM Employee_Master Left Join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID GROUP BY Zone";
 //        $sql = "select  Tab_Control.*, Employee_Master.Full_Name from Employee_Master left join Tab_Control on Employee_Master. VEEVA_Employee_ID=Tab_Control.VEEVA_Employee_ID ";
         $query = $this->db->query($sql);
         return $query->result();
@@ -339,7 +340,7 @@ class admin_model extends CI_Model {
         return $query->result();
     }
 
-    public function BDM_show($class) {
+    public function BDM_show() {
         $sql = "SELECT em.`Full_Name`,em.`Region`,em.`State`,ra.`Actual_Rx`,ra.`Product_Id`,em.`VEEVA_Employee_ID` FROM `Employee_Master` em
 LEFT JOIN `Rx_Actual` ra
 ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID`
@@ -371,8 +372,11 @@ GROUP BY em.`VEEVA_Employee_ID`";
         return $this->db->insert('Tab_Control', $data);
     }
 
-    public function bdm_list() {
+    public function bdm_unlocked_list() {
+        $sql="select * from  Employee_Master where Status ='locked' ";
         
+        $query=$this->db->query($sql);
+        return $query->result();
     }
-
+ 
 }

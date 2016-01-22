@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
 
         parent::__construct();
 
-
+        $this->load->library('pagination');
         $this->load->library('Csvimport');
 
         $this->load->model('admin_model');
@@ -256,6 +256,21 @@ class Admin extends CI_Controller {
     }
 
     public function view_activity() {
+         $config = array();
+        $config["base_url"] = base_url() . "welcome/example1";
+        $config["total_rows"] =  $this->admin_model->view_activity();;
+        $config["per_page"] = 200;
+        $config["uri_segment"] = 3;
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+ 
+         
+        $data["links"] = $this->pagination->create_links();
+
+      
+        
         $data['show'] = $this->admin_model->view_activity();
         $data = array('title' => 'View_Activity', 'content' => 'admin/activity_view', 'page_title' => 'Activity Master', 'view_data' => $data);
         $this->load->view('template3', $data);
@@ -354,6 +369,7 @@ class Admin extends CI_Controller {
     }
 
     public function doc_view() {
+        
         $data['show'] = $this->admin_model->doc_view();
 
         $data = array('title' => 'Doctor', 'content' => 'admin/doctor_view', 'page_title' => 'Doctor Master', 'view_data' => $data);
@@ -726,6 +742,23 @@ class Admin extends CI_Controller {
 //insert csv data into mysql table
             }
         }
+    }
+
+    public function unlocked_employee() {
+        $data['unlock'] = $this->admin_model->bdm_unlocked_list();
+
+        $data = array('title' => 'Block Accounts', 'content' => 'admin/bdm_unlocked', 'page_title' => 'Block Accounts', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function unlock_account() {
+
+        $id = $_GET['id'];
+        $this->db->where('VEEVA_Employee_ID', $id);
+        $this->db->delete('password_count');
+        $data = array('status' => 1);
+        $this->admin_model->del_emp($id, $data);
+        redirect('admin/unlocked_employee', 'refresh');
     }
 
 }
