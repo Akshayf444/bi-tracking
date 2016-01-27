@@ -53,13 +53,6 @@
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
         </div>
-        <?php if (isset($doctorList) && $doctorList != '') { ?>
-            <div class="panel-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="submit" id="Submit" class="btn btn-danger">Submit</button>
-                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
-            </div>
-        <?php } ?>
     </div>
 </div>
 </form>
