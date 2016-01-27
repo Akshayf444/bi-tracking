@@ -86,7 +86,44 @@ class ASM extends MY_Controller {
 
     public function dashboard() {
         if ($this->is_logged_in()) {
-            $data = array('title' => 'Main', 'content' => 'ASM/ASM_dashboard', 'view_data' => 'blank');
+            $kp11['one'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 1);
+            $kp12['two'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 2);
+            $kp13['three'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 3);
+            $kp14['four'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 4);
+            $kp15['five'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 5);
+            $kp16['six'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 6);
+            if ($kp11['one']['Planned'] != 0) {
+                $data['kp11'] = ($kp11['one']['Actual'] / $kp11['one']['Planned']) * 100;
+            } else {
+                $data['kp11'] = 0;
+            }
+            if ($kp12['two']['Planned'] != 0) {
+                $data['kp12'] = ($kp12['two']['Actual'] / $kp12['two']['Planned']) * 100;
+            } else {
+                $data['kp12'] = 0;
+            }
+            if ($kp13['three']['Planned'] != 0) {
+                $data['kp13'] = ($kp13['three']['Actual'] / $kp13['three']['Planned']) * 100;
+            } else {
+                $data['kp13'] = 0;
+            }
+            if ($kp14['four']['Planned'] != 0) {
+                $data['kp14'] = ($kp14['four']['Actual'] / $kp14['four']['Planned']) * 100;
+            } else {
+                $data['kp14'] = 0;
+            }
+            if ($kp15['five']['Planned'] != 0) {
+                $data['kp15'] = ($kp15['five']['Actual'] / $kp15['five']['Planned']) * 100;
+            } else {
+                $data['kp15'] = 0;
+            }
+            if ($kp16['six']['Planned'] != 0) {
+                $data['kp16'] = ($kp16['six']['Actual'] / $kp16['six']['Planned']) * 100;
+            } else {
+                $data['kp16'] = 0;
+            }
+            $data['division'] = $this->User_model->ASM_division($this->VEEVA_Employee_ID);
+            $data = array('title' => 'Main', 'content' => 'ASM/ASM_dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();

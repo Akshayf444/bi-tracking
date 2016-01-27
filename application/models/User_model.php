@@ -1061,5 +1061,21 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+    function ASM_kp1($VEEVA_Employee_ID, $month, $year ,$product_id) {
+        $sql = "SELECT COUNT(ra.`Actual_Rx`) as Actual,COUNT(rp.`Planned_Rx`) as Planned FROM `employee_master` em 
+                LEFT JOIN `rx_actual` ra 
+                ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID` AND ra.`month`=$month AND ra.`Year`=$year AND ra.`Product_Id`=$product_id
+                LEFT JOIN `rx_planning` rp 
+                ON em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID` AND rp.`month`=$month AND rp.`Year`=$year AND rp.`Product_Id`=$product_id
+                WHERE `Reporting_VEEVA_ID`='$VEEVA_Employee_ID'";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
+    function ASM_division($VEEVA_Employee_ID) {
+        $sql = "SELECT em.`Division` as division FROM `employee_master` em
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
+        $query = $this->db->query($sql);
+        return $query->row_array();
+    }
 
 }
