@@ -12,17 +12,6 @@ echo form_open('User/ActivityPlanning', $attributes);
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
         </div>
-        <div class="panel-footer">
-            <?php if (isset($doctorList) && !empty($doctorList)) { ?>
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="submit" id="Submit" class="btn btn-danger">Submit</button>
-                <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
-                <?php
-            } else {
-                
-            }
-            ?>
-        </div>
     </div>
 </div>
 </form>

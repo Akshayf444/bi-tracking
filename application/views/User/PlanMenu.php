@@ -31,7 +31,7 @@
     <div class="panel panel-default" style="border-color: #fff;">
         <div class="panel-body">
             <a style="margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = '<?php echo site_url('User/ActivityPlanning'); ?> '" >
-                Reporting For Activities
+                Activity Planning
             </a>
             <span class="pull-right" >Activity Planned : <?php echo isset($activity_planned['activity_planned']) ? $activity_planned['activity_planned'] : 0; ?> </span><br>
             <span class="pull-right" >No Of Prioritize <?php

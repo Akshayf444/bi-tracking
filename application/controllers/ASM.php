@@ -80,10 +80,6 @@ class ASM extends MY_Controller {
         $this->load->view('template1', $data);
     }
 
-    public function logout() {
-        redirect('ASM/index', 'refresh');
-    }
-
     public function dashboard() {
         if ($this->is_logged_in()) {
             $data = array('title' => 'Main', 'content' => 'ASM/ASM_dashboard', 'view_data' => 'blank');
@@ -143,6 +139,8 @@ class ASM extends MY_Controller {
             }
             $data = array('title' => 'Report', 'content' => 'ASM/Asm_rxplanning', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
+        } else {
+            $this->logout();
         }
     }
 
@@ -209,6 +207,8 @@ class ASM extends MY_Controller {
             $data = array('title' => 'Report', 'content' => 'ASM/activity_planning', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
 
             $this->load->view('template2', $data);
+        } else {
+            $this->logout();
         }
     }
 
@@ -259,6 +259,8 @@ class ASM extends MY_Controller {
             $data = array('title' => 'Report', 'content' => 'ASM/reporting_rx', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
 
             $this->load->view('template2', $data);
+        } else {
+            $this->logout();
         }
     }
 
@@ -326,6 +328,8 @@ class ASM extends MY_Controller {
             $data = array('title' => 'Report', 'content' => 'ASM/reporting_activity', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
 
             $this->load->view('template2', $data);
+        } else {
+            $this->logout();
         }
     }
 

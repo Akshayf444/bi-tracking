@@ -168,7 +168,7 @@ class User_model extends CI_Model {
         $HTML = '<div class="col-lg-12 col-md-12 col-xs-12">
 
                     <div class="panel panel-default" style="border-color: #fff;">
-                        <div class="panel-body" style="    height: 117px;  border-color: #fff;  border-radius: 9px;" >
+                        <div class="panel-body" style="    height: 117px;  " >
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
@@ -181,7 +181,7 @@ class User_model extends CI_Model {
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
 
                     <div class="panel panel-default" style="border-color: #fff;">
-                        <div class="panel-body" style="    height: 117px; border-color: #fff;   border-radius: 9px;">                       
+                        <div class="panel-body" style="    height: 117px; ">                       
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab2Location . ';">
                                No Of New ' . $vials . ' Targeted For ' . date('M') . "&nbsp" . date('Y') . '
                             </a>
@@ -196,7 +196,7 @@ class User_model extends CI_Model {
 
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12" >           
                      <div class="panel panel-default" style="border-color: #fff;">
-                        <div class="panel-body" style="    height: 117px; border-color: #fff;   border-radius: 9px;">
+                        <div class="panel-body" style="    height: 117px; ">
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab3Location . '">
                                 Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
                         </div>
@@ -206,7 +206,7 @@ class User_model extends CI_Model {
         $HTML .='<div class="col-lg-12 col-md-12 col-xs-12">
 
                     <div class="panel panel-default" style="border-color: #fff;">
-                        <div class="panel-body" style="    height: 117px;  border-color: #fff;  border-radius: 9px;">
+                        <div class="panel-body" style="    height: 117px;  ">
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab5Location . '" >
                                 Reporting Of ' . $vials . '
                             </a>
@@ -222,7 +222,7 @@ class User_model extends CI_Model {
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="panel panel-default" style="border-color: #fff;">
-                    <div class="panel-body" style="    height: 117px;  border-radius: 9px;">
+                    <div class="panel-body" style="    height: 117px; ">
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab4Location . '" >
 
                                 Reporting For Activities
@@ -243,7 +243,7 @@ class User_model extends CI_Model {
         $this->db->select('COUNT(pf.`VEEVA_Employee_ID`) AS profile_count,emp.`VEEVA_Employee_ID`');
         $this->db->from('Employee_Master emp');
         $this->db->join('Profiling pf', 'emp.VEEVA_Employee_ID = pf.VEEVA_Employee_ID', 'LEFT');
-        $this->db->where(array('pf.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
+        $this->db->where(array('pf.Product_id' => $Product_id, 'emp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'pf.Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -858,6 +858,7 @@ class User_model extends CI_Model {
             }
             $HTML .= '</tr>';
 
+            $allApproved = TRUE;
             foreach ($result as $value) {
 
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
@@ -865,8 +866,15 @@ class User_model extends CI_Model {
                 } else {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
+                $style = '';
+                if (isset($value->Approve_Status) && $value->Approve_Status == 'Approved') {
+                    $style = 'style="background-color:#c6ebd9;"';
+                } elseif (isset($value->Approve_Status) && $value->Approve_Status == 'Un-Approved') {
+                    $style = 'style="background-color: #ff9999;"';
+                    $allApproved = FALSE;
+                }
+                $HTML .= '<tr ' . $style . ' ><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
 
-                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
                 if ($type == 'Reporting') {
                     $activity_detail = isset($value->Activity_Detail) ? $value->Activity_Detail : '';
                     $reason = isset($value->Reason) ? $value->Reason : '';
@@ -925,7 +933,14 @@ class User_model extends CI_Model {
 
                 $HTML .= '</tr>';
             }
-            $HTML .= '</table>';
+            $HTML .= '</table>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>';
+            if ($allApproved == TRUE) {
+                $HTML .='<button type="submit" id="Submit" class="btn btn-danger">Submit</button>';
+            }
+            $HTML .='</div>';
         }
 
         return $HTML;
@@ -1018,8 +1033,8 @@ class User_model extends CI_Model {
     }
 
     public function All_data($VEEVA_Employee_ID) {
-        $sql = "SELECT em.`Full_Name`,em.`Mobile`,em.`password`,em.`Territory`,em.`DOB`,em.`Date_of_Joining`,(em2.`Reporting_To`) AS ZSM,(em.`Reporting_To`) AS ASM  FROM `employee_master`em
-                INNER JOIN `employee_master`em2
+        $sql = "SELECT em.`Full_Name`,em.`Mobile`,em.`password`,em.`Territory`,em.`DOB`,em.`Date_of_Joining`,(em2.`Reporting_To`) AS ZSM,(em.`Reporting_To`) AS ASM  FROM `Employee_Master`em
+                INNER JOIN `Employee_Master`em2
                 ON em.`Reporting_VEEVA_ID`= em2.`VEEVA_Employee_ID`
                 WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
         $query = $this->db->query($sql);
@@ -1027,21 +1042,21 @@ class User_model extends CI_Model {
     }
 
     function check_planning($VEEVA_Employee_ID, $Product_Id, $nextMonth, $nextYear) {
-        $sql = "SELECT * FROM `rx_planning`
+        $sql = "SELECT * FROM `Rx_Planning`
                 WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
-        $sql = "SELECT * FROM `actual_doctor_priority`
+        $sql = "SELECT * FROM `Actual_Doctor_Priority`
                 WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     function Activity_reporting_check($VEEVA_Employee_ID, $Product_Id, $Status) {
-        $sql = "SELECT * FROM `activity_planning`
+        $sql = "SELECT * FROM `Activity_Planning`
                 WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND Status= '$Status' AND `Product_Id`=$Product_Id";
         $query = $this->db->query($sql);
         return $query->result();

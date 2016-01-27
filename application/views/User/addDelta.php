@@ -1,14 +1,3 @@
-<style>
-    .table-view .table-view-cell {
-        background-position: 0px 100%;
-    }
-    .col-xs-9, .col-xs-3{
-        padding: 0px;
-    }
-    .table-view-cell {
-        padding: 11px 12px 11px 15px;
-    }
-</style>
 <?php echo isset($message) ? $message : ''; ?>
 <script src="<?php echo asset_url(); ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url(); ?>js/bootstrap.min.js" type="text/javascript"></script>

@@ -1,5 +1,3 @@
-<!--<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">-->
-<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <style>
     .col-xs-9, .col-xs-3{
@@ -25,21 +23,40 @@
             } else {
                 echo "Rx";
             }
-
-            ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" class="form-control" style="width:40%" readonly="readonly"  class="ck" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></p>
+            ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?> : <b ><input type="text" class="form-control ck" style="width:40%" readonly="readonly" value="<?php echo isset($show4['target']) ? $show4['target'] : 0; ?>"></b></p>
         <p>Balanced <?php
             if ($this->Product_Id == '1') {
                 echo "Vials";
             } else {
                 echo "Rx";
             }
-            ?> To Plan For Jan 2016: <b class="ckk"></b></p>
+            ?> To Plan For Jan 2016: <span class="ckk"></span></p>
     </div>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+
+        .input-color {
+            position: relative;
+        }
+        .input-color input {
+            padding-left: 20px;
+        }
+        .input-color .color-box {
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            background-color: #ccc;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+    </style>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
         <span class="pull-right">
-            Sort By
             <select class="form-control" id="TableSort">
-                <option value="1">Select Filter</option>
+                <option value="1">Sort By</option>
                 <option value="1">Winability</option>
                 <option value="2">Dependency/Rx For Last Month</option>
                 <option value="3">BI Market Share</option>
@@ -51,7 +68,24 @@
                     }
                     ?> Of Present Month</option>
             </select>
+            <ul style="margin-top:5px" >
+                <li>
+                    <div class="input-color">
+                        <input type="text" value="Un-Approved" readonly="readonly" style="height: 23px" />
+                        <div class="color-box" style="background-color: #ff9999;"></div>
+                        <!-- Replace "#FF850A" to change the color -->
+                    </div>
+                </li>
+                <li>
+                    <div class="input-color">
+                        <input type="text" value="Approved" readonly="readonly" style="height: 23px" />
+                        <div class="color-box" style="background-color: #c6ebd9;"></div>
+                        <!-- Replace "navy" to change the color -->
+                    </div>
+                </li>
+            </ul>
         </span>
+
     </div>
 </div>
 <?php
@@ -98,6 +132,7 @@ echo form_open('User/Planning', $attributes);
                         $month = date('n', strtotime('-1 month'));
                         $lastMonthRx = $this->User_model->countLastMonthRx($month);
                         $currentMonthRx = $this->User_model->countPlannedRx(date('n'));
+                        $allApproved = TRUE;
                         if (isset($result) && !empty($result)) {
                             foreach ($result as $doctor) {
                                 $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
@@ -158,7 +193,10 @@ echo form_open('User/Planning', $attributes);
                                 if (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Approved') {
                                     echo 'style="background-color:#c6ebd9;"';
                                 } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
+                                    $allApproved = FALSE;
                                     echo 'style="background-color: #ff9999;"';
+                                }  else {
+                                    $allApproved = FALSE;
                                 }
                                 ?>>
                                     <td><?php echo $doctor->Account_Name; ?><p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
@@ -177,14 +215,17 @@ echo form_open('User/Planning', $attributes);
                     </tbody>
                 </table>
             </div>
-            <?php //echo isset($doctorList) ? $doctorList : ''     ?>
+            <?php //echo isset($doctorList) ? $doctorList : ''      ?>
             <input type="hidden" id="Status" name="Planning_Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
         </div>
         <div class="panel-footer">
             <button type="button" id="Priority" class="btn btn-danger">Prioritize for activities</button>        
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+            <?php if ($allApproved == TRUE) { ?>
+                <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+            <?php }            ?>
+
             <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
         </div>
     </div>
@@ -226,6 +267,7 @@ echo form_open('User/Planning', $attributes);
         RemainingBalance();
     });
     function RemainingBalance() {
+
         var finalval = 0;
         $(".val").each(function () {
             var actual = parseInt($(this).val(), 10) || 0;
@@ -233,7 +275,9 @@ echo form_open('User/Planning', $attributes);
         });
 
         var grandTotal = $('.ck').val() - finalval;
+
         $('.ckk').html(grandTotal);
+
         if (grandTotal == 0) {
 
         } else {
