@@ -283,7 +283,7 @@ class User_model extends CI_Model {
     }
 
     public function getPlannedActivityDoctor() {
-        $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
+        $this->db->select('dm.*, `ap`.*,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`,rp.Approve_Status');
         $this->db->from('Activity_Planning ap');
         $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID AND rp.Product_Id = "' . $this->Product_Id . '"', 'LEFT');
@@ -1019,6 +1019,7 @@ class User_model extends CI_Model {
 
     function SaveReporting($data = array()) {
         $this->db->insert('Rx_Actual', $data);
+        //echo $this->db->last_query();
         return $this->db->insert_id();
     }
 
@@ -1062,14 +1063,14 @@ class User_model extends CI_Model {
         return $query->result();
     }
     function bdm_doctor_rx($VEEVA_Employee_ID, $month, $year) {
-        $sql = "SELECT (dm.`Account_Name`) AS doctor_name,dm.`Account_ID`,COUNT(ra.`Actual_Rx`) AS rx_actual,COUNT(rp.`Planned_Rx`) AS rx_planned FROM `employee_master` em
-                LEFT JOIN `employee_doc` ed
+        $sql = "SELECT (dm.`Account_Name`) AS doctor_name,dm.`Account_ID`,COUNT(ra.`Actual_Rx`) AS Rx_Actual,COUNT(rp.`Planned_Rx`) AS rx_planned FROM `Employee_Master` em
+                LEFT JOIN `Employee_Doc` ed
                 ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
-                INNER JOIN `doctor_master`dm
+                INNER JOIN `Doctor_Master`dm
                 ON ed.`VEEVA_Account_ID`=dm.`Account_ID`
-                LEFT JOIN rx_actual ra
+                LEFT JOIN Rx_Actual ra
                 ON dm.`Account_ID`=ra.`Doctor_Id` AND ra.`month`=$month AND ra.`Year`=$year
-                LEFT JOIN `rx_planning` rp
+                LEFT JOIN `Rx_Planning` rp
                 ON dm.`Account_ID`=rp.`Doctor_Id` AND rp.`month`=$month AND rp.`Year`=$year
                 WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'
                 GROUP BY dm.`Account_ID`";
@@ -1077,17 +1078,17 @@ class User_model extends CI_Model {
         return $query->result();
     }
     function ASM_kp1($VEEVA_Employee_ID, $month, $year ,$product_id) {
-        $sql = "SELECT COUNT(ra.`Actual_Rx`) as Actual,COUNT(rp.`Planned_Rx`) as Planned FROM `employee_master` em 
-                LEFT JOIN `rx_actual` ra 
+        $sql = "SELECT COUNT(ra.`Actual_Rx`) as Actual,COUNT(rp.`Planned_Rx`) as Planned FROM `Employee_Master` em 
+                LEFT JOIN `Rx_Actual` ra 
                 ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID` AND ra.`month`=$month AND ra.`Year`=$year AND ra.`Product_Id`=$product_id
-                LEFT JOIN `rx_planning` rp 
+                LEFT JOIN `Rx_Planning` rp 
                 ON em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID` AND rp.`month`=$month AND rp.`Year`=$year AND rp.`Product_Id`=$product_id
                 WHERE `Reporting_VEEVA_ID`='$VEEVA_Employee_ID'";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
     function ASM_division($VEEVA_Employee_ID) {
-        $sql = "SELECT em.`Division` as division FROM `employee_master` em
+        $sql = "SELECT em.`Division` as division FROM `Employee_Master` em
                 WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
         $query = $this->db->query($sql);
         return $query->row_array();

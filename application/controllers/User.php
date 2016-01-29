@@ -49,6 +49,7 @@ class User extends MY_Controller {
                         'created_at' => date('Y-m-d H:i:s'),
                     );
                     $this->User_model->password_save($add);
+
                     $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
                     if ($count['cnt'] > 5) {
                         $data1 = array(
@@ -56,9 +57,10 @@ class User extends MY_Controller {
                         );
                         $this->User_model->update_status($username, $data1);
                         $data['message'] = 'Your Account Has Been Locked';
+                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Your Account Has Been Locked', 'danger'));
                     }
                 } else {
-                    $data['message'] = ' Username/password Incorrect';
+                    $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
 
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
@@ -72,9 +74,15 @@ class User extends MY_Controller {
                 $this->session->set_userdata('Reporting_VEEVA_ID', $check['Reporting_VEEVA_ID']);
                 $this->session->set_userdata('Reporting_Local_ID', $check['Reporting_Local_ID']);
                 $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
+                $this->session->set_userdata('password_status', $check['password_status']);
 
                 $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
-
+                $add = array(
+                    'VEEVA_Employee_ID' => $check['VEEVA_Employee_ID'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'password' => $check['password']
+                );
+                $this->db->insert('login_history', $add);
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
@@ -471,28 +479,28 @@ class User extends MY_Controller {
     }
 
     public function password() {
-        if ($this->is_logged_in()) {
-            if ($this->input->post()) {
-                $password = $this->input->post('password');
-                if (!empty($password)) {
-                    $data = array(
-                        'password' => $password,
-                        'password_status' => 'Active',
-                    );
-                    $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
-                    $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
-                    if ($check_password['Designation'] == 'ASM') {
-                        redirect('ASM/dashboard', 'refresh');
-                    } else {
-                        redirect('User/dashboard', 'refresh');
-                    }
+        //if ($this->is_logged_in()) {
+        if ($this->input->post()) {
+            $password = $this->input->post('password');
+            if (!empty($password)) {
+                $data = array(
+                    'password' => $password,
+                    'password_status' => 'Active',
+                );
+                $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
+                $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
+                if ($check_password['Designation'] == 'ASM') {
+                    redirect('ASM/dashboard', 'refresh');
+                } else {
+                    redirect('User/dashboard', 'refresh');
                 }
             }
-            $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
-            $this->load->view('template2', $data);
-        } else {
-            $this->logout();
         }
+        $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
+        $this->load->view('template2', $data);
+        /* } else {
+          $this->logout();
+          } */
     }
 
     public function Reporting() {
@@ -508,7 +516,7 @@ class User extends MY_Controller {
             if (!empty($check_planning)) {
                 $data['result'] = $this->User_model->getReporting($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 if ($this->input->post()) {
-                    for ($i = 0; $i < count($this->input->post('value')); $i++) {
+                    for ($i = 0; $i < count($this->input->post('doc_id')); $i++) {
                         $value = $this->input->post('value');
                         $doc_id = $this->input->post('doc_id');
                         $current_date = date('Y-m-d');
@@ -520,10 +528,12 @@ class User extends MY_Controller {
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
                             'Doctor_Id' => $doc_id[$i],
-                            'Status' => $this->input->post('Status')
+                            'Status' => $this->input->post('Status'),
+                            'Approve_Status' => $this->input->post('Approve_Status'),
                         );
 
                         $result = $this->User_model->ReportingExist($doc_id[$i]);
+
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
                             if ($this->User_model->SaveReporting($doc)) {
@@ -539,14 +549,10 @@ class User extends MY_Controller {
                                 $doc['updated_at'] = date('Y-m-d H:i:s');
                                 $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i], 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
                                 if ($this->db->update('Rx_Actual', $doc)) {
-                                    array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
+                                    array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Updated Successfully.', 'success'));
                                 }
                             } else {
-                                if (isset($result->Status) && $result->Status == 'Draft') {
-                                    if ($this->User_model->SaveReporting($doc)) {
-                                        array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
-                                    }
-                                } elseif (isset($result->Status) && $result->Status == 'Submitted') {
+                                if (isset($result->Status) && $result->Status == 'Submitted') {
                                     array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
                                 }
                             }
@@ -636,8 +642,6 @@ class User extends MY_Controller {
                             'Activity_Id' => $Activity[$i],
                             'Doctor_Id' => $docid[$i],
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
-                            'Activity_Detail' => $Activity_Detail[$i],
-                            'Reason' => $Reason[$i],
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
                             'Approve_Status' => $this->input->post('Approve_Status'),
@@ -645,7 +649,13 @@ class User extends MY_Controller {
                             'month' => $this->nextMonth,
                             'Activity_Done' => $this->input->post($docid[$i])
                         );
-
+                        if ($this->input->post($docid[$i]) == 'Yes') {
+                            $data2['Activity_Detail'] = $Activity_Detail[$i];
+                            $data2['Reason'] = '';
+                        } elseif ($this->input->post($docid[$i]) == 'No') {
+                            $data2['Activity_Detail'] = '';
+                            $data2['Reason'] = $Reason[$i];
+                        }
                         $result = $this->User_model->ActivityReportingExist($docid[$i]);
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
@@ -786,9 +796,10 @@ class User extends MY_Controller {
             $this->logout();
         }
     }
+
     public function BDM_Report() {
         if ($this->is_logged_in()) {
-           
+
 
             $data['detail'] = $this->User_model->bdm_doctor_rx($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear);
             $data = array('title' => 'Profile Update', 'content' => 'User/BDM_Report', 'view_data' => $data);

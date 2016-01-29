@@ -16,6 +16,7 @@ class MY_Controller extends CI_Controller {
     public $nextYear;
     public $Individual_Type;
     public $message;
+    public $password_status;
 
     function __construct() {
         parent::__construct();
@@ -28,6 +29,8 @@ class MY_Controller extends CI_Controller {
         $this->Division = $this->session->userdata('Division');
         $this->Full_Name = $this->session->userdata('Full_Name');
         $this->Product_Id = $this->session->userdata('Product_Id');
+        $this->password_status = $this->session->userdata('password_status');
+
         $this->nextMonth = date('n');
         $this->nextYear = date('Y');
         if ($this->Product_Id == 1) {
@@ -38,9 +41,11 @@ class MY_Controller extends CI_Controller {
     }
 
     function is_logged_in() {
-        if (!is_null($this->session->userdata('VEEVA_Employee_ID'))
+        if (!is_null($this->session->userdata('VEEVA_Employee_ID')) 
                 && $this->session->userdata('VEEVA_Employee_ID') != '' 
-                && !is_null($this->session->userdata('VEEVA_Employee_ID'))) {
+                && !is_null($this->session->userdata('VEEVA_Employee_ID')) 
+                && !is_null($this->password_status)
+                && $this->password_status != '') {
             return TRUE;
         } else {
             return FALSE;

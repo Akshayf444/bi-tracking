@@ -65,7 +65,7 @@ if (!empty($division)) {
                     Achievement Of Jan 2016
                 </div>
                 <div class="panel-body " style="padding-bottom: 31px;">
-                    <div align="center" class="col-lg-8 col-md-8">
+                    <div align="center" class="col-lg-12 col-md-12">
                         <ul align="center" class="nav nav-tabs ">
                             <li class="active"><a data-toggle="tab" style="    padding: 12px;" href="#Trajenta">Trajenta</a></li>
                             <li><a data-toggle="tab" style="    padding: 12px;" href="#Jardiance">Jardiance</a></li>
@@ -73,7 +73,7 @@ if (!empty($division)) {
                         </ul>
                     </div>
                     <div class="tab-content">
-                        <div id="Trajenta" class="tab-pane fade ">
+                        <div id="Trajenta" class="tab-pane fade in active">
                             <div class="col-lg-5 col-md-5 col-xs-5">
 
                                 <div class="demo" >        
@@ -81,12 +81,9 @@ if (!empty($division)) {
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp14 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
                                     <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
-
                                 </div>
                             </div>
-
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -103,18 +100,15 @@ if (!empty($division)) {
                         </div>
                         <div id="Jardiance" class="tab-pane fade">
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >        
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp15 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
                                     <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
-
                                 </div>
                             </div>
 
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -131,18 +125,14 @@ if (!empty($division)) {
                         </div>
                         <div id="Trajenta_Duo" class="tab-pane fade">
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >        
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp16 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
                                     <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
-
                                 </div>
                             </div>
-
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -161,9 +151,6 @@ if (!empty($division)) {
                 </div>
             </div>
         </div>  
-
-
-
         <?php
     } else {
         ?>
@@ -173,7 +160,7 @@ if (!empty($division)) {
                     Achievement Of Jan 2016
                 </div>
                 <div class="panel-body " style="padding-bottom: 31px;">
-                    <div align="center" class="col-lg-8 col-md-8">
+                    <div align="center" class="col-lg-12 col-md-12">
                         <ul align="center" class="nav nav-tabs ">
                             <li class="active"><a data-toggle="tab" style="    padding: 12px;" href="#Actilyse">Actilyse</a></li>
                             <li><a data-toggle="tab" style="    padding: 12px;" href="#Pradaxa">Pradaxa</a></li>
@@ -181,9 +168,8 @@ if (!empty($division)) {
                         </ul>
                     </div>
                     <div class="tab-content">
-                        <div id="Actilyse" class="tab-pane fade">
+                        <div id="Actilyse" class="tab-pane fade in active">
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >        
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp11 ?>%</span>
@@ -194,7 +180,6 @@ if (!empty($division)) {
                             </div>
 
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -211,7 +196,6 @@ if (!empty($division)) {
                         </div>
                         <div id="Pradaxa" class="tab-pane fade">
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >        
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp12 ?>%</span>
@@ -222,7 +206,6 @@ if (!empty($division)) {
                             </div>
 
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -239,18 +222,14 @@ if (!empty($division)) {
                         </div>
                         <div id="Metalyse" class="tab-pane fade">
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >        
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp13 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
                                     <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
-
                                 </div>
                             </div>
-
                             <div class="col-lg-5 col-md-5 col-xs-5">
-
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
@@ -273,4 +252,3 @@ if (!empty($division)) {
     }
 }
 ?>
-
