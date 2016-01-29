@@ -872,6 +872,8 @@ class User_model extends CI_Model {
                 } elseif (isset($value->Approve_Status) && $value->Approve_Status == 'Un-Approved') {
                     $style = 'style="background-color: #ff9999;"';
                     $allApproved = FALSE;
+                } else {
+                    $allApproved = FALSE;
                 }
                 $HTML .= '<tr ' . $style . ' ><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '" ></td>';
 
@@ -1062,6 +1064,7 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+
     function bdm_doctor_rx($VEEVA_Employee_ID, $month, $year) {
         $sql = "SELECT (dm.`Account_Name`) AS doctor_name,dm.`Account_ID`,COUNT(ra.`Actual_Rx`) AS Rx_Actual,COUNT(rp.`Planned_Rx`) AS rx_planned FROM `Employee_Master` em
                 LEFT JOIN `Employee_Doc` ed
@@ -1077,7 +1080,8 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
-    function ASM_kp1($VEEVA_Employee_ID, $month, $year ,$product_id) {
+
+    function ASM_kp1($VEEVA_Employee_ID, $month, $year, $product_id) {
         $sql = "SELECT COUNT(ra.`Actual_Rx`) as Actual,COUNT(rp.`Planned_Rx`) as Planned FROM `Employee_Master` em 
                 LEFT JOIN `Rx_Actual` ra 
                 ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID` AND ra.`month`=$month AND ra.`Year`=$year AND ra.`Product_Id`=$product_id
@@ -1087,6 +1091,7 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
+
     function ASM_division($VEEVA_Employee_ID) {
         $sql = "SELECT em.`Division` as division FROM `Employee_Master` em
                 WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";

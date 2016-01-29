@@ -14,10 +14,10 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-            <?php
-        echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
-        $this->session->unset_userdata('message');
-        ?>
+    <?php
+    echo $this->session->userdata('message') ? $this->session->userdata('message') : '';
+    $this->session->unset_userdata('message');
+    ?>
     <body style="background: #cccccc">
         <div class="content" style="padding-right: 0px;padding-left: 0px">
             <?php $this->load->view($content, $view_data); ?>

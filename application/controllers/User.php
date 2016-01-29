@@ -42,15 +42,15 @@ class User extends MY_Controller {
             if (empty($check)) {
                 $data['message'] = ' Username/password Incorrect';
                 $emp = $this->User_model->employee_id($username);
-                if (isset($emp['VEEVA_Employee_ID'])) {
+                if (isset($emp->VEEVA_Employee_ID)) {
                     $add = array(
-                        'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                        'VEEVA_Employee_ID' => $emp->VEEVA_Employee_ID,
                         'password' => $password,
                         'created_at' => date('Y-m-d H:i:s'),
                     );
                     $this->User_model->password_save($add);
 
-                    $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
+                    $count = $this->User_model->password_count($emp->VEEVA_Employee_ID);
                     if ($count['cnt'] > 5) {
                         $data1 = array(
                             'Status' => 'locked',
@@ -62,6 +62,7 @@ class User extends MY_Controller {
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
 
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
             } else {
@@ -266,15 +267,22 @@ class User extends MY_Controller {
                 $_POST['Status'] = $this->input->post('Status');
                 $_POST['Winability'] = $this->User_model->calcWinability($_POST['Win_Q1'], $_POST['Win_Q2'], $_POST['Win_Q3']);
 
+
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 6;
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 5;
+                        $_POST['Win_Q1'] = '';
+                        $_POST['Win_Q2'] = '';
+                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Seen'] = '';
+                        $_POST['Win_Q3'] = '';
                         $this->db->insert('Profiling', $_POST);
+
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
                     } else {
@@ -799,7 +807,6 @@ class User extends MY_Controller {
 
     public function BDM_Report() {
         if ($this->is_logged_in()) {
-
 
             $data['detail'] = $this->User_model->bdm_doctor_rx($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear);
             $data = array('title' => 'Profile Update', 'content' => 'User/BDM_Report', 'view_data' => $data);
