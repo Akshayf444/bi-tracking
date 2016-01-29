@@ -5,109 +5,101 @@
     <?php
     $rxlabel = isset($Product_Id) && $Product_Id == 1 ? 'Vials' : 'Rx';
     $attributes = array('id' => 'form1', 'name' => 'myform');
-    echo form_open('User/Set_Target', $attributes)
     ?>
     <div class="panel panel-default">
-        <div class="panel-heading">Set Expected <?php echo $rxlabel; ?></div>
+<!--        <div class="panel-heading">Assigned <?php echo $rxlabel; ?></div>-->
+        <div class="panel-heading">                No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?></div>
         <div class="panel-body">
             <div class="form-group">
-                No Of New <?php echo $rxlabel; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo date('Y', strtotime($this->nextYear)); ?>
-                <input type="number" min="1" class="form-control" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
+                <input type="number" min="1" class="form-control" disabled="disabled" required="required" name="value" value="<?php echo isset($target) ? $target : ''; ?>">
             </div>
-            <input type="hidden" id="Status" name="Status" value="Draft">
-            <input type="hidden" id="Approve_Status" name="Approve_Status" value="Approve for ASM">
-        </div>
-        <div class="panel-footer">
-            <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-success">Submit</button>
         </div>
         </form>
     </div>
 
-</form>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        New <?php echo $rxlabel; ?> Generated
-    </div>
-    <div class="panel-body">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            New <?php echo $rxlabel; ?> Generated
+        </div>
+        <div class="panel-body">
 
-        <table class="table table-bordered">
-            <tr>
-                <th></th>
-                <th><?php echo $month_mid; ?></th>
-                <th><?php echo $month_start; ?></th>
-                <th><?php echo $month_between; ?></th>
-                <th><?php echo $month_ends; ?></th>
-<!--                <th><?php echo $current_month; ?></th>-->
-            </tr>
-<!--            <tr>
-                <td>Rx Target :</td>
-                <td><?php
-            foreach ($show5 as $sh5) {
-                echo $sh5->target;
-            }
-            ?></td>
-                <td><?php
-            foreach ($show1 as $sh1) {
-                echo $sh1->target;
-            }
-            ?></td>
-                <td><?php
-            foreach ($show2 as $sh2) {
-                echo $sh2->target;
-            }
-            ?></td>
-                <td><?php
-            foreach ($show3 as $sh3) {
-                echo $sh3->target;
-            }
-            ?></td>
-                <td><?php
-            foreach ($show4 as $sh4) {
-                // echo $sh4->target;
-            }
-            ?></td>
-            </tr>-->
-            <tr>
-                <td>
-                    Actual <?php
-                    if ($this->Product_Id == '1') {
-                        echo "Vials";
-                    } else {
-                        echo "Rx";
-                    }
-                    ?>
-                </td>
-                <td><?php
-                    foreach ($Actual1 as $sh1) {
-                        echo $sh1->Act;
-                    }
-                    ?></td>
-                <td><?php
-                    foreach ($Actual2 as $sh2) {
-                        echo $sh2->Act;
-                    }
-                    ?></td>
-                <td><?php
-                    foreach ($Actual3 as $sh3) {
-                        echo $sh3->Act;
-                    }
-                    ?></td>
-                <td><?php
-                    foreach ($Actual4 as $sh4) {
-                        echo $sh4->Act;
-                    }
-                    ?></td>
-<!--                <td><?php
+            <table class="table table-bordered">
+                <tr>
+                    <th></th>
+                    <th><?php echo $month_mid; ?></th>
+                    <th><?php echo $month_start; ?></th>
+                    <th><?php echo $month_between; ?></th>
+                    <th><?php echo $month_ends; ?></th>
+    <!--                <th><?php echo $current_month; ?></th>-->
+                </tr>
+    <!--            <tr>
+                    <td>Rx Target :</td>
+                    <td><?php
+                foreach ($show5 as $sh5) {
+                    echo $sh5->target;
+                }
+                ?></td>
+                    <td><?php
+                foreach ($show1 as $sh1) {
+                    echo $sh1->target;
+                }
+                ?></td>
+                    <td><?php
+                foreach ($show2 as $sh2) {
+                    echo $sh2->target;
+                }
+                ?></td>
+                    <td><?php
+                foreach ($show3 as $sh3) {
+                    echo $sh3->target;
+                }
+                ?></td>
+                    <td><?php
                 foreach ($show4 as $sh4) {
                     // echo $sh4->target;
                 }
-                ?></td>-->
-            </tr>
+                ?></td>
+                </tr>-->
+                <tr>
+                    <td>
+                        Actual <?php
+                        if ($this->Product_Id == '1') {
+                            echo "Vials";
+                        } else {
+                            echo "Rx";
+                        }
+                        ?>
+                    </td>
+                    <td><?php
+                        foreach ($Actual1 as $sh1) {
+                            echo $sh1->Act;
+                        }
+                        ?></td>
+                    <td><?php
+                        foreach ($Actual2 as $sh2) {
+                            echo $sh2->Act;
+                        }
+                        ?></td>
+                    <td><?php
+                        foreach ($Actual3 as $sh3) {
+                            echo $sh3->Act;
+                        }
+                        ?></td>
+                    <td><?php
+                        foreach ($Actual4 as $sh4) {
+                            echo $sh4->Act;
+                        }
+                        ?></td>
+    <!--                <td><?php
+                    foreach ($show4 as $sh4) {
+                        // echo $sh4->target;
+                    }
+                    ?></td>-->
+                </tr>
 
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 
 </div>
 <script>

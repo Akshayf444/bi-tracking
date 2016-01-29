@@ -192,18 +192,63 @@ class ASM extends MY_Controller {
 
     public function approveTarget() {
         if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
-                $empid = $this->input->post('approve');
-                $data = array(
-                    'VEEVA_Employee_Id' => $empid[$i],
-                    'Approve_Status' => 'Approved'
-                );
-                $this->db->where(array('VEEVA_Employee_ID' => $empid[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Rx_Target', $data);
-                // echo $this->db->last_query();
+            $VEEVA_Employee_ID = $this->input->post('VEEVA_Employee_ID');
+            $target1 = $this->input->post('target1');
+            $target2 = $this->input->post('target2');
+            $target3 = $this->input->post('target3');
+            for ($i = 0; $i < count($this->input->post('VEEVA_Employee_ID')); $i++) {
+                $Status = $this->input->post('Status');
+
+                if ($this->Division == 'Diabetes') {
+                    $product_ids = array(4, 5, 6);
+                    $count = 1;
+                    foreach ($product_ids as $id) {
+                        $data1 = array(
+                            'target' => ${'target' . $count}[$i],
+                            'VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i],
+                            'Product_Id' => $id,
+                            'Month' => $this->nextMonth,
+                            'Year' => $this->nextYear,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'Status' => $Status,
+                        );
+
+                        $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
+                        if (empty($check)) {
+                            $this->User_model->Set_Target($data1);
+                        } elseif ($check['Status'] == 'Draft') {
+                            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
+                            $this->db->update('Rx_Target', $data1);
+                        }
+                        $count++;
+                    }
+                } else {
+                    $product_ids = array(1, 2, 3);
+                    $count = 1;
+                    foreach ($product_ids as $id) {
+                        $data1 = array(
+                            'target' => ${'target' . $count}[$i],
+                            'VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i],
+                            'Product_Id' => $id,
+                            'Month' => $this->nextMonth,
+                            'Year' => $this->nextYear,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'Status' => $Status[$i],
+                        );
+
+                        $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
+                        if (empty($check)) {
+                            $this->User_model->Set_Target($data1);
+                        } elseif ($check['Status'] == 'Draft') {
+                            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
+                            $this->db->update('Rx_Target', $data1);
+                        }
+                        $count++;
+                    }
+                }
             }
-            redirect('ASM/target', 'refresh');
         }
+        redirect('ASM/target', 'refresh');
     }
 
     public function ApprovePlanning() {

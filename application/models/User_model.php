@@ -34,7 +34,7 @@ class User_model extends CI_Model {
 
     public function Set_Target_by_id($id, $pid, $month) {
         $sql = "select * from Rx_Target
-               where VEEVA_Employee_ID='$id' And Product_Id='$pid' And Month=$month";
+                where VEEVA_Employee_ID='$id' And Product_Id='$pid' And Month=$month";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -58,7 +58,7 @@ class User_model extends CI_Model {
     public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
-                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id";
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id  AND Status = 'Submitted'  ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
