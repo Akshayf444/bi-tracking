@@ -135,14 +135,23 @@ class ASM extends MY_Controller {
 
     public function target() {
         if ($this->is_logged_in()) {
-            $result2 = $this->asm_model->product();
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('product_id');
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $this->Product_Id);
                 $data['result'] = $this->asm_model->getTarget();
             }
-
+            $check = $this->User_model->ASM_division($this->VEEVA_Employee_ID);
+            if (!empty($check)) {
+                if ($check['division'] == 'Diabetes') {
+                    $data['table'] = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 4, 5, 6);
+                    $data['ck'] = "Diabetes";
+                } else {
+                    $data['table'] = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 1, 2, 3);
+                    $data['ck'] = "Thrombi";
+                }
+            }
             $data = array('title' => 'Target', 'content' => 'ASM/target', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         }

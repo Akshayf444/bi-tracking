@@ -55,16 +55,66 @@ class asm_model extends CI_Model {
             LEFT JOIN `Activity_Reporting` ar ON `dm`.`Account_ID` = `ar`.`Doctor_Id` 
             WHERE `ar`.`Product_Id` = '$product_id' 
             AND `ar`.`VEEVA_Employee_ID` = '$id' AND `ar`.`month` = '$this->nextMonth' AND `ar`.`Status` = 'Submitted' AND `ar`.`Year` = '$this->nextYear'";
- 
+
         $query = $this->db->query($sql);
         return $query->result();
     }
-
 
     public function status_change($id, $data) {
         $query = $this->db->where('Act_Plan', $id);
         $query = $this->db->update('Employee_Master', $data);
         return $query;
+    }
+
+    public function ASM_Assign_Target($VEEVA_Employee_ID,$product1, $product2, $product3) {
+        $sql = " (SELECT 
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                        `Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product1 
+                          AND MONTH = 1 
+                          AND YEAR = '2016' 
+                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`) 
+                      UNION
+                      ALL 
+                      (SELECT 
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                        `Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product2 
+                          AND MONTH = 1 
+                          AND YEAR = '2016' 
+                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`) 
+                      UNION
+                      ALL 
+                      (SELECT 
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                        `Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product3
+                          AND MONTH = 1 
+                          AND YEAR = '2016' 
+                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`)";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
 }
