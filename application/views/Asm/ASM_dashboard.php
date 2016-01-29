@@ -38,7 +38,7 @@
             <div class="col-md-4">
 
                 <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/target'); ?>';" >
-                    Approve Target
+                    Assign Target
                 </a>
 
             </div>
