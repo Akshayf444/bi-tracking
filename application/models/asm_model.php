@@ -60,13 +60,22 @@ class asm_model extends CI_Model {
         return $query->result();
     }
 
-    public function status_change($id, $data) {
+    public function status_change($VEEVA_Employee_ID) {
         $query = $this->db->where('Act_Plan', $id);
         $query = $this->db->update('Employee_Master', $data);
         return $query;
     }
 
-    public function ASM_Assign_Target($VEEVA_Employee_ID,$product1, $product2, $product3) {
+    public function ASm($VEEVA_Employee_ID) {
+        $sql = "SELECT em.`Full_Name`,em.`VEEVA_Employee_ID`FROM `Employee_Master` em
+WHERE `Reporting_VEEVA_ID`= '$VEEVA_Employee_ID'";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+        ;
+    }
+
+    public function ASM_Assign_Target($VEEVA_Employee_ID, $product1, $product2, $product3) {
         $sql = " (SELECT 
                         em.`Full_Name`,
                         em.`VEEVA_Employee_ID`,
@@ -79,7 +88,7 @@ class asm_model extends CI_Model {
                           AND `Product_id` = $product1 
                           AND MONTH = 1 
                           AND YEAR = '2016' 
-                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`) 
                       UNION
                       ALL 
@@ -95,7 +104,7 @@ class asm_model extends CI_Model {
                           AND `Product_id` = $product2 
                           AND MONTH = 1 
                           AND YEAR = '2016' 
-                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`) 
                       UNION
                       ALL 
@@ -111,7 +120,7 @@ class asm_model extends CI_Model {
                           AND `Product_id` = $product3
                           AND MONTH = 1 
                           AND YEAR = '2016' 
-                      WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`)";
         $query = $this->db->query($sql);
         return $query->result();

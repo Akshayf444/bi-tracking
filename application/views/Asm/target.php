@@ -32,9 +32,18 @@
                     <th>Name of BDM<th>
                     <th><th>
                 </tr>
-                <?php foreach($table as $tab):?>
+                <?php foreach($table as $tab):
+                    if ($this->Division == 'Diabetes') {
+                    $result = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 4, 5, 6);
+                } else {
+                    $result = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 1, 2, 3);
+                }
+                    ?>
                 <tr>
                     <td><?php echo $tab->Full_Name?></td>
+                    <?php foreach($result as $r):?>
+                    <td><?php $r->target?></td>
+                    <?php endforeach;?>
                 </tr>
                 <?php endforeach;?>
             </table>
