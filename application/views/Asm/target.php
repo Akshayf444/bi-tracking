@@ -27,9 +27,11 @@
                             echo "Trajenta Duo";
                         }
                         ?></th>
+                    <th></th>
                 </tr>
                 <tr>
                     <th>Name of BDM<th>
+                    <th><th>
                     <th><th>
                 </tr>
                 <?php foreach($table as $tab):
@@ -42,8 +44,9 @@
                 <tr>
                     <td><?php echo $tab->Full_Name?></td>
                     <?php foreach($result as $r):?>
-                    <td><?php $r->target?></td>
+                    <td><?php echo $r->target?></td>
                     <?php endforeach;?>
+                    <td><input type="text" name="target"></td>
                 </tr>
                 <?php endforeach;?>
             </table>
