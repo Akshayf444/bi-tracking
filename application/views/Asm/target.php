@@ -27,35 +27,31 @@
                             echo "Trajenta Duo";
                         }
                         ?></th>
+                    <th></th>
                 </tr>
                 <tr>
                     <th>Name of BDM<th>
                     <th><th>
+                    <th><th>
                 </tr>
-                <?php
-                if (!empty($table)) {
-                    $product1_target = '';
-                    $product2_target = '';
-                    $product3_target = '';
-                    foreach ($table as $tab):
-                        $nextRow = array_shift($table);
 
-                        if ($nextRow->VEEVA_Employee_ID == $tab->VEEVA_Employee_ID) {
-                            $product1_target = $tab->target;
-                            $product2_target = $tab->target;
-                            $product3_target = $tab->target;
-                        }
-                        ?>
-                        <tr>
-                            <td><?php echo $tab->Full_Name ?></td>
-                            <td><input type="text" value="<?php echo $product1_target; ?>"></td>
-                            <td><input type="text" value="<?php echo $product2_target; ?>"></td>
-                            <td><input type="text" value="<?php echo $product3_target; ?>"></td>
-                        </tr>
-                        <?php
-                    endforeach;
-                }
-                ?>
+                <?php
+                foreach ($table as $tab):
+                    if ($this->Division == 'Diabetes') {
+                        $result = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 4, 5, 6);
+                    } else {
+                        $result = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 1, 2, 3);
+                    }
+                    ?>
+                    <tr>
+                        <td><?php echo $tab->Full_Name ?></td>
+                        <?php foreach ($result as $r): ?>
+                            <td><?php echo $r->target ?></td>
+    <?php endforeach; ?>
+                        <td><input type="text" name="target"></td>
+                    </tr>
+<?php endforeach; ?>
+
             </table>
         </div>
     </div>

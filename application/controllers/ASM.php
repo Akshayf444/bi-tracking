@@ -145,10 +145,10 @@ class ASM extends MY_Controller {
             $check = $this->User_model->ASM_division($this->VEEVA_Employee_ID);
             if (!empty($check)) {
                 if ($check['division'] == 'Diabetes') {
-                    $data['table'] = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 4, 5, 6);
+                    $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Diabetes";
                 } else {
-                    $data['table'] = $this->asm_model->ASM_Assign_Target($this->VEEVA_Employee_ID, 1, 2, 3);
+                    $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Thrombi";
                 }
             }
