@@ -279,8 +279,9 @@ class User extends MY_Controller {
                         $_POST['Win_Q1'] = '';
                         $_POST['Win_Q2'] = '';
                         $_POST['Win_Q3'] = '';
-                        $_POST['Patient_Seen'] = '';
-                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Rxbed_In_Week'] = '';
+                        $_POST['Patient_Rxbed_In_Month'] = '';
+                        $_POST['Winability'] = '';
                         $this->db->insert('Profiling', $_POST);
 
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
@@ -291,7 +292,7 @@ class User extends MY_Controller {
                         redirect('User/Profiling', 'refresh');
                     }
                 } elseif ($check['Status'] == 'Draft') {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
@@ -300,7 +301,13 @@ class User extends MY_Controller {
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $_POST['Product_id'] = 5;
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $_POST['Win_Q1'] = '';
+                        $_POST['Win_Q2'] = '';
+                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Rxbed_In_Week'] = '';
+                        $_POST['Patient_Rxbed_In_Month'] = '';
+                        $_POST['Winability'] = '';
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');

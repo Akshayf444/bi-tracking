@@ -67,7 +67,10 @@ class asm_model extends CI_Model {
     }
 
     public function ASM_Assign_Target($VEEVA_Employee_ID,$product1, $product2, $product3) {
-        $sql = " (SELECT 
+        $sql = "SELECT 
+                t_union.`VEEVA_Employee_ID`,t_union.`Full_Name`,`Product_Id`,t_union.target 
+                 FROM
+                (  (SELECT 
                         em.`Full_Name`,
                         em.`VEEVA_Employee_ID`,
                         rt.`target`,
@@ -112,7 +115,8 @@ class asm_model extends CI_Model {
                           AND MONTH = 1 
                           AND YEAR = '2016' 
                       WHERE `Reporting_VEEVA_ID` = '$VEEVA_Employee_ID' 
-                      GROUP BY em.`VEEVA_Employee_ID`)";
+                      GROUP BY em.`VEEVA_Employee_ID`)    ) AS t_union 
+ORDER BY t_union.VEEVA_Employee_ID ";
         $query = $this->db->query($sql);
         return $query->result();
     }
