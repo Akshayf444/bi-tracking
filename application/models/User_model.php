@@ -271,10 +271,10 @@ class User_model extends CI_Model {
         $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.Product_Id = ' . $this->Product_Id, 'left');
         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth' ,ap.Approve_Status= 'SFA'";
+            $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth'";
             $this->db->where($where);
         } else {
-            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth, 'ap.Approve_Status' => 'SFA'));
+            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth));
         }
         $this->db->group_by('dp.Doctor_Id');
         $query = $this->db->get();
