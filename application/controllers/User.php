@@ -200,33 +200,33 @@ class User extends MY_Controller {
         $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
         $data['target'] = isset($target['target']) ? $target['target'] : 0;
 
-        if ($this->input->post()) {
-            $values = $this->input->post('value');
-            $data1 = array(
-                'target' => $values,
-                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
-                'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => $this->nextMonth,
-                'Year' => $this->nextYear,
-                'created_at' => date('Y-m-d H:i:s'),
-                'Status' => $this->input->post('Status'),
-            );
-
-            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
-            if (empty($check)) {
-                $this->User_model->Set_Target($data1);
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
-                redirect('User/dashboard', 'refresh');
-            } elseif ($check['Status'] == 'Draft') {
-
-                $this->User_model->Set_Target_update2($data1);
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success'));
-                redirect('User/dashboard', 'refresh');
-            } else {
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!', 'danger'));
-                redirect('User/dashboard', 'refresh');
-            }
-        }
+//        if ($this->input->post()) {
+//            $values = $this->input->post('value');
+//            $data1 = array(
+//                'target' => $values,
+//                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
+//                'Product_Id' => $this->session->userdata('Product_Id'),
+//                'Month' => $this->nextMonth,
+//                'Year' => $this->nextYear,
+//                'created_at' => date('Y-m-d H:i:s'),
+//                'Status' => $this->input->post('Status'),
+//            );
+//
+//            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+//            if (empty($check)) {
+//                $this->User_model->Set_Target($data1);
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+//                redirect('User/dashboard', 'refresh');
+//            } elseif ($check['Status'] == 'Draft') {
+//
+//                $this->User_model->Set_Target_update2($data1);
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success'));
+//                redirect('User/dashboard', 'refresh');
+//            } else {
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!', 'danger'));
+//                redirect('User/dashboard', 'refresh');
+//            }
+//        }
         $month_start = date('n', strtotime('-4 month'));
         $month_mid = date('n', strtotime('-3 month'));
         $month_between = date('n', strtotime('-2 month'));
@@ -821,6 +821,12 @@ class User extends MY_Controller {
         } else {
             $this->logout();
         }
+    }
+
+    public function getApprovedStatusCount($VEEVA_Employee_ID, $Product_Id) {
+        $sql = " SELECT  COUNT(CASE WHEN `Approve_Status` = 'Approved' THEN 1 END) AS Approve_Count,COUNT(CASE WHEN `Approve_Status` = 'SFA' THEN 1 END) AS SFA_Count,COUNT(CASE WHEN `Approve_Status` = 'Un-Approved' THEN 1 END) AS UnApprove_Count FROM Rx_Planning WHERE `VEEVA_Employee_ID` = '$VEEVA_Employee_ID' AND product_id = '$Product_Id' AND MONTH = {$this->nextMonth} AND YEAR = '$this->nextYear'";
+        $query = $this->db->query($sql);
+        return $query->row();
     }
 
 }
