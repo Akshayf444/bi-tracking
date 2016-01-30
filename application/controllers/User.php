@@ -42,15 +42,15 @@ class User extends MY_Controller {
             if (empty($check)) {
                 $data['message'] = ' Username/password Incorrect';
                 $emp = $this->User_model->employee_id($username);
-                if (isset($emp['VEEVA_Employee_ID'])) {
+                if (isset($emp->VEEVA_Employee_ID)) {
                     $add = array(
-                        'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                        'VEEVA_Employee_ID' => $emp->VEEVA_Employee_ID,
                         'password' => $password,
                         'created_at' => date('Y-m-d H:i:s'),
                     );
                     $this->User_model->password_save($add);
 
-                    $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
+                    $count = $this->User_model->password_count($emp->VEEVA_Employee_ID);
                     if ($count['cnt'] > 5) {
                         $data1 = array(
                             'Status' => 'locked',
@@ -62,6 +62,7 @@ class User extends MY_Controller {
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
 
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
             } else {
@@ -199,33 +200,33 @@ class User extends MY_Controller {
         $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
         $data['target'] = isset($target['target']) ? $target['target'] : 0;
 
-        if ($this->input->post()) {
-            $values = $this->input->post('value');
-            $data1 = array(
-                'target' => $values,
-                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
-                'Product_Id' => $this->session->userdata('Product_Id'),
-                'Month' => $this->nextMonth,
-                'Year' => $this->nextYear,
-                'created_at' => date('Y-m-d H:i:s'),
-                'Status' => $this->input->post('Status'),
-            );
-
-            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
-            if (empty($check)) {
-                $this->User_model->Set_Target($data1);
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
-                redirect('User/dashboard', 'refresh');
-            } elseif ($check['Status'] == 'Draft') {
-
-                $this->User_model->Set_Target_update2($data1);
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success'));
-                redirect('User/dashboard', 'refresh');
-            } else {
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!', 'danger'));
-                redirect('User/dashboard', 'refresh');
-            }
-        }
+//        if ($this->input->post()) {
+//            $values = $this->input->post('value');
+//            $data1 = array(
+//                'target' => $values,
+//                'VEEVA_Employee_ID' => $this->session->userdata('VEEVA_Employee_ID'),
+//                'Product_Id' => $this->session->userdata('Product_Id'),
+//                'Month' => $this->nextMonth,
+//                'Year' => $this->nextYear,
+//                'created_at' => date('Y-m-d H:i:s'),
+//                'Status' => $this->input->post('Status'),
+//            );
+//
+//            $check = $this->User_model->Set_Target_by_id($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+//            if (empty($check)) {
+//                $this->User_model->Set_Target($data1);
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+//                redirect('User/dashboard', 'refresh');
+//            } elseif ($check['Status'] == 'Draft') {
+//
+//                $this->User_model->Set_Target_update2($data1);
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been set successfully! Thank you!', 'success'));
+//                redirect('User/dashboard', 'refresh');
+//            } else {
+//                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('No of New Rx Targeted for ' . date('M', strtotime($this->nextMonth)) . '  ' . $this->nextYear . ' is already submitted, cant overwrite it. Thank you!', 'danger'));
+//                redirect('User/dashboard', 'refresh');
+//            }
+//        }
         $month_start = date('n', strtotime('-4 month'));
         $month_mid = date('n', strtotime('-3 month'));
         $month_between = date('n', strtotime('-2 month'));
@@ -266,15 +267,23 @@ class User extends MY_Controller {
                 $_POST['Status'] = $this->input->post('Status');
                 $_POST['Winability'] = $this->User_model->calcWinability($_POST['Win_Q1'], $_POST['Win_Q2'], $_POST['Win_Q3']);
 
+
                 $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
                 if (empty($check)) {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 6;
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 5;
+                        $_POST['Win_Q1'] = '';
+                        $_POST['Win_Q2'] = '';
+                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Rxbed_In_Week'] = '';
+                        $_POST['Patient_Rxbed_In_Month'] = '';
+                        $_POST['Winability'] = '';
                         $this->db->insert('Profiling', $_POST);
+
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
                     } else {
@@ -283,7 +292,7 @@ class User extends MY_Controller {
                         redirect('User/Profiling', 'refresh');
                     }
                 } elseif ($check['Status'] == 'Draft') {
-                    if ($this->Product_Id == 4 || $this->Product_Id == 6 || $this->Product_Id == 5) {
+                    if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
@@ -292,7 +301,13 @@ class User extends MY_Controller {
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $_POST['Product_id'] = 5;
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $_POST['Win_Q1'] = '';
+                        $_POST['Win_Q2'] = '';
+                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Rxbed_In_Week'] = '';
+                        $_POST['Patient_Rxbed_In_Month'] = '';
+                        $_POST['Winability'] = '';
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
@@ -659,6 +674,7 @@ class User extends MY_Controller {
                         $result = $this->User_model->ActivityReportingExist($docid[$i]);
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
+                            //$data2['Approve_Status'] = 'SFA';
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Reporting', $data2);
@@ -692,14 +708,15 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Submitted') {
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted ', 'danger'));
                         }
                     }
                 }
+
+                if (!empty($messages)) {
+                    $this->session->set_userdata('message', join(" ", array_unique($messages)));
+                }
                 redirect('User/dashboard', 'refresh');
-            }
-            if (!empty($messages)) {
-                $this->session->set_userdata('message', join(" ", array_unique($messages)));
             }
         } else {
             $data['doctorList'] = "Activity Planning Not Submitted";
@@ -800,13 +817,18 @@ class User extends MY_Controller {
     public function BDM_Report() {
         if ($this->is_logged_in()) {
 
-
             $data['detail'] = $this->User_model->bdm_doctor_rx($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear);
             $data = array('title' => 'Profile Update', 'content' => 'User/BDM_Report', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
             $this->logout();
         }
+    }
+
+    public function getApprovedStatusCount($VEEVA_Employee_ID, $Product_Id) {
+        $sql = " SELECT  COUNT(CASE WHEN `Approve_Status` = 'Approved' THEN 1 END) AS Approve_Count,COUNT(CASE WHEN `Approve_Status` = 'SFA' THEN 1 END) AS SFA_Count,COUNT(CASE WHEN `Approve_Status` = 'Un-Approved' THEN 1 END) AS UnApprove_Count FROM Rx_Planning WHERE `VEEVA_Employee_ID` = '$VEEVA_Employee_ID' AND product_id = '$Product_Id' AND MONTH = {$this->nextMonth} AND YEAR = '$this->nextYear'";
+        $query = $this->db->query($sql);
+        return $query->row();
     }
 
 }

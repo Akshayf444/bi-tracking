@@ -195,7 +195,7 @@ echo form_open('User/Planning', $attributes);
                                 } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
                                     $allApproved = FALSE;
                                     echo 'style="background-color: #ff9999;"';
-                                }  else {
+                                } else {
                                     $allApproved = FALSE;
                                 }
                                 ?>>
@@ -206,7 +206,11 @@ echo form_open('User/Planning', $attributes);
                                     <td><?php echo $month2Actual; ?></td>
                                     <td><?php echo $month3Actual; ?></td>
                                     <td><?php echo $planned_rx; ?></td>
-                                    <td> <input name = "value[]" min="0" class = "val" type = "number" value = "<?php echo $planned_rx; ?>"/><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID; ?>"/></td>
+                                    <?php if ($this->Product_Id == 1) { ?>
+                                        <td> <input name = "value[]" min="0" class = "val"  step="0.5"  type = "number" value = "<?php echo $planned_rx; ?>"/><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID; ?>"/></td>
+                                    <?php } else { ?>
+                                        <td> <input name = "value[]" min="0" class = "val"  type = "number" value = "<?php echo $planned_rx; ?>"/><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID; ?>"/></td>
+                                    <?php } ?>                               
                                 </tr>
                                 <?php
                             }
@@ -224,9 +228,9 @@ echo form_open('User/Planning', $attributes);
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <?php if ($allApproved == TRUE) { ?>
                 <button type="submit" id="Submit" class="btn btn-success">Submit</button>
-            <?php }            ?>
-
-            <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
+            <?php } else { ?>
+                <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
+            <?php } ?>
         </div>
     </div>
 </div>
