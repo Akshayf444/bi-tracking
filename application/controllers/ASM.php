@@ -381,15 +381,9 @@ class ASM extends MY_Controller {
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
                 );
-                if ($this->input->post('approve_' . $doctorId[$i])) {
-                    $data['Approve_Status'] = 'Approved';
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                    $this->db->update('Activity_Reporting', $data);
-                } else {
-                    $data['Approve_Status'] = 'Un-Approved';
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                    $this->db->update('Activity_Reporting', $data);
-                }
+                $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
+                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                $this->db->update('Activity_Reporting', $data);
 
                 // echo $this->db->last_query();
             }
@@ -412,13 +406,13 @@ class ASM extends MY_Controller {
                 //echo $id;
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
-                
+
                 //BDM Dropdown
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
                 $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
                 //Product List
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
-                
+
                 $data['productlist'] = NULL;
                 $result = $this->User_model->getPlannedActivityDoctor2($id, $product);
                 $data['Doctorlist'] = $this->User_model->generateActivityTable2($result, 'Reporting');
