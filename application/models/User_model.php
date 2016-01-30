@@ -341,8 +341,9 @@ class User_model extends CI_Model {
         $this->db->select('rxp.*,dm.*');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
-        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'rxp.Approve_Status' => 'SFA'));
+        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');     
+        $where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' AND rxp.Approve_Status = 'SFA' OR ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' AND rxp.Approve_Status = 'Un-Approved'  ";
+        $this->db->where($where);
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -1098,5 +1099,5 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-
+    
 }

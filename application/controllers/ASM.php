@@ -168,20 +168,26 @@ class ASM extends MY_Controller {
         if ($this->is_logged_in()) {
             $id2 = $this->session->userdata('VEEVA_Employee_ID');
             $result = $this->asm_model->rx_view($id2);
+            
+            //BDM List
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
-            $result2 = $this->asm_model->product();
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+            
+            //ProductList Dropdown
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
-
+            $data['productlist'] = $result2;
+            
+            //POST ACTION
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
 
                 $result = $this->asm_model->rx_view($id2);
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
-                $result2 = $this->asm_model->product();
+                $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+                $data['productlist'] = NULL;
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
                 $data['show'] = $this->User_model->getPlanningAproval($id, $product, $this->nextMonth);
-                //var_dump($data);
             }
             $data = array('title' => 'Report', 'content' => 'ASM/Asm_rxplanning', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -258,17 +264,9 @@ class ASM extends MY_Controller {
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
                 );
-                if ($this->input->post('approve_' . $doctorId[$i])) {
-                    $data['Approve_Status'] = 'Approved';
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                    $this->db->update('Rx_Planning', $data);
-                } else {
-                    $data['Approve_Status'] = 'Un-Approved';
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                    $this->db->update('Rx_Planning', $data);
-                }
-
-                // echo $this->db->last_query();
+                $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
+                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                $this->db->update('Rx_Planning', $data);
             }
             redirect('ASM/asm_rx_planning', 'refresh');
         }
@@ -279,17 +277,29 @@ class ASM extends MY_Controller {
         if ($this->is_logged_in()) {
             $id2 = $this->session->userdata('VEEVA_Employee_ID');
             $result = $this->asm_model->rx_view($id2);
+            //BDM List
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
-            $result2 = $this->asm_model->product();
+            
+            //Productlist
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+            
+            //Generate Productlist Dropdown
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
-
+            $data['productlist'] = $result2;
+            
+            //POST ACTION
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
                 $this->Product_Id = $product;
+                
+                //BDM List
                 $result = $this->asm_model->rx_view($id2);
+                
+                //BDM Dropdown
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
-                $result2 = $this->asm_model->product();
+                $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+                
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
                 $result = $this->User_model->getActivityDoctor2($id, $product, $this->nextMonth);
                 $data['Doctorlist'] = $this->User_model->generateActivityTable2($result);
@@ -399,9 +409,9 @@ class ASM extends MY_Controller {
             $id2 = $this->session->userdata('VEEVA_Employee_ID');
             $result = $this->asm_model->rx_view($id2);
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
-            $result2 = $this->asm_model->product();
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
-
+            $data['productlist'] = $result2;
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
@@ -409,9 +419,8 @@ class ASM extends MY_Controller {
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
-                $result2 = $this->asm_model->product();
+                $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
-
                 $result = $this->User_model->getPlannedActivityDoctor2($id, $product);
                 $data['Doctorlist'] = $this->User_model->generateActivityTable2($result, 'Reporting');
             }
