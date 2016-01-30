@@ -16,7 +16,7 @@
         echo $error;
     }
     ?></h3>
-<div align="center" class="col-lg-8 col-md-8">
+<div class="col-lg-8 col-md-8">
     <ul align="center" class="nav nav-tabs ">
         <li class="active"><a data-toggle="tab" style="    padding: 12px;" href="#home">Basic Detail</a></li>
         <li><a data-toggle="tab" style="    padding: 12px;" href="#menu1">Change Password</a></li>
@@ -58,20 +58,49 @@
             </form>
         </div>
         <div id="menu1" class="tab-pane fade">
-            <?php echo form_open('User/pwd_update'); ?>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Old Password</th>
-                    <td><input type="text" name="old" class="form-control" name="mobile" /></td>
-                </tr>
-                <tr>
-                    <th>New Password</th>
-                    <td><input type="text" name="new" class="form-control" name="mobile" /></td>
-                </tr>
-            </table>
-            <input type="Submit" value="Submit" class="btn btn-success pull-right"/>
-            </form>
+            <div class="col-lg-12 panel-body">
+                <?php $attribute = array('id' => 'activate');
+                echo form_open('User/pwd_update', $attribute); ?>
+
+                <div class="form-group">
+                    <label>Old Password</label>
+                    <input type="password" name="old" class="form-control" name="mobile" />
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" name="new" class="form-control" name="mobile" />
+                </div>
+                <div class="form-group">
+                    <input type="Submit" value="Submit" class="btn btn-success pull-right"/>
+                </div>
+                </form>
+            </div>
         </div>
 
     </div>
 </div>
+<script>
+    $('document').ready(function () {
+
+        $('#activate').formValidation({
+            message: 'This value is not valid',
+            icon: {
+            },
+            fields: {
+                new : {
+                    validators: {
+                        regexp: {
+                            regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
+                            message: 'Password Must Contain 8 characters with 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
+                        },
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        }
+                    }
+                },
+            }
+        });
+    });
+</script>
+<script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
