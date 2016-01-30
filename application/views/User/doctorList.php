@@ -195,7 +195,7 @@ echo form_open('User/Planning', $attributes);
                                 } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
                                     $allApproved = FALSE;
                                     echo 'style="background-color: #ff9999;"';
-                                }  else {
+                                } else {
                                     $allApproved = FALSE;
                                 }
                                 ?>>
@@ -224,9 +224,9 @@ echo form_open('User/Planning', $attributes);
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <?php if ($allApproved == TRUE) { ?>
                 <button type="submit" id="Submit" class="btn btn-success">Submit</button>
-            <?php }            ?>
-
-            <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
+            <?php } else { ?>
+                <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
+            <?php } ?>
         </div>
     </div>
 </div>

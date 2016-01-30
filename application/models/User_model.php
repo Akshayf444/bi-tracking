@@ -267,16 +267,11 @@ class User_model extends CI_Model {
 
     public function getActivityDoctor2($id, $product_id) {
         $this->db->select('dm.*,ap.*');
-        $this->db->from('Actual_Doctor_Priority dp');
-        $this->db->join('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.Product_Id = ' . $this->Product_Id, 'left');
-        if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='4' OR dp.VEEVA_Employee_ID ='$id' AND dp.Product_id='6' AND dp.month = '$this->nextMonth'";
-            $this->db->where($where);
-        } else {
-            $this->db->where(array('dp.Product_Id' => $product_id, 'dp.VEEVA_Employee_ID' => $id, 'dp.month' => $this->nextMonth));
-        }
-        $this->db->group_by('dp.Doctor_Id');
+        $this->db->from('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.month = ' . $this->nextMonth . ' AND Year = ' . $this->nextYear . ' AND ap.Product_Id = ' . $this->Product_Id, 'left');
+        $where = "ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'SFA' OR ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'Un-Approved' ";
+        $this->db->where($where);
+        $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
         //echo $this->db->last_query();
         return $query->result();
@@ -295,11 +290,11 @@ class User_model extends CI_Model {
     }
 
     public function getPlannedActivityDoctor2($id, $Product_Id) {
-        $this->db->select('dm.*, `ap`.*,rp.Approve_Status,rp.`Activity_Done`,rp.`Activity_Detail`,rp.`Reason`');
-        $this->db->from('Activity_Planning ap');
-        $this->db->join('Doctor_Master dm', 'ap.Doctor_Id = dm.Account_ID');
-        $this->db->join('Activity_Reporting rp', 'rp.Doctor_Id = dm.Account_ID  AND rp.Product_Id = "' . $Product_Id . '"', 'LEFT');
-        $this->db->where(array('ap.Product_Id' => $Product_Id, 'ap.VEEVA_Employee_ID' => $id, 'ap.month' => $this->nextMonth, 'rp.Approve_Status' => 'SFA'));
+        $this->db->select('dm.*,ap.*');
+        $this->db->from('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
+        $this->db->join('Activity_Reporting ap', 'ap.Doctor_Id = dm.Account_ID AND ap.month = ' . $this->nextMonth . ' AND Year = ' . $this->nextYear . ' AND ap.Product_Id = ' . $this->Product_Id, 'left');
+        $where = "ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'SFA' OR ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'Un-Approved' ";
+        $this->db->where($where);
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -341,10 +336,11 @@ class User_model extends CI_Model {
         $this->db->select('rxp.*,dm.*');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
-        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');     
+        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
         $where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' AND rxp.Approve_Status = 'SFA' OR ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' AND rxp.Approve_Status = 'Un-Approved'  ";
         $this->db->where($where);
         $this->db->group_by('dm.Account_ID');
+        $this->db->order_by('rxp.Planned_Rx DESC');
         $query = $this->db->get();
         //echo $this->db->last_query();
         return $query->result();
@@ -938,10 +934,11 @@ class User_model extends CI_Model {
             }
             $HTML .= '</table>
             <div class="panel-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>';
+                <button type="submit" class="btn btn-primary">Save</button>';
             if ($allApproved == TRUE) {
                 $HTML .='<button type="submit" id="Submit" class="btn btn-danger">Submit</button>';
+            } else {
+                $HTML .='<button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>';
             }
             $HTML .='</div>';
         }
@@ -959,7 +956,7 @@ class User_model extends CI_Model {
         $Activities = $this->getActivityList();
 
         if (!empty($result)) {
-            $HTML = '<table class="table table-bordered">';
+            $HTML = '<div class="table-responsive panel"><table class="table table-bordered">';
             $HTML .= '<tr><th>
                                     ' . $hospital . ' Name
                             </th>
@@ -968,10 +965,10 @@ class User_model extends CI_Model {
             if ($type == 'Reporting') {
                 $HTML .= '<th>Activity Done</th>';
             }
-            $HTML .= '<th><input type="checkbox" id="check-all"></th></tr>';
+            $HTML .= '<th><input type="radio" id="check-all" >Approve</th><th>Un-Approve</th></tr>';
 
             foreach ($result as $value) {
-                $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'checked' : '';
+                $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Un-Approved' ? 'checked' : '';
                 if (isset($value->Act_Plan) && !is_null($value->Act_Plan)) {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name', $value->Activity_Id);
                 } else {
@@ -984,11 +981,12 @@ class User_model extends CI_Model {
                 if ($type == 'Reporting') {
                     $HTML .= '<td>' . $value->Activity_Done . '</td>';
                 }
-                $HTML .= '<td><input type="checkbox" id="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="' . $value->Account_ID . '"></td>';
+                $HTML .= '<td><input type="radio" class="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Approved"></td>';
+                $HTML .= '<td><input type="radio" class="uncheck-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Un-Approved"></td>';
                 $HTML .= '</tr>';
             }
-            $HTML .= '</table>'
-                    . ' <button type="submit" class="btn btn-primary pull_right">Approve</button>';
+            $HTML .= '</table></div>'
+                    . ' <button type="submit" class="btn btn-primary pull-right">Approve</button>';
         } else {
             $HTML .= '<h1>Data Not Available.</h1>';
         }
@@ -1099,5 +1097,5 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-    
+
 }

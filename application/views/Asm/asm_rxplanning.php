@@ -29,7 +29,7 @@
     <?php if (!empty($show)) {
         $plannedRx = 0;
         ?>
-        <div class="table-responsive">
+        <div class="table-responsive panel">
             <table class="table table-bordered table-hover ">
 
                 <tr>
@@ -54,11 +54,11 @@
 
                     <?php
                 endforeach;
-                echo '</table><span class="pull-left"> Total : ' . $plannedRx . '</span> <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
+                echo '</table></div><span class="pull-left"> Total : ' . $plannedRx . '</span> <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
             }
             ?>
 
-    </div>
+    
 
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">

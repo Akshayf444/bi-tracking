@@ -674,6 +674,7 @@ class User extends MY_Controller {
                         $result = $this->User_model->ActivityReportingExist($docid[$i]);
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
+                            //$data2['Approve_Status'] = 'SFA';
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Reporting', $data2);
@@ -707,14 +708,15 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Submitted') {
-                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted For ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear, 'danger'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('Activity Reporting Already Submitted ', 'danger'));
                         }
                     }
                 }
+
+                if (!empty($messages)) {
+                    $this->session->set_userdata('message', join(" ", array_unique($messages)));
+                }
                 redirect('User/dashboard', 'refresh');
-            }
-            if (!empty($messages)) {
-                $this->session->set_userdata('message', join(" ", array_unique($messages)));
             }
         } else {
             $data['doctorList'] = "Activity Planning Not Submitted";
