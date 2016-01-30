@@ -252,3 +252,71 @@ if (!empty($division)) {
     }
 }
 ?>
+
+
+
+
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <?php if (!empty($productlist)) { ?>
+        <div class="panel panel-default"> 
+            <div class="panel-heading"> Status  </div>
+            <div class="panel-body">
+
+                <ul align="center" class="nav nav-tabs ">
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        foreach ($productlist as $product) {
+                            ?>
+                            <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
+                </ul>
+
+                <div class="tab-content">
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        $ApproveCount = 0;
+                        $UnApproveCount = 0;
+                        $Pending = 0;
+                        $Submitted = 0;
+                        foreach ($productlist as $product) {
+                            ?>
+
+                            <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>BDM Name</th>
+                                        <th>No. of Doctors in MCL</th>
+                                        <th>No. of Doctors profiled</th>
+                                        <th>Target New Rxn for the month</th>
+                                        <th>Planned New Rxn for the month</th>
+                                        <th>No. of Doctors planned for activities</th>
+                                        <th>Achieved No. of Doctors planned for activities</th>
+                                    </tr>
+                                    <?php
+                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,$product->id);
+                                    if (!empty($Status)) {
+                                        foreach ($Status as $value) {
+                                            echo '<tr><td>' . $value->Full_Name . '</td><td>' . $value->No_of_Doctors . '</td><td>' . $value->No_of_Doctors_profiled . '</td><td>' . $value->Target_New_Rxn_for_the_month . '</td><td>' . $value->Planned_New_Rxn . '</td><td>' . $value->No_of_Doctors_planned . '</td><td>' . $value->checkk . '</td></tr>';
+                                        }
+                                    }
+                                    ?>
+                                </table>
+                            </div>
+
+
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>  
+    <?php } ?>
+</div>

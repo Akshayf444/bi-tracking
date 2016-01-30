@@ -1098,7 +1098,7 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
     function report($VEEVA_Employee_ID,$month,$year,$product) {
-        $sql = "SELECT em.`Full_Name`,COUNT(ed.`Account_Name`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) FROM Employee_Master em
+        $sql = "SELECT em.`Full_Name`,COUNT(ed.`Account_Name`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
                 INNER JOIN Employee_Doc ed 
                 ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
                 LEFT JOIN Profiling p
