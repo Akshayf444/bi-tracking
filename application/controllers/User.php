@@ -367,11 +367,12 @@ class User extends MY_Controller {
                         );
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
+                            $doc['Approve_Status'] = 'Draft';
                             if ($this->User_model->Save_Planning($doc)) {
                                 array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
-                            if ($result->Planned_Rx != $value[$i]) {
+                            if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft') {
                                 $doc['Approve_Status'] = 'SFA';
                             } else {
                                 $doc['Approve_Status'] = $result->Approve_Status;
@@ -433,6 +434,7 @@ class User extends MY_Controller {
                         $result = $this->User_model->ActivityPlanned($docid[$i]);
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
+                            $data2['Approve_Status'] = 'Draft';
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Planning', $data2);
@@ -445,7 +447,7 @@ class User extends MY_Controller {
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($result->Activity_Id != $Activity[$i]) {
+                            if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft') {
                                 $data2['Approve_Status'] = "SFA";
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
@@ -550,12 +552,13 @@ class User extends MY_Controller {
 
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
+                            $doc['Approve_Status'] = 'Draft';
                             if ($this->User_model->SaveReporting($doc)) {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
                             }
                         } else {
                             if (isset($result->Status) && $result->Status == 'Draft') {
-                                if ($result->Actual_Rx != $value[$i]) {
+                                if ($result->Actual_Rx != $value[$i] || $result->Approve_Status == 'Draft') {
                                     $doc['Approve_Status'] = 'SFA';
                                 } else {
                                     $doc['Approve_Status'] = $result->Approve_Status;
@@ -673,6 +676,7 @@ class User extends MY_Controller {
                         $result = $this->User_model->ActivityReportingExist($docid[$i]);
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
+                            $data2['Approve_Status'] = 'Draft';
                             //$data2['Approve_Status'] = 'SFA';
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
@@ -687,7 +691,7 @@ class User extends MY_Controller {
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
 
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($this->input->post($docid[$i]) != $result->Activity_Done) {
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft') {
                                 $data2['Approve_Status'] = "SFA";
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;

@@ -107,6 +107,9 @@
 </div>
 <script>
     $('#check-all').click(function (e) {
-        $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+        $(this).closest('table').find('td .check-all').prop('checked', this.checked);
+    });
+    $('#uncheck-all').click(function (e) {
+        $(this).closest('table').find('td .uncheck-all').prop('checked', this.checked);
     });
 </script>
