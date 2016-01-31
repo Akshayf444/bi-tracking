@@ -61,11 +61,12 @@
                     <?php
                     if (!empty($productlist)) {
                         $count = 1;
-                        $ApproveCount = 0;
-                        $UnApproveCount = 0;
-                        $Pending = 0;
-                        $Submitted = 0;
+
                         foreach ($productlist as $product) {
+                            $ApproveCount = 0;
+                            $UnApproveCount = 0;
+                            $Pending = 0;
+                            $Submitted = 0;
                             ?>
 
                             <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">

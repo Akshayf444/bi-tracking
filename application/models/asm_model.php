@@ -265,5 +265,48 @@ class asm_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
+    
+    function RxReportingStatus($Product_Id) {
+        $sql = "SELECT 
+                em.`Full_Name`,
+                em.`VEEVA_Employee_ID`,
+                COUNT(
+                  CASE
+                    WHEN rp.`Status` = 'Submitted' 
+                    THEN 1 
+                  END
+                ) AS SubmitCount,
+                COUNT(
+                  CASE
+                    WHEN rp.`Approve_Status` = 'Approved' 
+                    THEN 1 
+                  END
+                ) AS ApproveCount,
+                COUNT(
+                  CASE
+                    WHEN rp.`Approve_Status` = 'Un-Approved' 
+                    THEN 1 
+                  END
+                ) AS UnApproveCount,
+                COUNT(
+                  CASE
+                    WHEN rp.`Approve_Status` = 'SFA' 
+                    THEN 1 
+                  END
+                ) AS SFACount 
+              FROM
+                `Employee_Master` em 
+                INNER JOIN Employee_Doc ed
+                   ON ed.`VEEVA_Employee_ID` = em.`VEEVA_Employee_ID`
+                LEFT JOIN `Rx_Actual` rp 
+                  ON rp.`Doctor_Id` = ed.`VEEVA_Account_ID` 
+                  AND rp.`month` = {$this->nextMonth} 
+                  AND Product_Id = {$Product_Id} 
+                  AND YEAR = '$this->nextYear' 
+                WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
+              GROUP BY em.`VEEVA_Employee_ID` ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
 }

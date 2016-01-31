@@ -343,7 +343,7 @@ class ASM extends MY_Controller {
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
             $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
-
+            $data['productlist'] = $result2;
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
@@ -351,6 +351,7 @@ class ASM extends MY_Controller {
                 $result = $this->asm_model->rx_view($id2);
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
                 $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+                $data['productlist'] = NULL;
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
                 $data['show'] = $this->User_model->getReporting2($id, $product,  $this->nextMonth);
             }
