@@ -139,10 +139,10 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                             ?></th>
 
 
-                        <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
-                        <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
-                        <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
-                        <td><?php echo $month1['actual_rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month4['Actual_Rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month3['Actual_Rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month2['Actual_Rx'] ?></td>
+                        <td><?php echo $month1['Actual_Rx'] ?></td>
                     </tr>
                 </table>
 

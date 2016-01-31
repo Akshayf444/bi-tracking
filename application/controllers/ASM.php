@@ -82,23 +82,17 @@ class ASM extends MY_Controller {
 
     public function dashboard() {
         if ($this->is_logged_in()) {
-            
-             $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
+
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
 
             $data['productlist'] = $result2;
-            
+
             $kp11['one'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 1);
             $kp12['two'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 2);
             $kp13['three'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 3);
             $kp14['four'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 4);
             $kp15['five'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 5);
             $kp16['six'] = $this->User_model->ASM_kp1($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, 6);
-            $data['report1'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,1);
-            $data['report2'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,2);
-            $data['report3'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,3);
-            $data['report4'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,4);
-            $data['report5'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,5);
-            $data['report6'] = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,6);
             if ($kp11['one']['Planned'] != 0) {
                 $data['kp11'] = ($kp11['one']['Actual'] / $kp11['one']['Planned']) * 100;
             } else {
@@ -347,7 +341,7 @@ class ASM extends MY_Controller {
             $id2 = $this->session->userdata('VEEVA_Employee_ID');
             $result = $this->asm_model->rx_view($id2);
             $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name');
-            $result2 = $this->asm_model->product();
+            $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
             $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name');
 
             if ($this->input->post()) {
@@ -356,10 +350,9 @@ class ASM extends MY_Controller {
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
                 $data['bdm'] = $this->Master_Model->generateDropdown($result, 'VEEVA_Employee_ID', 'Full_Name', $id);
-                $result2 = $this->asm_model->product();
+                $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
-
-                $data['show'] = $this->asm_model->report_rx($id, $product);
+                $data['show'] = $this->User_model->getReporting2($id, $product,  $this->nextMonth);
             }
 
             $data = array('title' => 'Report', 'content' => 'ASM/reporting_rx', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);

@@ -58,7 +58,7 @@ class User_model extends CI_Model {
     public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT * FROM Rx_Target
                 WHERE Month = $month_start
-                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year='$year' AND Status = 'Submitted'  ";
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year='$this->nextYear' AND Status = 'Submitted'  ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -317,18 +317,38 @@ class User_model extends CI_Model {
     }
 
     function getReporting($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
-        $this->db->select('rxp.Planned_Rx,dm.*,SUM(act.Actual_Rx) AS Actual_Rx,pf.Winability,pf.Patient_Rxbed_In_Month,pf.Patient_Seen_month');
-        $this->db->from('Employee_Doc ed');
-        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
-        $this->db->join('Profiling pf', 'dm.Account_ID = pf.Doctor_Id', 'LEFT');
-        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
-        $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND act.Year = "' . $Year . '" AND act.month = "' . $month . '" AND act.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
-
-        //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
-        $this->db->group_by('dm.Account_ID');
-        $query = $this->db->get();
-        //echo $this->db->last_query();
+        $date = date('Y-m-d');
+        $sql = "SELECT 
+                    `rxp`.`Planned_Rx`,
+                    `dm`.*,
+                    SUM(act.Actual_Rx) AS Actual_Rx,
+                    `pf`.`Winability`,
+                    `pf`.`Patient_Rxbed_In_Month`,
+                    `pf`.`Patient_Seen_month`,
+                    SUM(CASE WHEN DATE_FORMAT(act.created_at,'%Y-%m-%d') = '$date' THEN act.Actual_Rx END ) AS Actual_Rx2
+                  FROM
+                    (`Employee_Doc` ed) 
+                    JOIN `Doctor_Master` dm 
+                      ON `dm`.`Account_ID` = `ed`.`VEEVA_Account_ID` 
+                    LEFT JOIN `Profiling` pf 
+                      ON `dm`.`Account_ID` = `pf`.`Doctor_Id` 
+                    LEFT JOIN `Rx_Planning` rxp 
+                      ON `dm`.`Account_ID` = `rxp`.`Doctor_Id` 
+                      AND rxp.Product_Id = {$Product_id} 
+                      AND rxp.Year = '$Year' 
+                      AND rxp.month = '$month' 
+                      AND rxp.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
+                    LEFT JOIN `Rx_Actual` act 
+                      ON `dm`.`Account_ID` = `act`.`Doctor_Id` 
+                      AND act.Product_Id = {$Product_id} 
+                      AND act.Year = '$Year' 
+                      AND act.month =  '$month' 
+                      AND act.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
+                  WHERE `ed`.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                    AND `dm`.`Individual_Type` = '$this->Individual_Type' 
+                  GROUP BY `dm`.`Account_ID` ";
+        $query = $this->db->query($sql);
+        // echo $this->db->last_query();
         return $query->result();
     }
 
@@ -779,17 +799,19 @@ class User_model extends CI_Model {
     }
 
     public function product_detail($VEEVA_Employee_ID, $Product_id, $month, $year) {
-        $this->db->select('SUM(`Actual_Rx`) as actual_rx');
-        $this->db->from('`Rx_Actual`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year, 'Status' => 'Submitted'));
+        $this->db->select('SUM(Actual_Rx) AS Actual_Rx');
+        $this->db->from('Rx_Actual rx');
+        $this->db->join('Doctor_Master dm', 'rx.Doctor_Id = dm.Account_ID');
+        $this->db->where(array('rx.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'rx.Product_id' => $Product_id, 'rx.month' => $month, 'Year' => $year, 'rx.Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
 
     public function kpi($VEEVA_Employee_ID, $Product_id, $month, $year) {
         $this->db->select('SUM(`Planned_Rx`) as planned_rx');
-        $this->db->from('`Rx_Planning`');
-        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year, 'Planning_Status' => 'Submitted'));
+        $this->db->from('`Rx_Planning` rp');
+        $this->db->join('Employee_Doc ed', 'ed.VEEVA_Account_ID = rp.Doctor_Id');
+        $this->db->where(array('rp.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'month' => $month, 'Year' => $year, 'Planning_Status' => 'Submitted'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -1045,7 +1067,7 @@ class User_model extends CI_Model {
 
     function check_planning($VEEVA_Employee_ID, $Product_Id, $nextMonth, $nextYear) {
         $sql = "SELECT * FROM `Rx_Planning`
-                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear";
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear AND Planning_Status = 'Submitted' ";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -1097,24 +1119,43 @@ class User_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-    function report($VEEVA_Employee_ID,$month,$year,$product) {
-        $sql = "SELECT em.`Full_Name`,COUNT(ed.`Account_Name`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
+
+    function report($VEEVA_Employee_ID, $month, $year, $product) {
+        $sql = "SELECT em.`Full_Name`,em.VEEVA_Employee_ID,COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
                 INNER JOIN Employee_Doc ed 
                 ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
+                INNER JOIN Doctor_Master dm 
+                ON dm.`Account_ID` = ed.`VEEVA_Account_ID` AND dm.Individual_Type = '$this->Individual_Type'
                 LEFT JOIN Profiling p
                 ON ed.`VEEVA_Account_ID`=p.`Doctor_Id` AND p.`Product_id`= $product
                 LEFT JOIN Rx_Target rt
                 ON em.`VEEVA_Employee_ID`=rt.`VEEVA_Employee_ID`AND rt.`Status`='Submitted' AND rt.`Product_Id`=$product AND rt.`Month`=$month AND rt.`Year`=$year
                 LEFT JOIN Rx_Planning rp
-                ON ed.`VEEVA_Account_ID`=rp.`Doctor_Id`AND rp.`Product_Id`=$product AND rp.`Month`=$month AND rp.`Year`=$year
+                ON ed.`VEEVA_Account_ID`=rp.`Doctor_Id`AND rp.`Product_Id`=$product AND rp.`Month`=$month AND rp.`Year`=$year AND rp.VEEVA_Employee_ID = em.VEEVA_Employee_ID
                 LEFT JOIN Activity_Planning ap
-                ON ed.`VEEVA_Account_ID`=ap.`Doctor_Id` AND ap.`Product_Id`=$product AND ap.`Month`=$month AND ap.`Year`=$year
+                ON ed.`VEEVA_Account_ID`=ap.`Doctor_Id` AND ap.`Product_Id`=$product AND ap.`Month`=$month AND ap.`Year`=$year AND em.`VEEVA_Employee_ID` = ap.`VEEVA_Employee_ID` 
                 LEFT JOIN Activity_Reporting ar
-                ON ed.`VEEVA_Account_ID`=ar.`Doctor_Id` AND ar.`Product_Id`=$product AND ar.`Month`=$month AND ar.`Year`=$year
+                ON ed.`VEEVA_Account_ID`=ar.`Doctor_Id` AND ar.`Product_Id`=$product AND ar.`Month`=$month AND ar.`Year`=$year AND em.`VEEVA_Employee_ID` = ar.`VEEVA_Employee_ID` 
                 WHERE em.Reporting_VEEVA_ID='$VEEVA_Employee_ID'
                 GROUP BY em.`VEEVA_Employee_ID`";
         $query = $this->db->query($sql);
-        return $query->row_array();
+        //echo $sql;
+        return $query->result();
+    }
+
+    function getReporting2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
+        $this->db->select('dm.*,GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,SUM(act.Actual_Rx) AS Actual_Rx');
+        $this->db->from('Employee_Doc ed');
+        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
+        $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND act.Year = "' . $Year . '" AND act.month = "' . $month . '" AND act.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
+
+        //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
+        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'Approve_Status' => 'SFA'));
+        $this->db->group_by('dm.Account_ID');
+        $this->db->order_by('Actual_Rx DESC');
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        return $query->result();
     }
 
 }

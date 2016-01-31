@@ -187,8 +187,13 @@
                                 <td><?php echo $month3Actual; ?></td>
                                 <td><?php echo $planned_rx ?><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID ?>"/></td>
                                 <td><?php echo $month4rx ?></td>
-        <!--                                <td><?php //echo isset($doctor->Daily_Actual_Rx) ? $doctor->Daily_Actual_Rx : '';      ?></td>-->
-                                <td> <input name = "value[]" type = "number" class="val" min="0" value = ""/></td>
+
+                                <?php if ($this->Product_Id == 1) { ?>
+                                    <td> <input name = "value[]" type = "number" step="0.5" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
+                                <?php } else { ?>
+                                    <td> <input name = "value[]" type = "number" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
+
+                                <?php } ?>    
                             </tr>
                             <?php
                         }
@@ -204,8 +209,10 @@
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <?php if ($allApproved == TRUE) { ?>
                 <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+            <?php } else { ?>
+                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
             <?php } ?>
-            <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
+
         </div>
     </div>
 </div>

@@ -35,7 +35,6 @@ class User extends MY_Controller {
     public function index() {
         $data = array();
         if ($this->input->post()) {
-
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $check = $this->User_model->authentication($username, $password);

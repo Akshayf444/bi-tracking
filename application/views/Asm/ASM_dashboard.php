@@ -80,13 +80,13 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp14 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -104,14 +104,14 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp15 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
                                 </div>
                             </div>
 
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -129,13 +129,13 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp16 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -174,7 +174,7 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp11 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
 
                                 </div>
                             </div>
@@ -182,7 +182,7 @@ if (!empty($division)) {
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -200,7 +200,7 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp12 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
 
                                 </div>
                             </div>
@@ -208,7 +208,7 @@ if (!empty($division)) {
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -226,13 +226,13 @@ if (!empty($division)) {
                                     <input class="knob" id="kp1" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                     <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php echo $kp13 ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
-                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;            ?> Actual / <?php //echo $rxlabel;            ?> Planned</span>
+                                    <span style="margin-left: 66px;position: absolute;margin-top: -17px;"><?php //echo $rxlabel;             ?> Actual / <?php //echo $rxlabel;             ?> Planned</span>
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-5 col-xs-5">
                                 <div class="demo" >       
                                     <input class="knob" id="kp2" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
-                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);            ?>%</span>
+                                    <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php // echo round($kpi2, 2);             ?>%</span>
                                     <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
                                     <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
                                         if ($this->Product_Id == 1) {
@@ -290,19 +290,29 @@ if (!empty($division)) {
                             <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>BDM Name</th>
+                                        <th style="width: 20%">BDM Name</th>
                                         <th>No. of Doctors in MCL</th>
                                         <th>No. of Doctors profiled</th>
                                         <th>Target New Rxn for the month</th>
                                         <th>Planned New Rxn for the month</th>
+                                        <th>Achieved New Rxn for the month</th>
                                         <th>No. of Doctors planned for activities</th>
                                         <th>Achieved No. of Doctors planned for activities</th>
                                     </tr>
                                     <?php
-                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID,  $this->nextMonth,  $this->nextYear,$product->id);
+                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
                                     if (!empty($Status)) {
                                         foreach ($Status as $value) {
-                                            echo '<tr><td>' . $value->Full_Name . '</td><td>' . $value->No_of_Doctors . '</td><td>' . $value->No_of_Doctors_profiled . '</td><td>' . $value->Target_New_Rxn_for_the_month . '</td><td>' . $value->Planned_New_Rxn . '</td><td>' . $value->No_of_Doctors_planned . '</td><td>' . $value->checkk . '</td></tr>';
+
+                                            $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
+                                            echo '<tr><td style="width: 20%">' . $value->Full_Name . '</td>'
+                                            . '<td>' . $value->No_of_Doctors . '</td>'
+                                            . '<td>' . $value->No_of_Doctors_profiled . '</td>'
+                                            . '<td>' . $value->Target_New_Rxn_for_the_month . '</td>'
+                                            . '<td>' . $value->Planned_New_Rxn . '</td>'
+                                            . '<td>' . $currentMonthRx['Actual_Rx'] . '</td>'
+                                            . '<td>' . $value->No_of_Doctors_planned . '</td>'
+                                            . '<td>' . $value->checkk . '</td></tr>';
                                         }
                                     }
                                     ?>
