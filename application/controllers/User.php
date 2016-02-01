@@ -925,12 +925,5 @@ EMAILBODY;
         $this->load->view('template1', $data);
     }
     
-    function Reset_Password(){
-        $veeva_employee_id = $this->input->get('e');
-        $id = base64_decode($veeva_employee_id);
-        
-                $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
-        $this->load->view('template1', $data);
-    }
-
+  
 }
