@@ -834,50 +834,103 @@ class User extends MY_Controller {
         return $query->row();
     }
 
-    public function forget() {
-        $this->load->library('My_PHPMailer');
-        $mail = new PHPMailer();
-        $mail->IsSMTP(); // we are going to use SMTP
-        $mail->SMTPAuth = true; // enabled SMTP authentication
-        $mail->SMTPSecure = "ssl";  // prefix for secure protocol to connect to the server
-        $mail->Host = "smtp.gmail.com";      // setting GMail as our SMTP server
-        $mail->Port = 465;                   // SMTP port to connect to GMail
-        $mail->Username = "myusername@gmail.com";  // user email address
-        $mail->Password = "password";            // password in GMail
-        $mail->SetFrom('info@yourdomain.com', 'Firstname Lastname');  //Who is sending the email
-        $mail->AddReplyTo("response@yourdomain.com", "Firstname Lastname");  //email address that receives the response
-        $mail->Subject = "Email subject";
-        $mail->Body = "HTML message
-";
-        
-     
-        $mail->AltBody = "Plain text message";
-        $destino = "addressee@example.com"; // Who is addressed the email to
-        $mail->AddAddress($destino, "John Doe");
+    function sendMail($message, $email) {
+        $this->load->library('email');
 
-        $mail->AddAttachment("images/phpmailer.gif");      // some attached files
-        $mail->AddAttachment("images/phpmailer_mini.gif"); // as many as you want
-        if (!$mail->Send()) {
-            $data["message"] = "Error: " . $mail->ErrorInfo;
-        } else {
-            $data["message"] = "Message sent correctly!";
+        $subject = 'Forgot Password';
+        $message = '<p>This message has been sent for testing purposes.</p>';
+
+        // Get full html:
+        $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=' . strtolower(config_item('charset')) . '" />
+    <title>' . html_escape($subject) . '</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 16px;
         }
-        $data = array('title' => 'Forget', 'content' => 'User/forget', 'view_data' => 'blank');
+    </style>
+</head>
+<body>
+' . $message . '
+</body>
+</html>';
+        // Also, for getting full html you may use the following internal method:
+        //$body = $this->email->full_html($subject, $message);
+
+        $result = $this->email
+                ->from('mohite.akshay118@gmail.com')
+                ->reply_to('mohite.akshay118@gmail.com')    // Optional, an account where a human being reads.
+                ->to('akshay@techvertica.com')
+                ->subject($subject)
+                ->message($body)
+                ->send();
+
+        var_dump($result);
+        echo '<br />';
+        echo $this->email->print_debugger();
+
+        exit;
+    }
+
+    function sendMail2() {
+        include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
+        include APPPATH . 'third_party/phpMailer/class.smtp.php';
+
+        $email = $this->input->post('email');
+        echo $email;
+        $emp = $this->User_model->employee_id($email);
+        if (!empty($emp)) {
+            $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
+            $link = "http://127.0.0.1/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
+        }
+
+        $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
+
+        $mail->IsSMTP(); // telling the class to use SMTP
+
+        try {
+            $mail->SMTPAuth = true;                  // enable SMTP authentication
+            $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
+            $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
+            $mail->Port = 465;                   // set the SMTP port for the MAIL server
+            $mail->Username = "bi@instacom.in";  //  username
+            $mail->Password = "bitracker";            // password
+
+            $mail->FromName = "BI-Tracking";
+            $mail->From = "bi@instacom.in";
+            $mail->AddAddress('akshay@techvertica.com', "BI-Tracking");
+
+            $mail->Subject = "BI-Tracking Login Details";
+
+            $mail->IsHTML(true);
+
+            $mail->Body = <<<EMAILBODY
+
+Link For Forgot Password <br/>{$link}
+EMAILBODY;
+
+            $mail->Send();
+        } catch (phpmailerException $e) {
+            echo $e->errorMessage(); //Pretty error messages from PHPMailer
+        } catch (Exception $e) {
+            echo $e->getMessage(); //Boring error messages from anything else!
+        }
+    }
+
+    public function forget_pass() {
+        $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
+        $this->load->view('template1', $data);
+    }
+    
+    function Reset_Password(){
+        $veeva_employee_id = $this->input->get('e');
+        $id = base64_decode($veeva_employee_id);
+        
+                $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
         $this->load->view('template1', $data);
     }
 
-    public function Reset_Password() {
-        $id=$_GET['id'];
-        $id1-base64_decode($id);
-         $new = $this->input->post('password');
-      $vaild=  $this->user_model->check_email($id1);
-          
-    if(!empty($valid)){
-      $data=  array('password'=>$new);
-       
-    $this->user_model->reset_pass($id1, $data);}
-        $data = array('title' => 'Forget', 'content' => 'User/reset_pass', 'view_data' => 'blank');
-        $this->load->view('template1', $data);
- 
-    }
 }

@@ -15,12 +15,12 @@
             </div>
             
             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                <form method="post"   name="form" class="form"   enctype="multipart/form-data" role="form" action="#">
+               <?php echo form_open('user/sendMail2'); ?>
                     <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9">
 
                         <div class=" form-group">
 Email:
-<input type="text" class="form-control" name="Email" autofocus="" value="" placeholder="Email"  >
+<input type="text" class="form-control" name="email" autofocus="" value="" placeholder="Email"  >
 
                         </div>
                         <div class="pull-right" style="margin-top: 5px">
