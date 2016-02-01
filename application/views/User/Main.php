@@ -34,8 +34,8 @@
 
 </style>
 <div align="center" class="col-lg-12 col-md-12 col-sm-12">
-    <div class="panel panel-default" style="border-color: #fff;">
-        <div class="panel-body" style="    border-radius: 9px;">
+    <div class="panel panel-default" >
+        <div class="panel-body" >
 
             <div class="col-sm-4 col-md-4 col-lg-4"></div>
 
@@ -139,10 +139,10 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                             ?></th>
 
 
-                        <td style="text-align:center"><?php echo $month4['actual_rx'] ?></td>
-                        <td style="text-align:center"><?php echo $month3['actual_rx'] ?></td>
-                        <td style="text-align:center"><?php echo $month2['actual_rx'] ?></td>
-                        <td><?php echo $month1['actual_rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month4['Actual_Rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month3['Actual_Rx'] ?></td>
+                        <td style="text-align:center"><?php echo $month2['Actual_Rx'] ?></td>
+                        <td><?php echo $month1['Actual_Rx'] ?></td>
                     </tr>
                 </table>
 
@@ -187,7 +187,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
         <div class="panel-body " style="padding-bottom: 31px;">
             <div class="col-lg-1 col-xs-2 col-md-2">
                 <select class="form-control">
-                    <option><?php echo date('M',  strtotime($this->nextMonth));?> <?php echo $this->nextMonth;?></option>
+                    <option><?php echo date('M',  strtotime($this->nextMonth));?> <?php echo $this->nextYear;?></option>
                     <option>Cycle 1</option>
                 </select>
             </div>

@@ -9,8 +9,6 @@
     }
 
 </style>
-<link href="http://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="Stylesheet" type="text/css">
-<!--<script src="<?php echo asset_url(); ?>js/jquery-1.11.0.js" type="text/javascript"></script>-->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 <style>
     table.dataTable tbody tr {
@@ -28,6 +26,27 @@
             ?> For <?php echo date('M', strtotime($this->nextMonth)); ?> <?php echo $this->nextYear ?> : <b><?php echo isset($show4['target']) ? $show4['target'] : 0; ?></b></span><br>
 
     </div>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+
+        .input-color {
+            position: relative;
+        }
+        .input-color input {
+            padding-left: 20px;
+        }
+        .input-color .color-box {
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            background-color: #ccc;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+        }
+    </style>
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
         <span class="pull-right">
             Sort By
@@ -41,6 +60,22 @@
                     }
                     ?> Of Present Month</option>
             </select>
+            <ul style="margin-top:5px" >
+                <li>
+                    <div class="input-color">
+                        <input type="text" value="Un-Approved" readonly="readonly" style="height: 23px" />
+                        <div class="color-box" style="background-color: #ff9999;"></div>
+                        <!-- Replace "#FF850A" to change the color -->
+                    </div>
+                </li>
+                <li>
+                    <div class="input-color">
+                        <input type="text" value="Approved" readonly="readonly" style="height: 23px" />
+                        <div class="color-box" style="background-color: #c6ebd9;"></div>
+                        <!-- Replace "navy" to change the color -->
+                    </div>
+                </li>
+            </ul>
         </span>
 
     </div>
@@ -70,7 +105,6 @@
                         <th><?php echo date('M', strtotime('-1 month')) . $vials; ?></th>
                         <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
                         <th>Cumulative Month to Date</th>
-                        <th>Today Count</th>
                         <th>Actual</th>
                     </tr>
                 </thead>
@@ -80,6 +114,7 @@
                     $month = date('n', strtotime('-1 month'));
                     $lastMonthRx = $this->User_model->countLastMonthRx($month);
                     $currentMonthRx = $this->User_model->countPlannedRx(date('n'));
+                    $allApproved = TRUE;
                     if (isset($result) && !empty($result)) {
                         foreach ($result as $doctor) {
                             $planned_rx = isset($doctor->Planned_Rx) ? $doctor->Planned_Rx : "";
@@ -141,16 +176,24 @@
                                 echo 'style="background-color:#c6ebd9;"';
                             } elseif (isset($doctor->Approve_Status) && $doctor->Approve_Status == 'Un-Approved') {
                                 echo 'style="background-color: #ff9999;"';
+                                $allApproved = FALSE;
+                            } else {
+                                $allApproved = FALSE;
                             }
                             ?>>
                                 <td><?php echo $doctor->Account_Name; ?><p>Speciality : <?php echo $doctor->Specialty; ?></p></a></td>
                                 <td><?php echo $month1Actual; ?></td>
                                 <td><?php echo $month2Actual; ?></td>
                                 <td><?php echo $month3Actual; ?></td>
-                                <td><?php echo $planned_rx ?><input type = "hidden" name = "doc_id[]" value = "<?php $doctor->Account_ID ?>"/></td>
+                                <td><?php echo $planned_rx ?><input type = "hidden" name = "doc_id[]" value = "<?php echo $doctor->Account_ID ?>"/></td>
                                 <td><?php echo $month4rx ?></td>
-                                <td><?php echo isset($doctor->Daily_Actual_Rx) ? $doctor->Daily_Actual_Rx : ''; ?></td>
-                                <td> <input name = "value[]" type = "number" class="val" min="0" value = ""/></td>
+
+                                <?php if ($this->Product_Id == 1) { ?>
+                                    <td> <input name = "value[]" type = "number" step="0.5" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
+                                <?php } else { ?>
+                                    <td> <input name = "value[]" type = "number" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
+
+                                <?php } ?>    
                             </tr>
                             <?php
                         }
@@ -164,8 +207,12 @@
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <button type="submit" id="Submit" class="btn btn-danger">Submit</button>
-            <button type="submit" id="Approve_Status" class="btn btn-info">Save Approved</button>
+            <?php if ($allApproved == TRUE) { ?>
+                <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+            <?php } else { ?>
+                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
+            <?php } ?>
+
         </div>
     </div>
 </div>
