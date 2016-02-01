@@ -884,5 +884,5 @@ EMAILBODY;
         $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
         $this->load->view('template1', $data);
     }
-     
+  
 }
