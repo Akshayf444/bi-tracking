@@ -9,9 +9,9 @@ class Admin extends CI_Controller {
 
         parent::__construct();
 
-        $this->load->library('pagination');
-        $this->load->library('Csvimport');
 
+        $this->load->library('Csvimport');
+        $this->load->helper("url");
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
@@ -165,6 +165,10 @@ class Admin extends CI_Controller {
         $data['zone'] = $this->Master_Model->generateDropdown($result, 'Zone', 'Zone', $data['rows']['Zone']);
         $result = $this->admin_model->find_region();
         $data['region'] = $this->Master_Model->generateDropdown($result, 'Region', 'Region', $data['rows']['Region']);
+        $result = $this->admin_model->find_territory();
+        $data['Territory'] = $this->Master_Model->generateDropdown($result, 'Territory', 'Territory', $data['rows']['Territory']);
+        $result = $this->admin_model->find_REPORTING_TO();
+        $data['Reporting_To'] = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To', $data['rows']['Reporting_To']);
         $result = $this->admin_model->find_Designation();
         $data['Designation'] = $this->Master_Model->generateDropdown($result, 'Designation', 'Designation', $data['rows']['Designation']);
 
@@ -213,6 +217,13 @@ class Admin extends CI_Controller {
 //        $this->load->view('admin/update_emp', $data);
     }
 
+    public function get_record() {
+
+        
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this->admin_model->find_REPORTING_TO_VALUE($name)));
+    }
+
     public function emp_del() {
         $id = $_GET['id'];
         $data = array('status' => 0);
@@ -256,21 +267,9 @@ class Admin extends CI_Controller {
     }
 
     public function view_activity() {
-         $config = array();
-        $config["base_url"] = base_url() . "welcome/example1";
-        $config["total_rows"] =  $this->admin_model->view_activity();;
-        $config["per_page"] = 200;
-        $config["uri_segment"] = 3;
 
-        $this->pagination->initialize($config);
 
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
- 
-         
-        $data["links"] = $this->pagination->create_links();
 
-      
-        
         $data['show'] = $this->admin_model->view_activity();
         $data = array('title' => 'View_Activity', 'content' => 'admin/activity_view', 'page_title' => 'Activity Master', 'view_data' => $data);
         $this->load->view('template3', $data);
@@ -369,9 +368,16 @@ class Admin extends CI_Controller {
     }
 
     public function doc_view() {
-        
-        $data['show'] = $this->admin_model->doc_view();
+        require_once( APPPATH . 'libraries/Autopaginate.php' );
+        $page = isset($_GET['page']) && !empty($_GET['page']) ? (int) $_GET['page'] : 1;
 
+        $per_page = 100;
+        $HTML = "";
+        $total_count = $this->admin_model->doc_count();
+        $pagination = new Autopaginate($page, $per_page, $total_count->Account_Id);
+        $HTML = $pagination->renderPaging('doc_view', $page);
+        $data['html'] = $HTML;
+        $data["show"] = $this->admin_model->doc_view($per_page, $pagination->offset());
         $data = array('title' => 'Doctor', 'content' => 'admin/doctor_view', 'page_title' => 'Doctor Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }

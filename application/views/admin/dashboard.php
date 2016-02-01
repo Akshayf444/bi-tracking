@@ -98,7 +98,10 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua" style="width:<?php // echo $Over_all_count['over_all'] * 100 / $dr_by_product['Division_dr']; ?> "></div>
+                                <div class="progress-bar progress-bar-aqua" style="width:<?php if($dr_by_product['Division_dr']!=0){ $pb= $Over_all_count['over_all'] * 100 / $dr_by_product['Division_dr'];
+                                 
+                                 echo $pb;
+                                }?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
@@ -117,7 +120,10 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-red" style="width: <?php // echo $profiling_by_product1['profiling_by_product'] * 100 / $dr_by_product['Division_dr']; ?>"></div>
+                                <div class="progress-bar progress-bar-red" style="width: <?phpif($dr_by_product['Division_dr']!=0){ $pb1= $profiling_by_product1['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+                                
+                                 echo $pb1;}
+                                ?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
@@ -136,7 +142,10 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-green" style="width: <?php // echo $profiling_by_product2['profiling_by_product'] * 100 / $dr_by_product['Division_dr']; ?>"></div>
+                                <div class="progress-bar progress-bar-green" style="width: <?phpif($dr_by_product['Division_dr']!=0){ $pb2= $profiling_by_product2['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+                               
+                                 echo $pb2;}
+                                ?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
@@ -155,9 +164,13 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-yellow" style="width: <?php // echo $profiling_by_product3['profiling_by_product'] * 100 / $dr_by_product['Division_dr']; ?>"></div>
-                            </div>
-                        </div><!-- /.progress-group -->
+                                <div class="progress-bar progress-bar-yellow" style="width: <?php if($dr_by_product['Division_dr']!=0){  $pb3= $profiling_by_product3['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+                              
+                                 echo $pb3;}
+                                
+                                ?>"></div>
+                            </div> 
+                       </div><!-- /.progress-group -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- ./box-body -->
@@ -452,43 +465,23 @@
             <script src="<?php echo asset_url() ?>/dashboard/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
             <!-- FastClick -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>
-
-            <!-- AdminLTE App -->
-            <script src="<?php echo asset_url() ?>/dashboard/dist/js/app.min.js" type="text/javascript"></script>
-
-            <!-- Sparkline -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
-
-            <!-- jvectormap -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" type="text/javascript"></script>
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/jvectormap/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
+            
 
 
             <!-- daterangepicker -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-
+           
 
             <!-- datepicker -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
-
-            <!-- iCheck -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-
-
-            <!-- SlimScroll 1.3.0 -->
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-
+           
             <!-- ChartJS 1.0.1 -->
             <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-            <script src="plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+            
 
-            <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-            <!--<script src="<?php echo asset_url() ?>/dashboard/dist/js/pages/dashboard2.js" type="text/javascript"></script>-->
+           
 
 
             <!-- AdminLTE for demo purposes -->
-            <script src="<?php echo asset_url() ?>/dashboard/dist/js/demo.js" type="text/javascript"></script>
+          
             <script>
                 $(function () {
 

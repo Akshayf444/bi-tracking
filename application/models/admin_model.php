@@ -46,6 +46,24 @@ class admin_model extends CI_Model {
         return $query->result();
     }
 
+    public function find_territory() {
+        $sql = "select distinct (Territory) AS Territory from Employee_Master";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function find_REPORTING_TO() {
+        $sql = "select distinct (Reporting_To) AS  Reporting_To from Employee_Master";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function find_REPORTING_TO_VALUE($NAME) {
+        $sql = "select * from Employee_Master WHERE Reporting_To=$NAME";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
     public function update_emp($id, $data) {
         $query = $this->db->where('VEEVA_Employee_ID', $id);
         $query = $this->db->update('Employee_Master', $data);
@@ -109,7 +127,7 @@ class admin_model extends CI_Model {
     }
 
     public function view_activity() {
-       
+
         $sql = "SELECT Brand_Master.id, Brand_Master.Brand_Name,Activity_Master.Activity_Name,Activity_Master.Division,Activity_Master.Activity_id
  FROM Activity_Master LEFT JOIN  Brand_Master  ON Brand_Master.id=Activity_Master.Product_ID  where Activity_Master.Status='1'
   ";
@@ -172,8 +190,16 @@ class admin_model extends CI_Model {
         return $query;
     }
 
-    public function doc_view() {
-        $sql = "select * from Doctor_Master";
+    public function doc_count() {
+        $sql = "select count(Account_ID) as Account_Id from Doctor_Master ";
+        $query = $this->db->query($sql);
+        return $query->row();
+    }
+
+    public function doc_view($limit, $offset) {
+        $sql = "SELECT * FROM Doctor_Master  ";
+        $sql .= "LIMIT $limit ";
+        $sql .= "OFFSET $offset";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -373,10 +399,10 @@ GROUP BY em.`VEEVA_Employee_ID`";
     }
 
     public function bdm_unlocked_list() {
-        $sql="select * from  Employee_Master where Status ='locked' ";
-        
-        $query=$this->db->query($sql);
+        $sql = "select * from  Employee_Master where Status ='locked' ";
+
+        $query = $this->db->query($sql);
         return $query->result();
     }
- 
+
 }

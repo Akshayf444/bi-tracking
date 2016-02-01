@@ -10,7 +10,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Division</th>
-                    <th>Product</th>
+                   
                     <th>Action</th>
                 </tr>
                 <tr>
