@@ -1,55 +1,68 @@
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                  
-                   
+<div class="row">
+    <div class="col-lg-3 col-md-3"></div>
+    <div class="col-lg-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Change Password
+            </div>
+            <?php
+            $attribute = array('id' => 'activate');
+            echo form_open('User/Reset_Password', $attribute);
+            ?>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Enter Your New Password"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" autocomplete="off" class="form-control" placeholder="Retype Your Password"/>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="">  Reset Password</h1>
-                </div>
+            <div class="panel-footer">
+                <input type="submit" class="btn btn-positive"/>
             </div>
-            
-            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-               <?php echo form_open('user/Reset_Password'); ?>
-                    <div class="col-lg-9 col-sm-9 col-md-9 col-xs-9">
-
-                        <div class=" form-group">
-Password:
-<input type="password" class="form-control" name="password" autofocus="" value="" id="pass1
-       "placeholder="Password"  >
-
-                        </div>
-                             <div class=" form-group">
- Confirm Password:
- <input type="password" class="form-control" name="c_password" autofocus="" value=""  id="pass2"placeholder="Confirm Password"  >
-
-                        </div>
-                        <div class="pull-right" style="margin-top: 5px">
-                            <input type="submit"  name="submit" value="Reset" onclick="myFunction()" class="btn btn-primary">
-
-                        </div>
-
-                </form>
-
-                
-            </div>
-
+            </form>
         </div>
-
     </div>
-   
+    <div class="col-lg-3"></div>
+</div>
 <script>
-    function myFunction() {
-        var pass1 = document.getElementById("pass1").value;
-        var pass2 = document.getElementById("pass2").value;
-        if (pass1 != pass2) {
-            //alert("Passwords Do not match");
-            document.getElementById("pass1").style.borderColor = "#E34234";
-            document.getElementById("pass2").style.borderColor = "#E34234";
-        }
-        
-    }
+    $('document').ready(function () {
+
+        $('#activate').formValidation({
+            message: 'This value is not valid',
+            icon: {
+            },
+            fields: {
+                password: {
+                    validators: {
+                        regexp: {
+                            regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
+                            message: 'Password Must Contain 8 characters with  1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
+                        },
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        }
+                    }
+                },
+                password2: {
+                    validators: {
+                        regexp: {
+                            regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
+                            message: 'Password Must Contain 8 characters with 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
+                        },
+                        identical: {
+                            field: 'password',
+                            message: 'The password and its Repeat are not the same'
+                        },
+                        notEmpty: {
+                            message: 'Please Enter Value'
+                        }
+                    }
+                },
+            }
+        });
+    });
 </script>
+
+<script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
