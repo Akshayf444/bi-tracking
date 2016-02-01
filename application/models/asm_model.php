@@ -34,9 +34,10 @@ class asm_model extends CI_Model {
     public function getTarget() {
         $this->db->select('*');
         $this->db->from('Employee_Master em');
-        $this->db->join('Rx_Target rt', 'em.VEEVA_Employee_ID = rt.VEEVA_Employee_ID', 'left');
-        $this->db->where(array('rt.Product_Id' => $this->Product_Id, 'Reporting_VEEVA_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
+        $this->db->join('Rx_Target rt', 'em.VEEVA_Employee_ID = rt.VEEVA_Employee_ID AND rt.month =  ' . $this->nextMonth . 'AND rt.Year = "' . $this->nextYear . '"', 'left');
+        $this->db->where(array('rt.Product_Id' => $this->Product_Id, 'Reporting_VEEVA_ID' => $this->VEEVA_Employee_ID));
         $query = $this->db->get();
+        echo $this->db->last_query();
         return $query->result();
     }
 
@@ -44,18 +45,18 @@ class asm_model extends CI_Model {
         $sql = "SELECT `dm`.*,rt.Rxplan_id,rt.Approve_Status,SUM(rt.Actual_Rx) as Actual_Rx FROM (`Employee_Doc` ed) 
             INNER JOIN Doctor_Master dm ON ed.VEEVA_Account_ID = dm.Account_ID
             LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth'  AND `rt`.`Year` = '$this->nextYear' AND `rt`.`Product_Id` = '$product_id' "
-            . " WHERE   rt.Approve_Status = 'SFA'  OR rt.Approve_Status = 'Un-Approved' GROUP BY rt.Doctor_Id  ORDER BY Actual_Rx DESC";
+                . " WHERE   rt.Approve_Status = 'SFA'  OR rt.Approve_Status = 'Un-Approved' GROUP BY rt.Doctor_Id  ORDER BY Actual_Rx DESC";
         $query = $this->db->query($sql);
         echo $sql;
         return $query->result();
     }
-    
-    public function approveReporting($VEEVA_Employee_ID,$Product_Id){
+
+    public function approveReporting($VEEVA_Employee_ID, $Product_Id) {
         $this->db->select('*');
         $this->db->from('Employee_Doc ed');
-        $this->db->join('Doctor_Master dm','ed.VEEVA_Account_ID = dm.Account_ID');
-        $this->db->join('Rx_Actual er','`dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = "'.$VEEVA_Employee_ID.'" AND `rt`.`month` = "'.$this->nextMonth.'"  AND `rt`.`Year` = "'.$this->nextYear.'"' );
-        $this->db->where('Rx_Actual er','`dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = "'.$VEEVA_Employee_ID.'" AND `rt`.`month` = "'.$this->nextMonth.'"  AND `rt`.`Year` = "'.$this->nextYear.'"' );
+        $this->db->join('Doctor_Master dm', 'ed.VEEVA_Account_ID = dm.Account_ID');
+        $this->db->join('Rx_Actual er', '`dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = "' . $VEEVA_Employee_ID . '" AND `rt`.`month` = "' . $this->nextMonth . '"  AND `rt`.`Year` = "' . $this->nextYear . '"');
+        $this->db->where('Rx_Actual er', '`dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = "' . $VEEVA_Employee_ID . '" AND `rt`.`month` = "' . $this->nextMonth . '"  AND `rt`.`Year` = "' . $this->nextYear . '"');
     }
 
     public function report_Activity($id, $product_id) {
@@ -94,8 +95,8 @@ class asm_model extends CI_Model {
                         LEFT JOIN `Rx_Target` rt 
                           ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
                           AND `Product_id` = $product1 
-                          AND MONTH = 1 
-                          AND YEAR = '2016' 
+                          AND MONTH = {$this->nextMonth} 
+                          AND YEAR = '$this->nextYear' 
                       WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`) 
                       UNION
@@ -110,8 +111,8 @@ class asm_model extends CI_Model {
                         LEFT JOIN `Rx_Target` rt 
                           ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
                           AND `Product_id` = $product2 
-                          AND MONTH = 1 
-                          AND YEAR = '2016' 
+                          AND MONTH = {$this->nextMonth} 
+                          AND YEAR = '$this->nextYear' 
                       WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`) 
                       UNION
@@ -126,13 +127,14 @@ class asm_model extends CI_Model {
                         LEFT JOIN `Rx_Target` rt 
                           ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
                           AND `Product_id` = $product3
-                          AND MONTH = 1 
-                          AND YEAR = '2016' 
+                            AND MONTH = {$this->nextMonth} 
+                          AND YEAR = '$this->nextYear' 
 
                       WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                       GROUP BY em.`VEEVA_Employee_ID`)";
 
         $query = $this->db->query($sql);
+        //echo $this->db->last_query() . "<br/>";
         return $query->result();
     }
 
@@ -173,10 +175,11 @@ class asm_model extends CI_Model {
                   AND rp.`month` = {$this->nextMonth} 
                   AND Product_Id = {$Product_Id} 
                   AND YEAR = '$this->nextYear' 
-
+                  AND em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID`    
               WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
               GROUP BY em.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -217,6 +220,7 @@ class asm_model extends CI_Model {
                   AND rp.`month` = {$this->nextMonth} 
                   AND Product_Id = {$Product_Id} 
                   AND YEAR = '$this->nextYear' 
+                   AND em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID`    
               WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
               GROUP BY em.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
@@ -260,12 +264,13 @@ class asm_model extends CI_Model {
                   AND rp.`month` = {$this->nextMonth} 
                   AND Product_Id = {$Product_Id} 
                   AND YEAR = '$this->nextYear' 
+                   AND em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID`    
                 WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
               GROUP BY em.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
         return $query->result();
     }
-    
+
     function RxReportingStatus($Product_Id) {
         $sql = "SELECT 
                 em.`Full_Name`,
@@ -303,6 +308,7 @@ class asm_model extends CI_Model {
                   AND rp.`month` = {$this->nextMonth} 
                   AND Product_Id = {$Product_Id} 
                   AND YEAR = '$this->nextYear' 
+                  AND em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID`    
                 WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
               GROUP BY em.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);

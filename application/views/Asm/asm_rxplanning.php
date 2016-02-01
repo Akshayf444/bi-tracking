@@ -32,12 +32,11 @@
         ?>
         <div class="table-responsive panel">
             <table class="table table-bordered table-hover ">
-
                 <tr>
                     <th>Doctor Name</th>
                     <th>Planned Rx</th>
                     <th><input type="radio" id="check-all"> Approve</th>
-                    <th>Un-Approve</th>
+                    <th>Reject</th>
                 </tr>
 
                 <?php foreach ($show as $row) :
@@ -64,7 +63,7 @@
 
     </div>
     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-<?php if (!empty($productlist)) { ?>
+        <?php if (!empty($productlist)) { ?>
             <div class="panel panel-default"> 
                 <div class="panel-heading"> Status  </div>
                 <div class="panel-body">
@@ -100,9 +99,9 @@
                                         <tr>
                                             <th>BDM Name</th>
                                             <th>Approved</th>
-                                            <th>Un-Approved</th>
+                                            <th>Rejected</th>
                                             <th>Pending</th>
-                                            <th>Submitted</th>
+                                            <th>Submitted By BDM Post ASM Approval</th>
                                         </tr>
                                         <?php
                                         $Status = $this->asm_model->PlanningStatus($product->id);
@@ -130,7 +129,7 @@
                     </div>
                 </div>
             </div>  
-<?php } ?>
+        <?php } ?>
     </div>
     <script>
         $('#check-all').click(function (e) {
