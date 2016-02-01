@@ -867,14 +867,15 @@ class User extends MY_Controller {
     }
 
     public function Reset_Password() {
-        $email=$_GET['email'];
+        $id=$_GET['id'];
+        $id1-base64_decode($id);
          $new = $this->input->post('password');
-      $vaild=  $this->user_model->check_email($email);
+      $vaild=  $this->user_model->check_email($id1);
           
     if(!empty($valid)){
       $data=  array('password'=>$new);
        
-    $this->user_model->reset_pass($email, $data);}
+    $this->user_model->reset_pass($id1, $data);}
         $data = array('title' => 'Forget', 'content' => 'User/reset_pass', 'view_data' => 'blank');
         $this->load->view('template1', $data);
  
