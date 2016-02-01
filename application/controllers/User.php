@@ -834,13 +834,12 @@ class User extends MY_Controller {
         return $query->row();
     }
 
-    
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
 
         $email = $this->input->post('email');
-        echo $email;
+       
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
@@ -884,5 +883,28 @@ EMAILBODY;
         $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
         $this->load->view('template1', $data);
     }
-  
+
+    public function Reset_Password() {
+        $data = array();
+        if ($this->input->get('e')) {
+            $id = $this->input->get('e');
+            $id1 = base64_decode($id);
+            $data['VEEVA_Employee_ID'] = $id1;
+        }
+
+        if ($this->input->post()) {
+            $new = $this->input->post('password');
+            $id1 = $this->input->post('VEEVA_Employee_ID');
+            $data2 = array(
+                'VEEVA_Employee_ID' => $id1,
+                'password' => $new);
+            $this->User_model->Update_password($id1, $data2);
+            redirect('User/index','refresh');
+        }
+
+
+        $data = array('title' => 'Reset_Password', 'content' => 'User/reset_password', 'view_data' => $data);
+        $this->load->view('template1', $data);
+    }
+
 }

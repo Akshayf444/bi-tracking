@@ -1053,7 +1053,9 @@ class User_model extends CI_Model {
 
     function Update_password($VEEVA_Employee_ID, $data) {
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
-        return $this->db->update($this->table_name, $data);
+        return  $this->db->update($this->table_name, $data);
+     
+      
     }
 
     public function All_data($VEEVA_Employee_ID) {
@@ -1166,9 +1168,12 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function Reset_pass($email, $data) {
-        $this->db->where(array('VEEVA_Employee_ID' => $id));
-        return $this->db->update($this->table_name, $data);
+    public function Reset_pass($id, $data) {
+        $this->db->where(array('VEEV_Employee_ID' => $id));
+        $this->db->update('Employee_Master', $data);
+
+
+        return $query;
     }
 
 }

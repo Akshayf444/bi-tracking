@@ -14,6 +14,7 @@
                     <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Enter Your New Password"/>
                 </div>
                 <div class="form-group">
+                    <input type="hidden" value="<?php echo isset($VEEVA_Employee_ID) ? $VEEVA_Employee_ID : ''; ?>" name="VEEVA_Employee_ID">
                     <input type="password" name="password2" autocomplete="off" class="form-control" placeholder="Retype Your Password"/>
                 </div>
             </div>
