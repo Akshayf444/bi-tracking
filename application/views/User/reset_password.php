@@ -1,6 +1,6 @@
-<div class="row">
-    <div class="col-lg-3 col-md-3"></div>
-    <div class="col-lg-6 col-md-6">
+<div class="container" style="margin-top: 2em;">
+
+    <div class="col-lg-6 col-md-6 col-lg-offset-3 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Change Password
@@ -19,12 +19,11 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <input type="submit" class="btn btn-positive"/>
+                <input type="submit" class="btn btn-success"/>
             </div>
             </form>
         </div>
     </div>
-    <div class="col-lg-3"></div>
 </div>
 <script>
     $('document').ready(function () {

@@ -960,7 +960,7 @@ class User_model extends CI_Model {
             if ($allApproved == TRUE) {
                 $HTML .='<button type="submit" id="Submit" class="btn btn-danger">Submit</button>';
             } else {
-                $HTML .='<button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>';
+                $HTML .='<button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>';
             }
             $HTML .='</div>';
         }

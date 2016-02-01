@@ -372,8 +372,18 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
-                            if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft') {
-                                $doc['Approve_Status'] = 'SFA';
+
+                            if ($result->Planned_Rx != $value[$i]) {
+                                $doc['field_changed'] = 1;
+                            } else {
+                                $doc['field_changed'] = 0;
+                            }
+
+
+                            if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                    $doc['Approve_Status'] = 'SFA';
+                                }
                             } else {
                                 $doc['Approve_Status'] = $result->Approve_Status;
                             }
@@ -447,11 +457,22 @@ class User extends MY_Controller {
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft') {
-                                $data2['Approve_Status'] = "SFA";
+                            if ($result->Activity_Id != $Activity[$i]) {
+                                $data2['field_changed'] = 1;
+                            } else {
+                                $data2['field_changed'] = 0;
+                            }
+
+                            if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                    $data2['Approve_Status'] = 'SFA';
+                                } else {
+                                    $data2['Approve_Status'] = $result->Approve_Status;
+                                }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
                             }
+
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
@@ -689,10 +710,19 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done) {
+                                $data2['field_changed'] = 1;
+                            } else {
+                                $data2['field_changed'] = 0;
+                            }
 
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft') {
-                                $data2['Approve_Status'] = "SFA";
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                    $data2['Approve_Status'] = 'SFA';
+                                } else {
+                                    $data2['Approve_Status'] = $result->Approve_Status;
+                                }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
                             }
@@ -839,43 +869,49 @@ class User extends MY_Controller {
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
 
         $email = $this->input->post('email');
-       
+
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
-            $link = "http://127.0.0.1/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
-        }
+            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
 
-        $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
+            $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 
-        $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->IsSMTP(); // telling the class to use SMTP
 
-        try {
-            $mail->SMTPAuth = true;                  // enable SMTP authentication
-            $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
-            $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
-            $mail->Port = 465;                   // set the SMTP port for the MAIL server
-            $mail->Username = "bi@instacom.in";  //  username
-            $mail->Password = "bitracker";            // password
+            try {
+                $mail->SMTPAuth = true;                  // enable SMTP authentication
+                $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
+                $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
+                $mail->Port = 465;                   // set the SMTP port for the MAIL server
+                $mail->Username = "bi@instacom.in";  //  username
+                $mail->Password = "bitracker";            // password
 
-            $mail->FromName = "BI-Tracking";
-            $mail->From = "bi@instacom.in";
-            $mail->AddAddress('akshay@techvertica.com', "BI-Tracking");
+                $mail->FromName = "BI-Tracking";
+                $mail->From = "bi@instacom.in";
+                $mail->AddAddress($email, "BI-Tracking");
 
-            $mail->Subject = "BI-Tracking Login Details";
+                $mail->Subject = "Forgot Password";
 
-            $mail->IsHTML(true);
+                $mail->IsHTML(true);
 
-            $mail->Body = <<<EMAILBODY
+                $mail->Body = <<<EMAILBODY
 
-Link For Forgot Password <br/>{$link}
+Link For Reseting Password <br/>{$link}
 EMAILBODY;
 
-            $mail->Send();
-        } catch (phpmailerException $e) {
-            echo $e->errorMessage(); //Pretty error messages from PHPMailer
-        } catch (Exception $e) {
-            echo $e->getMessage(); //Boring error messages from anything else!
+                $mail->Send();
+            } catch (phpmailerException $e) {
+                echo $e->errorMessage(); //Pretty error messages from PHPMailer
+            } catch (Exception $e) {
+                echo $e->getMessage(); //Boring error messages from anything else!
+            }
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Link For Resetting Password Has Been Mailed To Your Emailid.', 'success'));
+
+            redirect('User/index', 'refresh');
+        } else {
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Wrong Emailid', 'danger'));
+            redirect('User/index', 'refresh');
         }
     }
 
@@ -899,7 +935,11 @@ EMAILBODY;
                 'VEEVA_Employee_ID' => $id1,
                 'password' => $new);
             $this->User_model->Update_password($id1, $data2);
-            redirect('User/index','refresh');
+
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
+
+            redirect('User/index', 'refresh');
+
         }
 
 
