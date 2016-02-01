@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class ASM extends MY_Controller {
-
+  public $alertLabel = 'ASM';
     public function __construct() {
         parent::__construct();
         $this->load->helper();
@@ -152,9 +152,11 @@ class ASM extends MY_Controller {
                 if ($check['division'] == 'Diabetes') {
                     $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Diabetes";
+                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . '   Added Successfully.', 'success'));
                 } else {
                     $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Thrombi";
+                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . '  Added Successfully.', 'success'));
                 }
             }
             $data = array('title' => 'Target', 'content' => 'ASM/target', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);

@@ -834,4 +834,49 @@ class User extends MY_Controller {
         return $query->row();
     }
 
+    public function forget() {
+        $this->load->library('My_PHPMailer');
+        $mail = new PHPMailer();
+        $mail->IsSMTP(); // we are going to use SMTP
+        $mail->SMTPAuth = true; // enabled SMTP authentication
+        $mail->SMTPSecure = "ssl";  // prefix for secure protocol to connect to the server
+        $mail->Host = "smtp.gmail.com";      // setting GMail as our SMTP server
+        $mail->Port = 465;                   // SMTP port to connect to GMail
+        $mail->Username = "myusername@gmail.com";  // user email address
+        $mail->Password = "password";            // password in GMail
+        $mail->SetFrom('info@yourdomain.com', 'Firstname Lastname');  //Who is sending the email
+        $mail->AddReplyTo("response@yourdomain.com", "Firstname Lastname");  //email address that receives the response
+        $mail->Subject = "Email subject";
+        $mail->Body = "HTML message
+";
+        
+     
+        $mail->AltBody = "Plain text message";
+        $destino = "addressee@example.com"; // Who is addressed the email to
+        $mail->AddAddress($destino, "John Doe");
+
+        $mail->AddAttachment("images/phpmailer.gif");      // some attached files
+        $mail->AddAttachment("images/phpmailer_mini.gif"); // as many as you want
+        if (!$mail->Send()) {
+            $data["message"] = "Error: " . $mail->ErrorInfo;
+        } else {
+            $data["message"] = "Message sent correctly!";
+        }
+        $data = array('title' => 'Forget', 'content' => 'User/forget', 'view_data' => 'blank');
+        $this->load->view('template1', $data);
+    }
+
+    public function Reset_Password() {
+        $email=$_GET['email'];
+         $new = $this->input->post('password');
+      $vaild=  $this->user_model->check_email($email);
+          
+    if(!empty($valid)){
+      $data=  array('password'=>$new);
+       
+    $this->user_model->reset_pass($email, $data);}
+        $data = array('title' => 'Forget', 'content' => 'User/reset_pass', 'view_data' => 'blank');
+        $this->load->view('template1', $data);
+ 
+    }
 }

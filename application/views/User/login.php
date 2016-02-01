@@ -25,5 +25,10 @@
                 </div>
             </div>
         </div>
+    </div
+     <div class="row">
+        <div class="col-lg-9">
+            <a href="<?php echo site_url() ?>/User/forget" width="45%" class="pull-right" > Forget Password</a>
     </div>
+</div>
 </div>

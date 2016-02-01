@@ -1158,4 +1158,17 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    public function check_email($email) {
+        $this->db->select('*');
+        $this->db->from('Employee_Master');
+        $this->db->where(array('email' => $emai));
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function Reset_pass($email, $data) {
+        $this->db->where(array('email' => $email));
+        return $this->db->update($this->table_name, $data);
+    }
+
 }
