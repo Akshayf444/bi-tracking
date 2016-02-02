@@ -457,11 +457,22 @@ class User extends MY_Controller {
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft') {
-                                $data2['Approve_Status'] = "SFA";
+                            if ($result->Activity_Id != $Activity[$i]) {
+                                $data2['field_changed'] = 1;
+                            } else {
+                                $data2['field_changed'] = 0;
+                            }
+
+                            if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                    $data2['Approve_Status'] = 'SFA';
+                                } else {
+                                    $data2['Approve_Status'] = $result->Approve_Status;
+                                }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
                             }
+
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
@@ -699,10 +710,19 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Added Successfully.', 'success'));
                             }
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done) {
+                                $data2['field_changed'] = 1;
+                            } else {
+                                $data2['field_changed'] = 0;
+                            }
 
                             $data2['updated_at'] = date('Y-m-d H:i:s');
-                            if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft') {
-                                $data2['Approve_Status'] = "SFA";
+                            if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                    $data2['Approve_Status'] = 'SFA';
+                                } else {
+                                    $data2['Approve_Status'] = $result->Approve_Status;
+                                }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
                             }
@@ -844,7 +864,6 @@ class User extends MY_Controller {
         return $query->row();
     }
 
-    
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
@@ -894,5 +913,5 @@ EMAILBODY;
         $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
         $this->load->view('template1', $data);
     }
-     
+
 }

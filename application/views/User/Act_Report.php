@@ -52,6 +52,7 @@
 
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
+            <input type="hidden" id="Button_click_status" name="Button_click_status" value="Save">
         </div>
     </div>
 </div>
@@ -79,7 +80,12 @@
 
     $("#Submit").click(function () {
         $("#Status").val('Submitted');
-        //$("#form1").submit();
+        $("#Button_click_status").val('Submit');
+    });
+
+    $('#Approve').click(function () {
+        $("#Approve_Status").val('SFA');
+        $("#Button_click_status").val('SaveForApproval');
     });
 
 </script>

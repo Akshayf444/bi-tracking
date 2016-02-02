@@ -394,7 +394,7 @@ class ASM extends MY_Controller {
 
                 // echo $this->db->last_query();
             }
-            redirect('ASM/activity_planning', 'refresh');
+            redirect('ASM/reporting_activity', 'refresh');
         }
     }
 
