@@ -302,8 +302,19 @@ if (!empty($division)) {
                                     <?php
                                     $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
                                     if (!empty($Status)) {
+                                        $nod = 0;
+                                        $profiled = 0;
+                                        $target = 0;
+                                        $planned = 0;
+                                        $actual = 0;
+                                        $dplanned = 0;
+                                        $actplaned = 0;
                                         foreach ($Status as $value) {
-
+                                            $nod += $value->No_of_Doctors;
+                                            $profiled += $value->No_of_Doctors_profiled;
+                                            $target += $value->Target_New_Rxn_for_the_month;
+                                            $planned += $value->Planned_New_Rxn;
+                                            $nod += $value->No_of_Doctors;
                                             $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
                                             echo '<tr><td style="width: 20%">' . $value->Full_Name . '</td>'
                                             . '<td>' . $value->No_of_Doctors . '</td>'

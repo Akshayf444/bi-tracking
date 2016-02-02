@@ -834,4 +834,87 @@ class User extends MY_Controller {
         return $query->row();
     }
 
+    function sendMail($message,$email) {
+        $this->load->library('email');
+
+        $subject = 'Forgot Password';
+        $message = '<p>This message has been sent for testing purposes.</p>';
+
+        // Get full html:
+        $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=' . strtolower(config_item('charset')) . '" />
+    <title>' . html_escape($subject) . '</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+' . $message . '
+</body>
+</html>';
+        // Also, for getting full html you may use the following internal method:
+        //$body = $this->email->full_html($subject, $message);
+
+        $result = $this->email
+                ->from('mohite.akshay118@gmail.com')
+                ->reply_to('mohite.akshay118@gmail.com')    // Optional, an account where a human being reads.
+                ->to('akshay@techvertica.com')
+                ->subject($subject)
+                ->message($body)
+                ->send();
+
+        var_dump($result);
+        echo '<br />';
+        echo $this->email->print_debugger();
+
+        exit;
+    }
+
+    function sendMail2() {
+        include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
+        include APPPATH . 'third_party/phpMailer/class.smtp.php';
+        
+
+        $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
+
+        $mail->IsSMTP(); // telling the class to use SMTP
+
+        try {
+            $mail->SMTPAuth = true;                  // enable SMTP authentication
+            $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
+            $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
+            $mail->Port = 465;                   // set the SMTP port for the MAIL server
+            $mail->Username = "bi@instacom.in";  //  username
+            $mail->Password = "bitracker";            // password
+
+            $mail->FromName = "BI-Tracking";
+            $mail->From = "bi@instacom.in";
+            $mail->AddAddress('akshay@techvertica.com', "BI-Tracking");
+
+            $mail->Subject = "BI-Tracking Login Details";
+
+            $mail->IsHTML(true);
+
+            $mail->Body = <<<EMAILBODY
+
+
+
+        <br>Dear Sir Test mail,<br/>
+
+
+EMAILBODY;
+
+            $mail->Send();
+        } catch (phpmailerException $e) {
+            echo $e->errorMessage(); //Pretty error messages from PHPMailer
+        } catch (Exception $e) {
+            echo $e->getMessage(); //Boring error messages from anything else!
+        }
+    }
+
 }
