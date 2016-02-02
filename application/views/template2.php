@@ -8,7 +8,10 @@
 
         <link href="<?php echo asset_url() ?>css/bootstrap.min.css" rel="stylesheet" type="text/css " >
         <link href="<?php echo asset_url() ?>font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+         <link href="<?php echo asset_url() ?>css/jquery-ui.css" rel="stylesheet" type="text/css " >
+
         <script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
+           <script src="<?php echo asset_url() ?>js/jquery-ui.js" type="text/javascript"></script>
         <script src="<?php echo asset_url() ?>js/bootstrap.min_1.js" type="text/javascript"></script>
         <script src='<?php echo asset_url() ?>js/jquery.bootstrap-growl.min.js' type='text/javascript'></script>
 
@@ -125,7 +128,13 @@
                         <div class="dropdown pull-right" style="top:10px">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo isset($this->Full_Name) ? ' ' . $this->Full_Name : ''; ?><b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li> <a onclick="window.location = '<?php echo site_url('User/BDM_update'); ?>';"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+                                <li> <a onclick="window.location = '<?php if ($this->Designation=='BDM'){ echo site_url('User/BDM_update');}
+                                else{
+                                    if($this->Designation=='ASM'){
+                                        echo site_url('ASM/ASM_update');
+                                    }
+                                }
+                                ?>';"><i class="fa fa-fw fa-user"></i> Profile</a></li>
                                 <li><a href="#" onclick="window.location = '<?php echo site_url('User/logout'); ?>';"  ><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
                             </ul>
                         </div>

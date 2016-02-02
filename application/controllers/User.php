@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -807,13 +808,15 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             if ($this->input->post()) {
                 $number = $this->input->post('mobile');
-
-                $mobile = array('Mobile' => $number);
+                $date = $this->input->post('date');
+                $date1 = date('m-d-y', strtotime($date));
+                $mobile = array('Mobile' => $number, 'DOB' => $date1);
                 $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-                $data['error'] = "Successfully Updated";
+               $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
+
             }
             $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
-            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data);
+            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data, 'backUrl' => 'User/dashboard');
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -831,15 +834,17 @@ class User extends MY_Controller {
                     if ($old == $pass['password']) {
                         $mobile = array('password' => $new);
                         $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-                        $data['error'] = "Successfully Updated";
+                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
+
                     } else {
-                        $data['error'] = "Old Password Not Matched";
+                       $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
+
                     }
                 }
             }
 
             $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
-            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data);
+            $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data, 'backUrl' => 'User/dashboard');
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -856,7 +861,6 @@ class User extends MY_Controller {
             $this->logout();
         }
     }
-
 
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
@@ -933,7 +937,6 @@ EMAILBODY;
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
 
             redirect('User/index', 'refresh');
-
         }
 
 
