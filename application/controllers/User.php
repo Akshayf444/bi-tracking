@@ -377,8 +377,14 @@ class User extends MY_Controller {
                                 array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
+                            if ($result->Planned_Rx != $value[$i]) {
+                                $doc['field_changed'] = 1;
+                            } else {
+                                $doc['field_changed'] = 0;
+                            }
 
-                            if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft') {
+
+                            if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
                                 if ($this->input->post('Button_click_status') == 'SaveForApproval') {
                                     $doc['Approve_Status'] = 'SFA';
                                 }
