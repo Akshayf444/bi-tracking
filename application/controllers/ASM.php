@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -441,4 +440,79 @@ class ASM extends MY_Controller {
         }
     }
 
-}
+    public function getApprovedStatusCount() {
+        $productlist = $this->Master_Model->BrandList($this->session->userdata('Division'));
+        ?>
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <?php if (!empty($productlist)) { ?>
+                <div class="panel panel-default"> 
+                    <div class="panel-heading"> Status  </div>
+                    <div class="panel-body">
+
+                        <ul align="center" class="nav nav-tabs ">
+                            <?php
+                            if (!empty($productlist)) {
+                                $count = 1;
+                                foreach ($productlist as $product) {
+                                    ?>
+                                    <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
+                                    <?php
+                                    $count ++;
+                                }
+                            }
+                            ?>
+                        </ul>
+
+                        <div class="tab-content">
+                            <?php
+                            if (!empty($productlist)) {
+                                $count = 1;
+                                foreach ($productlist as $product) {
+                                    $ApproveCount = 0;
+                                    $UnApproveCount = 0;
+                                    $Pending = 0;
+                                    $Submitted = 0;
+                                    ?>
+
+                                    <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>BDM Name</th>
+                                                <th>Approved</th>
+                                                <th>Rejected</th>
+                                                <th>Pending</th>
+                                                <th>Submitted By BDM Post ASM Approval</th>
+                                            </tr>
+                                            <?php
+                                            $BDM = $this->asm_model->rx_view($this->VEEVA_Employee_ID);
+                                            foreach ($BDM as $item) {
+                                                $Status = $this->asm_model->RxReportingStatus($product->id, $item->VEEVA_Employee_ID);
+                                                if (!empty($Status)) {
+                                                    foreach ($Status as $value) {
+                                                        $ApproveCount += $value->ApproveCount;
+                                                        $UnApproveCount += $value->UnApproveCount;
+                                                        $Pending += $value->SFACount;
+                                                        $Submitted += $value->SubmitCount;
+                                                        echo '<tr><td>' . $item->Full_Name . '</td><td>' . $value->ApproveCount . '</td><td>' . $value->UnApproveCount . '</td><td>' . $value->SFACount . '</td><td>' . $value->SubmitCount . '</td></tr>';
+                                                    }
+                                                }
+                                            } echo '<tr><th>Total</th><td>' . $ApproveCount . '</td><td>' . $UnApproveCount . '</td><td>' . $Pending . '</td><td>' . $Submitted . '</td></tr>';
+                                            ?>
+                                        </table>
+                                    </div>
+
+
+                                    <?php
+                                    $count ++;
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>  
+            <?php } ?>
+        </div><?php
+        }
+
+    }
+    

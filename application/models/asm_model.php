@@ -271,10 +271,8 @@ class asm_model extends CI_Model {
         return $query->result();
     }
 
-    function RxReportingStatus($Product_Id) {
+    function RxReportingStatus($Product_Id,$VEEVA_Employee_Id) {
         $sql = "SELECT 
-                em.`Full_Name`,
-                em.`VEEVA_Employee_ID`,
                 COUNT(
                   CASE
                     WHEN rp.`Status` = 'Submitted' 
@@ -300,18 +298,14 @@ class asm_model extends CI_Model {
                   END
                 ) AS SFACount 
               FROM
-                `Employee_Master` em 
-                INNER JOIN Employee_Doc ed
-                   ON ed.`VEEVA_Employee_ID` = em.`VEEVA_Employee_ID`
-                LEFT JOIN `Rx_Actual` rp 
-                  ON rp.`Doctor_Id` = ed.`VEEVA_Account_ID` 
+                `Rx_Actual` rp 
+                WHERE  rp.`VEEVA_Employee_ID` = '$VEEVA_Employee_Id'
                   AND rp.`month` = {$this->nextMonth} 
-                  AND Product_Id = {$Product_Id} 
+                  AND Product_Id = {$Product_Id}                                     
                   AND YEAR = '$this->nextYear' 
-                  AND em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID`    
-                WHERE `Reporting_VEEVA_ID` = '$this->VEEVA_Employee_ID' 
-              GROUP BY em.`VEEVA_Employee_ID` ";
+             ";
         $query = $this->db->query($sql);
+        //echo $sql.'<br/>';
         return $query->result();
     }
 

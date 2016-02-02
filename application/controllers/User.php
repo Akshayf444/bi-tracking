@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -144,7 +143,7 @@ class User extends MY_Controller {
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
             if ($current_month_planned['planned_rx'] > 0) {
-                $data['kpi1'] = ($current_month_actual['actual_rx'] / $current_month_planned['planned_rx']) * 100;
+                $data['kpi1'] = ($current_month_actual['Actual_Rx'] / $current_month_planned['planned_rx']) * 100;
             } else {
                 $data['kpi1'] = 0;
             }
@@ -858,11 +857,6 @@ class User extends MY_Controller {
         }
     }
 
-    public function getApprovedStatusCount($VEEVA_Employee_ID, $Product_Id) {
-        $sql = " SELECT  COUNT(CASE WHEN `Approve_Status` = 'Approved' THEN 1 END) AS Approve_Count,COUNT(CASE WHEN `Approve_Status` = 'SFA' THEN 1 END) AS SFA_Count,COUNT(CASE WHEN `Approve_Status` = 'Un-Approved' THEN 1 END) AS UnApprove_Count FROM Rx_Planning WHERE `VEEVA_Employee_ID` = '$VEEVA_Employee_ID' AND product_id = '$Product_Id' AND MONTH = {$this->nextMonth} AND YEAR = '$this->nextYear'";
-        $query = $this->db->query($sql);
-        return $query->row();
-    }
 
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
