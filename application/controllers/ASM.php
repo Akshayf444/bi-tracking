@@ -576,21 +576,20 @@ class ASM extends MY_Controller {
                 </div>  
             <?php } ?>
         </div><?php
-
     }
+
     public function ASM_update() {
         if ($this->is_logged_in()) {
             if ($this->input->post()) {
                 $number = $this->input->post('mobile');
                 $date = $this->input->post('date');
                 $date1 = date('Y-m-d', strtotime($date));
-                $mobile = array('Mobile' => $number,'DOB'=>$date1);
+                $mobile = array('Mobile' => $number, 'DOB' => $date1);
                 $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-               $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
-
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
             }
             $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
-            $data = array('title' => 'Profile Update', 'content' => 'ASM/Profile_Update', 'view_data' => $data,'backUrl'=>'ASM/dashboard');
+            $data = array('title' => 'Profile Update', 'content' => 'ASM/Profile_Update', 'view_data' => $data, 'backUrl' => 'ASM/dashboard');
             $this->load->view('template2', $data);
         } else {
             $this->logout();
@@ -609,21 +608,18 @@ class ASM extends MY_Controller {
                         $mobile = array('password' => $new);
                         $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
-
                     } else {
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
-
                     }
                 }
             }
 
             $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
-            $data = array('title' => 'Profile Update', 'content' => 'ASM/Profile_Update','view_data' => $data,'backUrl'=>'ASM/dashboard');
+            $data = array('title' => 'Profile Update', 'content' => 'ASM/Profile_Update', 'view_data' => $data, 'backUrl' => 'ASM/dashboard');
             $this->load->view('template2', $data);
         } else {
             $this->logout();
         }
-
     }
 
 }

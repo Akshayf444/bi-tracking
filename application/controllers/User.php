@@ -285,6 +285,22 @@ class User extends MY_Controller {
 
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
+                    } elseif ($this->Product_Id == 5) {
+                        $_POST['Product_id'] = 5;
+                        $this->db->insert('Profiling', $_POST);
+
+                        $_POST['Product_id'] = 6;
+                        $_POST['Win_Q1'] = '';
+                        $_POST['Win_Q2'] = '';
+                        $_POST['Win_Q3'] = '';
+                        $_POST['Patient_Rxbed_In_Week'] = '';
+                        $_POST['Patient_Rxbed_In_Month'] = '';
+                        $_POST['Winability'] = '';
+                        $this->db->insert('Profiling', $_POST);
+                        $_POST['Product_id'] = 4;
+                        $this->db->insert('Profiling', $_POST);
+                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
+                        redirect('User/Profiling', 'refresh');
                     } else {
                         $this->db->insert('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
@@ -299,15 +315,32 @@ class User extends MY_Controller {
                         $_POST['Product_id'] = 6;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
+                        
+                        $field_array = array(
+                            'Patient_Seen' => $_POST['Patient_Seen'],
+                            'Patient_Seen_month' => $_POST['Patient_Seen_month'],
+                        );
+
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $field_array);
+                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
+                        redirect('User/Profiling', 'refresh');
+                    } elseif ($this->Product_Id == 5) {
                         $_POST['Product_id'] = 5;
-                        $_POST['Win_Q1'] = '';
-                        $_POST['Win_Q2'] = '';
-                        $_POST['Win_Q3'] = '';
-                        $_POST['Patient_Rxbed_In_Week'] = '';
-                        $_POST['Patient_Rxbed_In_Month'] = '';
-                        $_POST['Winability'] = '';
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
+
+                        $field_array = array(
+                            'Patient_Seen' => $_POST['Patient_Seen'],
+                            'Patient_Seen_month' => $_POST['Patient_Seen_month'],
+                        );
+
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $field_array);
+
+                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->update('Profiling', $field_array);
+
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
                     } else {
@@ -686,7 +719,7 @@ class User extends MY_Controller {
                             'Activity_Done' => $this->input->post($docid[$i])
                         );
                         if ($data2['Activity_Done'] == 'Yes') {
-                            $data2['Activity_Detail'] = $Activity_Detail[$i]; 
+                            $data2['Activity_Detail'] = $Activity_Detail[$i];
                             $data2['Reason'] = '';
                         } elseif ($data2['Activity_Done'] == 'No') {
                             $data2['Reason'] = $Reason[$i];
@@ -806,8 +839,7 @@ class User extends MY_Controller {
                 $date1 = date('m-d-y', strtotime($date));
                 $mobile = array('Mobile' => $number, 'DOB' => $date1);
                 $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-               $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
-
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
             }
             $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
             $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data, 'backUrl' => 'User/dashboard');
@@ -829,10 +861,8 @@ class User extends MY_Controller {
                         $mobile = array('password' => $new);
                         $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
-
                     } else {
-                       $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
-
+                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
                     }
                 }
             }
