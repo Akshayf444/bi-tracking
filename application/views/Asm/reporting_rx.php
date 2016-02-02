@@ -99,9 +99,9 @@
                                     <tr>
                                         <th>BDM Name</th>
                                         <th>Approved</th>
-                                        <th>Un-Approved</th>
+                                        <th>Rejected</th>
                                         <th>Pending</th>
-                                        <th>Submitted</th>
+                                        <th>Submitted By BDM Post AMS Approval</th>
                                     </tr>
                                     <?php
                                     $Status = $this->asm_model->RxReportingStatus($product->id);
