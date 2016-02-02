@@ -834,7 +834,7 @@ class User extends MY_Controller {
         return $query->row();
     }
 
-    function sendMail($message,$email) {
+    function sendMail($message, $email) {
         $this->load->library('email');
 
         $subject = 'Forgot Password';
@@ -878,8 +878,13 @@ class User extends MY_Controller {
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
+        $email = $this->input->post('email');
+        $emp = $this->User_model->employee_id($email);
+        if (!empty($emp)) {
+            $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
+            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?" . $encodedPassword;
+        }
         
-
         $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 
         $mail->IsSMTP(); // telling the class to use SMTP
@@ -902,11 +907,7 @@ class User extends MY_Controller {
 
             $mail->Body = <<<EMAILBODY
 
-
-
-        <br>Dear Sir Test mail,<br/>
-
-
+Link For Forgot Password <br/>{$link}
 EMAILBODY;
 
             $mail->Send();
