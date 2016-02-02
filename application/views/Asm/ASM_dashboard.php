@@ -380,13 +380,9 @@ if (!empty($division)) {
                                     <?php
                                     $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
                                     if (!empty($Status)) {
-                                        $nod = 0;
-                                        $profiled = 0;
-                                        $target = 0;
-                                        $planned = 0;
-                                        $actual = 0;
-                                        $dplanned = 0;
-                                        $actplaned = 0;
+                                        $kpi1 = 0;
+                                        $kpi2 = 0;
+                                      
                                         foreach ($Status as $value) {
 
                                             if ($value->Target_New_Rxn_for_the_month != 0) {
@@ -400,8 +396,8 @@ if (!empty($division)) {
                                                 $KPI2 = 0;
                                             }
 
-                                            $nod += $value->No_of_Doctors;
-                                            $profiled += $value->No_of_Doctors_profiled;
+                                            $kpi1 += $KPI1;
+                                            $kpi2 += $KPI2;
                                             $target += $value->Target_New_Rxn_for_the_month;
                                             $planned += $value->Planned_New_Rxn;
                                             $nod += $value->No_of_Doctors;
@@ -412,6 +408,7 @@ if (!empty($division)) {
                                             . '<td>' . $KPI2 . '</td></tr>';
                                         }
                                     }
+                                     echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
                                     ?>
                                 </table>
                             </div>
