@@ -4,7 +4,9 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class ASM extends MY_Controller {
-  public $alertLabel = 'ASM';
+
+    public $alertLabel = 'ASM';
+
     public function __construct() {
         parent::__construct();
         $this->load->helper();
@@ -152,11 +154,9 @@ class ASM extends MY_Controller {
                 if ($check['division'] == 'Diabetes') {
                     $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Diabetes";
-                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . '   Added Successfully.', 'success'));
                 } else {
                     $data['table'] = $this->asm_model->ASm($this->VEEVA_Employee_ID);
                     $data['ck'] = "Thrombi";
-                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . '  Added Successfully.', 'success'));
                 }
             }
             $data = array('title' => 'Target', 'content' => 'ASM/target', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);
@@ -229,9 +229,13 @@ class ASM extends MY_Controller {
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
                         if (empty($check)) {
                             $this->User_model->Set_Target($data1);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
                         } elseif ($check['Status'] == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
                             $this->db->update('Rx_Target', $data1);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Updated Successfully.', 'success'));
+                        } elseif ($check['Status'] == 'Submitted') {
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
                         }
                         $count++;
                     }
@@ -252,9 +256,13 @@ class ASM extends MY_Controller {
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
                         if (empty($check)) {
                             $this->User_model->Set_Target($data1);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
                         } elseif ($check['Status'] == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
                             $this->db->update('Rx_Target', $data1);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Updated Successfully.', 'success'));
+                        } elseif ($check['Status'] == 'Submitted') {
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
                         }
                         $count++;
                     }
@@ -355,7 +363,7 @@ class ASM extends MY_Controller {
                 $result2 = $this->Master_Model->BrandList($this->session->userdata('Division'));
                 $data['productlist'] = NULL;
                 $data['product'] = $this->Master_Model->generateDropdown($result2, 'id', 'Brand_Name', $product);
-                $data['show'] = $this->User_model->getReporting2($id, $product,  $this->nextMonth);
+                $data['show'] = $this->User_model->getReporting2($id, $product, $this->nextMonth);
             }
 
             $data = array('title' => 'Report', 'content' => 'ASM/reporting_rx', 'backUrl' => 'ASM/dashboard', 'view_data' => $data);

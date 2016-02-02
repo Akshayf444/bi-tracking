@@ -1,7 +1,7 @@
 <div class="container" style="margin-top: 2em;">
     <?php
     if (isset($message)) {
-        echo '<div class="alert alert-danger" style="text-align:center">' .$message .'</div>';
+        echo '<div class="alert alert-danger" style="text-align:center">' . $message . '</div>';
     }
     ?>
     <div class="row">
@@ -26,9 +26,9 @@
             </div>
         </div>
     </div
-     <div class="row">
+    <div class="row">
         <div class="col-lg-9">
-            <a href="<?php echo site_url() ?>/User/forget" width="45%" class="pull-right" > Forget Password</a>
+            <a href="<?php echo site_url('User/forget_pass') ?>" width="45%" class="pull-right" > Forget Password</a>
+        </div>
     </div>
-</div>
 </div>

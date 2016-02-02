@@ -869,48 +869,79 @@ class User extends MY_Controller {
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
 
         $email = $this->input->post('email');
-        echo $email;
+
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
-            $link = "http://127.0.0.1/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
-        }
+            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
 
-        $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
+            $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 
-        $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->IsSMTP(); // telling the class to use SMTP
 
-        try {
-            $mail->SMTPAuth = true;                  // enable SMTP authentication
-            $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
-            $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
-            $mail->Port = 465;                   // set the SMTP port for the MAIL server
-            $mail->Username = "bi@instacom.in";  //  username
-            $mail->Password = "bitracker";            // password
+            try {
+                $mail->SMTPAuth = true;                  // enable SMTP authentication
+                $mail->SMTPSecure = "ssl";                 // sets the prefix to the server
+                $mail->Host = "smtpout.asia.secureserver.net";      // sets the SMTP server
+                $mail->Port = 465;                   // set the SMTP port for the MAIL server
+                $mail->Username = "bi@instacom.in";  //  username
+                $mail->Password = "bitracker";            // password
 
-            $mail->FromName = "BI-Tracking";
-            $mail->From = "bi@instacom.in";
-            $mail->AddAddress('akshay@techvertica.com', "BI-Tracking");
+                $mail->FromName = "BI-Tracking";
+                $mail->From = "bi@instacom.in";
+                $mail->AddAddress($email, "BI-Tracking");
 
-            $mail->Subject = "BI-Tracking Login Details";
+                $mail->Subject = "Forgot Password";
 
-            $mail->IsHTML(true);
+                $mail->IsHTML(true);
 
-            $mail->Body = <<<EMAILBODY
+                $mail->Body = <<<EMAILBODY
 
-Link For Forgot Password <br/>{$link}
+Link For Reseting Password <br/>{$link}
 EMAILBODY;
 
-            $mail->Send();
-        } catch (phpmailerException $e) {
-            echo $e->errorMessage(); //Pretty error messages from PHPMailer
-        } catch (Exception $e) {
-            echo $e->getMessage(); //Boring error messages from anything else!
+                $mail->Send();
+            } catch (phpmailerException $e) {
+                echo $e->errorMessage(); //Pretty error messages from PHPMailer
+            } catch (Exception $e) {
+                echo $e->getMessage(); //Boring error messages from anything else!
+            }
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Link For Resetting Password Has Been Mailed To Your Emailid.', 'success'));
+
+            redirect('User/index', 'refresh');
+        } else {
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Wrong Emailid', 'danger'));
+            redirect('User/index', 'refresh');
         }
     }
 
     public function forget_pass() {
         $data = array('title' => 'forget', 'content' => 'User/forget', 'view_data' => 'blank');
+        $this->load->view('template1', $data);
+    }
+
+    public function Reset_Password() {
+        $data = array();
+        if ($this->input->get('e')) {
+            $id = $this->input->get('e');
+            $id1 = base64_decode($id);
+            $data['VEEVA_Employee_ID'] = $id1;
+        }
+
+        if ($this->input->post()) {
+            $new = $this->input->post('password');
+            $id1 = $this->input->post('VEEVA_Employee_ID');
+            $data2 = array(
+                'VEEVA_Employee_ID' => $id1,
+                'password' => $new);
+            $this->User_model->Update_password($id1, $data2);
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
+
+            redirect('User/index', 'refresh');
+        }
+
+
+        $data = array('title' => 'Reset_Password', 'content' => 'User/reset_password', 'view_data' => $data);
         $this->load->view('template1', $data);
     }
 
