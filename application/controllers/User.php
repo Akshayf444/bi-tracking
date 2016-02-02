@@ -362,8 +362,7 @@ class User extends MY_Controller {
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
                             'Doctor_Id' => $doc_id[$i],
-                            'Planning_Status' => $this->input->post('Planning_Status'),
-                            'Approve_Status' => $this->input->post('Approve_Status'),
+                            'Planning_Status' => $this->input->post('Planning_Status')
                         );
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
@@ -375,11 +374,8 @@ class User extends MY_Controller {
 
                             if ($result->Planned_Rx != $value[$i]) {
                                 $doc['field_changed'] = 1;
-                            } else {
-                                $doc['field_changed'] = 0;
                             }
-
-
+                            
                             if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
                                 if ($this->input->post('Button_click_status') == 'SaveForApproval') {
                                     $doc['Approve_Status'] = 'SFA';
