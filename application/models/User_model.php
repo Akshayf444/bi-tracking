@@ -1235,7 +1235,7 @@ class User_model extends CI_Model {
     }
 
     public  function check_history($id,$pass){
-        $sql="select * from Password_History where VEEVA_Employee_ID='$id' AND Password='$pass'";
+        $sql="select * from Password_History where VEEVA_Employee_ID='$id' AND password='$pass'";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
