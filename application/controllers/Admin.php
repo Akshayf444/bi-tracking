@@ -95,7 +95,7 @@ class Admin extends CI_Controller {
     public function emp_view() {
         $data['show'] = $this->admin_model->emp_view();
 
-        $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => 'Employee Master', 'view_data' => $data);
+        $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => ' Territory Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
@@ -108,6 +108,57 @@ class Admin extends CI_Controller {
 
     public function logout() {
         redirect('admin/index', 'refresh');
+    }
+
+    public function territory_view() {
+        $data['show'] = $this->admin_model->territory();
+
+        $data = array('title' => ' Territory View', 'content' => 'admin/territory', 'page_title' => 'Territory Master', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function territory_add() {
+        if ($_POST) {
+            $name = $this->input->post('territory');
+            $vaild = $this->admin_model->territory_view($name);
+        
+            if (empty($vaild)) {
+                $data = array('Territory' => $name, 'status' => 1);
+                $this->admin_model->insert_territory($data);
+
+
+                redirect('admin/territory_view', 'refresh');
+            } else {
+                redirect('admin/territory_view', 'refresh');
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Already Exit', 'error'));
+            }
+        }
+    }
+
+    public function update_terr() {
+        $id = $_GET['id'];
+        $data['rows'] = $this->admin_model->find_by_terrid($id);
+        if ($this->input->post()) {
+            $terrid = $this->input->post('terrid');
+            $data = array(
+                'territory' => $this->input->post('territory'),
+                'status' => '1',
+            );
+            $this->admin_model->update_terr($terrid, $data);
+              redirect('admin/territory_view', 'refresh');
+        }
+
+        $data = array('title' => 'Upadte Activity', 'content' => 'admin/edit_terr', 'page_title' => 'Update Territory', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function terr_del() {
+        $id = $_GET['id'];
+        $data = array('status' => 0);
+        $this->admin_model->del_terr($id, $data);
+
+        redirect('admin/territory_view', 'refresh');
+        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Delete Successfully', 'success'));
     }
 
     public function emp_add() {
@@ -219,7 +270,7 @@ class Admin extends CI_Controller {
 
     public function get_record() {
 
-        
+
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this->admin_model->find_REPORTING_TO_VALUE($name)));
     }

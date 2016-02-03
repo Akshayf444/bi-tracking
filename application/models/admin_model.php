@@ -15,11 +15,48 @@ class admin_model extends CI_Model {
         return $this->db->insert('Employee_Master', $data);
     }
 
+    public function insert_territory($data) {
+        return $this->db->insert('Territory_master', $data);
+    }
+
+    public function del_terr($id, $data) {
+        $query = $this->db->where('id', $id);
+        $query = $this->db->update('Territory_master', $data);
+        return $query;
+    }
+
     public function emp_view() {
         $sql = "select * from Employee_Master where status='1'";
         $query = $this->db->query($sql);
 
         return $query->result();
+    }
+
+    public function territory() {
+        $sql = "select * from  Territory_master where status='1'";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    public function territory_view($name) {
+        $sql = "select * from  Territory_master where territory='$name'and status='1'";
+        $query = $this->db->query($sql);
+
+        return $query->row_array();
+    }
+
+    public function find_by_terrid($id) {
+        $sql = "select * from  Territory_master where id='$id'and status='1'";
+        $query = $this->db->query($sql);
+
+        return $query->row_array();
+    }
+
+    public function update_terr($id, $data) {
+        $query = $this->db->where('id', $id);
+        $query = $this->db->update('Territory_master', $data);
+        return $query;
     }
 
     public function find_by_empid($id) {
