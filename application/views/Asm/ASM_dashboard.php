@@ -387,8 +387,8 @@ if (!empty($division)) {
                                         $dplanned = 0;
                                         $actplaned = 0;
                                         foreach ($Status as $value) {
-                                             $KPL1=$value->Target_New_Rxn_for_the_month *$currentMonthRx['Actual_Rx']/100;
-                                             $KPL2=$value->No_of_Doctors_planned * $value->checkk/100;
+                                             $KPL1=$currentMonthRx['Actual_Rx']*100 / $value->Target_New_Rxn_for_the_month ;
+                                             $KPL2= $value->checkk*100 / $value->No_of_Doctors_planned ;
                                             $nod += $value->No_of_Doctors;
                                             $profiled += $value->No_of_Doctors_profiled;
                                             $target += $value->Target_New_Rxn_for_the_month;
