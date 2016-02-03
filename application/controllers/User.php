@@ -141,10 +141,11 @@ class User extends MY_Controller {
             $data['user4'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
             $current_month_actual = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
+           $target= $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            if ($current_month_planned['planned_rx'] > 0) {
-                $data['kpi1'] = ($current_month_actual['Actual_Rx'] / $current_month_planned['planned_rx']) * 100;
+            if (isset($target['target'])&&$target['target']>0) {
+                $data['kpi1'] = ($current_month_actual['Actual_Rx'] /  $target['target']) * 100;
             } else {
                 $data['kpi1'] = 0;
             }
@@ -315,7 +316,7 @@ class User extends MY_Controller {
                         $_POST['Product_id'] = 6;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
-                        
+
                         $field_array = array(
                             'Patient_Seen' => $_POST['Patient_Seen'],
                             'Patient_Seen_month' => $_POST['Patient_Seen_month'],
@@ -855,15 +856,24 @@ class User extends MY_Controller {
 
                 $old = $this->input->post('old');
                 $new = $this->input->post('new');
+                $pass_exit_history = $this->User_model->check_history($this->VEEVA_Employee_ID, $new);
                 $pass = $this->User_model->All_data($this->VEEVA_Employee_ID);
-                if (!empty($pass)) {
-                    if ($old == $pass['password']) {
-                        $mobile = array('password' => $new);
-                        $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
-                    } else {
-                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
-                    }
+                if (empty($pass_exit_history)) {
+                    if (!empty($pass)) {
+                        if ($old == $pass['password']) {
+                            $mobile = array('password' => $new);
+                            $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
+                            $data = array('password' => $new,
+                                'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                                'created_at' => date('y-m-d'));
+                            $this->User_model->insert_pass($data);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
+                    }else {
+                    $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'danger'));
+                }}
+                    
+                } else {
+                    $this->session->set_userdata('message', $this->Master_Model->DisplayAlert(' Already Exit Password .', 'danger'));
                 }
             }
 

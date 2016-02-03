@@ -33,20 +33,20 @@
                         <td><input type="text" class="form-control" maxlength="10" minlength="10" name="mobile" value="<?php echo $detail['Mobile']; ?>"/></td>
                     </tr>
                     <tr>
-                        <th>Reporting ASM</th>
+                        <th>Reporting ZSM</th>
                         <td><input type="text" class="form-control" readonly=""  value="<?php echo $detail['ASM']; ?>"/></td>
                     </tr>
                     <tr>
-                        <th>Reporting ZSM</th>
+                        <th>Reporting </th>
                         <td><input type="text" class="form-control" readonly=""  value="<?php echo $detail['ZSM']; ?>"/></td>
                     </tr>
                     <tr>
-                        <th>Territory</th>
+                        <th>Area</th>
                         <td><input type="text" class="form-control" readonly=""  value="<?php echo $detail['Territory']; ?>"/></td>
                     </tr>
                     <tr>
                         <th>Date Of Birth</th>
-                        <td><input type="text" class="form-control" id="date" name="date"  value="<?php echo $detail['DOB']; ?>"/></td>
+                        <td><input type="text" class="form-control" name="date" id="date"  value="<?php echo $detail['DOB']; ?>"/></td>
                     </tr>
                     <tr>
                         <th>Date of Joining</th>
@@ -54,35 +54,36 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="submit" value="Submit" class="btn btn-success pull-right"/>
+            <input type="Submit" value="Submit" class="btn btn-success pull-right"/>
             </form>
         </div>
         <div id="menu1" class="tab-pane fade">
             <div class="col-lg-12 panel-body">
-                <?php $attribute = array('id' => 'activate');
+                 <?php $attribute = array('id' => 'activate');
                 echo form_open('User/pwd_update', $attribute); ?>
 
                 <div class="form-group">
                     <label>Old Password</label>
-                    <input type="password" name="old" class="form-control" name="mobile" />
+                    <input type="password" name="old" class="form-control"  />
                 </div>
                 <div class="form-group">
                     <label>New Password</label>
-                    <input type="password" name="new" class="form-control" name="mobile" />
-                </div>
-                 <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" name="confirm" class="form-control" name="mobile" />
+                    <input type="password" name="new" class="form-control"  />
                 </div>
                 <div class="form-group">
-                    <input type="Submit" value="Submit" class="btn btn-success pull-right"/>
+                    <label> Confirm Password</label>
+                    <input type="password" name="confirm" class="form-control"  />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-success pull-right"/>
                 </div>
                 </form>
             </div>
         </div>
 
     </div>
-</div><script>
+</div>
+<script>
     $('document').ready(function () {
 
         $('#activate').formValidation({
@@ -125,5 +126,22 @@
     $( "#date" ).datepicker();
   });
   </script>
-  <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
+  
+<script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

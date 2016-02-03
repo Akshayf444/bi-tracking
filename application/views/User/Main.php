@@ -197,7 +197,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                     <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                     <span style="margin-left: -48px;position: absolute;margin-top: 63px;"><?php echo round($kpi1, 2); ?>%</span>
                     <span style="margin-left: -57px;position: absolute;margin-top: 80px;">KPI 1</span>
-                    <span style="margin-left: -109px;position: absolute;margin-top: 93px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Planned</span>
+                    <span style="margin-left: -109px;position: absolute;margin-top: 93px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Target</span>
 
 
                 </div>
