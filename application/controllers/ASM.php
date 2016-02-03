@@ -271,6 +271,7 @@ class ASM extends MY_Controller {
         redirect('ASM/target', 'refresh');
     }
 
+    ///TESTED
     public function ApprovePlanning() {
         if ($this->input->post()) {
             $approveCount = 0;
@@ -296,6 +297,7 @@ class ASM extends MY_Controller {
         }
     }
 
+    //Controller for Activity Planning List
     public function activity_planning() {
 
         if ($this->is_logged_in()) {
@@ -337,19 +339,39 @@ class ASM extends MY_Controller {
         }
     }
 
+    //Approve Activity Planning
     public function ApproveActivity() {
         if ($this->input->post()) {
+            $approveCount = 0;
+            $rejectCount = 0;
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
                 $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
+                    'field_changed' => 0
                 );
                 $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Activity_Planning', $data);
 
-                // echo $this->db->last_query();
+                //Conditions for approving both entries for trajenta and trajenta duo
+                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => 4));
+                    $this->db->update('Activity_Planning', $data);
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => 6));
+                    $this->db->update('Activity_Planning', $data);
+                } else {
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Planning', $data);
+                }
+
+                if ($data['Approve_Status'] == 'Approved') {
+                    $approveCount++;
+                } elseif ($data['Approve_Status'] == 'Un-Approved') {
+                    $rejectCount++;
+                }
             }
+
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities are Approved And ' . $rejectCount . ' Activities Are Rejected', 'success'));
+
             redirect('ASM/activity_planning', 'refresh');
         }
     }

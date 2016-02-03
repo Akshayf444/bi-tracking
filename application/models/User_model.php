@@ -987,7 +987,7 @@ class User_model extends CI_Model {
             if ($type == 'Reporting') {
                 $HTML .= '<th>Activity Done</th>';
             }
-            $HTML .= '<th><input type="radio" id="check-all" >Approve</th><th>Un-Approve</th></tr>';
+            $HTML .= '<th><input type="radio" name="toggle" id="check-all" >Approve</th><th><input type="radio" name="toggle" id="uncheck-all" >Reject</th></tr>';
 
             foreach ($result as $value) {
                 $Status = isset($value->Approve_Status) && $value->Approve_Status == 'Un-Approved' ? 'checked' : '';

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -374,7 +375,7 @@ class User extends MY_Controller {
                             if ($result->Planned_Rx != $value[$i]) {
                                 $doc['field_changed'] = 1;
                             }
-                            
+
                             if ($result->Planned_Rx != $value[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
                                 if ($this->input->post('Button_click_status') == 'SaveForApproval') {
                                     $doc['Approve_Status'] = 'SFA';
@@ -431,7 +432,6 @@ class User extends MY_Controller {
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
-                            'Approve_Status' => $this->input->post('Approve_Status'),
                             'Year' => $this->nextYear,
                             'month' => $this->nextMonth
                         );
@@ -454,15 +454,11 @@ class User extends MY_Controller {
                             $data2['updated_at'] = date('Y-m-d H:i:s');
                             if ($result->Activity_Id != $Activity[$i]) {
                                 $data2['field_changed'] = 1;
-                            } else {
-                                $data2['field_changed'] = 0;
                             }
 
                             if ($result->Activity_Id != $Activity[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
                                 if ($this->input->post('Button_click_status') == 'SaveForApproval') {
                                     $data2['Approve_Status'] = 'SFA';
-                                } else {
-                                    $data2['Approve_Status'] = $result->Approve_Status;
                                 }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;
@@ -853,7 +849,6 @@ class User extends MY_Controller {
         }
     }
 
-
     function sendMail2() {
         include APPPATH . 'third_party/phpMailer/class.phpmailer.php';
         include APPPATH . 'third_party/phpMailer/class.smtp.php';
@@ -929,7 +924,6 @@ EMAILBODY;
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
 
             redirect('User/index', 'refresh');
-
         }
 
 

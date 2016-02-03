@@ -35,8 +35,8 @@
                 <tr>
                     <th>Doctor Name</th>
                     <th>Planned Rx</th>
-                    <th><input type="radio" id="check-all"> Approve</th>
-                    <th>Reject</th>
+                    <th><input name="toggle" type="radio" id="check-all"> Approve</th>
+                    <th><input name="toggle" type="radio" id="uncheck-all" >Reject</th>
                 </tr>
 
                 <?php foreach ($show as $row) :
