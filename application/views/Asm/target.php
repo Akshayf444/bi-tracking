@@ -78,9 +78,9 @@
       </div>
       <div class="modal-body">
           
-           <p> Once you click on assign  button it will go to respective BDM & will not be allowed to change  </p>   
-           <p> Are you save to assign new RX Target  </p>
+           <p> Once you click on assign  button it will go to respective BDM & will not be allowed to change  </p>  
            <p> Please ensure that you have allocated new RX Target to all BDM for all brands</p>
+           <p> Are you sure to assign new RX Target  </p>           
            <p>If you are not sure please click on  cancel button </p>
       </div>
       <div class="modal-footer">
