@@ -929,9 +929,11 @@ EMAILBODY;
                 'VEEVA_Employee_ID' => $id1,
                 'password' => $new);
             $this->User_model->Update_password($id1, $data2);
+
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
 
             redirect('User/index', 'refresh');
+
         }
 
 
