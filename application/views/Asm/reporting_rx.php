@@ -33,26 +33,22 @@
                 <tr>
                     <th>Doctor Name</th>
                     <th>Reporting Rx</th>
-                    <th><input type="radio" id="check-all">Approve</th>
-                    <th>Reject</th>
+                    <th><input type="radio" name="toggle" id="check-all">Approve</th>
+                    <th><input type="radio" name="toggle" id="uncheck-all"> Reject</th>
                 </tr>
 
                 <?php foreach ($show as $row) :
                     ?>
                     <tr>  
-
                         <td><?php echo $row->Account_Name; ?></td>  
-                    <input type="hidden" name="RXPLAN_ID" value="<?php echo $row->Rxplan_id ?>">
+                    <input type="hidden" name="Rxplan_id[]" value="<?php echo $row->Rxplan_id ?>">
                     <td><?php echo $row->Actual_Rx; ?> <input type="hidden" name="Doctor_Id[]" value="<?php echo $row->Account_ID ?>"> <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
                     <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>"><input type="radio" class="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Approved"></td>
                     <td><input type="radio" class="uncheck-all" name="approve_<?php echo $row->Account_ID ?>" value="Un-Approved"></td>
                     </tr>
-
-
-
                     <?php
                 endforeach;
-                echo '</table><button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
+                echo '</table><div><button type="submit" class=" btn btn-primary pull-right" > Approve</button></div>';
             }
             ?>
 
@@ -61,8 +57,8 @@
 </div>
 </form>
 <?php if (!empty($productlist)) { ?>
-    <div class="resultarea"><img src="<?php echo asset_url();?>images/loader.gif" id="loader"></div>
-<?php }?>
+    <div class="resultarea"><img src="<?php echo asset_url(); ?>images/loader.gif" id="loader"></div>
+    <?php } ?>
 
 <script>
     window.onload = function () {

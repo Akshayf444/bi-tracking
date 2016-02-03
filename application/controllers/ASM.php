@@ -291,7 +291,7 @@ class ASM extends MY_Controller {
                     $rejectCount++;
                 }
             }
-            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records are Approved And ' . $rejectCount . ' Records Are Rejected', 'success'));
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
 
             redirect('ASM/asm_rx_planning', 'refresh');
         }
@@ -370,7 +370,7 @@ class ASM extends MY_Controller {
                 }
             }
 
-            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities are Approved And ' . $rejectCount . ' Activities Are Rejected', 'success'));
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities  Approved And ' . $rejectCount . ' Activities  Rejected', 'success'));
 
             redirect('ASM/activity_planning', 'refresh');
         }
@@ -407,32 +407,63 @@ class ASM extends MY_Controller {
 
     public function Approvereporting() {
         if ($this->input->post()) {
-            for ($i = 0; $i < count($this->input->post('approve')); $i++) {
+            $approveCount = 0;
+            $rejectCount = 0;
+            for ($i = 0; $i < count($this->input->post('Rxplan_id')); $i++) {
                 $empid = $this->input->post('approve');
+                $rxreport = $this->input->post('Rxplan_id');
+                $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
-                    'Approve_Status' => 'Approved'
+                    'Approve_Status' => 'Approved',
+                    'field_changed' => 0
                 );
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $empid[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Rx_Actual', $data);
-                // echo $this->db->last_query();
+                $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
+                $rxplanids = explode(",", $rxreport[$i]);
+                if (!empty($rxplanids)) {
+                    foreach ($rxplanids as $Rxplan_id) {
+                        $this->db->where(array('Rxplan_id' => $Rxplan_id));
+                        $this->db->update('Rx_Actual', $data);
+                    }
+                }
+                if ($data['Approve_Status'] == 'Approved') {
+                    $approveCount++;
+                } elseif ($data['Approve_Status'] == 'Un-Approved') {
+                    $rejectCount++;
+                }
             }
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
+
             redirect('ASM/reporting_rx', 'refresh');
         }
     }
 
     public function Approve_reporting_Activity() {
         if ($this->input->post()) {
+            $approveCount = 0;
+            $rejectCount = 0;
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
                 $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
+                    'field_changed' => 0
                 );
                 $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
-                $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
-                $this->db->update('Activity_Reporting', $data);
-
-                // echo $this->db->last_query();
+                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => 4));
+                    $this->db->update('Activity_Reporting', $data);
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => 6));
+                    $this->db->update('Activity_Reporting', $data);
+                } else {
+                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
+                    $this->db->update('Activity_Reporting', $data);
+                }
+                if ($data['Approve_Status'] == 'Approved') {
+                    $approveCount++;
+                } elseif ($data['Approve_Status'] == 'Un-Approved') {
+                    $rejectCount++;
+                }
             }
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities  Approved And ' . $rejectCount . ' Activities  Rejected', 'success'));
             redirect('ASM/reporting_activity', 'refresh');
         }
     }
@@ -472,6 +503,7 @@ class ASM extends MY_Controller {
         }
     }
 
+    //Status Table For Rx Reporting
     public function getApprovedStatusCount() {
         $productlist = $this->Master_Model->BrandList($this->session->userdata('Division'));
         ?>

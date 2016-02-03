@@ -325,7 +325,8 @@ class User_model extends CI_Model {
                     `pf`.`Winability`,
                     `pf`.`Patient_Rxbed_In_Month`,
                     `pf`.`Patient_Seen_month`,
-                    SUM(CASE WHEN DATE_FORMAT(act.created_at,'%Y-%m-%d') = '$date' THEN act.Actual_Rx END ) AS Actual_Rx2
+                    SUM(CASE WHEN DATE_FORMAT(act.created_at,'%Y-%m-%d') = '$date' THEN act.Actual_Rx END ) AS Actual_Rx2,
+                    act.Approve_Status
                   FROM
                     (`Employee_Doc` ed) 
                     JOIN `Doctor_Master` dm 
@@ -346,9 +347,9 @@ class User_model extends CI_Model {
                       AND act.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
                   WHERE `ed`.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                     AND `dm`.`Individual_Type` = '$this->Individual_Type' 
-                  GROUP BY `dm`.`Account_ID` ";
+                  GROUP BY `dm`.`Account_ID` ORDER BY act.created_at DESC ";
         $query = $this->db->query($sql);
-        // echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -920,6 +921,7 @@ class User_model extends CI_Model {
                     $HTML .='</label>
                         </div>
                     </div>';
+                    
                     if ($Activity_Done == "Yes" && $Status == 'Submitted') {
                         $HTML .= $activity_detail;
                     } else {
@@ -1053,9 +1055,7 @@ class User_model extends CI_Model {
 
     function Update_password($VEEVA_Employee_ID, $data) {
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
-        return  $this->db->update($this->table_name, $data);
-     
-      
+        return $this->db->update($this->table_name, $data);
     }
 
     public function All_data($VEEVA_Employee_ID) {
@@ -1069,7 +1069,7 @@ class User_model extends CI_Model {
 
     function check_planning($VEEVA_Employee_ID, $Product_Id, $nextMonth, $nextYear) {
         $sql = "SELECT * FROM `Rx_Planning`
-                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear AND Planning_Status = 'Submitted' ";
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year=$nextYear AND Planning_Status = 'Draft' ";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -1146,7 +1146,57 @@ class User_model extends CI_Model {
     }
 
     function getReporting2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
-        $this->db->select('dm.*,GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,SUM(act.Actual_Rx) AS Actual_Rx');
+        $sql = "SELECT 
+            t_union.Account_ID,t_union.Account_Name,
+              GROUP_CONCAT(`t_union`.`Rxplan_id`) AS Rxplan_id,
+              SUM(t_union.Actual_Rx) AS Actual_Rx 
+            FROM
+              (
+                (SELECT 
+                  `dm`.*,
+                  GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,
+                  SUM(act.Actual_Rx) AS Actual_Rx 
+                FROM
+                  (`Employee_Doc` ed) 
+                  JOIN `Doctor_Master` dm 
+                    ON `dm`.`Account_ID` = `ed`.`VEEVA_Account_ID` 
+                  LEFT JOIN `Rx_Actual` act 
+                    ON `dm`.`Account_ID` = `act`.`Doctor_Id` 
+                    AND act.Product_Id = {$Product_id} 
+                    AND act.Year = '$Year' 
+                    AND act.month = '$month'
+                    AND act.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
+                WHERE `ed`.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                  AND `dm`.`Individual_Type` = 'Doctor' 
+                  AND `Approve_Status` = 'SFA' 
+                GROUP BY `dm`.`Account_ID`) 
+                UNION
+                ALL 
+                (SELECT 
+                  `dm`.*,
+                  GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,
+                  SUM(act.Actual_Rx) AS Actual_Rx 
+                FROM
+                  (`Employee_Doc` ed) 
+                  JOIN `Doctor_Master` dm 
+                    ON `dm`.`Account_ID` = `ed`.`VEEVA_Account_ID` 
+                  LEFT JOIN `Rx_Actual` act 
+                    ON `dm`.`Account_ID` = `act`.`Doctor_Id` 
+                    AND act.Product_Id = {$Product_id} 
+                    AND act.Year = '$Year' 
+                    AND act.month = '$month'
+                    AND act.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
+                WHERE `ed`.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                  AND `dm`.`Individual_Type` = 'Doctor' 
+                  AND `Approve_Status` = 'Un-Approved' 
+                GROUP BY `dm`.`Account_ID`)
+              ) AS t_union 
+               GROUP BY `t_union`.`Account_ID`
+            ORDER BY `Actual_Rx` DESC ";
+
+
+
+        /*$this->db->select('dm.*,GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,SUM(act.Actual_Rx) AS Actual_Rx');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
         $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND act.Year = "' . $Year . '" AND act.month = "' . $month . '" AND act.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
@@ -1154,8 +1204,8 @@ class User_model extends CI_Model {
         //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
         $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'Approve_Status' => 'SFA'));
         $this->db->group_by('dm.Account_ID');
-        $this->db->order_by('Actual_Rx DESC');
-        $query = $this->db->get();
+        $this->db->order_by('Actual_Rx DESC'); */
+        $query = $this->db->query($sql); 
         //echo $this->db->last_query();
         return $query->result();
     }
@@ -1171,8 +1221,6 @@ class User_model extends CI_Model {
     public function Reset_pass($id, $data) {
         $this->db->where(array('VEEV_Employee_ID' => $id));
         $this->db->update('Employee_Master', $data);
-
-
         return $query;
     }
 

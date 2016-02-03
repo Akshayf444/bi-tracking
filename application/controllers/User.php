@@ -557,7 +557,6 @@ class User extends MY_Controller {
                             'Product_Id' => $this->Product_Id,
                             'Doctor_Id' => $doc_id[$i],
                             'Status' => $this->input->post('Status'),
-                            'Approve_Status' => $this->input->post('Approve_Status'),
                         );
 
                         $result = $this->User_model->ReportingExist($doc_id[$i]);
@@ -570,8 +569,13 @@ class User extends MY_Controller {
                             }
                         } else {
                             if (isset($result->Status) && $result->Status == 'Draft') {
-                                if ($result->Actual_Rx != $value[$i] || $result->Approve_Status == 'Draft') {
-                                    $doc['Approve_Status'] = 'SFA';
+                                if ($result->Actual_Rx != $value[$i]) {
+                                    $doc['field_changed'] = 1;
+                                }
+                                if ($result->Actual_Rx != $value[$i] || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
+                                    if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                        $doc['Approve_Status'] = 'SFA';
+                                    }
                                 } else {
                                     $doc['Approve_Status'] = $result->Approve_Status;
                                 }
@@ -595,7 +599,7 @@ class User extends MY_Controller {
 
                 //echo $data['doctorList'] ;
             } else {
-                $data['doctorList'] = "<h1>Please Add Planning First</h1>";
+                $data['doctorList'] = "<h1>Please Save Planning First</h1>";
             }
             $data = array('title' => 'Reporting Doctor', 'content' => 'User/Prescription_Doctor_List', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
@@ -660,12 +664,16 @@ class User extends MY_Controller {
             $messages = array();
             $result = $this->User_model->getPlannedActivityDoctor();
             $data['doctorList'] = $this->User_model->generateActivityTable($result, 'Reporting');
+            $Activity_Detail = $this->input->post('Activity_Detail');
+            $Reason = $this->input->post('Reason');
+            //var_dump($_POST);
             if ($this->input->post()) {
+                $Activity_Detail = $this->input->post('Activity_Detail');
+                $Reason = $this->input->post('Reason');
                 for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i ++) {
                     $docid = $this->input->post('Doctor_Id');
                     $Activity = $this->input->post('Activity_Id');
-                    $Activity_Detail = $this->input->post('Activity_Detail');
-                    $Reason = $this->input->post('Reason');
+
                     if (trim($Activity[$i]) != '-1') {
                         $data2 = array(
                             'Activity_Id' => $Activity[$i],
@@ -673,17 +681,16 @@ class User extends MY_Controller {
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
-                            'Approve_Status' => $this->input->post('Approve_Status'),
                             'Year' => $this->nextYear,
                             'month' => $this->nextMonth,
                             'Activity_Done' => $this->input->post($docid[$i])
                         );
-                        if ($this->input->post($docid[$i]) == 'Yes') {
-                            $data2['Activity_Detail'] = $Activity_Detail[$i];
+                        if ($data2['Activity_Done'] == 'Yes') {
+                            $data2['Activity_Detail'] = $Activity_Detail[$i]; 
                             $data2['Reason'] = '';
-                        } elseif ($this->input->post($docid[$i]) == 'No') {
-                            $data2['Activity_Detail'] = '';
+                        } elseif ($data2['Activity_Done'] == 'No') {
                             $data2['Reason'] = $Reason[$i];
+                            $data2['Activity_Detail'] = '';
                         }
                         $result = $this->User_model->ActivityReportingExist($docid[$i]);
                         if (empty($result)) {
@@ -703,16 +710,12 @@ class User extends MY_Controller {
                         } elseif (isset($result->Status) && $result->Status == 'Draft') {
                             if ($this->input->post($docid[$i]) != $result->Activity_Done) {
                                 $data2['field_changed'] = 1;
-                            } else {
-                                $data2['field_changed'] = 0;
                             }
 
                             $data2['updated_at'] = date('Y-m-d H:i:s');
                             if ($this->input->post($docid[$i]) != $result->Activity_Done || $result->Approve_Status == 'Draft' || $result->field_changed == 1) {
                                 if ($this->input->post('Button_click_status') == 'SaveForApproval') {
                                     $data2['Approve_Status'] = 'SFA';
-                                } else {
-                                    $data2['Approve_Status'] = $result->Approve_Status;
                                 }
                             } else {
                                 $data2['Approve_Status'] = $result->Approve_Status;

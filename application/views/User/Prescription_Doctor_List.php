@@ -201,16 +201,17 @@
                     ?>
                 </tbody>
             </table>
-            <?php echo isset($doctorList) ? $doctorList : '' ?>
+            <?php //echo isset($doctorList) ? $doctorList : '' ?>
             <input type="hidden" id="Status" name="Status" value="Draft">
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
+            <input type="hidden" id="Button_click_status" name="Button_click_status" value="Save">
         </div>
         <div class="panel-footer">
             <button type="submit" id="Save" class="btn btn-primary">Save</button>
             <?php if ($allApproved == TRUE) { ?>
                 <button type="submit" id="Submit" class="btn btn-success">Submit</button>
             <?php } else { ?>
-                <button type="submit" id="Approve_Status" class="btn btn-info">Save For Approval</button>
+                <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
             <?php } ?>
 
         </div>
@@ -282,5 +283,6 @@
     });
     $('#Approve').click(function () {
         $("#Approve_Status").val('SFA');
+        $("#Button_click_status").val('SaveForApproval');
     });
 </script>
