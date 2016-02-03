@@ -337,3 +337,92 @@ if (!empty($division)) {
         </div>  
     <?php } ?>
 </div>
+
+
+
+
+
+
+
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <?php if (!empty($productlist)) { ?>
+        <div class="panel panel-default"> 
+            <div class="panel-heading"> Status  </div>
+            <div class="panel-body">
+
+                <ul align="center" class="nav nav-tabs ">
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        foreach ($productlist as $product) {
+                            ?>
+                            <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
+                </ul>
+
+                <div class="tab-content">
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        $ApproveCount = 0;
+                        $UnApproveCount = 0;
+                        $Pending = 0;
+                        $Submitted = 0;
+                        foreach ($productlist as $product) {
+                            ?>
+
+                            <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="width: 20%">BDM Name</th>
+                                        <th>KPI1</th>
+                                        <th>KPI2</th>
+                                       
+                                    </tr>
+                                    <?php
+                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
+                                    if (!empty($Status)) {
+                                        $nod = 0;
+                                        $profiled = 0;
+                                        $target = 0;
+                                        $planned = 0;
+                                        $actual = 0;
+                                        $dplanned = 0;
+                                        $actplaned = 0;
+                                        foreach ($Status as $value) {
+                                             $KPL1=$value->Target_New_Rxn_for_the_month *$currentMonthRx['Actual_Rx']/100;
+                                             $KPL2=$value->No_of_Doctors_planned * $value->checkk/100;
+                                            $nod += $value->No_of_Doctors;
+                                            $profiled += $value->No_of_Doctors_profiled;
+                                            $target += $value->Target_New_Rxn_for_the_month;
+                                            $planned += $value->Planned_New_Rxn;
+                                            $nod += $value->No_of_Doctors;
+                                            $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
+                                            echo '<tr><td style="width: 20%">' . $value->Full_Name . '</td>'
+                                            
+                                            . '<td>' . $KPL1 . '</td>'
+                                           
+                                            . '<td>' . $KPL2 . '</td></tr>';
+                                           
+                                            
+                                        }
+                                    }
+                                    ?>
+                                </table>
+                            </div>
+
+
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>  
+    <?php } ?>
+</div>
