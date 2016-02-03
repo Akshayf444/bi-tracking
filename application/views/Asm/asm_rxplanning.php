@@ -52,7 +52,7 @@
                         <td><input type="radio" class="uncheck-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Un-Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Un-Approved"></td>
                     </tr>
 
-
+                    
                     <?php
                 endforeach;
                 echo '</table></div><span class="pull-left"> Total : ' . $plannedRx . '</span> <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';

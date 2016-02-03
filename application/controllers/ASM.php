@@ -273,15 +273,25 @@ class ASM extends MY_Controller {
 
     public function ApprovePlanning() {
         if ($this->input->post()) {
+            $approveCount = 0;
+            $rejectCount = 0;
             for ($i = 0; $i < count($this->input->post('Doctor_Id')); $i++) {
                 $doctorId = $this->input->post('Doctor_Id');
                 $data = array(
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
                 );
                 $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
+                $data['field_changed'] = 0;
                 $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => $this->input->post('product')));
                 $this->db->update('Rx_Planning', $data);
+                if ($data['Approve_Status'] == 'Approved') {
+                    $approveCount++;
+                } elseif ($data['Approve_Status'] == 'Un-Approved') {
+                    $rejectCount++;
+                }
             }
+            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records are Approved And ' . $rejectCount . ' Records Are Rejected', 'success'));
+
             redirect('ASM/asm_rx_planning', 'refresh');
         }
     }
@@ -512,7 +522,6 @@ class ASM extends MY_Controller {
                 </div>  
             <?php } ?>
         </div><?php
-        }
-
     }
-    
+
+}
