@@ -5,7 +5,9 @@
 
 
 <div class="container" style="margin-top: 2em;">
-    <div class="pull-right" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>
+    <div class="row">
+        <div class="pull-right" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>
+    </div>
     <?php
     if (isset($message)) {
         echo '<div class="alert alert-danger" style="text-align:center">' . $message . '</div>';

@@ -171,11 +171,14 @@ class User extends MY_Controller {
             $data['user4'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
             $current_month_actual = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
             $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
-           $target= $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+
+            if ($this->Product_Id > 0) {
+                $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+            }
             $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            if (isset($target['target'])&&$target['target']>0) {
-                $data['kpi1'] = ($current_month_actual['Actual_Rx'] /  $target['target']) * 100;
+            if (isset($target['target']) && $target['target'] > 0) {
+                $data['kpi1'] = ($current_month_actual['Actual_Rx'] / $target['target']) * 100;
             } else {
                 $data['kpi1'] = 0;
             }
@@ -312,6 +315,7 @@ class User extends MY_Controller {
                         $_POST['Patient_Rxbed_In_Week'] = '';
                         $_POST['Patient_Rxbed_In_Month'] = '';
                         $_POST['Winability'] = '';
+                        $_POST['Status'] = 'Draft';
                         $this->db->insert('Profiling', $_POST);
 
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Added Successfully.', 'success'));
@@ -327,6 +331,7 @@ class User extends MY_Controller {
                         $_POST['Patient_Rxbed_In_Week'] = '';
                         $_POST['Patient_Rxbed_In_Month'] = '';
                         $_POST['Winability'] = '';
+                        $_POST['Status'] = 'Draft';
                         $this->db->insert('Profiling', $_POST);
                         $_POST['Product_id'] = 4;
                         $this->db->insert('Profiling', $_POST);
@@ -900,10 +905,10 @@ class User extends MY_Controller {
                                 'created_at' => date('y-m-d'));
                             $this->User_model->insert_pass($data);
                             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
-                    }else {
-                    $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'danger'));
-                }}
-                    
+                        } else {
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'danger'));
+                        }
+                    }
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert(' Already Exit Password .', 'danger'));
                 }

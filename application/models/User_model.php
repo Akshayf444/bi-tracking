@@ -321,18 +321,18 @@ class User_model extends CI_Model {
         $sql = "SELECT 
                     `rxp`.`Planned_Rx`,
                     `dm`.*,
+                    SUM(CASE WHEN DATE_FORMAT(act.created_at,'%Y-%m-%d') = '$date' THEN act.Actual_Rx END ) AS Actual_Rx2,
                     SUM(act.Actual_Rx) AS Actual_Rx,
                     `pf`.`Winability`,
                     `pf`.`Patient_Rxbed_In_Month`,
-                    `pf`.`Patient_Seen_month`,
-                    SUM(CASE WHEN DATE_FORMAT(act.created_at,'%Y-%m-%d') = '$date' THEN act.Actual_Rx END ) AS Actual_Rx2,
+                    `pf`.`Patient_Seen_month`,                   
                     act.Approve_Status
                   FROM
                     (`Employee_Doc` ed) 
                     JOIN `Doctor_Master` dm 
                       ON `dm`.`Account_ID` = `ed`.`VEEVA_Account_ID` 
-                    LEFT JOIN `Profiling` pf 
-                      ON `dm`.`Account_ID` = `pf`.`Doctor_Id` 
+                    LEFT JOIN `Profiling` pf                     
+                      ON `dm`.`Account_ID` = `pf`.`Doctor_Id` AND Product_Id = {$Product_id} 
                     LEFT JOIN `Rx_Planning` rxp 
                       ON `dm`.`Account_ID` = `rxp`.`Doctor_Id` 
                       AND rxp.Product_Id = {$Product_id} 
@@ -1133,7 +1133,7 @@ class User_model extends CI_Model {
                 INNER JOIN Doctor_Master dm 
                 ON dm.`Account_ID` = ed.`VEEVA_Account_ID` AND dm.Individual_Type = '$this->Individual_Type'
                 LEFT JOIN Profiling p
-                ON ed.`VEEVA_Account_ID`=p.`Doctor_Id` AND p.`Product_id`= $product
+                ON ed.`VEEVA_Account_ID`=p.`Doctor_Id` AND p.`Product_id`= $product AND p.Status = 'Submitted'
                 LEFT JOIN Rx_Target rt
                 ON em.`VEEVA_Employee_ID`=rt.`VEEVA_Employee_ID`AND rt.`Status`='Submitted' AND rt.`Product_Id`=$product AND rt.`Month`=$month AND rt.`Year`=$year
                 LEFT JOIN Rx_Planning rp
@@ -1234,15 +1234,15 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
-    public  function check_history($id,$pass){
-        $sql="select * from Password_History where VEEVA_Employee_ID='$id' AND password='$pass'";
+    public function check_history($id, $pass) {
+        $sql = "select * from Password_History where VEEVA_Employee_ID='$id' AND password='$pass'";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
-     public function  insert_pass($data){
-      
+
+    public function insert_pass($data) {
+
         return $this->db->insert('Password_History', $data);
-   
-     }
+    }
 
 }
