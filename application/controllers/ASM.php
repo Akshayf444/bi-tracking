@@ -447,6 +447,7 @@ class ASM extends MY_Controller {
                     'VEEVA_Employee_Id' => $this->input->post('BDM_ID'),
                     'field_changed' => 0
                 );
+                //Approve Both the entries Trajenta and Trajenta Duo
                 $data['Approve_Status'] = $this->input->post('approve_' . $doctorId[$i]);
                 if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
                     $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Doctor_Id' => $doctorId[$i], 'Product_Id' => 4));
