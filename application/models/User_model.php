@@ -794,7 +794,7 @@ class User_model extends CI_Model {
     function ActualPriorityExist($Doctor_Id) {
         $this->db->select('*');
         $this->db->from('Actual_Doctor_Priority');
-        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth));
+        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $Doctor_Id, 'month' => $this->nextMonth, 'Year' => $this->nextYear));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -846,10 +846,10 @@ class User_model extends CI_Model {
         $this->db->select('COUNT(DISTINCT(`Doctor_Id`)) AS doctor_id');
         $this->db->from('`Actual_Doctor_Priority`');
         if ($this->Product_Id == 4 || $this->Product_Id == 6) {
-            $where = "VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='4' OR VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='6' AND Status ='Submitted' ";
+            $where = "VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='4' AND Year='$this->nextYear' OR VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND Product_id='6' AND Year='$this->nextYear' AND Status ='Submitted' ";
             $this->db->where($where);
         } else {
-            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'Status' => 'Submitted'));
+            $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Product_id' => $Product_id, 'Status' => 'Submitted', 'Year' => $this->nextYear));
         }
 
         $query = $this->db->get();
@@ -921,7 +921,7 @@ class User_model extends CI_Model {
                     $HTML .='</label>
                         </div>
                     </div>';
-                    
+
                     if ($Activity_Done == "Yes" && $Status == 'Submitted') {
                         $HTML .= $activity_detail;
                     } else {
@@ -1076,7 +1076,7 @@ class User_model extends CI_Model {
 
     function priority_check($VEEVA_Employee_ID, $Product_Id, $nextMonth) {
         $sql = "SELECT * FROM `Actual_Doctor_Priority`
-                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth";
+                WHERE `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`= $Product_Id AND month=$nextMonth AND Year='$this->nextYear' ";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -1196,16 +1196,16 @@ class User_model extends CI_Model {
 
 
 
-        /*$this->db->select('dm.*,GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,SUM(act.Actual_Rx) AS Actual_Rx');
-        $this->db->from('Employee_Doc ed');
-        $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
-        $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND act.Year = "' . $Year . '" AND act.month = "' . $month . '" AND act.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
+        /* $this->db->select('dm.*,GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,SUM(act.Actual_Rx) AS Actual_Rx');
+          $this->db->from('Employee_Doc ed');
+          $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID');
+          $this->db->join('Rx_Actual act', 'dm.Account_ID = act.Doctor_Id AND act.Product_Id = ' . $Product_id . ' AND act.Year = "' . $Year . '" AND act.month = "' . $month . '" AND act.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'LEFT');
 
-        //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
-        $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'Approve_Status' => 'SFA'));
-        $this->db->group_by('dm.Account_ID');
-        $this->db->order_by('Actual_Rx DESC'); */
-        $query = $this->db->query($sql); 
+          //$where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type' ";
+          $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type, 'Approve_Status' => 'SFA'));
+          $this->db->group_by('dm.Account_ID');
+          $this->db->order_by('Actual_Rx DESC'); */
+        $query = $this->db->query($sql);
         //echo $this->db->last_query();
         return $query->result();
     }

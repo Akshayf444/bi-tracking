@@ -315,7 +315,7 @@ class User extends MY_Controller {
                         $_POST['Product_id'] = 6;
                         $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
-                        
+
                         $field_array = array(
                             'Patient_Seen' => $_POST['Patient_Seen'],
                             'Patient_Seen_month' => $_POST['Patient_Seen_month'],
@@ -663,7 +663,9 @@ class User extends MY_Controller {
                     'Product_Id' => $this->Product_Id,
                     'month' => $this->nextMonth,
                     'Doctor_Id' => $priority[$i],
-                    'Status' => $this->input->post('Status')
+                    'Status' => $this->input->post('Status'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'Year' => $this->nextYear
                 );
                 if (empty($result)) {
                     $this->db->insert('Actual_Doctor_Priority', $data2);

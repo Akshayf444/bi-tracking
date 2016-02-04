@@ -1,8 +1,7 @@
-
 <?php echo form_open('ASM/approveTarget'); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <div class="panel panel-default">
-        <div class="panel-heading"> Set New Target For <?PHP echo date('M Y');?></div>
+        <div class="panel-heading"> Set New Target For <?PHP echo date('M Y'); ?></div>
         <div class="panel-body">
             <table class="table table-bordered">
                 <tr>
@@ -34,7 +33,7 @@
                         $target1 = 0;
                         $target2 = 0;
                         $target3 = 0;
-                        
+
                         foreach ($result as $r) {
 
                             if ($this->Division == 'Diabetes') {
@@ -67,35 +66,50 @@
         </div>
         <div class="panel-footer">
             <input type="hidden" id="Status" name="Status" value="Draft">
-           
-            <input type="button" id="Assign"  class="btn btn-success" value="Assign" data-toggle="modal" data-target="#myModal">
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Assign Target</h4>
-      </div>
-      <div class="modal-body">
-          
-           <p> Once you click on <b>Assign</b>  button it will go to respective BDM & will not be allowed to change.  </p>  
-           <p> Please ensure that you have allocated new RX Target to all BDM for all brands .</p>
-           <p> Are you sure to assign new RX Target ? </p>           
-           <p>If you are not sure please click on <b> Cancel</b> button . </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button  class=" btn btn-primary"onclick="myFunction()" id="submit">Assign</button>
-      </div>
-    </div>
-  </div>
-</div>
-            
+            <input type="button"   class="btn btn-success" value="Assign" data-toggle="modal" data-target="#myModal">
+            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Assign Target</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are You Sure Do You Want To Assign Target ? </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" onclick="myFunction()" id="Assign" >Assign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <input type="submit" class="btn btn-primary" value="Save">
         </div>
     </div>
 </div>
 </form>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Assign Target</h4>
+            </div>
+            <div class="modal-body">
+
+                <p> Once you click on <b>Assign</b>  button it will go to respective BDM & will not be allowed to change.  </p>  
+                <p> Please ensure that you have allocated new RX Target to all BDM for all brands .</p>
+                <p> Are you sure to assign new RX Target ? </p>           
+                <p>If you are not sure please click on <b> Cancel</b> button . </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button onclick="hide()"  class="btn btn-primary" data-toggle="modal" data-target="#myModal2" >Assign</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $('#product_id').change(function () {
         $('input[name="product"]').val($(this).val());
@@ -115,35 +129,17 @@
     });
 
     $("#Assign").click(function () {
-        $("#Status").val('Submitted');
+
     });
 </script>
 
 <script>
-function myFunction() {
-    var x;
-    if (confirm("Press a button!") == true) {
-        x = "You pressed OK!";
-    } else {
-        x = "You pressed Cancel!";
+    function myFunction() {
+        $("#Status").val('Submitted');
     }
-    document.getElementById("demo").innerHTML = x;
-}
+
+    function hide() {
+        $('#myModal').modal('hide');
+    }
 </script>
-
-
-
-<!-- Button trigger modal -->
-<script>
-function myFunction() {
-    if (answer) {
-$("#Submit").attr('type', 'submit');
-            }
-            else {
-                $("#Submit").attr('type', 'button');
-            }
-}
-</script>
-
-
 <!-- Modal -->

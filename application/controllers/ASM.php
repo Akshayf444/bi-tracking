@@ -228,7 +228,7 @@ class ASM extends MY_Controller {
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
                         if (empty($check)) {
                             $this->User_model->Set_Target($data1);
-                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Added Successfully.', 'success'));
                         } elseif ($check['Status'] == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
                             $this->db->update('Rx_Target', $data1);
@@ -255,7 +255,7 @@ class ASM extends MY_Controller {
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
                         if (empty($check)) {
                             $this->User_model->Set_Target($data1);
-                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Already Assigned.', 'danger'));
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Target Added Successfully.', 'success'));
                         } elseif ($check['Status'] == 'Draft') {
                             $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i], 'Product_Id' => $id, 'month' => $this->nextMonth));
                             $this->db->update('Rx_Target', $data1);
