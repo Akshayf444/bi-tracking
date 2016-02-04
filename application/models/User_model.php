@@ -786,6 +786,10 @@ class User_model extends CI_Model {
         $this->db->where(array('Username' => $id));
         return $this->db->update('Employee_Master', $data);
     }
+      function update_last_login($id, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $id));
+        return $this->db->update('Employee_Master', $data);
+    }
 
     function PriorityExist($Doctor_Id) {
         $this->db->select('*');

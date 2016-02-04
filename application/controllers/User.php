@@ -114,8 +114,11 @@ class User extends MY_Controller {
                 );
                 $this->db->insert('login_history', $add);
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
+                    
                     redirect('User/password', 'refresh');
                 } else {
+                    $data=array('Last_Login'=>date('Y-m-d h:i:s'));
+                     $this->User_model-> update_last_login($this->VEEVA_Employee_ID, $data);
                     if ($check_password['Designation'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
                     } else {
