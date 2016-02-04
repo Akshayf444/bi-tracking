@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <input type="password" class="form-control pword" placeholder="Password" id="pwd" aria-describedby="basic-addon2" name="password">
-  <span class="input-group-addon" id="eye">Show</span>
+                            <span class="input-group-addon" id="eye"><i class="fa fa-eye"></i></span>
 </div>
                     </div>
 <!--                        <div class="col-lg-8">
