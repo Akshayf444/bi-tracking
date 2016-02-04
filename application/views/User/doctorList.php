@@ -224,16 +224,18 @@ echo form_open('User/Planning', $attributes);
             <input type="hidden" id="Approve_Status" name="Approve_Status" value="">
             <input type="hidden" id="Button_click_status" name="Button_click_status" value="Save">
         </div>
+        <?php if (isset($result) && !empty($result)) { ?>
         <div class="panel-footer">
 
-            <button type="submit" id="Save" class="btn btn-primary">Save</button>
-            <?php if ($allApproved == TRUE) { ?>
-                <button type="button" id="Priority" class="btn btn-danger">Prioritize for activities</button>  
-                <button type="submit" id="Submit" class="btn btn-success">Submit</button>
-            <?php } else { ?>
-                <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
-            <?php } ?>
-        </div>
+                <button type="submit" id="Save" class="btn btn-primary">Save</button>
+                <?php if ($allApproved == TRUE) { ?>
+                    <button type="button" id="Priority" class="btn btn-danger">Prioritize for activities</button>  
+                    <button type="submit" id="Submit" class="btn btn-success">Submit</button>
+                <?php } else { ?>
+                    <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
+                <?php } ?>
+            </div>
+        <?php } ?>
     </div>
 </div>
 </form>

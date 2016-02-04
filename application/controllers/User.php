@@ -642,7 +642,7 @@ class User extends MY_Controller {
     }
 
     public function Priority() {
-
+        $data = array();
         if ($this->Product_Id == 1) {
             $this->alertLabel = "Hospital";
         }
