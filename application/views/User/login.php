@@ -1,9 +1,3 @@
-<link href="<?php echo asset_url() ?>css/jquery-ui.css" rel="stylesheet" type="text/css " >
-<script src="<?php echo asset_url() ?>js/jquery.js" type="text/javascript"></script>
-<script src="<?php echo asset_url() ?>js/jquery-ui.js" type="text/javascript"></script>
-
-
-
 <div class="container" style="margin-top: 2em;">
     <div class="row">
         <div class="pull-right" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>

@@ -1113,10 +1113,10 @@ class User_model extends CI_Model {
     }
 
     function ASM_kp1($VEEVA_Employee_ID, $month, $year, $product_id) {
-        $sql = "SELECT COUNT(ra.`Actual_Rx`) as Actual,COUNT(rp.`Planned_Rx`) as Planned FROM `Employee_Master` em 
+        $sql = "SELECT SUM(ra.`Actual_Rx`) as Actual,SUM(rp.`target`) as Planned FROM `Employee_Master` em 
                 LEFT JOIN `Rx_Actual` ra 
                 ON em.`VEEVA_Employee_ID`=ra.`VEEVA_Employee_ID` AND ra.`month`=$month AND ra.`Year`=$year AND ra.`Product_Id`=$product_id
-                LEFT JOIN `Rx_Planning` rp 
+                LEFT JOIN `Rx_Target` rp 
                 ON em.`VEEVA_Employee_ID` = rp.`VEEVA_Employee_ID` AND rp.`month`=$month AND rp.`Year`=$year AND rp.`Product_Id`=$product_id
                 WHERE `Reporting_VEEVA_ID`='$VEEVA_Employee_ID'";
         $query = $this->db->query($sql);

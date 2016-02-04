@@ -91,9 +91,7 @@ class User extends MY_Controller {
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
-
-
-                $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
+                
             } else {
                 $this->session->set_userdata('VEEVA_Employee_ID', $check['VEEVA_Employee_ID']);
                 $this->session->set_userdata('Local_Employee_ID', $check['Local_Employee_ID']);
@@ -439,6 +437,9 @@ class User extends MY_Controller {
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
                             $doc['Approve_Status'] = 'Draft';
+                            if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                $doc['Approve_Status'] = 'SFA';
+                            }
                             if ($this->User_model->Save_Planning($doc)) {
                                 array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
@@ -512,6 +513,9 @@ class User extends MY_Controller {
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
                             $data2['Approve_Status'] = 'Draft';
+                            if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                $data2['Approve_Status'] = 'SFA';
+                            }
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
                                 $this->db->insert('Activity_Planning', $data2);
@@ -636,6 +640,9 @@ class User extends MY_Controller {
                         if (empty($result)) {
                             $doc['created_at'] = date('Y-m-d H:i:s');
                             $doc['Approve_Status'] = 'Draft';
+                            if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                $doc['Approve_Status'] = 'SFA';
+                            }
                             if ($this->User_model->SaveReporting($doc)) {
                                 array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Added Successfully.', 'success'));
                             }
@@ -770,6 +777,9 @@ class User extends MY_Controller {
                         if (empty($result)) {
                             $data2['created_at'] = date('Y-m-d H:i:s');
                             $data2['Approve_Status'] = 'Draft';
+                            if ($this->input->post('Button_click_status') == 'SaveForApproval') {
+                                $data2['Approve_Status'] = 'SFA';
+                            }
                             //$data2['Approve_Status'] = 'SFA';
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
