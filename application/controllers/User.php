@@ -39,29 +39,59 @@ class User extends MY_Controller {
             $password = $this->input->post('password');
             $check = $this->User_model->authentication($username, $password);
             if (empty($check)) {
-                $data['message'] = ' Username/password Incorrect';
-                $emp = $this->User_model->employee_id($username);
-                if (isset($emp->VEEVA_Employee_ID)) {
-                    $add = array(
-                        'VEEVA_Employee_ID' => $emp->VEEVA_Employee_ID,
-                        'password' => $password,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    );
-                    $this->User_model->password_save($add);
 
-                    $count = $this->User_model->password_count($emp->VEEVA_Employee_ID);
-                    if ($count['cnt'] > 5) {
+                $emp = $this->User_model->employee_id($username);
+                if (isset($emp['VEEVA_Employee_ID'])) {
+                    $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
+                    if ($count['cnt'] > 4) {
                         $data1 = array(
                             'Status' => 'locked',
                         );
                         $this->User_model->update_status($username, $data1);
                         $data['message'] = 'Your Account Has Been Locked';
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Your Account Has Been Locked', 'danger'));
+                    } else {
+                        $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['VEEVA_Employee_ID']);
+                        if (!empty($lastFailed_attempt)) {
+                            $current_date = date('Y-m-d H:i:s');
+                            $current_date = strtotime($current_date);
+                            $lastAttemptDate = strtotime($lastFailed_attempt->created_at);
+
+                            if (($current_date - $lastAttemptDate) > 3600) {
+                                $data1 = array(
+                                    'Status' => '1',
+                                );
+                                $this->User_model->update_status($username, $data1);
+                                $add = array(
+                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                    'password' => $password,
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                );
+                                $this->User_model->password_save($add);
+                                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
+                            } else {
+                                $add = array(
+                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                    'password' => $password,
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                );
+                                $this->User_model->password_save($add);
+                                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
+                            }
+                        } else {
+                            $add = array(
+                                'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                'password' => $password,
+                                'created_at' => date('Y-m-d H:i:s'),
+                            );
+                            $this->User_model->password_save($add);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
+                        }
                     }
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
-                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
+
 
                 $data = array('title' => 'Login', 'content' => 'User/login', 'view_data' => $data);
             } else {

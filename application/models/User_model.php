@@ -759,7 +759,7 @@ class User_model extends CI_Model {
     }
 
     function employee_id($id) {
-        $this->db->select('VEEVA_Employee_ID');
+        $this->db->select('*');
         $this->db->from('Employee_Master');
         $this->db->where(array('Username' => $id));
         $query = $this->db->get();
@@ -767,10 +767,14 @@ class User_model extends CI_Model {
     }
 
     function password_count($id) {
+        $current_date = date('Y-m-d H:i:s');
+        $previous_date = date('Y-m-d H:i:s', strtotime('-1 hour'));
         $this->db->select('COUNT(VEEVA_Employee_ID) AS cnt');
         $this->db->from('password_count');
-        $this->db->where(array('VEEVA_Employee_ID' => $id));
+        $where = "VEEVA_Employee_ID = '$id' AND created_at BETWEEN '$previous_date' AND '$current_date' ";
+        $this->db->where($where);
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row_array();
     }
 
@@ -1222,6 +1226,12 @@ class User_model extends CI_Model {
         $this->db->where(array('VEEV_Employee_ID' => $id));
         $this->db->update('Employee_Master', $data);
         return $query;
+    }
+
+    public function lastFailedAttempt($VEEVA_Employee_ID) {
+        $sql = "SELECT * FROM password_count WHERE VEEVA_Employee_ID = '$VEEVA_Employee_ID' ORDER BY created_at DESC LIMIT 1 ";
+        $query = $this->db->query($sql);
+        return $query->row();
     }
 
 }

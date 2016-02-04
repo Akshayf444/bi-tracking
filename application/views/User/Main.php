@@ -202,10 +202,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
 
                 </div>
             </div>
-
-
             <div class="col-lg-5 col-md-5 col-xs-5">
-
                 <div class="demo" >       
                     <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                     <span style="margin-left: -59px;position: absolute;margin-top: 69px;"><?php echo round($kpi2, 2); ?>%</span>
