@@ -141,6 +141,11 @@
              <i class="fa fa-lock"></i> <span>Blocked Accounts</span> 
               </a>
             </li>
+             <li>
+           <a href="<?php echo site_url('Admin/territory_view'); ?>">
+             <i class="fa fa-eye"></i> <span>Territory</span> 
+              </a>
+            </li>
             
                  </ul>
         </section>

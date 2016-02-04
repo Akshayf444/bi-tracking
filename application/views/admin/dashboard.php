@@ -464,16 +464,7 @@
             <!-- Bootstrap 3.3.2 JS -->
             <script src="<?php echo asset_url() ?>/dashboard/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
-            <!-- FastClick -->
             
-
-
-            <!-- daterangepicker -->
-           
-
-            <!-- datepicker -->
-           
-            <!-- ChartJS 1.0.1 -->
             <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
             
 

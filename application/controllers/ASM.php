@@ -603,15 +603,26 @@ class ASM extends MY_Controller {
 
                 $old = $this->input->post('old');
                 $new = $this->input->post('new');
+                $pass_exit_history = $this->User_model->check_history($this->VEEVA_Employee_ID, $new);
+                
                 $pass = $this->User_model->All_data($this->VEEVA_Employee_ID);
-                if (!empty($pass)) {
-                    if ($old == $pass['password']) {
-                        $mobile = array('password' => $new);
-                        $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
-                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
-                    } else {
-                        $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match.', 'error'));
+                if (empty($pass_exit_history)) {
+                    if (!empty($pass)) {
+                        if ($old == $pass['password']) {
+                            $mobile = array('password' => $new);
+                            $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
+                            $data = array('password' => $new,
+                                'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                                'created_at' => date('y-m-d'));
+                            $this->User_model->insert_pass($data);
+                            $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Changed Successfully.', 'success'));
+                        } 
+                        else {
+                   $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Old Password Not Match .', 'danger'));
+                }
                     }
+                } else {
+                   $this->session->set_userdata('message', $this->Master_Model->DisplayAlert(' Cannot Use Already  Used Password .', 'danger'));
                 }
             }
 
