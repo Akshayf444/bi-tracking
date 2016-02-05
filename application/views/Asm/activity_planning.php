@@ -59,7 +59,7 @@
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
-            <div class="panel-heading"> Status  </div>
+            <div class="panel-heading"> Activity Planning Status For Approval  </div>
             <div class="panel-body">
 
                 <ul align="center" class="nav nav-tabs ">
@@ -95,7 +95,7 @@
                                         <th>Approved</th>
                                         <th>Rejected</th>
                                         <th>Pending</th>
-                                        <th>Submitted by BDM Post ASM Approval</th>
+                                        <th> Approved&Submitted </th>
                                     </tr>
                                     <?php
                                     $Status = $this->asm_model->ActivityPlanningStatus($product->id);
