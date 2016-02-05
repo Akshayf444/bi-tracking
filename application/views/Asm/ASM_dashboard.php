@@ -58,7 +58,7 @@
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
-            <div class="panel-heading"> Status  </div>
+            <div class="panel-heading"> Achievement Status  </div>
             <div class="panel-body">
 
                 <ul align="center" class="nav nav-tabs ">
@@ -121,7 +121,7 @@
                                                 echo ($actual / $target) * 100;
                                             }
                                             ?>%</span>
-                                        <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 1</span>
+                                        <span style="margin-left: 90px;position: absolute;margin-top: -35px">Prescription </span>
                                         <span style="margin-left: 66px;position: absolute;margin-top: -17px;"> Actual / Target</span>
 
                                     </div>
@@ -135,14 +135,14 @@
                                                 echo ($actplaned / $dplanned) * 100;
                                             }
                                             ?>%</span>
-                                        <span style="margin-left: 100px;position: absolute;margin-top: -35px">KPI 2</span>
-                                        <span style="margin-left: 0px;position: absolute;margin-top: -17px;"><?php
+                                        <span style="margin-left: 68px;position: absolute;margin-top: -35px"> <?php
                                             if ($this->Product_Id == 1) {
                                                 echo "Hospital";
                                             } else {
                                                 echo "Doctor";
                                             }
-                                            ?> Engaged in Activity / Planned</span>
+                                            ?> Engaged in Activity</span>
+                                        <span style="margin-left: px;position: absolute;margin-top: -17px;"> Engaged in Activity / Planned</span>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
-            <div class="panel-heading"> Status  </div>
+            <div class="panel-heading">  Status  </div>
             <div class="panel-body">
 
                 <ul align="center" class="nav nav-tabs ">
@@ -199,7 +199,7 @@
                                         <th>No. of Doctors profiled</th>
                                         <th>Target New Rxn for the month</th>
                                         <th>Planned New Rxn for the month</th>
-                                        <th>Achieved New Rxn for the month</th>
+                                        <th>Achieved New Rxn for the month to date</th>
                                         <th>No. of Doctors planned for activities</th>
                                         <th>Achieved No. of Doctors planned for activities</th>
                                     </tr>
@@ -259,7 +259,7 @@
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
-            <div class="panel-heading"> Status  </div>
+            <div class="panel-heading"> KPI Status  </div>
             <div class="panel-body">
 
                 <ul align="center" class="nav nav-tabs ">
