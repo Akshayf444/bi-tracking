@@ -40,15 +40,26 @@
                 </tr>
                 <?php foreach ($show as $row) :
                     ?>
-                    <tr>  
+                    <tr <?php
+                    if ($row->Approve_Status == 'Approved') {
+                        echo 'style = "background-color:#c6ebd9" disabled="disabled" ';
+                    }
+                    ?> >  
                         <td><?php echo $row->Account_Name; ?></td>  
                         <td><?php
                             echo $row->Planned_Rx;
                             $plannedRx += $row->Planned_Rx;
                             ?><input type="hidden" name="Doctor_Id[]" value="<?php echo $row->Account_ID ?>"> <input type="hidden" name="BDM_ID" value="<?php echo isset($_POST['rx_id']) ? $_POST['rx_id'] : '' ?>"> </td>
-                        <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
-                            <input type="radio" class="check-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Approved"></td>
-                        <td><input type="radio" class="uncheck-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Un-Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Un-Approved"></td>
+                        <?php if ($row->Approve_Status == 'Approved') { ?>
+                            <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
+                                <input type="radio" disabled="disabled" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?>  value="Approved"></td>
+                            <td><input type="radio" disabled="disabled" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Un-Approved' ? 'checked' : '' ?> ></td>
+
+                        <?php } else { ?>
+                            <td><input type="hidden" name="product" value="<?php echo isset($_POST['product_id']) ? $_POST['product_id'] : '' ?>">
+                                <input type="radio" class="check-all" disabled="disabled" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Approved"></td>
+                            <td><input type="radio" class="uncheck-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Un-Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Un-Approved"></td>
+                        <?php } ?>
                     </tr>
 
 

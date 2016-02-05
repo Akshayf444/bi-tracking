@@ -30,6 +30,9 @@ class User extends MY_Controller {
                 $this->nextYear = $value->Planned_For_Year;
             }
         }
+
+        $this->nextMonth = date('m');
+        $this->nextYear = date('Y');
     }
 
     public function index() {

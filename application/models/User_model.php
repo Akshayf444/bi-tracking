@@ -293,7 +293,7 @@ class User_model extends CI_Model {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Reporting ap', 'ap.Doctor_Id = dm.Account_ID AND ap.month = ' . $this->nextMonth . ' AND Year = ' . $this->nextYear . ' AND ap.Product_Id = ' . $this->Product_Id, 'left');
-        $where = "ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'SFA' OR ap.VEEVA_Employee_ID ='$id' AND ap.Approve_Status = 'Un-Approved' ";
+        $where = "ap.VEEVA_Employee_ID ='$id' ";
         $this->db->where($where);
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
@@ -312,7 +312,7 @@ class User_model extends CI_Model {
         $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
-        echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $query->result();
     }
 
@@ -1008,14 +1008,19 @@ class User_model extends CI_Model {
                     $ActivityList = $this->Master_Model->generateDropdown($Activities, 'Activity_id', 'Activity_Name');
                 }
 
-
-                $HTML .= '<tr><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
+                $isApproved = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'background-color:#c6ebd9;' : '';
+                $HTML .= '<tr style="' . $isApproved . '"><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
                 $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
                 if ($type == 'Reporting') {
                     $HTML .= '<td>' . $value->Activity_Done . '</td>';
                 }
-                $HTML .= '<td><input type="radio" class="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Approved"></td>';
-                $HTML .= '<td><input type="radio" class="uncheck-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Un-Approved"></td>';
+                if ($value->Approve_Status == 'Approved') {
+                    $HTML .= '<td><input type="radio" disabled="disabled" ' . $Status . '  value="Approved"></td>';
+                    $HTML .= '<td><input type="radio" disabled="disabled"  ' . $Status . ' value="Un-Approved"></td>';
+                } else {
+                    $HTML .= '<td><input type="radio" class="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Approved"></td>';
+                    $HTML .= '<td><input type="radio" class="uncheck-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Un-Approved"></td>';
+                }
                 $HTML .= '</tr>';
             }
             $HTML .= '</table></div>'
@@ -1133,9 +1138,9 @@ class User_model extends CI_Model {
 
     function report($VEEVA_Employee_ID, $month, $year, $product) {
         $sql = "SELECT em.`Full_Name`,em.VEEVA_Employee_ID,COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
-                INNER JOIN Employee_Doc ed 
+                LEFT JOIN Employee_Doc ed 
                 ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
-                INNER JOIN Doctor_Master dm 
+                LEFT JOIN Doctor_Master dm 
                 ON dm.`Account_ID` = ed.`VEEVA_Account_ID` AND dm.Individual_Type = '$this->Individual_Type'
                 LEFT JOIN Profiling p
                 ON ed.`VEEVA_Account_ID`=p.`Doctor_Id` AND p.`Product_id`= $product AND p.Status = 'Submitted'
