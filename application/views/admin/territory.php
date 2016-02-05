@@ -42,7 +42,7 @@
                         foreach ($show as $row) :
                             ?><tr>  
                            <td><?php echo $row->id; ?> 
-                            <td><?php echo $row->territory; ?>  
+                            <td><?php echo $row->Territory; ?>  
                             
                             <td>  
                                 <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/terr_del?id=') . $row->id; ?>';"></a> 
