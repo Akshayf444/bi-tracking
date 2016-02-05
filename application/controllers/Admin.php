@@ -99,11 +99,11 @@ class Admin extends CI_Controller {
         $this->load->view('template3', $data);
     }
     public function  emp_Doc() {
-        $id=$this->input->get('id');
+        $id = $_GET['id'];
         $data['show'] = $this->admin_model->emp_doc($id);
-
+       
         $data = array('title' => 'Doctor List', 'content' => 'admin/emp_doc', 'page_title' => 'Doctor LIST', 'view_data' => $data);
-        $this->load->view('template3', $data);
+      $this->load->view('template3', $data);
     }
     public function bdm_wise() {
         $data['show'] = $this->admin_model->BDM_show();
