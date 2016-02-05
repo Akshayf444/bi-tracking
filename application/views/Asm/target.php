@@ -20,7 +20,11 @@
                 </tr>
 
                 <?php
+                $total1 = 0;
+                    $total2 = 0;
+                    $total3 = 0;
                 foreach ($table as $tab) {
+                
                     if ($this->Division == 'Diabetes') {
                         $result = $this->asm_model->ASM_Assign_Target($tab->VEEVA_Employee_ID, 4, 5, 6);
                     } else {
@@ -53,15 +57,23 @@
                                     $target3 = $r->target;
                                 }
                             }
+
+                            
                         }
+                        $total1 += $target1;
+                            $total2 += $target2;
+                            $total3 += $target3;
                         ?>
 
                         <td><input type="text" name="target1[]" value="<?php echo $target1 ?>"></td>
                         <td><input type="text" name="target2[]" value="<?php echo $target2 ?>"></td>
                         <td><input type="text" name="target3[]" value="<?php echo $target3 ?>"></td>
+
                     </tr>
+
                 <?php } ?>
 
+                <tr><th>Total</th><td><?php echo $total1 ?></td> <td><?php echo $total2 ?></td> <td><?php echo $total3 ?></td>                 </tr>
             </table>
         </div>
         <div class="panel-footer">

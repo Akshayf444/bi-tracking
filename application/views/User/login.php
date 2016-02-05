@@ -20,8 +20,14 @@
                         <input type="text" class="form-control uname" placeholder="Username" name="username"/>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control pword" placeholder="Password" name="password" />
+                        <div class="input-group">
+                            <input type="password" class="form-control pword" placeholder="Password" id="pwd" aria-describedby="basic-addon2" name="password">
+  <span class="input-group-addon" id="eye">Show</span>
+</div>
                     </div>
+<!--                        <div class="col-lg-8">
+                            <input type="password" id="pwd" class="form-control pword" placeholder="Password" name="password" /></div><div class="col-lg-4">  <button type="button" id="eye">Show</button></div>
+                    </div>-->
                     <input class="btn btn-success btn-block" type="submit" value="Sign In" >
 
                     </form>
@@ -46,4 +52,46 @@
 
         setInterval(blinker, 1000);
     });
+</script>
+
+<script>
+
+$(function() {
+
+
+$('#button').click(function() {
+
+$('#password').password('toggle');
+
+});
+
+});
+
+</script>
+
+<script>
+
+$(function() {
+function show() {
+    var p = document.getElementById('pwd');
+    p.setAttribute('type', 'text');
+}
+
+function hide() {
+    var p = document.getElementById('pwd');
+    p.setAttribute('type', 'password');
+}
+
+var pwShown = 0;
+
+document.getElementById("eye").addEventListener("click", function () {
+    if (pwShown == 0) {
+        pwShown = 1;
+        show();
+    } else {
+        pwShown = 0;
+        hide();
+    }
+}, false);});
+
 </script>
