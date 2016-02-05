@@ -441,8 +441,8 @@ GROUP BY em.`VEEVA_Employee_ID`";
         $query = $this->db->query($sql);
         return $query->result();
     }
- public function emp_doc() {
-        $sql = "select * from  Employee_Doc where Territory ='$id' ";
+ public function emp_doc($id) {
+        $sql = "select DM.Account_Name as Name,DM.Specialty from Doctor_MASTER DM  LEFT JOIN Employee_Doc ED ON DM.Account_ID=ED.VEEVA_Account_ID where Territory ='$id' ";
 
         $query = $this->db->query($sql);
         return $query->result();

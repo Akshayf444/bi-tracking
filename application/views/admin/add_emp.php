@@ -27,44 +27,14 @@
                             <td><?php echo $row->Zone; ?></td>
                             <td>  
                                 <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/emp_del?id=') . $row->VEEVA_Employee_ID; ?>';"></a> 
-                                <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/update_emp?id=') . $row->VEEVA_Employee_ID; ?>';"></a> </td>
-                              <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/emp_doc?id=') . $row->VEEVA_Employee_ID; ?>';"></a> </td>
+                                <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/update_emp?id=') . $row->VEEVA_Employee_ID; ?>';"></a> 
+                              <a class="fa fa-eye " onclick="window.location = '<?php echo site_url('admin/emp_doc?id='). $row->Territory; ?>';"></a> </td>
                                 <?php
                             endforeach;
                         }
                         ?>
                 </tr>
 
-        <table class="table table-bordered table-hover ">
-
-            <tr >
-                <th>Full_Name</th>
-                <th>Territory</th>
-
-                <th>Mobile</th>
-
-                <th>Product</th>
-                <th>Zone</th> 
-                <th>Action</th>
-            </tr>
-            <tr>
-                <?php
-                if (!empty($show)) {
-                    foreach ($show as $row) :
-                        ?><tr>  
-                        <td><?php echo $row->Full_Name; ?></td>  
-                        <td><?php echo $row->Territory; ?>  
-                        <td><?php echo $row->Mobile; ?></td>  
-                        <td><?php echo $row->Product; ?></td>
-                        <td><?php echo $row->Zone; ?></td>
-                        <td>  
-                            <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/emp_del?id=') . $row->VEEVA_Employee_ID; ?>';"></a> 
-                            <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/update_emp?id=') . $row->VEEVA_Employee_ID; ?>';"></a> </td>
-                            <?php
-                        endforeach;
-                    }
-                    ?>
-            </tr>
 
         </table>
     </div>
