@@ -97,7 +97,7 @@ class User extends MY_Controller {
                 $this->session->set_userdata('Local_Employee_ID', $check['Local_Employee_ID']);
                 $this->session->set_userdata('Full_Name', $check['Full_Name']);
                 $this->session->set_userdata('Division', $check['Division']);
-                $this->session->set_userdata('Designation', $check['Designation']);
+                $this->session->set_userdata('Designation', $check['Profile']);
                 $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
                 $this->session->set_userdata('Reporting_VEEVA_ID', $check['Reporting_VEEVA_ID']);
                 $this->session->set_userdata('Reporting_Local_ID', $check['Reporting_Local_ID']);
@@ -114,7 +114,7 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
-                    if ($check_password['Designation'] === 'ASM') {
+                    if ($check_password['Profile'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
                     } else {
                         redirect('User/dashboard', 'refresh');
@@ -590,7 +590,7 @@ class User extends MY_Controller {
                 );
                 $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
                 $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
-                if ($check_password['Designation'] == 'ASM') {
+                if ($check_password['Profile'] == 'ASM') {
                     redirect('ASM/dashboard', 'refresh');
                 } else {
                     redirect('User/dashboard', 'refresh');
