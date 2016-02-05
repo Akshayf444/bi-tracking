@@ -39,7 +39,6 @@ class User extends MY_Controller {
             $password = $this->input->post('password');
             $check = $this->User_model->authentication($username, $password);
             if (empty($check)) {
-
                 $emp = $this->User_model->employee_id($username);
                 if (isset($emp['VEEVA_Employee_ID'])) {
                     $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
@@ -114,7 +113,7 @@ class User extends MY_Controller {
                     redirect('User/password', 'refresh');
                 } else {
                     $data = array('Last_Login' => date('Y-m-d h:i:s'));
-                    $this->User_model->update_last_login($this->VEEVA_Employee_ID, $data);
+                    $this->User_model->update_last_login($this->session->userdata('VEEVA_Employee_ID'), $data);
                     if ($check_password['Profile'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
                     } else {

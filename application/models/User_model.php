@@ -312,7 +312,7 @@ class User_model extends CI_Model {
         $this->db->where(array('ed.VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'dm.Individual_Type' => $this->Individual_Type));
         $this->db->group_by('dm.Account_ID');
         $query = $this->db->get();
-        //echo $this->db->last_query();
+        echo $this->db->last_query();
         return $query->result();
     }
 
