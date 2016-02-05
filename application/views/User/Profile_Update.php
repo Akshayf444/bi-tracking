@@ -24,7 +24,10 @@
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-            <?php echo form_open('User/BDM_update'); ?>
+            <?php
+            echo form_open('User/BDM_update');
+            $Territory = $this->User_model->getTerritory($detail['Territory']);
+            ?>
 
             <table class="table table-bordered">
                 <tbody>
@@ -42,7 +45,7 @@
                     </tr>
                     <tr>
                         <th>Area</th>
-                        <td><input type="text" class="form-control" readonly=""  value="<?php echo $detail['Territory']; ?>"/></td>
+                        <td><input type="text" class="form-control" readonly=""  value="<?php echo isset($Territory->Territory) ? $Territory->Territory : ''; ?>"/></td>
                     </tr>
                     <tr>
                         <th>Date Of Birth</th>
@@ -59,8 +62,10 @@
         </div>
         <div id="menu1" class="tab-pane fade">
             <div class="col-lg-12 panel-body">
-                 <?php $attribute = array('id' => 'activate');
-                echo form_open('User/pwd_update', $attribute); ?>
+                <?php
+                $attribute = array('id' => 'activate');
+                echo form_open('User/pwd_update', $attribute);
+                ?>
 
                 <div class="form-group">
                     <label>Old Password</label>
@@ -102,13 +107,13 @@
                         }
                     }
                 },
-                confirm : {
+                confirm: {
                     validators: {
                         regexp: {
                             regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/,
                             message: 'Password Must Contain 8 characters with 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number'
                         },
-                         identical: {
+                        identical: {
                             field: 'new',
                             message: 'The password and its Repeat are not the same'
                         },
@@ -121,12 +126,12 @@
         });
     });
 </script>
- <script>
-  $(function() {
-    $( "#date" ).datepicker();
-  });
-  </script>
-  
+<script>
+    $(function () {
+        $("#date").datepicker();
+    });
+</script>
+
 <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
 

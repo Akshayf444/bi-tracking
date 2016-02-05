@@ -24,7 +24,9 @@
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
-            <?php echo form_open('ASM/ASM_update'); ?>
+            <?php echo form_open('ASM/ASM_update');
+               $Territory = $this->User_model->getTerritory($detail['Territory']);
+            ?>
 
             <table class="table table-bordered">
                 <tbody>
@@ -42,7 +44,7 @@
                     </tr>
                     <tr>
                         <th>Area</th>
-                        <td><input type="text" class="form-control" readonly=""  value="<?php echo $detail['Territory']; ?>"/></td>
+                        <td><input type="text" class="form-control" readonly=""  value="<?php echo isset($Territory->Territory) ? $Territory->Territory : ''; ?>"/></td>
                     </tr>
                     <tr>
                         <th>Date Of Birth</th>

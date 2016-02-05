@@ -1257,4 +1257,12 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
+    public function getTerritory($Territory_id) {
+        $this->db->select('*');
+        $this->db->from('Territory_master');
+        $this->db->where(array('id' => $Territory_id));
+        $query = $this->db->get();
+        return $query->row();
+    }
+
 }
