@@ -786,7 +786,8 @@ class User_model extends CI_Model {
         $this->db->where(array('Username' => $id));
         return $this->db->update('Employee_Master', $data);
     }
-      function update_last_login($id, $data) {
+
+    function update_last_login($id, $data) {
         $this->db->where(array('VEEVA_Employee_ID' => $id));
         return $this->db->update('Employee_Master', $data);
     }
@@ -1018,7 +1019,7 @@ class User_model extends CI_Model {
                 $HTML .= '</tr>';
             }
             $HTML .= '</table></div>'
-                    . ' <button type="submit" class="btn btn-primary pull-right">Approve</button>';
+                    . ' <button type="button" data-toggle="modal" data-target="#CommentModal" class="btn btn-primary pull-right">Approve</button>';
         } else {
             $HTML .= '<h1>Data Not Available.</h1>';
         }
@@ -1245,8 +1246,15 @@ class User_model extends CI_Model {
     }
 
     public function insert_pass($data) {
-
         return $this->db->insert('Password_History', $data);
+    }
+
+    public function getComment($VEEVA_Employee_ID, $Comment_Type, $Product_Id) {
+        $this->db->select('*');
+        $this->db->from('Asm_Comment');
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Comment_Type' => $Comment_Type, 'Product_Id' => $Product_Id));
+        $query = $this->db->get();
+        return $query->row();
     }
 
 }

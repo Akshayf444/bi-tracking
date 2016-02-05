@@ -48,10 +48,30 @@
                     </tr>
                     <?php
                 endforeach;
-                echo '</table><div><button type="submit" class=" btn btn-primary pull-right" > Approve</button></div>';
+                echo '</table><div><button type="button" data-toggle="modal" data-target="#CommentModal"  class=" btn btn-primary pull-right" > Approve</button></div>';
             }
             ?>
-
+            <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Comment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label></label>
+                            <?php $CommentExist = $this->User_model->getComment($_POST['rx_id'], 'Reporting', $_POST['product_id']);
+                            ?>
+                            <input type="hidden" name="Com_id" value="<?php echo isset($CommentExist->Com_id) ? $CommentExist->Com_id : 0; ?>">
+                            <textarea class="form-control" name="Comment"><?php echo isset($CommentExist->Comment) ? $CommentExist->Comment : ''; ?></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="Assign" >Approve</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 
 </div>

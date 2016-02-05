@@ -38,7 +38,6 @@
                     <th><input name="toggle" type="radio" id="check-all"> Approve</th>
                     <th><input name="toggle" type="radio" id="uncheck-all" >Reject</th>
                 </tr>
-
                 <?php foreach ($show as $row) :
                     ?>
                     <tr>  
@@ -52,15 +51,33 @@
                         <td><input type="radio" class="uncheck-all" <?php echo isset($row->Approve_Status) && $row->Approve_Status == 'Un-Approved' ? 'checked' : '' ?> name="approve_<?php echo $row->Account_ID ?>" value="Un-Approved"></td>
                     </tr>
 
-                    
+
                     <?php
                 endforeach;
-                echo '</table></div><span class="pull-left"> Total : ' . $plannedRx . '</span> <button type="submit" class=" btn btn-primary pull-right" > Approve</button>';
+                echo '</table></div><span class="pull-left"> Total : ' . $plannedRx . '</span> <button type="button" data-toggle="modal" data-target="#CommentModal" class=" btn btn-primary pull-right" > Approve</button>';
             }
             ?>
-
-
-
+            <div class="modal fade" id="CommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Comment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label></label>
+                            <?php $CommentExist = $this->User_model->getComment($_POST['rx_id'], 'Planning', $_POST['product_id']);
+                            ?>
+                            <input type="hidden" name="Com_id" value="<?php echo isset($CommentExist->Com_id) ? $CommentExist->Com_id : 0; ?>">
+                            <textarea class="form-control" name="Comment"><?php echo isset($CommentExist->Comment) ? $CommentExist->Comment : ''; ?></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="Assign" >Approve</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
         <?php if (!empty($productlist)) { ?>
