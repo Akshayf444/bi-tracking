@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
 
         parent::__construct();
 
-
+        $this->load->helper();
         $this->load->library('Csvimport');
         $this->load->helper("url");
         $this->load->model('admin_model');
@@ -121,7 +121,7 @@ class Admin extends CI_Controller {
         if ($_POST) {
             $name = $this->input->post('territory');
             $vaild = $this->admin_model->territory_view($name);
-        
+
             if (empty($vaild)) {
                 $data = array('Territory' => $name, 'status' => 1);
                 $this->admin_model->insert_territory($data);
@@ -145,7 +145,7 @@ class Admin extends CI_Controller {
                 'status' => '1',
             );
             $this->admin_model->update_terr($terrid, $data);
-              redirect('admin/territory_view', 'refresh');
+            redirect('admin/territory_view', 'refresh');
         }
 
         $data = array('title' => 'Upadte Activity', 'content' => 'admin/edit_terr', 'page_title' => 'Update Territory', 'view_data' => $data);

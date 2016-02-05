@@ -91,7 +91,6 @@ class User extends MY_Controller {
                 } else {
                     $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                 }
-                
             } else {
                 $this->session->set_userdata('VEEVA_Employee_ID', $check['VEEVA_Employee_ID']);
                 $this->session->set_userdata('Local_Employee_ID', $check['Local_Employee_ID']);
@@ -114,6 +113,8 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
+                    $data = array('Last_Login' => date('Y-m-d h:i:s'));
+                    $this->User_model->update_last_login($this->VEEVA_Employee_ID, $data);
                     if ($check_password['Profile'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
                     } else {
