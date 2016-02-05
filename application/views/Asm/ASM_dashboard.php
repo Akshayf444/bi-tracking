@@ -55,6 +55,7 @@
         </div>
     </div>
 </div>
+<?php $dashboardDetails = array(); ?>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
@@ -66,6 +67,7 @@
                     if (!empty($productlist)) {
                         $count = 1;
                         foreach ($productlist as $product) {
+                            $dashboardDetails[$product->id] = array();
                             ?>
                             <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>11"><?php echo $product->Brand_Name ?></a></li>
                             <?php
@@ -100,17 +102,35 @@
                                     $actplaned = 0;
                                     $kpi1 = 0;
                                     $kpi2 = 0;
-
+                                    $actualLastMonth = 0;
+                                    $lastMonth = date('m', strtotime('-1 month'));
+                                    $lastYear = date('Y', strtotime('-1 month'));
                                     foreach ($Status as $value) {
+                                        $LastMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $lastMonth, $lastYear);
+                                        $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
+                                        $dashboardDetails[$product->id][$value->VEEVA_Employee_ID] = array(
+                                            $value->Full_Name,
+                                            $value->No_of_Doctors,
+                                            $value->No_of_Doctors_profiled,
+                                            $value->Target_New_Rxn_for_the_month,
+                                            $value->Planned_New_Rxn,
+                                            $currentMonthRx['Actual_Rx'],
+                                            $value->No_of_Doctors_planned,
+                                            $value->checkk,
+                                            $LastMonthRx['Actual_Rx'],
+                                        );
                                         $profiled += $value->No_of_Doctors_profiled;
                                         $target += $value->Target_New_Rxn_for_the_month;
                                         $planned += $value->Planned_New_Rxn;
                                         $nod += $value->No_of_Doctors;
                                         $actplaned += $value->checkk;
                                         $dplanned+= $value->No_of_Doctors_planned;
-                                        $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
                                         $actual += $currentMonthRx['Actual_Rx'];
+                                        $actualLastMonth += $LastMonthRx['Actual_Rx'];
                                     }
+                                    $dashboardDetails[$product->id]['Total'] = array(
+                                        'Total', $nod, $profiled, $target, $planned, $actual, $dplanned, $actplaned, $actualLastMonth
+                                    );
                                 }
                                 ?>
                                 <div class="col-lg-5 col-md-5 col-xs-5">
@@ -158,7 +178,7 @@
                 </div>
             </div>
         </div>  
-    <?php } ?>
+    <?php } //var_dump($dashboardDetails); ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
@@ -172,7 +192,7 @@
                         $count = 1;
                         foreach ($productlist as $product) {
                             ?>
-                            <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
+                            <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>2"><?php echo $product->Brand_Name ?></a></li>
                             <?php
                             $count ++;
                         }
@@ -183,15 +203,10 @@
                 <div class="tab-content">
                     <?php
                     if (!empty($productlist)) {
-                        $count = 1;
-                        $ApproveCount = 0;
-                        $UnApproveCount = 0;
-                        $Pending = 0;
-                        $Submitted = 0;
                         foreach ($productlist as $product) {
                             ?>
 
-                            <div id="<?php echo $product->id ?>" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                            <div id="<?php echo $product->id ?>2" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
                                 <table class="table table-bordered">
                                     <tr>
                                         <th style="width: 20%">BDM Name</th>
@@ -202,50 +217,22 @@
                                         <th>Achieved New Rxn for the month to date</th>
                                         <th>No. of Doctors planned for activities</th>
                                         <th>Achieved No. of Doctors planned for activities</th>
+                                        <th>Total Actual Rx Generated In Last Month</th>
                                     </tr>
                                     <?php
-                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
-                                    if (!empty($Status)) {
-                                        $nod = 0;
-                                        $profiled = 0;
-                                        $target = 0;
-                                        $planned = 0;
-                                        $actual = 0;
-                                        $dplanned = 0;
-                                        $actplaned = 0;
-                                        foreach ($Status as $value) {
+                                    if (!empty($dashboardDetails)) {
 
-                                            $profiled += $value->No_of_Doctors_profiled;
-                                            $target += $value->Target_New_Rxn_for_the_month;
-                                            $planned += $value->Planned_New_Rxn;
-                                            $nod += $value->No_of_Doctors;
-                                            $actplaned += $value->checkk;
-                                            $dplanned+= $value->No_of_Doctors_planned;
-                                            $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
-                                            $actual += $currentMonthRx['Actual_Rx'];
-                                            echo '<tr><td style="width: 20%">' . $value->Full_Name . '</td>'
-                                            . '<td>' . $value->No_of_Doctors . '</td>'
-                                            . '<td>' . $value->No_of_Doctors_profiled . '</td>'
-                                            . '<td>' . $value->Target_New_Rxn_for_the_month . '</td>'
-                                            . '<td>' . $value->Planned_New_Rxn . '</td>'
-                                            . '<td>' . $currentMonthRx['Actual_Rx'] . '</td>'
-                                            . '<td>' . $value->No_of_Doctors_planned . '</td>'
-                                            . '<td>' . $value->checkk . '</td></tr>';
+                                        foreach ($dashboardDetails[$product->id] as $value) {
+                                            echo '<tr>';
+                                            foreach ($value as $detail) {
+                                                echo '<td>' . $detail . '</td>';
+                                            }
+                                            echo '</tr>';
                                         }
                                     }
-                                    echo '<tr><th>Total</th><td>' . $nod . '</td><td>' . $profiled . '</td><td>' . $target . '</td><td>' . $planned . '</td><td>' . $actual . '</td><td>' . $dplanned . '</td><td>' . $actplaned . '</td></tr>';
-                                    $nod = 0;
-                                    $profiled = 0;
-                                    $target = 0;
-                                    $planned = 0;
-                                    $actual = 0;
-                                    $dplanned = 0;
-                                    $actplaned = 0;
                                     ?>
                                 </table>
                             </div>
-
-
                             <?php
                             $count ++;
                         }
@@ -256,7 +243,7 @@
         </div>  
     <?php } ?>
 </div>
-<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
@@ -279,68 +266,55 @@
                 <div class="tab-content">
                     <?php
                     if (!empty($productlist)) {
-                        $count = 1;
-                        $ApproveCount = 0;
-                        $UnApproveCount = 0;
-                        $Pending = 0;
-                        $Submitted = 0;
-                        foreach ($productlist as $product) {
-                            ?>
+                        ?>
 
-                            <div id="<?php echo $product->id ?>1" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th style="width: 20%">BDM Name</th>
-                                        <th>KPI1</th>
-                                        <th>KPI2</th>
+                        <div id="<?php echo $product->id ?>1" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th style="width: 20%">BDM Name</th>
+                                    <th>KPI1</th>
+                                    <th>KPI2</th>
 
-                                    </tr>
-                                    <?php
-                                    $Status = $this->User_model->report($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear, $product->id);
-                                    if (!empty($Status)) {
-
-                                        $kpi1 = 0;
-                                        $kpi2 = 0;
-
-                                        foreach ($Status as $value) {
-                                            $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
-
-                                            if ($value->Target_New_Rxn_for_the_month != 0) {
-                                                $KPI1 = ($currentMonthRx['Actual_Rx'] / $value->Target_New_Rxn_for_the_month) * 100;
-                                            } else {
-                                                $KPI1 = 0;
-                                            }
-                                            if ($value->No_of_Doctors_planned != 0) {
-                                                $KPI2 = ($value->checkk / $value->No_of_Doctors_planned) * 100;
-                                            } else {
-                                                $KPI2 = 0;
-                                            }
-
-                                            $kpi1 += $KPI1;
-                                            $kpi2 += $KPI2;
-
-                                            
-                                            echo '<tr><td style="width: 20%">' . $value->Full_Name . '</td>'
-                                            . '<td>' .
-                                            $KPI1 . '</td>'
-                                            . '<td>' . $KPI2 . '</td></tr>';
+                                </tr>
+                                <?php
+                                $kpi1 = 0;
+                                $kpi2 = 0;
+                                if (!empty($dashboardDetails)) {
+                                    foreach ($dashboardDetails[$product->id] as $value) {
+                                                                                 
+                                        
+                                        $name = $value[0];
+                                        if ($value[3] != 0) {
+                                            $KPI1 = ($value[5] / $value[3]) * 100;
+                                        } else {
+                                            $KPI1 = 0;
                                         }
+                                        if ($value[6] != 0) {
+                                            $KPI2 = ($value[7] / $value[6]) * 100;
+                                        } else {
+                                            $KPI2 = 0;
+                                        }
+                                        $kpi1 += $KPI1;
+                                        $kpi2 += $KPI2;
+
+                                        echo '<td style="width: 20%">' . $name . '</td>'
+                                        . '<td>' .
+                                        $KPI1 . '</td>'
+                                        . '<td>' . $KPI2 . '</td>';
                                     }
-                                    echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
-                                    ?>
-                                </table>
-                            </div>
-
-
-                            <?php
-                            $count ++;
-                        }
+                                }
+                                echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
+                                ?>
+                            </table>
+                        </div>
+                        <?php
+                        $count ++;
                     }
                     ?>
                 </div>
             </div>
         </div>  
     <?php } ?>
-</div>
+</div>-->
 
 

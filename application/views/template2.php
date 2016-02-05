@@ -122,7 +122,7 @@
                         <a class="fa fa-2x fa-arrow-left" onclick="window.location = '<?php echo isset($backUrl) ? site_url($backUrl) : site_url('User/dashboard'); ?>';" style="padding:8px 0px 0px 0px"></a>
                     </div>
                     <div align="middle" class="col-md-8 col-sm-9 col-xs-9 col-lg-9"> 
-                        <img  style="" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/travels.png" alt=""/>
+                        <img  style="" onclick="window.location = '<?php echo $this->Designation == 'BDM' ? site_url('User/dashboard') : site_url('ASM/dashboard'); ?>';" src="<?php echo asset_url() ?>images/Boehringer.png" alt=""/>
                     </div>
                     <div class="col-md-3 col-sm-2 col-xs-3 col-lg-2">
                         <div class="dropdown pull-right" style="top:10px">

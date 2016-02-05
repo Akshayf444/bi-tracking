@@ -35,9 +35,7 @@
             <!-- Main Header -->
             <header class="main-header">
 
-                <!-- Logo -->
-                <a href="<?php echo site_url('Admin/dashboard'); ?>" class="logo" style="background-color: #fff;"><b><img src="<?php echo asset_url() ?>images/Boehringer.png" ></b></a>
-
+               <a href="<?php echo site_url('Admin/dashboard'); ?>" class="logo" style="background-color: #fff;"><b><img src="<?php echo asset_url() ?>images/Boehringer.png" ></b></a>
                 <!-- Header Navbar -->
                 <nav class="navbar navbar-static-top" role="navigation">
                     <!-- Sidebar toggle button-->
