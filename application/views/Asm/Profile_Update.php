@@ -125,7 +125,9 @@
 </script>
  <script>
   $(function() {
-    $( "#date" ).datepicker();
+   $("#date").datepicker({
+            changeMonth:true,
+            changeYear:true
   });
   </script>
   
