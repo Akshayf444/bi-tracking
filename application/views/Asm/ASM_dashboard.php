@@ -2,17 +2,6 @@
 <script src="<?php echo asset_url() ?>js/jquery.knob.js" type="text/javascript"></script>
 <link href="<?php echo asset_url() ?>css/style.css" rel="stylesheet" type="text/css"/>
 <style>
-
-    #owl-demo .item img{
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-    #owl-demo2 .item img{
-        display: block;
-        width: 100%;
-        height: auto;
-    }
     .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
         border-top: 0px solid #dddddd;
     }
@@ -148,7 +137,9 @@
                                 ?>
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo"  >        
+
                                         <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
                                         if ($target > 0) {
                                             echo ($actual / $target) * 100;
                                         } else {
@@ -168,7 +159,9 @@
 
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo" >       
+
                                         <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
                                         if ($dplanned > 0) {
                                             echo ($actplaned / $dplanned) * 100;
                                         } else {
@@ -203,10 +196,12 @@
                 </div>
             </div>
         </div>  
-    <?php } //var_dump($dashboardDetails);   ?>
+
+    <?php } //var_dump($dashboardDetails);  ?>
+
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php if (!empty($productlist)) { ?>
+<?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading">  Status  </div>
             <div class="panel-body">
@@ -280,7 +275,7 @@
     <?php } ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php if (!empty($productlist)) { ?>
+<?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
             <div class="panel-body">
@@ -341,5 +336,5 @@
                 </div>
             </div>
         </div>  
-    <?php } ?>
+<?php } ?>
 </div>
