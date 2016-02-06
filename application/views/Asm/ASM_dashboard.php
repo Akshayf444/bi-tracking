@@ -137,7 +137,9 @@
                                 ?>
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo"  >        
-                                        <input class="knob" readonly="readonly" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
+                                        <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
                                         if ($target > 0) {
                                             echo ($actual / $target) * 100;
                                         } else {
@@ -157,7 +159,9 @@
 
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo" >       
-                                        <input class="knob" readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
+                                        <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+
                                         if ($dplanned > 0) {
                                             echo ($actplaned / $dplanned) * 100;
                                         } else {
@@ -192,7 +196,9 @@
                 </div>
             </div>
         </div>  
+
     <?php } //var_dump($dashboardDetails);  ?>
+
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
 <?php if (!empty($productlist)) { ?>
@@ -256,6 +262,7 @@
                                     ?>
                                 </table>
                             </div>
+
                             <?php
                             $count ++;
                             unset($dashboardDetails[$product->id]['Total']);
@@ -315,6 +322,7 @@
                                             $kpi2 += $value[10];
                                         }
                                     }
+
                                     echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
                                     ?>
                                 </table>
@@ -324,6 +332,7 @@
                         }
                     }
                     ?>
+
                 </div>
             </div>
         </div>  
