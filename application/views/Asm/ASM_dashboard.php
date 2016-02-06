@@ -108,6 +108,17 @@
                                     foreach ($Status as $value) {
                                         $LastMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $lastMonth, $lastYear);
                                         $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
+                                        if ($value->Target_New_Rxn_for_the_month > 0) {
+                                            $kpi1 = ($currentMonthRx['Actual_Rx'] / $value->Target_New_Rxn_for_the_month) * 100;
+                                        } else {
+                                            $kpi1 = 0;
+                                        }
+                                        if ($value->No_of_Doctors_planned > 0) {
+                                            $kpi2 = ($value->checkk / $value->No_of_Doctors_planned) * 100;
+                                        } else {
+                                            $kpi2 = 0;
+                                        }
+
                                         $dashboardDetails[$product->id][$value->VEEVA_Employee_ID] = array(
                                             $value->Full_Name,
                                             $value->No_of_Doctors,
@@ -118,6 +129,8 @@
                                             $value->No_of_Doctors_planned,
                                             $value->checkk,
                                             $LastMonthRx['Actual_Rx'],
+                                            $kpi1,
+                                            $kpi2
                                         );
                                         $profiled += $value->No_of_Doctors_profiled;
                                         $target += $value->Target_New_Rxn_for_the_month;
@@ -146,7 +159,6 @@
                                             if ($target > 0) {
                                                 echo ($actual / $target) * 100;
                                             }
-                                            
                                             ?>%</span>
                                         <span style="margin-left: 70px;position: absolute;margin-top: -35px">Prescription </span>
                                         <span style="margin-left: 66px;position: absolute;margin-top: -17px;"> Actual / Target</span>
@@ -157,12 +169,12 @@
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo" >       
                                         <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
-                                            if ($dplanned > 0) {
-                                                echo ($actplaned / $dplanned) * 100;
-                                            }
-                                           else {
+                                        if ($dplanned > 0) {
+                                            echo ($actplaned / $dplanned) * 100;
+                                        } else {
                                             echo 0;
-                                        } ?>">
+                                        }
+                                        ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($dplanned > 0) {
                                                 echo ($actplaned / $dplanned) * 100;
@@ -191,10 +203,10 @@
                 </div>
             </div>
         </div>  
-<?php } //var_dump($dashboardDetails);  ?>
+    <?php } //var_dump($dashboardDetails);   ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                <?php if (!empty($productlist)) { ?>
+    <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading">  Status  </div>
             <div class="panel-body">
@@ -206,18 +218,19 @@
                         foreach ($productlist as $product) {
                             ?>
                             <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>2"><?php echo $product->Brand_Name ?></a></li>
-            <?php
-            $count ++;
-        }
-    }
-    ?>
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
                 </ul>
 
                 <div class="tab-content">
-    <?php
-    if (!empty($productlist)) {
-        foreach ($productlist as $product) {
-            ?>
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        foreach ($productlist as $product) {
+                            ?>
 
                             <div id="<?php echo $product->id ?>2" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
                                 <table class="table table-bordered">
@@ -237,27 +250,37 @@
 
                                         foreach ($dashboardDetails[$product->id] as $value) {
                                             echo '<tr>';
-                                            foreach ($value as $detail) {
-                                                echo '<td>' . $detail . '</td>';
-                                            }
+                                            //foreach ($value as $detail) {
+                                            echo '<td>' . $value[0] . '</td>';
+                                            echo '<td>' . $value[1] . '</td>';
+                                            echo '<td>' . $value[2] . '</td>';
+                                            echo '<td>' . $value[3] . '</td>';
+                                            echo '<td>' . $value[4] . '</td>';
+                                            echo '<td>' . $value[5] . '</td>';
+                                            echo '<td>' . $value[6] . '</td>';
+                                            echo '<td>' . $value[7] . '</td>';
+                                            echo '<td>' . $value[8] . '</td>';
+                                            //}
                                             echo '</tr>';
                                         }
                                     }
                                     ?>
                                 </table>
                             </div>
-            <?php
-            $count ++;
-        }
-    }
-    ?>
+
+                            <?php
+                            $count ++;
+                            unset($dashboardDetails[$product->id]['Total']);
+                        }
+                    }
+                    ?>
                 </div>
             </div>
         </div>  
-<?php } ?>
+    <?php } ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                <?php if (!empty($productlist)) { ?>
+    <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
             <div class="panel-body">
@@ -269,63 +292,54 @@
                         foreach ($productlist as $product) {
                             ?>
                             <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>1"><?php echo $product->Brand_Name ?></a></li>
-            <?php
-            $count ++;
-        }
-    }
-    ?>
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
                 </ul>
 
                 <div class="tab-content">
-    <?php
-    if (!empty($productlist)) {
-        ?>
+                    <?php
+                    if (!empty($productlist)) {
+                        $count = 1;
+                        foreach ($productlist as $product) {
+                            ?>
 
-                        <div id="<?php echo $product->id ?>1" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th style="width: 20%">BDM Name</th>
-                                    <th>KPI1</th>
-                                    <th>KPI2</th>
+                            <div id="<?php echo $product->id ?>1" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="width: 20%">BDM Name</th>
+                                        <th>KPI1</th>
+                                        <th>KPI2</th>
 
-                                </tr>
-                                <?php
-                                $kpi1 = 0;
-                                $kpi2 = 0;
-                                if (!empty($dashboardDetails)) {
-                                    foreach ($dashboardDetails[$product->id] as $value) {
-
-
-                                        $name = $value[0];
-                                        if ($value[3] != 0) {
-                                            $KPI1 = ($value[5] / $value[3]) * 100;
-                                        } else {
-                                            $KPI1 = 0;
+                                    </tr>
+                                    <?php
+                                    $kpi1 = 0;
+                                    $kpi2 = 0;
+                                    if (!empty($dashboardDetails)) {
+                                        foreach ($dashboardDetails[$product->id] as $value) {
+                                            $name = $value[0];
+                                            echo '<tr><td style="width: 20%">' . $name . '</td>'
+                                            . '<td>' . $value[9] . '</td>'
+                                            . '<td>' . $value[10] . '</td></tr>';
+                                            $kpi1 += $value[9];
+                                            $kpi2 += $value[10];
                                         }
-                                        if ($value[6] != 0) {
-                                            $KPI2 = ($value[7] / $value[6]) * 100;
-                                        } else {
-                                            $KPI2 = 0;
-                                        }
-                                        $kpi1 += $KPI1;
-                                        $kpi2 += $KPI2;
-
-                                        echo '<td style="width: 20%">' . $name . '</td>'
-                                        . '<td>' .
-                                        $KPI1 . '</td>'
-                                        . '<td>' . $KPI2 . '</td>';
                                     }
-                                }
-                                echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
-                                ?>
-                            </table>
-                        </div>
-        <?php
-        $count ++;
-    }
-    ?>
+
+                                    echo '<tr><th>Total</th><td>' . $kpi1 . '</td><td>' . $kpi2 . '</td></tr>';
+                                    ?>
+                                </table>
+                            </div>
+                            <?php
+                            $count ++;
+                        }
+                    }
+                    ?>
+
                 </div>
             </div>
         </div>  
-<?php } ?>
+    <?php } ?>
 </div>
