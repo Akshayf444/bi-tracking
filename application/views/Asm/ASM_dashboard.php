@@ -135,11 +135,18 @@
                                 ?>
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo"  >        
-                                        <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                        <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+                                        if ($target > 0) {
+                                            echo ($actual / $target) * 100;
+                                        } else {
+                                            echo 0;
+                                        }
+                                        ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($target > 0) {
                                                 echo ($actual / $target) * 100;
                                             }
+                                            
                                             ?>%</span>
                                         <span style="margin-left: 70px;position: absolute;margin-top: -35px">Prescription </span>
                                         <span style="margin-left: 66px;position: absolute;margin-top: -17px;"> Actual / Target</span>
@@ -149,7 +156,13 @@
 
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo" >       
-                                        <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                        <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
+                                            if ($dplanned > 0) {
+                                                echo ($actplaned / $dplanned) * 100;
+                                            }
+                                           else {
+                                            echo 0;
+                                        } ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($dplanned > 0) {
                                                 echo ($actplaned / $dplanned) * 100;
@@ -178,10 +191,10 @@
                 </div>
             </div>
         </div>  
-    <?php } //var_dump($dashboardDetails); ?>
+<?php } //var_dump($dashboardDetails);  ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php if (!empty($productlist)) { ?>
+                <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading">  Status  </div>
             <div class="panel-body">
@@ -193,18 +206,18 @@
                         foreach ($productlist as $product) {
                             ?>
                             <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>2"><?php echo $product->Brand_Name ?></a></li>
-                            <?php
-                            $count ++;
-                        }
-                    }
-                    ?>
+            <?php
+            $count ++;
+        }
+    }
+    ?>
                 </ul>
 
                 <div class="tab-content">
-                    <?php
-                    if (!empty($productlist)) {
-                        foreach ($productlist as $product) {
-                            ?>
+    <?php
+    if (!empty($productlist)) {
+        foreach ($productlist as $product) {
+            ?>
 
                             <div id="<?php echo $product->id ?>2" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
                                 <table class="table table-bordered">
@@ -233,18 +246,18 @@
                                     ?>
                                 </table>
                             </div>
-                            <?php
-                            $count ++;
-                        }
-                    }
-                    ?>
+            <?php
+            $count ++;
+        }
+    }
+    ?>
                 </div>
             </div>
         </div>  
-    <?php } ?>
+<?php } ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php if (!empty($productlist)) { ?>
+                <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
             <div class="panel-body">
@@ -256,17 +269,17 @@
                         foreach ($productlist as $product) {
                             ?>
                             <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>1"><?php echo $product->Brand_Name ?></a></li>
-                            <?php
-                            $count ++;
-                        }
-                    }
-                    ?>
+            <?php
+            $count ++;
+        }
+    }
+    ?>
                 </ul>
 
                 <div class="tab-content">
-                    <?php
-                    if (!empty($productlist)) {
-                        ?>
+    <?php
+    if (!empty($productlist)) {
+        ?>
 
                         <div id="<?php echo $product->id ?>1" class="tab-pane fade <?php echo isset($count) && $count == 1 ? 'in active' : ''; ?>">
                             <table class="table table-bordered">
@@ -281,8 +294,8 @@
                                 $kpi2 = 0;
                                 if (!empty($dashboardDetails)) {
                                     foreach ($dashboardDetails[$product->id] as $value) {
-                                                                                 
-                                        
+
+
                                         $name = $value[0];
                                         if ($value[3] != 0) {
                                             $KPI1 = ($value[5] / $value[3]) * 100;
@@ -307,12 +320,12 @@
                                 ?>
                             </table>
                         </div>
-                        <?php
-                        $count ++;
-                    }
-                    ?>
+        <?php
+        $count ++;
+    }
+    ?>
                 </div>
             </div>
         </div>  
-    <?php } ?>
+<?php } ?>
 </div>
