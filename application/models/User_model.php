@@ -198,7 +198,7 @@ class User_model extends CI_Model {
                      <div class="panel panel-default" style="border-color: #fff;">
                         <div class="panel-body" style="    height: 117px; ">
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab3Location . '">
-                                Planning For The Month Of ' . date('M', strtotime($this->nextMonth)) . "&nbsp" . date('Y', strtotime($this->nextYear)) . ' </a>
+                                Planning For The Month Of ' . date('M') . "&nbsp" . date('Y') . ' </a>
                         </div>
                     </div>
                 </div>';

@@ -141,7 +141,7 @@
                                                 echo ($actual / $target) * 100;
                                             }
                                             ?>%</span>
-                                        <span style="margin-left: 90px;position: absolute;margin-top: -35px">Prescription </span>
+                                        <span style="margin-left: 70px;position: absolute;margin-top: -35px">Prescription </span>
                                         <span style="margin-left: 66px;position: absolute;margin-top: -17px;"> Actual / Target</span>
 
                                     </div>
@@ -155,14 +155,14 @@
                                                 echo ($actplaned / $dplanned) * 100;
                                             }
                                             ?>%</span>
-                                        <span style="margin-left: 68px;position: absolute;margin-top: -35px"> <?php
+                                        <span style="margin-left: 58px;position: absolute;margin-top: -35px"> <?php
                                             if ($this->Product_Id == 1) {
                                                 echo "Hospital";
                                             } else {
                                                 echo "Doctor";
                                             }
                                             ?> Engaged in Activity</span>
-                                        <span style="margin-left: px;position: absolute;margin-top: -17px;"> Engaged in Activity / Planned</span>
+                                        <span style="margin-left: 58px;position: absolute;margin-top: -17px;"> Engaged in Activity / Planned</span>
                                     </div>
                                 </div>
                             </div>
