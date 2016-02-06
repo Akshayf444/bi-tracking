@@ -300,12 +300,9 @@ class ASM extends MY_Controller {
                 'Product_Id' => $this->input->post('product'),
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
-            if ($this->input->post('Com_id') > 0) {
-                $this->db->where(array('Com_id' => $this->input->post('Com_id')));
-                $this->db->update('Asm_Comment', $comment);
-            } else {
-                $this->db->insert('Asm_Comment', $comment);
-            }
+
+            $this->db->insert('Asm_Comment', $comment);
+
 
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
 
@@ -394,26 +391,16 @@ class ASM extends MY_Controller {
                 'Product_Id' => $this->input->post('product'),
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
-            if ($this->input->post('Com_id') > 0) {
-                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Product_Id' => 4, 'Comment_type' => 'Activity_Planning'));
-                    $this->db->update('Asm_Comment', $comment);
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Product_Id' => 6, 'Comment_type' => 'Activity_Planning'));
-                    $this->db->update('Asm_Comment', $comment);
-                } else {
-                    $this->db->where(array('Com_id' => $this->input->post('Com_id')));
-                    $this->db->update('Asm_Comment', $comment);
-                }
+
+            if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
+                $comment['Product_Id'] = 4;
+                $this->db->insert('Asm_Comment', $comment);
+                $comment['Product_Id'] = 6;
+                $this->db->insert('Asm_Comment', $comment);
             } else {
-                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
-                    $comment['Product_Id'] = 4;
-                    $this->db->insert('Asm_Comment', $comment);
-                    $comment['Product_Id'] = 6;
-                    $this->db->insert('Asm_Comment', $comment);
-                } else {
-                    $this->db->insert('Asm_Comment', $comment);
-                }
+                $this->db->insert('Asm_Comment', $comment);
             }
+
 
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities  Approved And ' . $rejectCount . ' Activities  Rejected', 'success'));
 
@@ -485,12 +472,9 @@ class ASM extends MY_Controller {
                 'Product_Id' => $this->input->post('product'),
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
-            if ($this->input->post('Com_id') > 0) {
-                $this->db->where(array('Com_id' => $this->input->post('Com_id')));
-                $this->db->update('Asm_Comment', $comment);
-            } else {
-                $this->db->insert('Asm_Comment', $comment);
-            }
+
+            $this->db->insert('Asm_Comment', $comment);
+
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
 
             redirect('ASM/reporting_rx', 'refresh');
@@ -534,26 +518,15 @@ class ASM extends MY_Controller {
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
 
-            if ($this->input->post('Com_id') > 0) {
-                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Product_Id' => 4, 'Comment_type' => 'Activity_Reporting'));
-                    $this->db->update('Asm_Comment', $comment);
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->input->post('BDM_ID'), 'Product_Id' => 6, 'Comment_type' => 'Activity_Reporting'));
-                    $this->db->update('Asm_Comment', $comment);
-                } else {
-                    $this->db->where(array('Com_id' => $this->input->post('Com_id')));
-                    $this->db->update('Asm_Comment', $comment);
-                }
+            if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
+                $comment['Product_Id'] = 4;
+                $this->db->insert('Asm_Comment', $comment);
+                $comment['Product_Id'] = 6;
+                $this->db->insert('Asm_Comment', $comment);
             } else {
-                if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
-                    $comment['Product_Id'] = 4;
-                    $this->db->insert('Asm_Comment', $comment);
-                    $comment['Product_Id'] = 6;
-                    $this->db->insert('Asm_Comment', $comment);
-                } else {
-                    $this->db->insert('Asm_Comment', $comment);
-                }
+                $this->db->insert('Asm_Comment', $comment);
             }
+
 
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Activities  Approved And ' . $rejectCount . ' Activities  Rejected', 'success'));
             redirect('ASM/reporting_activity', 'refresh');
@@ -572,7 +545,7 @@ class ASM extends MY_Controller {
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
-                //echo $id;
+          
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
 
