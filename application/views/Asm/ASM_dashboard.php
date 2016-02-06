@@ -141,14 +141,14 @@
                                         <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
 
                                         if ($target > 0) {
-                                            echo ($actual / $target) * 100;
+                                            echo round(($actual / $target),2) * 100;
                                         } else {
                                             echo 0;
                                         }
                                         ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($target > 0) {
-                                                echo ($actual / $target) * 100;
+                                                echo round(($actual / $target),2) * 100;
                                             }
                                             ?>%</span>
                                         <span style="margin-left: 70px;position: absolute;margin-top: -35px">Prescription </span>
