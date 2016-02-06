@@ -1246,7 +1246,7 @@ class User_model extends CI_Model {
     public function ASM_comment($VEEVA_Employee_ID, $PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
-                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'and `Comment_type`='Planning' or `Comment_type`='Activity_Planning'";
+                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID' and `Comment_type`='Planning' or `Comment_type`='Activity_Planning'";
         $query = $this->db->query($sql);
 
         return $query->result();
@@ -1255,7 +1255,7 @@ class User_model extends CI_Model {
 public function ASM_comment_rep($VEEVA_Employee_ID,$PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
-                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'and `Comment_type`='Reporting' or `Comment_type`='Activity_Reporting'";
+                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID' and  `Comment_type`='Activity_Reporting'";
         $query = $this->db->query($sql);
 
         return $query->result();
