@@ -1217,6 +1217,7 @@ class User_model extends CI_Model {
         $this->db->select('*');
         $this->db->from('Asm_Comment');
         $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID, 'Comment_Type' => $Comment_Type, 'Product_Id' => $Product_Id));
+        $this->db->order_by('Com_id DESC LIMIT 1');
         $query = $this->db->get();
         return $query->row();
     }
