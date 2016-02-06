@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 2em;">
     <div class="row" align="center">
-        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>
+        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm<br/>Mail Your Queries At: <a href="mailto:bisupport@instacom.in">bisupport@instacom.in</a></div>
     </div>
     <?php
     if (isset($message)) {
@@ -11,7 +11,7 @@
         <div class="col-lg-6 col-md-6 col-sm-8 col-lg-offset-3 col-md-offset-3 col-sm-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading" style="text-align: center">
-                    <img  src="<?php echo asset_url() ?>images/travels.png" width="45%" >
+                    <img  src="<?php echo asset_url() ?>images/Boehringer.png" width="45%" >
                 </div>
                 <div class="panel-body">
                     <?php echo form_open('User/index') ?>
