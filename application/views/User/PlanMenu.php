@@ -93,17 +93,22 @@ if ($this->Product_Id == 1) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($asm_comment)){
-                           foreach($asm_comment as $row) {
-                             
-                               ?>
-                        <tr>
-                    <td><?php echo $row->created_at ?> </td>
-                    <td><?php echo $row->Comment ?> </td>
-                    <td><?php echo $row->Comment_type ?> </td>
-                        </tr>
                         <?php
-                           }
-                        }?>
+                        if (!empty($asm_comment)) {
+                            foreach ($asm_comment as $row) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $row->created_at ?> </td>
+                                    <td><?php echo $row->Comment ?> </td>
+                                    <td><?php echo $row->Comment_type ?> </td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
                     </tbody>
-                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
