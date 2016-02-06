@@ -102,7 +102,7 @@ class User_model extends CI_Model {
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $this->Product_Id);
         $rxlabel = $this->Product_Id == 1 ? 'Vials' : 'Rx';
         $hospital = $this->Product_Id == 1 ? 'Hospital' : 'Doctor';
-
+$PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
         if (isset($tabs['Tab1']) && $tabs['Tab1'] == 1) {
             $Tab1Location = "'" . site_url('User/Profiling') . "'";
         } elseif (isset($tabs['Tab1']) && $tabs['Tab1'] == 0) {
@@ -172,7 +172,7 @@ class User_model extends CI_Model {
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
-                                <input class="knob"   readonly="" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
+                                <input class="knob"   readonly="" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="'.$PROFILE.'">
                                 <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
                         </div>
