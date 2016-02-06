@@ -441,5 +441,10 @@ GROUP BY em.`VEEVA_Employee_ID`";
         $query = $this->db->query($sql);
         return $query->result();
     }
+ public function emp_doc() {
+        $sql = "select * from  Employee_Doc where Territory ='$id' ";
 
+        $query = $this->db->query($sql);
+        return $query->result();
+}
 }
