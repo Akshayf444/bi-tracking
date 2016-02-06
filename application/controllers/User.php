@@ -573,6 +573,7 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
+               $data['asm_comment'] = $this->User_model-> ASM_comment($this->VEEVA_Employee_ID,$this->Product_Id);
             $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {

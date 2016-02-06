@@ -1264,5 +1264,12 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row();
     }
+ public function ASM_comment($VEEVA_Employee_ID,$PRODUCT_ID) {
+        $sql = "SELECT * FROM Asm_Comment
+                WHERE
+                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'";
+        $query = $this->db->query($sql);
 
+        return $query->result();
+    }
 }
