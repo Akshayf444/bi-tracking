@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 2em;">
-    <div class="row">
-        <div class="pull-right" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>
+    <div class="row" align="center">
+        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3" id="mini-notification">Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm</div>
     </div>
     <?php
     if (isset($message)) {
