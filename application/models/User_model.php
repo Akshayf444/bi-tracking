@@ -102,7 +102,12 @@ class User_model extends CI_Model {
         $profileCount = $this->ProfilingCount($VEEVA_Employee_ID, $this->Product_Id);
         $rxlabel = $this->Product_Id == 1 ? 'Vials' : 'Rx';
         $hospital = $this->Product_Id == 1 ? 'Hospital' : 'Doctor';
-$PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
+        if ($doctorCount["DoctorCount"] > 0) {
+            $PROFILE = ($profileCount["profile_count"] / $doctorCount["DoctorCount"]) * 100;
+        } else {
+            $PROFILE = 0;
+        }
+
         if (isset($tabs['Tab1']) && $tabs['Tab1'] == 1) {
             $Tab1Location = "'" . site_url('User/Profiling') . "'";
         } elseif (isset($tabs['Tab1']) && $tabs['Tab1'] == 0) {
@@ -172,7 +177,7 @@ $PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
-                                <input class="knob"   readonly="" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="'.$PROFILE.'">
+                                <input class="knob"   readonly="" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="' . $PROFILE . '">
                                 <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
                         </div>
@@ -746,8 +751,10 @@ $PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
     }
 
     function password($id, $data) {
-        $this->db->where(array('VEEVA_Employee_ID' => $id));
-        return $this->db->update('Employee_Master', $data);
+        if ($id != '') {
+            $this->db->where(array('VEEVA_Employee_ID' => $id));
+            return $this->db->update('Employee_Master', $data);
+        }
     }
 
     function password_status($id) {
@@ -1235,7 +1242,8 @@ $PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
         $query = $this->db->get();
         return $query->row();
     }
- public function ASM_comment($VEEVA_Employee_ID,$PRODUCT_ID) {
+
+    public function ASM_comment($VEEVA_Employee_ID, $PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
                 `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'";
@@ -1243,4 +1251,5 @@ $PROFILE=($profileCount["profile_count"] / $doctorCount["DoctorCount"])*100;
 
         return $query->result();
     }
+
 }

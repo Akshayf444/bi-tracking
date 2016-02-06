@@ -576,7 +576,7 @@ class User extends MY_Controller {
         if ($this->is_logged_in()) {
             $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
             $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
-               $data['asm_comment'] = $this->User_model-> ASM_comment($this->VEEVA_Employee_ID,$this->Product_Id);
+            $data['asm_comment'] = $this->User_model->ASM_comment($this->VEEVA_Employee_ID, $this->Product_Id);
             $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -588,25 +588,31 @@ class User extends MY_Controller {
         //if ($this->is_logged_in()) {
         if ($this->input->post()) {
             $password = $this->input->post('password');
-            if (!empty($password)) {
-                $data = array(
-                    'password' => $password,
-                    'password_status' => 'Active',
-                );
-                $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
-                $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
-                if ($check_password['Profile'] == 'ASM') {
-                    redirect('ASM/dashboard', 'refresh');
+            if (preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/', $password)) {
+                if ($this->input->post('password') === $this->input->post('password2')) {
+                    if (!empty($password)) {
+                        $data = array(
+                            'password' => $password,
+                            'password_status' => 'Active',
+                        );
+                        $this->User_model->password($this->session->userdata('VEEVA_Employee_ID'), $data);
+                        $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
+                        if ($check_password['Profile'] == 'ASM') {
+                            redirect('ASM/dashboard', 'refresh');
+                        } else {
+                            redirect('User/dashboard', 'refresh');
+                        }
+                    }
                 } else {
-                    redirect('User/dashboard', 'refresh');
+                    $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password And Its Repeat Must Be Same', 'danger'));
                 }
+            } else {
+                $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Password Must Contain 8 characters with 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number', 'danger'));
             }
         }
         $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
         $this->load->view('template2', $data);
-        /* } else {
-          $this->logout();
-          } */
+
     }
 
     public function Reporting() {

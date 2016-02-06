@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-lg-3 col-md-3"></div>
-    <div class="col-lg-6 col-md-6">
+
+    <div class="col-lg-6 col-md-6 col-lg-offset-3 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Change Password
@@ -12,6 +12,7 @@
             <div class="panel-body">
                 <div class="form-group">
                     <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Enter Your New Password"/>
+                    <p class="error"></p>
                 </div>
                 <div class="form-group">
                     <input type="password" name="password2" autocomplete="off" class="form-control" placeholder="Retype Your Password"/>
@@ -23,7 +24,7 @@
             </form>
         </div>
     </div>
-    <div class="col-lg-3"></div>
+
 </div>
 <script>
     $('document').ready(function () {
@@ -61,8 +62,9 @@
                 },
             }
         });
+
+
     });
 </script>
-
 <script src="<?php echo asset_url() ?>js/formValidation.min.js" type="text/javascript"></script>
 <script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
