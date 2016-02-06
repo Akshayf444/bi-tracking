@@ -11,7 +11,7 @@
         <div class="col-lg-6 col-md-6 col-sm-8 col-lg-offset-3 col-md-offset-3 col-sm-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading" style="text-align: center">
-                    <img  src="<?php echo asset_url() ?>images/Boehringer.png" width="45%" >
+                    <img  src="<?php echo asset_url() ?>images/travels.png" width="45%" >
                 </div>
                 <div class="panel-body">
                     <?php echo form_open('User/index') ?>
