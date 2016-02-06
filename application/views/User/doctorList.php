@@ -102,6 +102,7 @@ echo form_open('User/Planning', $attributes);
                         <tr>
                             <th>
                                 <?php
+
                                 if ($this->Product_Id == 1) {
                                     $vials = "Vials";
                                     $hospital = "Hospital";
@@ -122,8 +123,8 @@ echo form_open('User/Planning', $attributes);
                             <th><?php echo date('M', strtotime('-3 month')) . $vials; ?> </th>
                             <th><?php echo date('M', strtotime('-2 month')) . $vials; ?></th>
                             <th><?php echo date('M', strtotime('-1 month')) . $vials; ?></th>
-                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
-                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M', strtotime($this->nextMonth)); ?> </th>
+                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M'); ?> </th>
+                            <th>New <?php echo $vials; ?> Targeted For <?php echo date('M'); ?> </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,7 +226,7 @@ echo form_open('User/Planning', $attributes);
             <input type="hidden" id="Button_click_status" name="Button_click_status" value="Save">
         </div>
         <?php if (isset($result) && !empty($result)) { ?>
-        <div class="panel-footer">
+            <div class="panel-footer">
 
                 <button type="submit" id="Save" class="btn btn-primary">Save</button>
                 <?php if ($allApproved == TRUE) { ?>

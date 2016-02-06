@@ -271,7 +271,7 @@ class asm_model extends CI_Model {
         return $query->result();
     }
 
-    function RxReportingStatus($Product_Id,$VEEVA_Employee_Id) {
+    function RxReportingStatus($Product_Id, $VEEVA_Employee_Id) {
         $sql = "SELECT 
                 COUNT(
                   CASE
@@ -307,6 +307,10 @@ class asm_model extends CI_Model {
         $query = $this->db->query($sql);
         //echo $sql.'<br/>';
         return $query->result();
+    }
+
+    function insertComment($data) {
+        $this->db->insert('Asm_Comment', $data);
     }
 
 }

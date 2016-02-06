@@ -243,7 +243,7 @@
         </div>  
     <?php } ?>
 </div>
-<!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
@@ -315,6 +315,4 @@
             </div>
         </div>  
     <?php } ?>
-</div>-->
-
-
+</div>
