@@ -251,7 +251,7 @@ class ASM extends MY_Controller {
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
 
-            $this->db->insert('Asm_Comment', $comment);
+            $this->asm_model->insertComment($comment);
 
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
 
@@ -343,11 +343,11 @@ class ASM extends MY_Controller {
 
             if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
                 $comment['Product_Id'] = 4;
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
                 $comment['Product_Id'] = 6;
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
             } else {
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
             }
 
 
@@ -422,7 +422,7 @@ class ASM extends MY_Controller {
                 'Reporting_Id' => $this->VEEVA_Employee_ID
             );
 
-            $this->db->insert('Asm_Comment', $comment);
+            $this->asm_model->insertComment($comment);
 
             $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($approveCount . ' Records  Approved And ' . $rejectCount . ' Records  Rejected', 'success'));
 
@@ -469,11 +469,11 @@ class ASM extends MY_Controller {
 
             if ($this->input->post('product') == 4 || $this->input->post('product') == 6) {
                 $comment['Product_Id'] = 4;
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
                 $comment['Product_Id'] = 6;
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
             } else {
-                $this->db->insert('Asm_Comment', $comment);
+                $this->asm_model->insertComment($comment);
             }
 
 
@@ -494,7 +494,7 @@ class ASM extends MY_Controller {
             if ($this->input->post()) {
                 $product = $this->input->post('product_id');
                 $id = $this->input->post('rx_id');
-          
+
                 $this->Product_Id = $product;
                 $result = $this->asm_model->rx_view($id2);
 

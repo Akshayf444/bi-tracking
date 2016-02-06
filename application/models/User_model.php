@@ -1009,15 +1009,21 @@ class User_model extends CI_Model {
                 }
 
                 $isApproved = isset($value->Approve_Status) && $value->Approve_Status == 'Approved' ? 'background-color:#c6ebd9;' : '';
-                $HTML .= '<tr style="' . $isApproved . '"><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
-                $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
-                if ($type == 'Reporting') {
-                    $HTML .= '<td>' . $value->Activity_Done . '</td>';
-                }
+
                 if ($value->Approve_Status == 'Approved') {
-                    $HTML .= '<td><input type="radio" disabled="disabled" ' . $Status . '  value="Approved"></td>';
+                    $HTML .= '<tr style="' . $isApproved . '"><td>' . $value->Account_Name . '</td>';
+                    $HTML .= '<td><select class="form-control" disabled="disabled" ><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    if ($type == 'Reporting') {
+                        $HTML .= '<td>' . $value->Activity_Done . '</td>';
+                    }
+                    $HTML .= '<td><input type="radio" disabled="disabled" checked="checked"  value="Approved"></td>';
                     $HTML .= '<td><input type="radio" disabled="disabled"  ' . $Status . ' value="Un-Approved"></td>';
                 } else {
+                    $HTML .= '<tr style="' . $isApproved . '"><td>' . $value->Account_Name . '<input type="hidden" name="Doctor_Id[]" value="' . $value->Account_ID . '"></td>';
+                    $HTML .= '<td><select class="form-control" disabled="disabled" name="Activity_Id[]"><option value="-1">Select Activity</option>' . $ActivityList . '</select></td>';
+                    if ($type == 'Reporting') {
+                        $HTML .= '<td>' . $value->Activity_Done . '</td>';
+                    }
                     $HTML .= '<td><input type="radio" class="check-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Approved"></td>';
                     $HTML .= '<td><input type="radio" class="uncheck-all" ' . $Status . ' name="approve_' . $value->Account_ID . '" value="Un-Approved"></td>';
                 }
