@@ -77,3 +77,33 @@ if ($this->Product_Id == 1) {
         </li>
     </ul>
 </div>-->
+
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">Asm Comment</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th> ASM Comment</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(!empty($asm_comment)){
+                           foreach($asm_comment as $row) {
+                             
+                               ?>
+                        <tr>
+                    <td><?php echo $row->created_at ?> </td>
+                    <td><?php echo $row->Comment ?> </td>
+                    <td><?php echo $row->Comment_type ?> </td>
+                        </tr>
+                        <?php
+                           }
+                        }?>
+                    </tbody>
+                    

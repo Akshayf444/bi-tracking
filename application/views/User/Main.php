@@ -194,7 +194,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
             <div class="col-lg-5 col-md-5 col-xs-5">
 
                 <div class="demo" >        
-                    <input class="knob" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                    <input class="knob"  readonly="" id="kp1" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                     <span style="margin-left: -48px;position: absolute;margin-top: 63px;"><?php echo round($kpi1, 2); ?>%</span>
                     <span style="margin-left: -57px;position: absolute;margin-top: 80px;">KPI 1</span>
                     <span style="margin-left: -109px;position: absolute;margin-top: 93px;"><?php echo $rxlabel; ?> Actual / <?php echo $rxlabel; ?> Target</span>
@@ -204,7 +204,7 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
             </div>
             <div class="col-lg-5 col-md-5 col-xs-5">
                 <div class="demo" >       
-                    <input class="knob" id="kp2" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                    <input class="knob" id="kp2"  readonly="" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                     <span style="margin-left: -59px;position: absolute;margin-top: 69px;"><?php echo round($kpi2, 2); ?>%</span>
                     <span style="margin-left: -62px;position: absolute;margin-top: 84px;">KPI 2</span>
                     <span style="margin-left: -157px;position: absolute;margin-top: 96px;"><?php

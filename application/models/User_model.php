@@ -172,7 +172,7 @@ class User_model extends CI_Model {
                             <a style="position: absolute;margin: 28px 0px 0px 0px;font-weight: 700;" onclick="window.location = ' . $Tab1Location . '" >' . $hospital . ' Profiling </a>
                             <div class="pull-right">
                             <input type="hidden" id="profile" value="' . $tab1Calc . '">
-                                <input class="knob" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
+                                <input class="knob"   readonly="" id="1" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="">
                                 <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $profileCount["profile_count"] . '/' . $doctorCount["DoctorCount"] . '</span>
                             </div>
                         </div>
@@ -211,7 +211,7 @@ class User_model extends CI_Model {
                                 Reporting Of ' . $vials . '
                             </a>
                             <div class="pull-right">
-                                <input class="knob" id="5" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <input class="knob" id="5"  readonly="" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
 
                                 <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $Actual . '/' . $target . '</span>
 
@@ -228,7 +228,7 @@ class User_model extends CI_Model {
                                 Reporting For Activities
                             </a>
                             <div class="pull-right">
-                                <input class="knob" id="4" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                <input class="knob" id="4"  readonly="" style="display: none;" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
 
                                 <span style="    margin: -25px 0px 0px 41px;position: absolute;">' . $activity_actual['activity_actual'] . '/' . $activity_planned["activity_planned"] . '</span>
 
@@ -1235,5 +1235,12 @@ class User_model extends CI_Model {
         $query = $this->db->get();
         return $query->row();
     }
+ public function ASM_comment($VEEVA_Employee_ID,$PRODUCT_ID) {
+        $sql = "SELECT * FROM Asm_Comment
+                WHERE
+                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'";
+        $query = $this->db->query($sql);
 
+        return $query->result();
+    }
 }

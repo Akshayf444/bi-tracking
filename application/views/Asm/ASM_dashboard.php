@@ -147,8 +147,8 @@
                                 }
                                 ?>
                                 <div class="col-lg-5 col-md-5 col-xs-5">
-                                    <div class="demo" >        
-                                        <input class="knob" id="kp3" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                    <div class="demo"  >        
+                                        <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($target > 0) {
                                                 echo ($actual / $target) * 100;
@@ -162,7 +162,7 @@
 
                                 <div class="col-lg-5 col-md-5 col-xs-5">
                                     <div class="demo" >       
-                                        <input class="knob" id="kp4" style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
+                                        <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="35">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($dplanned > 0) {
                                                 echo ($actplaned / $dplanned) * 100;
