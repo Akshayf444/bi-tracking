@@ -12,6 +12,7 @@ class User_model extends CI_Model {
         $this->db->from($this->table_name);
         $this->db->where(array('Username' => $username, 'password' => $password, 'Status' => '1'));
         $query = $this->db->get();
+        //echo $this->db->last_query();
         return $query->row_array();
     }
 
@@ -32,9 +33,10 @@ class User_model extends CI_Model {
         return $this->db->update('Rx_Target', $data);
     }
 
+    ///Not Territory Specific
     public function Set_Target_by_id($id, $pid, $month) {
         $sql = "select * from Rx_Target
-                where Territory='$id' And Product_Id='$pid' And Month=$month";
+                where VEEVA_Employee_ID = '$id' And Product_Id='$pid' And Month=$month";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -55,10 +57,11 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-    public function Rx_Target_month2($Territory, $Product_Id, $month_start) {
+    ////Not Territory Specific
+    public function Rx_Target_month2($VEEVA_Employee_ID, $Product_Id, $month_start) {
         $sql = "SELECT *  FROM Rx_Target
                 WHERE Month = $month_start
-                AND `Territory`='$Territory' AND `Product_Id`=$Product_Id And Year='$this->nextYear' AND Status = 'Submitted'  ";
+                AND `VEEVA_Employee_ID`='$VEEVA_Employee_ID' AND `Product_Id`=$Product_Id And Year='$this->nextYear' AND Status = 'Submitted'  ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -86,17 +89,17 @@ class User_model extends CI_Model {
         return $this->db->update('Rx_Target', $data);
     }
 
-    public function Tabs($Territory) {
+    public function Tabs($VEEVA_Employee_ID) {
         $this->db->select('*');
         $this->db->from($this->table_name . ' Em');
-        $this->db->join('Tab_Control tb', 'Em.Territory = tb.Territory');
-        $this->db->where(array('Em.Territory' => $Territory));
+        $this->db->join('Tab_Control tb', 'Em.VEEVA_Employee_ID = tb.VEEVA_Employee_ID');
+        $this->db->where(array('Em.VEEVA_Employee_ID' => $VEEVA_Employee_ID));
         $query = $this->db->get();
         return $query->row_array();
     }
 
     public function generateTabs($Territory = 0, $Product_id = 0) {
-        $tabs = $this->Tabs($Territory);
+        $tabs = $this->Tabs($this->VEEVA_Employee_ID);
         $this->load->model('Doctor_Model');
         $doctorCount = $this->Doctor_Model->CountDoctor($Territory, $this->Individual_Type);
         $profileCount = $this->ProfilingCount($Territory, $this->Product_Id);
@@ -157,7 +160,7 @@ class User_model extends CI_Model {
             $tab1Calc = 0;
         }
         if ($this->Product_Id > 0) {
-            $data['show4'] = $this->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
+            $data['show4'] = $this->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             $data['Planned'] = $this->Planned_Rx_Count();
             $data['Actual'] = $this->Actual_Rx_Count();
         }
@@ -752,7 +755,7 @@ class User_model extends CI_Model {
 
     function password($id, $data) {
         if ($id != '') {
-            $this->db->where(array('Territory' => $id));
+            $this->db->where(array('VEEVA_Employee_ID' => $id));
             return $this->db->update('Employee_Master', $data);
         }
     }
@@ -1144,15 +1147,16 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
-    function ASM_division($Territory) {
+    ///Not Territory SPecific
+    function ASM_division($VEEVA_Employee_ID) {
         $sql = "SELECT em.`Division` as division FROM `Employee_Master` em
-                WHERE em.`Territory`='$Territory'";
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
 
     function report($Territory, $month, $year, $product) {
-        $sql = "SELECT em.`Full_Name`,em.Territory,COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
+        $sql = "SELECT em.`Full_Name`,em.Territory,em.VEEVA_Employee_ID,COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
                 LEFT JOIN Employee_Doc ed 
                 ON em.`Territory`=ed.`Territory`
                 LEFT JOIN Doctor_Master dm 

@@ -238,7 +238,7 @@ class User extends MY_Controller {
         if ($this->Product_Id == 1) {
             $alertLabel = "Hospital";
         }
-        $target = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
+        $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
         $data['target'] = isset($target['target']) ? $target['target'] : 0;
 
 //        if ($this->input->post()) {
@@ -300,7 +300,7 @@ class User extends MY_Controller {
         $messages = array();
         if ($this->is_logged_in()) {
             $result = $this->Doctor_Model->getDoctor($this->Territory, $this->Individual_Type);
-
+            //var_dump($result);
             if ($this->input->post()) {
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
                 $_POST['Territory'] = $this->Territory;
@@ -417,7 +417,7 @@ class User extends MY_Controller {
         }
         $messages = array();
         if ($this->is_logged_in()) {
-            $targetSet = $this->User_model->Rx_Target_month($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
+            $targetSet = $this->User_model->Rx_Target_month2($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
             if (!empty($targetSet)) {
                 $data['result'] = $this->User_model->getPlanning($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 // echo($data['doctorList']);
@@ -484,7 +484,7 @@ class User extends MY_Controller {
             }
 
             $current_month = $this->nextMonth;
-            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $current_month);
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->VEEVA_Employee_ID, $this->Product_Id, $current_month);
             $data['expected'] = $this->User_model->Expected_Rx($this->Territory, $this->Product_Id, $this->nextMonth);
             $data = array('title' => 'Planning', 'content' => 'User/doctorList', 'backUrl' => 'User/PlanMenu', 'view_data' => $data);
             $this->load->view('template2', $data);

@@ -159,7 +159,7 @@ class ASM extends MY_Controller {
             $target2 = $this->input->post('target2');
             $target3 = $this->input->post('target3');
             $Status = $this->input->post('Status');
-            //var_dump($this->input->post('Status'));
+           // var_dump($this->input->post('Status'));
             for ($i = 0; $i < count($this->input->post('VEEVA_Employee_ID')); $i++) {
 
 
@@ -172,9 +172,10 @@ class ASM extends MY_Controller {
                             'VEEVA_Employee_ID' => $VEEVA_Employee_ID[$i],
                             'Product_Id' => $id,
                             'Month' => $this->nextMonth,
+                            'Territory' => $this->Territory,
                             'Year' => $this->nextYear,
                             'created_at' => date('Y-m-d H:i:s'),
-                            'Status' => $this->input->post('Status'),
+                            'Status' => $Status,
                         );
 
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);

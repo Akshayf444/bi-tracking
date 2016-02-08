@@ -93,8 +93,8 @@
                                     $lastMonth = date('m', strtotime('-1 month'));
                                     $lastYear = date('Y', strtotime('-1 month'));
                                     foreach ($Status as $value) {
-                                        $LastMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $lastMonth, $lastYear);
-                                        $currentMonthRx = $this->User_model->product_detail($value->VEEVA_Employee_ID, $product->id, $this->nextMonth, $this->nextYear);
+                                        $LastMonthRx = $this->User_model->product_detail($value->Territory, $product->id, $lastMonth, $lastYear);
+                                        $currentMonthRx = $this->User_model->product_detail($value->Territory, $product->id, $this->nextMonth, $this->nextYear);
                                         if ($value->Target_New_Rxn_for_the_month > 0) {
                                             $kpi1 = ($currentMonthRx['Actual_Rx'] / $value->Target_New_Rxn_for_the_month) * 100;
                                         } else {
