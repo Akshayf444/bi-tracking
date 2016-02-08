@@ -298,11 +298,13 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    
+    ///Not Territory Specific
     public function getPlannedActivityDoctor2($id, $Product_Id) {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Reporting ap', 'ap.Doctor_Id = dm.Account_ID AND ap.month = ' . $this->nextMonth . ' AND Year = ' . $this->nextYear . ' AND ap.Product_Id = ' . $this->Product_Id, 'left');
-        $where = "ap.Territory ='$id' ";
+        $where = "ap.VEEVA_Employee_ID ='$id' ";
         $this->db->where($where);
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
@@ -1180,7 +1182,7 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-    function getReporting2($Territory, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
+    function getReporting2($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $sql = "SELECT 
                   `dm`.*,
                   GROUP_CONCAT(`act`.`Rxplan_id`) AS Rxplan_id,
@@ -1194,8 +1196,8 @@ class User_model extends CI_Model {
                     AND act.Product_Id = {$Product_id} 
                     AND act.Year = '$Year' 
                     AND act.month = '$month'
-                    AND act.Territory = '$Territory' 
-                WHERE `ed`.`Territory` = '$Territory' 
+                    AND act.VEEVA_Employee_ID = '$VEEVA_Employee_ID' 
+                WHERE `ed`.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
                   
                 GROUP BY `dm`.`Account_ID` ";
 
