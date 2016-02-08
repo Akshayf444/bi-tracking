@@ -41,10 +41,13 @@ class User extends MY_Controller {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
             $check = $this->User_model->authentication($username, $password);
+            //var_dump($check);
             if (empty($check)) {
                 $emp = $this->User_model->employee_id($username);
-                if (isset($emp['Territory'])) {
-                    $count = $this->User_model->password_count($emp['Territory']);
+                if (isset($emp['VEEVA_Employee_ID'])) {
+                    
+                    ///Count Last 5 Passwords  Employee Specific
+                    $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
                     if ($count['cnt'] > 4) {
                         $data1 = array(
                             'Status' => 'locked',
@@ -53,7 +56,9 @@ class User extends MY_Controller {
                         $data['message'] = 'Your Account Has Been Locked';
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Your Account Has Been Locked', 'danger'));
                     } else {
-                        $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['Territory']);
+                        
+                        ///Not A Territory Specific
+                        $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['VEEVA_Employee_ID']);
                         if (!empty($lastFailed_attempt)) {
                             $current_date = date('Y-m-d H:i:s');
                             $current_date = strtotime($current_date);
@@ -65,7 +70,7 @@ class User extends MY_Controller {
                                 );
                                 $this->User_model->update_status($username, $data1);
                                 $add = array(
-                                    'Territory' => $emp['Territory'],
+                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
                                     'password' => $password,
                                     'created_at' => date('Y-m-d H:i:s'),
                                 );
@@ -73,7 +78,7 @@ class User extends MY_Controller {
                                 $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                             } else {
                                 $add = array(
-                                    'Territory' => $emp['Territory'],
+                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
                                     'password' => $password,
                                     'created_at' => date('Y-m-d H:i:s'),
                                 );
@@ -82,7 +87,7 @@ class User extends MY_Controller {
                             }
                         } else {
                             $add = array(
-                                'Territory' => $emp['Territory'],
+                                'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
                                 'password' => $password,
                                 'created_at' => date('Y-m-d H:i:s'),
                             );

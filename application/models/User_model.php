@@ -10,7 +10,7 @@ class User_model extends CI_Model {
     public function authentication($username, $password) {
         $this->db->select('*');
         $this->db->from($this->table_name);
-        $this->db->where(array('Username' => $username, 'Password' => $password, 'Status' => '1'));
+        $this->db->where(array('Username' => $username, 'password' => $password, 'Status' => '1'));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -757,10 +757,11 @@ class User_model extends CI_Model {
         }
     }
 
+    //// Not a Territory Specific
     function password_status($id) {
         $this->db->select('*');
         $this->db->from('Employee_Master');
-        $this->db->where(array('Territory' => $id));
+        $this->db->where(array('VEEVA_Employee_ID' => $id));
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -773,12 +774,13 @@ class User_model extends CI_Model {
         return $query->row_array();
     }
 
+    //Dont Require Territory
     function password_count($id) {
         $current_date = date('Y-m-d H:i:s');
         $previous_date = date('Y-m-d H:i:s', strtotime('-1 hour'));
-        $this->db->select('COUNT(Territory) AS cnt');
+        $this->db->select('COUNT(VEEVA_Employee_ID) AS cnt');
         $this->db->from('password_count');
-        $where = "Territory = '$id' AND created_at BETWEEN '$previous_date' AND '$current_date' ";
+        $where = "VEEVA_Employee_ID = '$id' AND created_at BETWEEN '$previous_date' AND '$current_date' ";
         $this->db->where($where);
         $query = $this->db->get();
         //echo $this->db->last_query();
@@ -1210,8 +1212,9 @@ class User_model extends CI_Model {
         return $query;
     }
 
+    //Not Territory Specific
     public function lastFailedAttempt($VEEVA_Employee_ID) {
-        $sql = "SELECT * FROM password_count WHERE Territory = '$VEEVA_Employee_ID' ORDER BY created_at DESC LIMIT 1 ";
+        $sql = "SELECT * FROM password_count WHERE VEEVA_Employee_ID = '$VEEVA_Employee_ID' ORDER BY created_at DESC LIMIT 1 ";
         $query = $this->db->query($sql);
         return $query->row();
     }
@@ -1252,7 +1255,7 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-public function ASM_comment_rep($Territory,$PRODUCT_ID) {
+    public function ASM_comment_rep($Territory, $PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
                 `Territory`='$Territory' and `Product_Id`='$PRODUCT_ID' and  `Comment_type`='Activity_Reporting'";
