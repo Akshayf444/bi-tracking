@@ -104,6 +104,7 @@ class User extends MY_Controller {
                 $this->session->set_userdata('Reporting_Local_ID', $check['Reporting_Local_ID']);
                 $this->session->set_userdata('Reporting_To', $check['Reporting_To']);
                 $this->session->set_userdata('password_status', $check['password_status']);
+                $this->session->set_userdata('Territory', $check['Territory']);
 
                 $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
                 $add = array(

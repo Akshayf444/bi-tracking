@@ -17,7 +17,7 @@ class MY_Controller extends CI_Controller {
     public $Individual_Type;
     public $message;
     public $password_status;
-
+    public $Territory;
     function __construct() {
         parent::__construct();
         $this->VEEVA_Employee_ID = $this->session->userdata('VEEVA_Employee_ID');
@@ -30,6 +30,7 @@ class MY_Controller extends CI_Controller {
         $this->Full_Name = $this->session->userdata('Full_Name');
         $this->Product_Id = $this->session->userdata('Product_Id');
         $this->password_status = $this->session->userdata('password_status');
+        $this->Territory = $this->session->userdata('Territory');
 
         $this->nextMonth = date('n');
         $this->nextYear = date('Y');
