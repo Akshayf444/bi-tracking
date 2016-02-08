@@ -43,8 +43,8 @@ class User extends MY_Controller {
             $check = $this->User_model->authentication($username, $password);
             if (empty($check)) {
                 $emp = $this->User_model->employee_id($username);
-                if (isset($emp['VEEVA_Employee_ID'])) {
-                    $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
+                if (isset($emp['Territory'])) {
+                    $count = $this->User_model->password_count($emp['Territory']);
                     if ($count['cnt'] > 4) {
                         $data1 = array(
                             'Status' => 'locked',
@@ -53,7 +53,7 @@ class User extends MY_Controller {
                         $data['message'] = 'Your Account Has Been Locked';
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Your Account Has Been Locked', 'danger'));
                     } else {
-                        $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['VEEVA_Employee_ID']);
+                        $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['Territory']);
                         if (!empty($lastFailed_attempt)) {
                             $current_date = date('Y-m-d H:i:s');
                             $current_date = strtotime($current_date);
@@ -65,7 +65,7 @@ class User extends MY_Controller {
                                 );
                                 $this->User_model->update_status($username, $data1);
                                 $add = array(
-                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                    'Territory' => $emp['Territory'],
                                     'password' => $password,
                                     'created_at' => date('Y-m-d H:i:s'),
                                 );
@@ -73,7 +73,7 @@ class User extends MY_Controller {
                                 $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Username/password Incorrect', 'danger'));
                             } else {
                                 $add = array(
-                                    'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                    'Territory' => $emp['Territory'],
                                     'password' => $password,
                                     'created_at' => date('Y-m-d H:i:s'),
                                 );
@@ -82,7 +82,7 @@ class User extends MY_Controller {
                             }
                         } else {
                             $add = array(
-                                'VEEVA_Employee_ID' => $emp['VEEVA_Employee_ID'],
+                                'Territory' => $emp['Territory'],
                                 'password' => $password,
                                 'created_at' => date('Y-m-d H:i:s'),
                             );
@@ -144,7 +144,7 @@ class User extends MY_Controller {
             if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                 $data['tab1'] = "";
             } else {
-                $data['tab1'] = $this->User_model->generateTabs($this->VEEVA_Employee_ID, $this->Product_Id);
+                $data['tab1'] = $this->User_model->generateTabs($this->Territory, $this->Product_Id);
             }
             if ($this->input->post()) {
                 $this->Product_Id = $this->input->post('Product_Id');
@@ -163,23 +163,23 @@ class User extends MY_Controller {
             $year4 = date('Y', strtotime('-4 month'));
             $current_year = date('Y');
 
-            $data['month1'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month1, $year1);
-            $data['month2'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month2, $year2);
-            $data['month3'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month3, $year3);
-            $data['month4'] = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
+            $data['month1'] = $this->User_model->product_detail($this->Territory, $this->Product_Id, $month1, $year1);
+            $data['month2'] = $this->User_model->product_detail($this->Territory, $this->Product_Id, $month2, $year2);
+            $data['month3'] = $this->User_model->product_detail($this->Territory, $this->Product_Id, $month3, $year3);
+            $data['month4'] = $this->User_model->product_detail($this->Territory, $this->Product_Id, $month4, $year4);
 
-            $data['user1'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month1, $year1);
-            $data['user2'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month2, $year2);
-            $data['user3'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month3, $year3);
-            $data['user4'] = $this->User_model->product_detail_user($this->VEEVA_Employee_ID, $this->Product_Id, $month4, $year4);
-            $current_month_actual = $this->User_model->product_detail($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
-            $current_month_planned = $this->User_model->kpi($this->VEEVA_Employee_ID, $this->Product_Id, $current_month, $current_year);
+            $data['user1'] = $this->User_model->product_detail_user($this->Territory, $this->Product_Id, $month1, $year1);
+            $data['user2'] = $this->User_model->product_detail_user($this->Territory, $this->Product_Id, $month2, $year2);
+            $data['user3'] = $this->User_model->product_detail_user($this->Territory, $this->Product_Id, $month3, $year3);
+            $data['user4'] = $this->User_model->product_detail_user($this->Territory, $this->Product_Id, $month4, $year4);
+            $current_month_actual = $this->User_model->product_detail($this->Territory, $this->Product_Id, $current_month, $current_year);
+            $current_month_planned = $this->User_model->kpi($this->Territory, $this->Product_Id, $current_month, $current_year);
 
             if ($this->Product_Id > 0) {
-                $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+                $target = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
             }
-            $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
-            $activitya_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
+            $activity_planned = $this->User_model->activity_planned($this->Territory, $this->Product_Id);
+            $activitya_actual = $this->User_model->activity_actual($this->Territory, $this->Product_Id);
             if (isset($target['target']) && $target['target'] > 0) {
                 $data['kpi1'] = ($current_month_actual['Actual_Rx'] / $target['target']) * 100;
             } else {
@@ -191,16 +191,16 @@ class User extends MY_Controller {
                 $data['kpi2'] = 0;
             }
 
-            $activity_planned = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
-            $activity_actual = $this->User_model->activity_actual($this->VEEVA_Employee_ID, $this->Product_Id);
-            $prio_dr = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
+            $activity_planned = $this->User_model->activity_planned($this->Territory, $this->Product_Id);
+            $activity_actual = $this->User_model->activity_actual($this->Territory, $this->Product_Id);
+            $prio_dr = $this->User_model->prio_dr($this->Territory, $this->Product_Id);
             if ($activity_planned["activity_planned"] > 0) {
                 $data['tot'] = ($activity_actual['activity_actual'] / $activity_planned["activity_planned"]) * 100;
             } else {
                 $data['tot'] = 0;
             }
             if ($this->Product_Id > 0) {
-                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
                 $data['Actual'] = $this->User_model->Actual_Rx_Count();
             }
             $target = isset($data['show4']['target']) && $data['show4']['Status'] == 'Submitted' ? $data['show4']['target'] : 0;
@@ -216,7 +216,7 @@ class User extends MY_Controller {
 
             $data = array('title' => 'Main', 'content' => 'User/Main', 'view_data' => $data);
             $this->load->view('template2', $data);
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
+            $result = $this->Doctor_Model->getDoctor($this->Territory, $this->Individual_Type);
             $this->doctorIds = $this->Doctor_Model->generateDoctorId($result);
         } else {
             $this->logout();
@@ -233,7 +233,7 @@ class User extends MY_Controller {
         if ($this->Product_Id == 1) {
             $alertLabel = "Hospital";
         }
-        $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
+        $target = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
         $data['target'] = isset($target['target']) ? $target['target'] : 0;
 
 //        if ($this->input->post()) {
@@ -270,10 +270,10 @@ class User extends MY_Controller {
         $current_month = date('n');
         $year = date('Y');
         $year = '2015';
-        $data['Actual1'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_start, $year);
-        $data['Actual2'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_mid, $year);
-        $data['Actual3'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_between, $year);
-        $data['Actual4'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $month_ends, $year);
+        $data['Actual1'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('Territory'), $this->Product_Id, $month_start, $year);
+        $data['Actual2'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('Territory'), $this->Product_Id, $month_mid, $year);
+        $data['Actual3'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('Territory'), $this->Product_Id, $month_between, $year);
+        $data['Actual4'] = $this->User_model->Actual_Rx_Target_month($this->session->userdata('Territory'), $this->Product_Id, $month_ends, $year);
         $data['date'] = date('M', strtotime('+1 month'));
         $data['month_mid'] = date('M', strtotime('-4 month'));
         $data['month_start'] = date('M', strtotime('-3 month'));
@@ -294,17 +294,18 @@ class User extends MY_Controller {
 
         $messages = array();
         if ($this->is_logged_in()) {
-            $result = $this->Doctor_Model->getDoctor($this->VEEVA_Employee_ID, $this->Individual_Type);
+            $result = $this->Doctor_Model->getDoctor($this->Territory, $this->Individual_Type);
 
             if ($this->input->post()) {
                 $_POST['VEEVA_Employee_ID'] = $this->VEEVA_Employee_ID;
+                $_POST['Territory'] = $this->Territory;
                 $_POST['Product_id'] = $this->Product_Id;
                 $_POST['created_at'] = date('Y-m-d H:i:s');
                 $_POST['Status'] = $this->input->post('Status');
                 $_POST['Winability'] = $this->User_model->calcWinability($_POST['Win_Q1'], $_POST['Win_Q2'], $_POST['Win_Q3']);
 
 
-                $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['VEEVA_Employee_ID'], $_POST['Product_id']);
+                $check = $this->User_model->profiling_by_id($_POST['Doctor_id'], $_POST['Territory'], $_POST['Product_id']);
                 if (empty($check)) {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
@@ -348,11 +349,11 @@ class User extends MY_Controller {
                 } elseif ($check['Status'] == 'Draft') {
                     if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                         $_POST['Product_id'] = 4;
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
 
                         $_POST['Product_id'] = 6;
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
 
                         $field_array = array(
@@ -360,13 +361,13 @@ class User extends MY_Controller {
                             'Patient_Seen_month' => $_POST['Patient_Seen_month'],
                         );
 
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $field_array);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
                     } elseif ($this->Product_Id == 5) {
                         $_POST['Product_id'] = 5;
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 5, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
 
                         $field_array = array(
@@ -374,16 +375,16 @@ class User extends MY_Controller {
                             'Patient_Seen_month' => $_POST['Patient_Seen_month'],
                         );
 
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 6, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $field_array);
 
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => 4, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $field_array);
 
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
                     } else {
-                        $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
+                        $this->db->where(array('Territory' => $this->Territory, 'Product_id' => $this->Product_Id, 'Doctor_id' => $_POST['Doctor_id']));
                         $this->db->update('Profiling', $_POST);
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert($this->alertLabel . ' Profile Updated Successfully.', 'success'));
                         redirect('User/Profiling', 'refresh');
@@ -411,9 +412,9 @@ class User extends MY_Controller {
         }
         $messages = array();
         if ($this->is_logged_in()) {
-            $targetSet = $this->User_model->Rx_Target_month($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+            $targetSet = $this->User_model->Rx_Target_month($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
             if (!empty($targetSet)) {
-                $data['result'] = $this->User_model->getPlanning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+                $data['result'] = $this->User_model->getPlanning($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 // echo($data['doctorList']);
                 if ($this->input->post()) {
                     $currentPlanned = array_sum($this->input->post('value'));
@@ -432,6 +433,7 @@ class User extends MY_Controller {
                             'Year' => $this->nextYear,
                             'month' => $this->nextMonth,
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Territory' => $this->Territory,
                             'Product_Id' => $this->Product_Id,
                             'Doctor_Id' => $doc_id[$i],
                             'Planning_Status' => $this->input->post('Planning_Status')
@@ -459,7 +461,7 @@ class User extends MY_Controller {
                                 $doc['Approve_Status'] = $result->Approve_Status;
                             }
                             $doc['updated_at'] = date('Y-m-d H:i:s');
-                            $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
+                            $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                             $this->db->update('Rx_Planning', $doc);
                             array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Submitted') {
@@ -477,8 +479,8 @@ class User extends MY_Controller {
             }
 
             $current_month = $this->nextMonth;
-            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
-            $data['expected'] = $this->User_model->Expected_Rx($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
+            $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $current_month);
+            $data['expected'] = $this->User_model->Expected_Rx($this->Territory, $this->Product_Id, $this->nextMonth);
             $data = array('title' => 'Planning', 'content' => 'User/doctorList', 'backUrl' => 'User/PlanMenu', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -487,7 +489,7 @@ class User extends MY_Controller {
     }
 
     public function ActivityPlanning() {
-        $check_planning = $this->User_model->priority_check($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth);
+        $check_planning = $this->User_model->priority_check($this->Territory, $this->Product_Id, $this->nextMonth);
         if (!empty($check_planning)) {
             if ($this->Product_Id == 1) {
                 $this->alertLabel = "Hospital";
@@ -505,6 +507,7 @@ class User extends MY_Controller {
                             'Activity_Id' => $Activity[$i],
                             'Doctor_Id' => $docid[$i],
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Territory' => $this->Territory,
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
                             'Year' => $this->nextYear,
@@ -544,15 +547,15 @@ class User extends MY_Controller {
 
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Planning', $data2);
 
                                 $data2['Product_Id'] = 6;
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Planning', $data2);
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Updated Successfully.', 'success'));
                             } else {
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Planning', $data2);
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activity Updated Successfully.', 'success'));
                             }
@@ -575,9 +578,9 @@ class User extends MY_Controller {
 
     public function PlanMenu() {
         if ($this->is_logged_in()) {
-            $data['activity_planned'] = $this->User_model->activity_planned($this->VEEVA_Employee_ID, $this->Product_Id);
-            $data['prio_dr'] = $this->User_model->prio_dr($this->VEEVA_Employee_ID, $this->Product_Id);
-            $data['asm_comment'] = $this->User_model->ASM_comment($this->VEEVA_Employee_ID, $this->Product_Id);
+            $data['activity_planned'] = $this->User_model->activity_planned($this->Territory, $this->Product_Id);
+            $data['prio_dr'] = $this->User_model->prio_dr($this->Territory, $this->Product_Id);
+            $data['asm_comment'] = $this->User_model->ASM_comment($this->Territory, $this->Product_Id);
             $data = array('title' => 'Report', 'content' => 'User/PlanMenu', 'backUrl' => 'User/dashboard', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -613,7 +616,6 @@ class User extends MY_Controller {
         }
         $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
         $this->load->view('template2', $data);
-
     }
 
     public function Reporting() {
@@ -623,11 +625,11 @@ class User extends MY_Controller {
         }
         $messages = array();
         $current_month = date('n');
-        $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
+        $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $current_month);
         if ($this->is_logged_in()) {
-            $check_planning = $this->User_model->check_planning($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+            $check_planning = $this->User_model->check_planning($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
             if (!empty($check_planning)) {
-                $data['result'] = $this->User_model->getReporting($this->VEEVA_Employee_ID, $this->Product_Id, $this->nextMonth, $this->nextYear);
+                $data['result'] = $this->User_model->getReporting($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
                 if ($this->input->post()) {
                     for ($i = 0; $i < count($this->input->post('doc_id')); $i++) {
                         $value = $this->input->post('value');
@@ -639,6 +641,7 @@ class User extends MY_Controller {
                             'Year' => $this->nextYear,
                             'month' => $this->nextMonth,
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Territory' => $this->Territory,
                             'Product_Id' => $this->Product_Id,
                             'Doctor_Id' => $doc_id[$i],
                             'Status' => $this->input->post('Status'),
@@ -668,7 +671,7 @@ class User extends MY_Controller {
                                     $doc['Approve_Status'] = $result->Approve_Status;
                                 }
                                 $doc['updated_at'] = date('Y-m-d H:i:s');
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i], 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i], 'DATE_FORMAT(created_at,"%Y-%m-%d")' => date('Y-m-d')));
                                 if ($this->db->update('Rx_Actual', $doc)) {
                                     array_push($messages, $this->Master_Model->DisplayAlert('Reporting Data Updated Successfully.', 'success'));
                                 }
@@ -715,6 +718,7 @@ class User extends MY_Controller {
                 $result = $this->User_model->ActualPriorityExist($priority[$i]);
                 $data2 = array(
                     'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                    'Territory' => $this->Territory,
                     'Product_Id' => $this->Product_Id,
                     'month' => $this->nextMonth,
                     'Doctor_Id' => $priority[$i],
@@ -726,7 +730,7 @@ class User extends MY_Controller {
                     $this->db->insert('Actual_Doctor_Priority', $data2);
                     array_push($messages, $this->Master_Model->DisplayAlert($this->alertLabel . ' Priority Added .', 'success'));
                 } elseif ($result['Status'] == 'Draft') {
-                    $this->db->where(array('VEEVA_Employee_Id' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Doctor_Id' => $priority[$i]));
+                    $this->db->where(array('VEEVA_Employee_Id' => $this->Territory, 'Product_Id' => $this->Product_Id, 'month' => $this->nextMonth, 'Doctor_Id' => $priority[$i]));
                     $this->db->update('Actual_Doctor_Priority', $data2);
                     array_push($messages, $this->Master_Model->DisplayAlert($this->alertLabel . ' Priority Updated .', 'success'));
                 } elseif ($result['Status'] == 'Submitted') {
@@ -745,8 +749,8 @@ class User extends MY_Controller {
 
     public function ActivityReporting() {
         $Status = "Submitted";
-        $check = $this->User_model->Activity_reporting_check($this->VEEVA_Employee_ID, $this->Product_Id, $Status);
-         
+        $check = $this->User_model->Activity_reporting_check($this->Territory, $this->Product_Id, $Status);
+
         if (!empty($check)) {
             if ($this->Product_Id == 1) {
                 $this->alertLabel = "Hospital";
@@ -770,6 +774,7 @@ class User extends MY_Controller {
                             'Activity_Id' => $Activity[$i],
                             'Doctor_Id' => $docid[$i],
                             'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,
+                            'Territory' => $this->Territory,
                             'Product_Id' => $this->Product_Id,
                             'Status' => $this->input->post('Status'),
                             'Year' => $this->nextYear,
@@ -817,14 +822,14 @@ class User extends MY_Controller {
 
                             if ($this->Product_Id == 4 || $this->Product_Id == 6) {
                                 $data2['Product_Id'] = 4;
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => 4, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Reporting', $data2);
                                 $data2['Product_Id'] = 6;
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => 6, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Reporting', $data2);
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                             } else {
-                                $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
+                                $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $docid[$i], 'Year' => $this->nextYear, 'month' => $this->nextMonth));
                                 $this->db->update('Activity_Reporting', $data2);
                                 array_push($messages, $this->Master_Model->DisplayAlert('Activities Updated Successfully.', 'success'));
                             }
@@ -842,14 +847,14 @@ class User extends MY_Controller {
         } else {
             $data['doctorList'] = "Activity Planning Not Submitted";
         }
-        $data['asm_comment']= $this->User_model->ASM_comment_rep($this->VEEVA_Employee_ID, $this->Product_Id);
+        $data['asm_comment'] = $this->User_model->ASM_comment_rep($this->Territory, $this->Product_Id);
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
 
     public function getProfilingData() {
         $Doctor_Id = $this->input->post('Doctor_Id');
-        $ProfilingDetails = $this->User_model->profiling_by_id($Doctor_Id, $this->VEEVA_Employee_ID, $this->Product_Id);
+        $ProfilingDetails = $this->User_model->profiling_by_id($Doctor_Id, $this->Territory, $this->Product_Id);
 
         if (!empty($ProfilingDetails)) {
             echo json_encode($ProfilingDetails);
@@ -878,13 +883,13 @@ class User extends MY_Controller {
                     $currentDependancy = 0;
                 }
 
-                $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'month' => $this->nextMonth, 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
+                $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Territory' => $this->Territory, 'month' => $this->nextMonth, 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
 
                 if (empty($result)) {
                     $this->db->insert('Doctor_Priority', $data2);
                     $this->message = $this->Master_Model->DisplayAlert('Doctor Priority ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success');
                 } else {
-                    $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_id' => $this->Product_Id, 'Doctor_id' => $doc_id[$i]));
+                    $this->db->where(array('Territory' => $this->Territory, 'Product_id' => $this->Product_Id, 'Doctor_id' => $doc_id[$i]));
                     $this->db->update('Doctor_Priority', $data2);
                     $this->message = $this->Master_Model->DisplayAlert('Doctor Priority ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success');
                 }
@@ -900,10 +905,10 @@ class User extends MY_Controller {
                 $date = $this->input->post('date');
                 $date1 = date('m-d-y', strtotime($date));
                 $mobile = array('Mobile' => $number, 'DOB' => $date1);
-                $mob = $this->User_model->Update_mobile($this->VEEVA_Employee_ID, $mobile);
+                $mob = $this->User_model->Update_mobile($this->Territory, $mobile);
                 $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Update Successfully.', 'success'));
             }
-            $data['detail'] = $this->User_model->All_data($this->VEEVA_Employee_ID);
+            $data['detail'] = $this->User_model->All_data($this->Territory);
             $data = array('title' => 'Profile Update', 'content' => 'User/Profile_Update', 'view_data' => $data, 'backUrl' => 'User/dashboard');
             $this->load->view('template2', $data);
         } else {
@@ -949,7 +954,7 @@ class User extends MY_Controller {
     public function BDM_Report() {
         if ($this->is_logged_in()) {
 
-            $data['detail'] = $this->User_model->bdm_doctor_rx($this->VEEVA_Employee_ID, $this->nextMonth, $this->nextYear);
+            $data['detail'] = $this->User_model->bdm_doctor_rx($this->Territory, $this->nextMonth, $this->nextYear);
             $data = array('title' => 'Profile Update', 'content' => 'User/BDM_Report', 'view_data' => $data);
             $this->load->view('template2', $data);
         } else {
@@ -1018,14 +1023,14 @@ EMAILBODY;
         if ($this->input->get('e')) {
             $id = $this->input->get('e');
             $id1 = base64_decode($id);
-            $data['VEEVA_Employee_ID'] = $id1;
+            $data['Territory'] = $id1;
         }
 
         if ($this->input->post()) {
             $new = $this->input->post('password');
-            $id1 = $this->input->post('VEEVA_Employee_ID');
+            $id1 = $this->input->post('Territory');
             $data2 = array(
-                'VEEVA_Employee_ID' => $id1,
+                'Territory' => $id1,
                 'password' => $new);
             $this->User_model->Update_password($id1, $data2);
 
