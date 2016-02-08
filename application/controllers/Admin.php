@@ -98,13 +98,15 @@ class Admin extends CI_Controller {
         $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => ' Employeee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
-    public function  emp_Doc() {
+
+    public function emp_Doc() {
         $id = $_GET['id'];
         $data['show'] = $this->admin_model->emp_doc($id);
-       
+
         $data = array('title' => 'Doctor List', 'content' => 'admin/emp_doc', 'page_title' => 'Doctor LIST', 'view_data' => $data);
-      $this->load->view('template3', $data);
+        $this->load->view('template3', $data);
     }
+
     public function bdm_wise() {
         $data['show'] = $this->admin_model->BDM_show();
 
