@@ -273,11 +273,12 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
+    ///Not Territory Specific
     public function getActivityDoctor2($id, $product_id) {
         $this->db->select('dm.*,ap.*');
         $this->db->from('Doctor_Master dm', 'dp.Doctor_Id = dm.Account_ID');
         $this->db->join('Activity_Planning ap', 'ap.Doctor_Id = dm.Account_ID AND ap.month = ' . $this->nextMonth . ' AND Year = ' . $this->nextYear . ' AND ap.Product_Id = ' . $this->Product_Id, 'left');
-        $where = "ap.Territory ='$id' ";
+        $where = "ap.VEEVA_Employee_ID ='$id' ";
         $this->db->where($where);
         $this->db->group_by('ap.Doctor_Id');
         $query = $this->db->get();
@@ -361,12 +362,13 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-    function getPlanningAproval($Territory, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
+    ///Not Territory SPecific
+    function getPlanningAproval($VEEVA_Employee_ID, $Product_id = 0, $month = 0, $Year = '2016', $where = 'false', $doctor_ids = array()) {
         $this->db->select('rxp.*,dm.*');
         $this->db->from('Employee_Doc ed');
         $this->db->join('Doctor_Master dm', 'dm.Account_ID = ed.VEEVA_Account_ID', 'INNER');
-        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.Territory = "' . $Territory . '"', 'INNER');
-        $where = "ed.Territory ='$Territory' AND dm.Individual_Type = '$this->Individual_Type'";
+        $this->db->join('Rx_Planning rxp', 'dm.Account_ID = rxp.Doctor_Id AND rxp.Product_Id = ' . $Product_id . ' AND rxp.Year = "' . $Year . '" AND rxp.month = "' . $month . '" AND rxp.VEEVA_Employee_ID = "' . $VEEVA_Employee_ID . '"', 'INNER');
+        $where = "ed.VEEVA_Employee_ID ='$VEEVA_Employee_ID' AND dm.Individual_Type = '$this->Individual_Type'";
         $this->db->where($where);
         $this->db->group_by('dm.Account_ID');
         $this->db->order_by('rxp.Planned_Rx DESC');
@@ -1250,12 +1252,13 @@ class User_model extends CI_Model {
         return $query->row();
     }
 
-    public function ASM_comment($Territory, $PRODUCT_ID) {
+    ///Not Territory Specific
+    public function ASM_comment($VEEVA_Employee_ID, $PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
-                `Territory`='$Territory' and `Product_Id`='$PRODUCT_ID' and `Comment_type`='Planning' or `Comment_type`='Activity_Planning'";
+                `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID' and `Comment_type`='Planning' or  `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID' and `Comment_type`='Activity_Planning'";
         $query = $this->db->query($sql);
-
+        //echo $this->db->last_query();
         return $query->result();
     }
 

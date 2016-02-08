@@ -224,7 +224,7 @@ class ASM extends MY_Controller {
         redirect('ASM/target', 'refresh');
     }
 
-    ///TESTED
+    ///TESTED ///Not Tested For Territorywise
     public function ApprovePlanning() {
         if ($this->input->post()) {
             $approveCount = 0;
