@@ -15,22 +15,11 @@ class User extends MY_Controller {
         $this->load->model('Master_Model');
         $this->load->model('Doctor_Model');
         $this->load->library('form_validation');
-        $this->calcPlanning();
+        $this->nextMonth = date('m');
+        $this->nextYear = date('Y');
     }
 
     function calcPlanning() {
-        $this->db->select('*');
-        $this->db->from('Setting');
-        $this->db->where('Current_Month', date('n'));
-        $query = $this->db->get();
-        $result = $query->result();
-        if (!empty($result)) {
-            foreach ($result as $value) {
-                $this->nextMonth = $value->Planned_For_Month;
-                $this->nextYear = $value->Planned_For_Year;
-            }
-        }
-
         $this->nextMonth = date('m');
         $this->nextYear = date('Y');
     }
@@ -45,7 +34,7 @@ class User extends MY_Controller {
             if (empty($check)) {
                 $emp = $this->User_model->employee_id($username);
                 if (isset($emp['VEEVA_Employee_ID'])) {
-                    
+
                     ///Count Last 5 Passwords  Employee Specific
                     $count = $this->User_model->password_count($emp['VEEVA_Employee_ID']);
                     if ($count['cnt'] > 4) {
@@ -56,7 +45,7 @@ class User extends MY_Controller {
                         $data['message'] = 'Your Account Has Been Locked';
                         $this->session->set_userdata('message', $this->Master_Model->DisplayAlert('Your Account Has Been Locked', 'danger'));
                     } else {
-                        
+
                         ///Not A Territory Specific
                         $lastFailed_attempt = $this->User_model->lastFailedAttempt($emp['VEEVA_Employee_ID']);
                         if (!empty($lastFailed_attempt)) {
@@ -181,7 +170,7 @@ class User extends MY_Controller {
             $current_month_planned = $this->User_model->kpi($this->Territory, $this->Product_Id, $current_month, $current_year);
 
             if ($this->Product_Id > 0) {
-                $target = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
+                $target = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
             }
             $activity_planned = $this->User_model->activity_planned($this->Territory, $this->Product_Id);
             $activitya_actual = $this->User_model->activity_actual($this->Territory, $this->Product_Id);
@@ -205,7 +194,7 @@ class User extends MY_Controller {
                 $data['tot'] = 0;
             }
             if ($this->Product_Id > 0) {
-                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $this->nextMonth);
+                $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $this->nextMonth);
                 $data['Actual'] = $this->User_model->Actual_Rx_Count();
             }
             $target = isset($data['show4']['target']) && $data['show4']['Status'] == 'Submitted' ? $data['show4']['target'] : 0;
@@ -450,7 +439,7 @@ class User extends MY_Controller {
                                 $doc['Approve_Status'] = 'SFA';
                             }
                             if ($this->User_model->Save_Planning($doc)) {
-                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
 
@@ -468,9 +457,9 @@ class User extends MY_Controller {
                             $doc['updated_at'] = date('Y-m-d H:i:s');
                             $this->db->where(array('Territory' => $this->Territory, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                             $this->db->update('Rx_Planning', $doc);
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Submitted') {
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
                         }
                     }
                     if (!empty($messages)) {
@@ -630,7 +619,7 @@ class User extends MY_Controller {
         }
         $messages = array();
         $current_month = date('n');
-        $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('Territory'), $this->Product_Id, $current_month);
+        $data['show4'] = $this->User_model->Rx_Target_month2($this->session->userdata('VEEVA_Employee_ID'), $this->Product_Id, $current_month);
         if ($this->is_logged_in()) {
             $check_planning = $this->User_model->check_planning($this->Territory, $this->Product_Id, $this->nextMonth, $this->nextYear);
             if (!empty($check_planning)) {
@@ -888,7 +877,7 @@ class User extends MY_Controller {
                     $currentDependancy = 0;
                 }
 
-                $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID,'Territory' => $this->Territory, 'month' => $this->nextMonth, 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
+                $data2 = array('Delta' => $value[$i] - $month3rx, 'Dependancy' => $currentDependancy, 'Doctor_Id' => $doc_id[$i], 'VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Territory' => $this->Territory, 'month' => $this->nextMonth, 'Product_Id' => $this->Product_Id, 'Planned_Rx' => $value[$i]);
 
                 if (empty($result)) {
                     $this->db->insert('Doctor_Priority', $data2);

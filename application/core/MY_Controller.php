@@ -32,7 +32,7 @@ class MY_Controller extends CI_Controller {
         $this->password_status = $this->session->userdata('password_status');
         $this->Territory = $this->session->userdata('Territory');
 
-        $this->nextMonth = date('n');
+        $this->nextMonth = date('m');
         $this->nextYear = date('Y');
         if ($this->Product_Id == 1) {
             $this->Individual_Type = 'Hospital';
