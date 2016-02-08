@@ -158,8 +158,10 @@ class ASM extends MY_Controller {
             $target1 = $this->input->post('target1');
             $target2 = $this->input->post('target2');
             $target3 = $this->input->post('target3');
+            $Status = $this->input->post('Status');
+            //var_dump($this->input->post('Status'));
             for ($i = 0; $i < count($this->input->post('VEEVA_Employee_ID')); $i++) {
-                $Status = $this->input->post('Status');
+
 
                 if ($this->Division == 'Diabetes') {
                     $product_ids = array(4, 5, 6);
@@ -172,7 +174,7 @@ class ASM extends MY_Controller {
                             'Month' => $this->nextMonth,
                             'Year' => $this->nextYear,
                             'created_at' => date('Y-m-d H:i:s'),
-                            'Status' => $Status,
+                            'Status' => $this->input->post('Status'),
                         );
 
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);
@@ -199,7 +201,7 @@ class ASM extends MY_Controller {
                             'Month' => $this->nextMonth,
                             'Year' => $this->nextYear,
                             'created_at' => date('Y-m-d H:i:s'),
-                            'Status' => $Status[$i],
+                            'Status' => $Status,
                         );
 
                         $check = $this->User_model->Set_Target_by_id($VEEVA_Employee_ID[$i], $id, $this->nextMonth);

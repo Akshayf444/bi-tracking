@@ -100,7 +100,8 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                 <table class=" table" style="margin-left: -87px;">
                     <tr>
 
-                        <th  style="text-align:right"><?php
+                        <th  style="text-align:right">
+                            <?php
                             if ($this->Product_Id == '1') {
 
                                 echo "Actilyse";
@@ -115,11 +116,12 @@ if ($this->Product_Id == '-1' || $this->Product_Id == '') {
                             } elseif ($this->Product_Id == '6') {
                                 echo "Trajenta duo";
                             }
-                            ?></th>
-                        <th  style="text-align:center">Sep</th>
-                        <th  style="text-align:center">Oct</th>
-                        <th  style="text-align:center">Nov</th>
-                        <th>Dec</th>
+                            ?>
+                        </th>
+                        <th  style="text-align:center"><?php echo date('M',strtotime('-4 month'));?></th>
+                        <th  style="text-align:center"><?php echo date('M',strtotime('-3 month'));?></th>
+                        <th  style="text-align:center"><?php echo date('M',strtotime('-2 month'));?></th>
+                        <th><?php echo date('M',strtotime('-1 month'));?></th>
                     </tr>
 
                     <tr>

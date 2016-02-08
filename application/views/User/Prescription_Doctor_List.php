@@ -191,8 +191,7 @@
                                 <?php if ($this->Product_Id == 1) { ?>
                                     <td> <input name = "value[]" type = "number" step="0.5" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
                                 <?php } else { ?>
-                                    <td> <input name = "value[]" type = "number" class="val" min="0" value = "<?php echo $doctor->Actual_Rx2 ?>"/></td>
-
+                                    <td> <input name = "value[]" type = "number" class="val" min="0" value = "<?php echo (int)$doctor->Actual_Rx2 ?>"/></td>
                                 <?php } ?>    
                             </tr>
                             <?php

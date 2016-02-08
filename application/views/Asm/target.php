@@ -21,10 +21,10 @@
 
                 <?php
                 $total1 = 0;
-                    $total2 = 0;
-                    $total3 = 0;
+                $total2 = 0;
+                $total3 = 0;
                 foreach ($table as $tab) {
-                
+
                     if ($this->Division == 'Diabetes') {
                         $result = $this->asm_model->ASM_Assign_Target($tab->VEEVA_Employee_ID, 4, 5, 6);
                     } else {
@@ -57,18 +57,16 @@
                                     $target3 = $r->target;
                                 }
                             }
-
-                            
                         }
                         $total1 += $target1;
-                            $total2 += $target2;
-                            $total3 += $target3;
+                        $total2 += $target2;
+                        $total3 += $target3;
                         ?>
 
                         <td><input type="text" name="target1[]" value="<?php echo $target1 ?>"></td>
                         <td><input type="text" name="target2[]" value="<?php echo $target2 ?>"></td>
                         <td><input type="text" name="target3[]" value="<?php echo $target3 ?>"></td>
-
+                        <input type="hidden" id="Status" name="Status" value="Draft">
                     </tr>
 
                 <?php } ?>
@@ -77,7 +75,7 @@
             </table>
         </div>
         <div class="panel-footer">
-            <input type="hidden" id="Status" name="Status" value="Draft">
+
             <input type="button"   class="btn btn-success" value="Assign" data-toggle="modal" data-target="#myModal">
             <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
@@ -141,7 +139,7 @@
     });
 
     $("#Assign").click(function () {
-
+        $("Status").val('Submitted');
     });
 </script>
 
