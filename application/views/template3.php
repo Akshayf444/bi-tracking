@@ -129,11 +129,12 @@
  
               </a>
             </li>
-<!--             <li>
+
+            <li>
            <a href="<?php echo site_url('Admin/profile_view'); ?>">
              <i class="fa fa-book"></i> <span>Control Access</span> 
               </a>
-            </li>-->
+            </li>
              <li>
            <a href="<?php echo site_url('Admin/unlocked_employee'); ?>">
              <i class="fa fa-lock"></i> <span>Blocked Accounts</span> 
@@ -142,6 +143,16 @@
              <li>
            <a href="<?php echo site_url('Admin/territory_view'); ?>">
              <i class="fa fa-eye"></i> <span>Territory</span> 
+              </a>
+            </li>
+             <li>
+           <a href="<?php echo site_url('Admin/asm_target'); ?>">
+             <i class="fa fa-eye"></i> <span>Target List</span> 
+              </a>
+            </li>
+            <li>
+            <a href="<?php echo site_url('Admin/login_history'); ?>">
+             <i class="fa fa-eye"></i> <span>Login History</span> 
               </a>
             </li>
             

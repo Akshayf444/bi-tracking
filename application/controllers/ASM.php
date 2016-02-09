@@ -645,5 +645,5 @@ class ASM extends MY_Controller {
             $this->logout();
         }
     }
-
+  
 }
