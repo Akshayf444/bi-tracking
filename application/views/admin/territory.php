@@ -28,15 +28,16 @@
 </div>
 <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
     <div class="table-responsive">
-    <table class="table table-bordered table-hover ">
-      <tr>
+    <table class="table table-bordered table-hover " id="datatable">
+        <thead>
       <tr style="background-color: #428BCA">
           <th> S.NO</th>
                     <th>Territory</th>
                     <th>Action</th>
                    
                 </tr>
-                <tr>
+        </thead>
+        <tbody>
                     <?php
                     if (!empty($show)) {
                         foreach ($show as $row) :
@@ -48,7 +49,7 @@
                                 <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/terr_del?id=') . $row->id; ?>';"></a> 
                                 <a class="fa fa-pencil " onclick="window.location = '<?php  echo site_url('admin/update_terr?id=') . $row->id; ?>';"></a> </td>
                             
-                            
+                            </tr>
                             
                             
                             
@@ -56,8 +57,8 @@
                             endforeach;
                         }
                         ?>
-                </tr>
-
+                
+        </tbody>
         
            
               
@@ -65,4 +66,20 @@
         </table>
     </div>
 </div>
-     
+     <script>
+
+                      
+                   var oTable = $('#datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false,
+            "info": false,
+            "columnDefs": [
+                {
+                
+                    "visible": false
+                }
+            ]
+        });
+      
+                       
+</script>

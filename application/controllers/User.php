@@ -965,7 +965,7 @@ class User extends MY_Controller {
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
-            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
+            $link = "http://localhost/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
 
             $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 

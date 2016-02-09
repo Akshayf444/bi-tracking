@@ -441,10 +441,120 @@ GROUP BY em.`VEEVA_Employee_ID`";
         $query = $this->db->query($sql);
         return $query->result();
     }
- public function emp_doc($id) {
-        $sql = "select DM.Account_Name as Name,DM.Specialty from Doctor_MASTER DM  LEFT JOIN Employee_Doc ED ON DM.Account_ID=ED.VEEVA_Account_ID where Territory ='$id' ";
+
+    public function emp_doc($id) {
+        $sql = "select DM.Account_Name as Name,DM.Specialty from Doctor_Master DM  LEFT JOIN Employee_Doc ED ON DM.Account_ID=ED.VEEVA_Account_ID where Territory ='$id' ";
 
         $query = $this->db->query($sql);
         return $query->result();
-}
+    }
+
+    public function reset_target($VEEVA_Employee_ID, $data) {
+        $query = $this->db->where('VEEVA_Employee_ID', $VEEVA_Employee_ID);
+        $query = $this->db->update('Rx_Target', $data);
+        return $query;
+    }
+
+    public function target_view() {
+        $sql = "Select * from Employee_Master Where Profile='ASM'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function Reporting_view() {
+        $sql = "Select * from Employee_Master Where  Reporting_VEEVA_ID=''";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function target_by_bdm() {
+        $sql = "Select * from Rx_Target Where Designation='ASM'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function ASm_view($VEEVA_Employee_ID) {
+        $sql = "SELECT em.Division, em.`Full_Name`,em.`VEEVA_Employee_ID`FROM `Employee_Master` em
+            WHERE `Reporting_VEEVA_ID`= '$VEEVA_Employee_ID'";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function ASM_division($VEEVA_Employee_ID) {
+        $sql = "SELECT em.`Division` as division FROM `Employee_Master` em
+                WHERE em.`VEEVA_Employee_ID`='$VEEVA_Employee_ID'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function ASM_Assign_Target($VEEVA_Employee_ID, $product1, $product2, $product3) {
+        $sql = " (SELECT 
+            em.`Division`,
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                      rt.`Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product1 
+                          AND MONTH = '$this->nextMonth' 
+                          AND YEAR = '$this->nextYear' 
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`) 
+                      UNION
+                      ALL 
+                      (SELECT 
+                       em.`Division`,
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                         rt.`Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product2 
+                          AND MONTH = '$this->nextMonth' 
+                          AND YEAR = '$this->nextYear' 
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`) 
+                      UNION
+                      ALL 
+                      (SELECT 
+                       em.`Division`,
+                        em.`Full_Name`,
+                        em.`VEEVA_Employee_ID`,
+                        rt.`target`,
+                         rt.`Product_Id` 
+                      FROM
+                        `Employee_Master` em 
+                        LEFT JOIN `Rx_Target` rt 
+                          ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                          AND `Product_id` = $product3
+                            AND MONTH = '$this->nextMonth' 
+                          AND YEAR = '$this->nextYear' 
+
+                      WHERE em.`VEEVA_Employee_ID` = '$VEEVA_Employee_ID' 
+                      GROUP BY em.`VEEVA_Employee_ID`)";
+
+        $query = $this->db->query($sql);
+//        echo $this->db->last_query() . "<br/>";
+        return $query->result();
+    }
+
+    public function login_history() {
+        $sql = "select em.Full_Name,lh.VEEVA_Employee_ID AS id,count(lh.VEEVA_Employee_ID) as count from Employee_Master em left join Login_History lh  ON em.`VEEVA_Employee_ID` = lh.`VEEVA_Employee_ID` GROUP BY lh.`VEEVA_Employee_ID` ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function login_view($id) {
+        $sql = "select * FROM Login_History WHERE VEEVA_Employee_ID ='$id' ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
 }

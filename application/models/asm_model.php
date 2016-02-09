@@ -47,7 +47,7 @@ class asm_model extends CI_Model {
             LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth'  AND `rt`.`Year` = '$this->nextYear' AND `rt`.`Product_Id` = '$product_id' "
                 . " WHERE   rt.Approve_Status = 'SFA'  OR rt.Approve_Status = 'Un-Approved' GROUP BY rt.Doctor_Id  ORDER BY Actual_Rx DESC";
         $query = $this->db->query($sql);
-        echo $sql;
+     
         return $query->result();
     }
 
