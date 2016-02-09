@@ -1017,12 +1017,12 @@ EMAILBODY;
         if ($this->input->get('e')) {
             $id = $this->input->get('e');
             $id1 = base64_decode($id);
-            $data['Territory'] = $id1;
+            $data['VEEVA_Employee_ID'] = $id1;
         }
 
         if ($this->input->post()) {
             $new = $this->input->post('password');
-            $id1 = $this->input->post('Territory');
+            $id1 = $this->input->post('VEEVA_Employee_ID');
             $data2 = array(
                 'Territory' => $id1,
                 'password' => $new);

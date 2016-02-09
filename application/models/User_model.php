@@ -1089,8 +1089,9 @@ class User_model extends CI_Model {
         return $this->db->update($this->table_name, $data);
     }
 
-    function Update_password($Territory, $data) {
-        $this->db->where(array('Territory' => $Territory));
+    //Not Territory Specific
+    function Update_password($VEEVA_Employee_ID, $data) {
+        $this->db->where(array('VEEVA_Employee_ID' => $VEEVA_Employee_ID));
         return $this->db->update($this->table_name, $data);
     }
 
