@@ -46,7 +46,6 @@
 
 <script>
     $(function () {
-
         function blinker() {
             $('.helpline').fadeOut(500);
             $('.helpline').fadeIn(500);
