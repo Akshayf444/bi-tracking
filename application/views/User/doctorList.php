@@ -102,7 +102,6 @@ echo form_open('User/Planning', $attributes);
                         <tr>
                             <th>
                                 <?php
-
                                 if ($this->Product_Id == 1) {
                                     $vials = "Vials";
                                     $hospital = "Hospital";
@@ -226,13 +225,12 @@ echo form_open('User/Planning', $attributes);
             <input type="hidden" id="Button_click_status" name="Button_click_status" value="Save">
         </div>
         <?php if (isset($result) && !empty($result)) { ?>
-            <div class="panel-footer">
-
-                <button type="submit" id="Save" class="btn btn-primary">Save</button>
+            <div class="panel-footer">                
                 <?php if ($allApproved == TRUE) { ?>
                     <button type="button" id="Priority" class="btn btn-danger">Prioritize for activities</button>  
                     <button type="submit" id="Submit" class="btn btn-success">Submit</button>
                 <?php } else { ?>
+                    <button type="submit" id="Save" class="btn btn-primary">Save</button>
                     <button type="submit" id="Approve" class="btn btn-info">Save For Approval</button>
                 <?php } ?>
             </div>

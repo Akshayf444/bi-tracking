@@ -50,7 +50,6 @@
         <div class="panel panel-default"> 
             <div class="panel-heading"> Achievement Status  </div>
             <div class="panel-body">
-
                 <ul align="center" class="nav nav-tabs ">
                     <?php
                     if (!empty($productlist)) {
@@ -65,7 +64,6 @@
                     }
                     ?>
                 </ul>
-
                 <div class="tab-content">
                     <?php
                     if (!empty($productlist)) {
@@ -332,7 +330,6 @@
                         }
                     }
                     ?>
-
                 </div>
             </div>
         </div>  
