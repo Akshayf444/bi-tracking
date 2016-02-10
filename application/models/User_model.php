@@ -1252,7 +1252,7 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-public function ASM_comment_rep($VEEVA_Employee_ID,$PRODUCT_ID) {
+    public function ASM_comment_rep($VEEVA_Employee_ID, $PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
                 `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID' and  `Comment_type`='Activity_Reporting'";
