@@ -1,71 +1,71 @@
-
+<script src="<?php echo asset_url() ?>js/excellentexport.min.js" type="text/javascript"></script>
+<div class="col-lg-12">
+        <a download="Login_history.xls" class="btn btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'datatable', 'Sheeting');">Export to Excel</a>
+    </div>
 <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
     <div class="table-responsive">
         <table class="table table-bordered table-hover " id="datatable">
             <thead>
-      <tr style="background-color: #428BCA">
+                <tr style="background-color: #428BCA">
+                    <th>VEEVA_Employee_ID</th>
                     <th>Full Name</th>
-                    <th> NO Of Login</th>
+                    <th>Zone</th>
+                    <th>Division </th>
+                    <th>Profile</th>
+                    <th>Territory</th>
+                   
 
-                    
                 </tr>
             </thead>
             <tbody>
-                    <?php
-                    if (!empty($show)) {
-                        foreach ($show as $row) :
-                            ?><tr>  
-                            <td><?php echo $row->Full_Name; ?></td>  
-                            <td> <button class="btn btn-xs btn-info" type="button"  id=" <?php echo $row->id ?>" onclick="view(this.id)"><?Php echo $row->count ;?></button> </td>  
-                           </tr>
-                                <?php
-                            endforeach;
-                        }
-                        ?>
+                <?php
+                if (!empty($show)) {
+                    foreach ($show as $row) :
+                        $view = $this->admin_model->login_view($row->id);
+                        ?><tr>  
+                            <td><?php echo $row->id; ?></td>  
+                            <td><?php echo $row->Full_Name; ?></td>
+                            <td><?php echo $row->Zone; ?></td>
+                            <td><?php echo $row->Division ; ?></td>
+                            <td><?php echo $row->Profile; ?></td>
+                       <td><?php echo $row->Territory; ?></td>
+<!--                            <td> <a href="#" data-toggle="popover"  id=" <?php echo $row->id ?>"  data-content=" <?php
+//                                foreach ($view as $rs) :
+//                                    echo date('d-M-Y g:i:a', strtotime($rs->created_at)) . ',';
+//
+//
+//                                endforeach;
+                                ?>"><?Php // echo $row->COUNT; ?></a></td>-->
+                                
+                                
+
+                        </tr>
+                        <?php
+                    endforeach;
+                }
+                ?>
             </tbody>
 
 
         </table>
     </div>
 </div>
-
-<div id="modalpopup"></div>
-  
-            
+ 
 <script>
-    function view(id) {
-        var login_id = id;
-       
-        $.ajax({
-            type: 'POST',
-            data: {login_id: login_id, type: 'view'},
-            url: <?php echo base_url+"index.php?/admin/login_view"?>,
-            
-            success: function (data) {
-                
-                $("#modalpopup").html(data);
-                 
-            }
-           
+    $(document).ready(function () {
+        var oTable = $('#datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false,
+            "info": false,
+            "columnDefs": [
+                {
+                    "visible": false
+                }
+            ]
         });
-    }
-
-
-
-</script>
+    });</script>
 <script>
-                                $(document).ready(function () {
-                                var oTable = $('#datatable').dataTable({
-                                "bPaginate": false,
-                                        "bInfo": false,
-                                        "info": false,
-                                        "columnDefs": [
-                                        {
-                                        
-                                                "visible": false
-                                        }
-                                        ]
-                                });
-
-                                });
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
 </script>
