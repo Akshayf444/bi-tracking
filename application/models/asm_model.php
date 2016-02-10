@@ -168,7 +168,7 @@ class asm_model extends CI_Model {
                 ) AS SFACount 
               FROM
                 `Employee_Master` em 
-                INNER JOIN Employee_Doc ed
+                LEFT JOIN Employee_Doc ed
                    ON ed.`VEEVA_Employee_ID` = em.`VEEVA_Employee_ID`
                 LEFT JOIN `Rx_Planning` rp 
                   ON rp.`Doctor_Id` = ed.`VEEVA_Account_ID` 
@@ -213,7 +213,7 @@ class asm_model extends CI_Model {
                 ) AS SFACount 
               FROM
                 `Employee_Master` em 
-                INNER JOIN Employee_Doc ed
+                LEFT JOIN Employee_Doc ed
                    ON ed.`VEEVA_Employee_ID` = em.`VEEVA_Employee_ID`
                 LEFT JOIN `Activity_Planning` rp 
                   ON rp.`Doctor_Id` = ed.`VEEVA_Account_ID` 
@@ -257,7 +257,7 @@ class asm_model extends CI_Model {
                 ) AS SFACount 
               FROM
                 `Employee_Master` em 
-                INNER JOIN Employee_Doc ed
+                LEFT JOIN Employee_Doc ed
                    ON ed.`VEEVA_Employee_ID` = em.`VEEVA_Employee_ID`
                 LEFT JOIN `Activity_Reporting` rp 
                   ON rp.`Doctor_Id` = ed.`VEEVA_Account_ID` 
