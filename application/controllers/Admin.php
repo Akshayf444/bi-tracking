@@ -53,7 +53,7 @@ class Admin extends CI_Controller {
         $data['Planning_Count'] = $this->admin_model->count_planned();
         $division = 'Diabetes';
         $division1 = 'ThromBI';
-//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '12');
+//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
         $data['count_achive_month'] = $this->admin_model->count_achive_month();
         $data['plan_month'] = $this->admin_model->count_planned_month();
 
@@ -862,16 +862,10 @@ class Admin extends CI_Controller {
     }
 
     public function login_history() {
+
         $data['show'] = $this->admin_model->login_history();
         $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
-    public  function login_view (){
-         $id = $_GET['id'];
-       $data['show'] = $this->admin_model->login_view($id);
-        $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
-//        $this->load->view('template3', $data);
-    } 
-    }
 
-
+}

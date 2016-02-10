@@ -15,7 +15,10 @@
             <span class="info-box-icon bg-red"><i class="fa fa-medkit"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Target</span>
-                <span class="info-box-number"><?php echo $Target_Count['TOTAL']; ?></span>
+                <span class="info-box-number"><?php 
+                
+                var_dump($Target_Count);
+                echo $Target_Count['TOTAL']; ?></span>
             </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
     </div><!-- /.col -->
