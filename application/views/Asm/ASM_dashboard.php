@@ -142,7 +142,6 @@
                                     <div class="demo"  >        
 
                                         <input class="knob" id="kp3" readonly="" style="display: none" data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
-
                                         if ($target > 0) {
                                             echo ($actual / $target) * 100;
                                         } else {
@@ -151,7 +150,7 @@
                                         ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($target > 0) {
-                                                echo ($actual / $target) * 100;
+                                                echo number_format(($actual / $target) * 100, 2, '.', '');
                                             }
                                             ?>%</span>
                                         <span style="margin-left: 70px;position: absolute;margin-top: -35px">Prescription </span>
@@ -164,7 +163,6 @@
                                     <div class="demo" >       
 
                                         <input class="knob" id="kp4"  readonly=""style="display: none"  data-angleOffset=-125 data-angleArc=250 data-fgColor="#66EE66" value="<?php
-
                                         if ($dplanned > 0) {
                                             echo ($actplaned / $dplanned) * 100;
                                         } else {
@@ -173,7 +171,7 @@
                                         ?>">
                                         <span style="margin-left: 116px;position: absolute;margin-top: -50px;"><?php
                                             if ($dplanned > 0) {
-                                                echo ($actplaned / $dplanned) * 100;
+                                                echo number_format(($actplaned / $dplanned) * 100, 2, '.', '');
                                             }
                                             ?>%</span>
                                         <span style="margin-left: 58px;position: absolute;margin-top: -35px"> <?php
@@ -200,11 +198,11 @@
             </div>
         </div>  
 
-    <?php } //var_dump($dashboardDetails);  ?>
+    <?php } //var_dump($dashboardDetails);   ?>
 
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-<?php if (!empty($productlist)) { ?>
+    <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading">  Status  </div>
             <div class="panel-body">
@@ -278,7 +276,7 @@
     <?php } ?>
 </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-<?php if (!empty($productlist)) { ?>
+    <?php if (!empty($productlist)) { ?>
         <div class="panel panel-default"> 
             <div class="panel-heading"> KPI Status  </div>
             <div class="panel-body">
@@ -339,5 +337,5 @@
                 </div>
             </div>
         </div>  
-<?php } ?>
+    <?php } ?>
 </div>
