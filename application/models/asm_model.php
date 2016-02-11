@@ -358,7 +358,7 @@ FROM
   Rx_Actual 
 WHERE Doctor_id = '$id' ";
      $query=$this->db->query($sql);
-     return$query->result();
+     return$query->row_array();
      
  }
   function month2(){
