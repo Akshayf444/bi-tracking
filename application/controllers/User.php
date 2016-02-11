@@ -442,7 +442,7 @@ class User extends MY_Controller {
                                 $doc['Approve_Status'] = 'SFA';
                             }
                             if ($this->User_model->Save_Planning($doc)) {
-                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
 
@@ -460,9 +460,9 @@ class User extends MY_Controller {
                             $doc['updated_at'] = date('Y-m-d H:i:s');
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                             $this->db->update('Rx_Planning', $doc);
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Submitted') {
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
                         }
                     }
                     if (!empty($messages)) {
@@ -965,7 +965,7 @@ class User extends MY_Controller {
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
-            $link = "http://localhost/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
+            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
 
             $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 

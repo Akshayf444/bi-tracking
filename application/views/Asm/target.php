@@ -66,7 +66,7 @@
                         <td><input type="text" name="target1[]" value="<?php echo $target1 ?>"></td>
                         <td><input type="text" name="target2[]" value="<?php echo $target2 ?>"></td>
                         <td><input type="text" name="target3[]" value="<?php echo $target3 ?>"></td>
-                        <input type="hidden" id="Status" name="Status" value="Draft">
+
                     </tr>
 
                 <?php } ?>
@@ -84,12 +84,13 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Assign Target</h4>
                         </div>
+                                                <input type="hidden" id="Status" name="Status" value="Draft">
                         <div class="modal-body">
                             <p>Are You Sure Do You Want To Assign Target ? </p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary" onclick="myFunction()" id="Assign" >Assign</button>
+                            <button type="submit" class="btn btn-primary" id="Assign" >Assign</button>
                         </div>
                     </div>
                 </div>
@@ -139,7 +140,7 @@
     });
 
     $("#Assign").click(function () {
-        $("Status").val('Submitted');
+        $("#Status").val('Submitted');
     });
 </script>
 

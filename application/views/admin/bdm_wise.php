@@ -21,39 +21,37 @@
 <div class="row">
     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover " id="datatable">
-                <thead>
-                    <tr style="background-color: #428BCA">
-                        <th>Full Name</th>
-                        <th>Region</th>
+            <table class="table table-bordered table-hover " id="TableSort">
+                <tr>
+                <tr style="background-color: #428BCA">
+                    <th>Full Name</th>
+                    <th>Region</th>
 
-                        <th>State</th>
+                    <th>State</th>
 
-                        <th>Actual_Rx</th>
+                    <th>Actual_Rx</th>
 
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
+                    <th>Action</th>
+                </tr>
+                <tr>
                     <?php
                     if (!empty($show)) {
                         foreach ($show as $row) :
                             ?><tr>  
-                                <td><?php echo $row->Full_Name; ?></td>  
-                                <td><?php echo $row->Region; ?>  
-                                <td><?php echo $row->State; ?></td>  
-                                <td><?php echo $row->Actual_Rx; ?></td>
+                            <td><?php echo $row->Full_Name; ?></td>  
+                            <td><?php echo $row->Region; ?>  
+                            <td><?php echo $row->State; ?></td>  
+                            <td><?php echo $row->Actual_Rx; ?></td>
 
-                                <td>  
-                                    <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/emp_del?id=') . $row->VEEVA_Employee_ID; ?>';"></a> 
-                                    <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/update_emp?id=') . $row->VEEVA_Employee_ID; ?>';"></a> </td>
-                            </tr>  <?php
+                            <td>  
+                                <a class="fa fa-trash-o" onclick="window.location = '<?php echo site_url('admin/emp_del?id=') . $row->VEEVA_Employee_ID; ?>';"></a> 
+                                <a class="fa fa-pencil " onclick="window.location = '<?php echo site_url('admin/update_emp?id=') . $row->VEEVA_Employee_ID; ?>';"></a> </td>
+                            <?php
                         endforeach;
                     }
                     ?>
+                </tr>
 
-                </tbody>
 
             </table>
         </div>
@@ -61,19 +59,23 @@
 </div>
 <!-- Modal -->
 <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
-
+<script src="<?php echo asset_url(); ?>js/jquery.datasorter.min.js" type="text/javascript"></script>
 <script>
-                                $(document).ready(function () {
-                                    var oTable = $('#datatable').dataTable({
-                                        "bPaginate": false,
-                                        "bInfo": false,
-                                        "info": false,
-                                        "columnDefs": [
-                                            {
-                                                "visible": false
-                                            }
-                                        ]
-                                    });
-
-                                });
-</script>
+     $(document).ready(function () {
+         var oTable = $('#datatable').dataTable({
+            "bPaginate": false,
+            "bInfo": false,
+            "info": false,
+            "columnDefs": [
+                {
+                    "targets": [7],
+                    "visible": false
+                }
+            ]
+        });
+    $('#TableSort').on('change', function () {
+            var selectedValue = $(this).val();
+            oTable.fnSort([[selectedValue, 'desc']]); //Exact value, column, reg
+        });
+    });
+    </script>

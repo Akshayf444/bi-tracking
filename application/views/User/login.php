@@ -33,9 +33,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-lg-offset-3 col-md-offset-3">
-            <a href="<?php echo site_url('User/forget_pass') ?>" width="45%" class="pull-left" > Forget Password</a>
+        <div onclick="window.location = '<?php echo site_url('User/forget_pass') ?>';" class="col-lg-3 col-md-3 col-lg-offset-3 col-md-offset-3">
+            <a>Forget Password</a>
         </div>
+
         <div class="col-lg-3 col-md-3" id="mini-notification" align="right">
             Helpline No : <span class="helpline" style = 'color:red;font-weight:bold'>022-65657701</span><br>From 10 am - 6 pm
             <p>Mail Us: <a href="mailto:bisupport@instacom.in">bisupport@instacom.in</p></a>

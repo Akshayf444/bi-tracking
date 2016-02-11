@@ -15,8 +15,7 @@ class Admin extends CI_Controller {
         $this->load->model('admin_model');
         $this->load->model('Master_Model');
         $this->load->library('grocery_CRUD');
-        $this->nextMonth = date('m');
-        $this->nextYear = date('Y');
+
 //       $this->ADMIN_ID= $this->session->set_userdata('admin_id', $validadmin['admin_id']);
     }
 
@@ -53,7 +52,7 @@ class Admin extends CI_Controller {
         $data['Planning_Count'] = $this->admin_model->count_planned();
         $division = 'Diabetes';
         $division1 = 'ThromBI';
-//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
+//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '12');
         $data['count_achive_month'] = $this->admin_model->count_achive_month();
         $data['plan_month'] = $this->admin_model->count_planned_month();
 
@@ -99,15 +98,13 @@ class Admin extends CI_Controller {
         $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => ' Employeee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
-
-    public function emp_Doc() {
+    public function  emp_Doc() {
         $id = $_GET['id'];
         $data['show'] = $this->admin_model->emp_doc($id);
-
+       
         $data = array('title' => 'Doctor List', 'content' => 'admin/emp_doc', 'page_title' => 'Doctor LIST', 'view_data' => $data);
-        $this->load->view('template3', $data);
+      $this->load->view('template3', $data);
     }
-
     public function bdm_wise() {
         $data['show'] = $this->admin_model->BDM_show();
 
@@ -825,47 +822,6 @@ class Admin extends CI_Controller {
         $data = array('status' => 1);
         $this->admin_model->del_emp($id, $data);
         redirect('admin/unlocked_employee', 'refresh');
-    }
-
-    public function asm_target() {
-        $data['show'] = $this->admin_model->target_view();
-
-        $data = array('title' => 'Employee View', 'content' => 'admin/target_view', 'page_title' => 'ASM List', 'view_data' => $data);
-        $this->load->view('template3', $data);
-    }
-
-    public function asm_target_by_bdm() {
-        $id = $_GET['id'];
-        $check = $this->admin_model->ASM_division($id);
-
-        $data['show'] = $this->admin_model->ASM_division($id);
-        if (!empty($check)) {
-            if ($data['show'] == 'Diabetes') {
-                $data['table'] = $this->admin_model->ASm_view($id);
-                $data['ck'] = "Diabetes";
-            } else {
-                $data['table'] = $this->admin_model->ASm_view($id);
-                $data['ck'] = "Thrombi";
-            }
-        }
-
-        $data = array('title' => 'Employee View', 'content' => 'admin/target_bdm', 'page_title' => 'Target ', 'view_data' => $data);
-        $this->load->view('template3', $data);
-    }
-
-    public function Reset_Target() {
-        $id = $_GET['id'];
-        $data = array('status' => 'Draft');
-        $this->admin_model->reset_target($id, $data);
-
-        redirect('admin/asm_target', 'refresh');
-    }
-
-    public function login_history() {
-
-        $data['show'] = $this->admin_model->login_history();
-        $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
-        $this->load->view('template3', $data);
     }
 
 }

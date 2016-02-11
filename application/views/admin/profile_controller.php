@@ -44,25 +44,25 @@
                             }
                             ?></td>  
                         <td><input type="checkbox" name="tab3" <?php
-                            if ($row->Tab3 == 1) {
-                                echo "checked='checked'";
-                            }
-                            ?>></td>  
+                                   if ($row->Tab3 == 1) {
+                                       echo "checked='checked'";
+                                   }
+                                   ?>></td>  
                         <td><input type="checkbox" name="tab4"<?php
-                            if ($row->Tab4 == 1) {
-                                echo "checked='checked'";
-                            }
-                            ?></td>  
+                        if ($row->Tab4 == 1) {
+                            echo "checked='checked'";
+                        }
+                        ?></td>  
                         <td><input type="checkbox" name="tab5"<?php
-                            if ($row->Tab5 == 1) {
-                                echo "checked='checked'";
-                            }
-                            ?></td>  
-
-                        <?php
-                    endforeach;
+                if ($row->Tab5 == 1) {
+                    echo "checked='checked'";
                 }
-                ?>
+                ?></td>  
+
+        <?php
+    endforeach;
+}
+?>
             </tr>
         </table>
     </div>
