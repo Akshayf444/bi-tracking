@@ -15,7 +15,10 @@
             <span class="info-box-icon bg-red"><i class="fa fa-medkit"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Target</span>
-                <span class="info-box-number"><?php echo $Target_Count['TOTAL']; ?></span>
+                <span class="info-box-number"><?php 
+                
+                var_dump($Target_Count);
+                echo $Target_Count['TOTAL']; ?></span>
             </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
     </div><!-- /.col -->
@@ -98,10 +101,13 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua" style="width:<?php if($dr_by_product['Division_dr']!=0){ $pb= $Over_all_count['over_all'] * 100 / $dr_by_product['Division_dr'];
-                                 
-                                 echo $pb;
-                                }?>"></div>
+                                <div class="progress-bar progress-bar-aqua" style="width:<?php
+                                if ($dr_by_product['Division_dr'] != 0) {
+                                    $pb = $Over_all_count['over_all'] * 100 / $dr_by_product['Division_dr'];
+
+                                    echo $pb;
+                                }
+                                ?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
@@ -120,9 +126,11 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-red" style="width: <?phpif($dr_by_product['Division_dr']!=0){ $pb1= $profiling_by_product1['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
-                                
-                                 echo $pb1;}
+                                <div class="progress-bar progress-bar-red" style="width: <?php
+                                if($dr_by_product['Division_dr']!=0){ $pb1 = $profiling_by_product1['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+
+                                echo $pb1;
+                                }
                                 ?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
@@ -135,28 +143,30 @@
                                         echo $profiling_by_product2['profiling_by_product'];
                                     }
                                     ?></b>/<?php
-                                if ($dr_by_product['Division_dr'] == 0) {
-                                    echo 0;
-                                } else {
-                                    echo $dr_by_product['Division_dr'];
-                                }
-                                ?></span>
+                                    if ($dr_by_product['Division_dr'] == 0) {
+                                        echo 0;
+                                    } else {
+                                        echo $dr_by_product['Division_dr'];
+                                    }
+                                    ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-green" style="width: <?phpif($dr_by_product['Division_dr']!=0){ $pb2= $profiling_by_product2['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
-                               
-                                 echo $pb2;}
-                                ?>"></div>
+                                <div class="progress-bar progress-bar-green" style="width: <?php
+                                     if($dr_by_product['Division_dr']!=0){ $pb2 = $profiling_by_product2['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+
+                                     echo $pb2;
+                                     }
+                                    ?>"></div>
                             </div>
                         </div><!-- /.progress-group -->
                         <div class="progress-group">
                             <span class="progress-text">Metalyse</span>
                             <span class="progress-number"><b><?php
-                                    if ($profiling_by_product3['profiling_by_product'] == 0) {
-                                        echo 0;
-                                    } else {
-                                        echo $profiling_by_product3['profiling_by_product'];
-                                    }
-                                    ?></b>/<?php
+                                if ($profiling_by_product3['profiling_by_product'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $profiling_by_product3['profiling_by_product'];
+                                }
+                                ?></b>/<?php
                                 if ($dr_by_product['Division_dr'] == 0) {
                                     echo 0;
                                 } else {
@@ -164,13 +174,15 @@
                                 }
                                 ?></span>
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-yellow" style="width: <?php if($dr_by_product['Division_dr']!=0){  $pb3= $profiling_by_product3['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
-                              
-                                 echo $pb3;}
-                                
+                                <div class="progress-bar progress-bar-yellow" style="width: <?php
+                                if ($dr_by_product['Division_dr'] != 0) {
+                                    $pb3 = $profiling_by_product3['profiling_by_product'] * 100 / $dr_by_product['Division_dr'];
+
+                                    echo $pb3;
+                                }
                                 ?>"></div>
                             </div> 
-                       </div><!-- /.progress-group -->
+                        </div><!-- /.progress-group -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- ./box-body -->
@@ -203,14 +215,14 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Target</span>
                     <span class="info-box-number"><?php
-                        if ($total_target_by_product1['total_target'] == 0) {
-                            echo 0;
-                        } else {
+                                if ($total_target_by_product1['total_target'] == 0) {
+                                    echo 0;
+                                } else {
 
 
-                            echo $total_target_by_product1['total_target'];
-                        }
-                        ?></span>
+                                    echo $total_target_by_product1['total_target'];
+                                }
+                                ?></span>
                     <div class="progress">
                         <div class="progress-bar" style="width: 50%"></div>
                     </div>
@@ -230,12 +242,12 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Achievements</span>
                     <span class="info-box-number"><?php
-                        if ($total_actualrx_by_product1['total_actual_rx'] == 0) {
-                            echo 0;
-                        } else {
-                            echo $total_actualrx_by_product1['total_actual_rx'];
-                        }
-                        ?></span>
+                                if ($total_actualrx_by_product1['total_actual_rx'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_actualrx_by_product1['total_actual_rx'];
+                                }
+                                ?></span>
                     <div class="progress">
                         <div class="progress-bar" style="width: 50%"></div>
                     </div>
@@ -251,12 +263,12 @@
                 <div class="info-box-content">
                     <span class="info-box-text">New Conversion</span>
                     <span class="info-box-number"><?php
-                        if ($total_convertion_by_product1['total_convertion'] == 0) {
-                            echo 0;
-                        } else {
-                            echo $total_convertion_by_product1['total_convertion'];
-                        }
-                        ?></span>
+                                if ($total_convertion_by_product1['total_convertion'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_convertion_by_product1['total_convertion'];
+                                }
+                                ?></span>
                     <div class="progress">
                         <div class="progress-bar" style="width: 50%"></div>
                     </div>
@@ -294,14 +306,14 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Target</span>
                         <span class="info-box-number"><?php
-                            if ($total_target_by_product2['total_target'] == 0) {
-                                echo 0;
-                            } else {
+                                if ($total_target_by_product2['total_target'] == 0) {
+                                    echo 0;
+                                } else {
 
 
-                                echo $total_target_by_product2['total_target'];
-                            }
-                            ?></span>
+                                    echo $total_target_by_product2['total_target'];
+                                }
+                                ?></span>
                         <div class="progress">
                             <div class="progress-bar" style="width: 50%"></div>
                         </div>
@@ -321,12 +333,12 @@
                     <div class="info-box-content">
                         <span class="info-box-text">Achievements</span>
                         <span class="info-box-number"><?php
-                            if ($total_actualrx_by_product2['total_actual_rx'] == 0) {
-                                echo 0;
-                            } else {
-                                echo $total_actualrx_by_product2['total_actual_rx'];
-                            }
-                            ?></span>
+                                if ($total_actualrx_by_product2['total_actual_rx'] == 0) {
+                                    echo 0;
+                                } else {
+                                    echo $total_actualrx_by_product2['total_actual_rx'];
+                                }
+                                ?></span>
                         <div class="progress">
                             <div class="progress-bar" style="width: 50%"></div>
                         </div>
@@ -446,33 +458,30 @@
             <?php
             $a = array();
             foreach ($plan_month as $plan) {
-                array_push($a, (int)$plan->TOTAL);
-
+                array_push($a, (int) $plan->TOTAL);
             }
-           
             ?>
             <?php
             $b = array();
             foreach ($count_achive_month as $plan) {
-                array_push($b, (int)$plan->TOTAL);
+                array_push($b, (int) $plan->TOTAL);
 //  
             }
-           
             ?>
             <script src="<?php echo asset_url() ?>/dashboard/plugins/jQuery/jQuery-2.1.3.min.js" type="text/javascript"></script>
 
             <!-- Bootstrap 3.3.2 JS -->
             <script src="<?php echo asset_url() ?>/dashboard/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
-            
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
-            
 
-           
+            <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+
+
+
 
 
             <!-- AdminLTE for demo purposes -->
-          
+
             <script>
                 $(function () {
 
@@ -566,7 +575,7 @@
                     //- PIE CHART -
                     //-------------
                     // Get context with jQuery - using jQuery's .get() method.
-                    
+
                 });
             </script>
             </body>
