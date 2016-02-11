@@ -648,4 +648,17 @@ class ASM extends MY_Controller {
         }
     }
 
+
+    public function reporting_info() {
+        $result = $this->asm_model->hospital_list();
+        $data['show'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');
+        if ($this->input->post()) {
+            $id = $this->input->post('id');
+//          $data['his']=$this->asm_model->history_data();
+            $data['list'] = $this->asm_model->data_report($id);
+        }
+        $data = array('title' => 'Report', 'content' => 'ASM/asm_reporting_tab', 'view_data' => $data, 'backUrl' => 'ASM/dashboard');
+        $this->load->view('template2', $data);
+    }
+
 }

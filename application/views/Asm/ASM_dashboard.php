@@ -24,23 +24,26 @@
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <div class="panel panel-default ">
         <div class="panel-body ">
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/target'); ?>';" >
                     Assign Target
                 </a>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/Planning'); ?>';" > Approve Planning </a>
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/reporting'); ?>';" > Approve Reporting </a>
 
             </div>
+<div class="col-md-3">
+                <a class="btn btn-block" style="    border: 1px solid;background-color: " onclick="window.location = '<?php echo site_url('ASM/reporting_info'); ?>';" >  Reporting </a>
 
+            </div>
         </div>
     </div>
 </div>
