@@ -1252,7 +1252,7 @@ class User_model extends CI_Model {
         return $query->result();
     }
 
-public function ASM_comment_rep($VEEVA_Employee_ID,$PRODUCT_ID) {
+    public function ASM_comment_rep($VEEVA_Employee_ID,$PRODUCT_ID) {
         $sql = "SELECT * FROM Asm_Comment
                 WHERE
                 `VEEVA_Employee_ID`='$VEEVA_Employee_ID' and `Product_Id`='$PRODUCT_ID'and `Comment_type`='Reporting' or `Comment_type`='Activity_Reporting'";
@@ -1261,4 +1261,27 @@ public function ASM_comment_rep($VEEVA_Employee_ID,$PRODUCT_ID) {
         return $query->result();
     }
 
+    function Zsmreport($VEEVA_Employee_ID, $month, $year, $product) {
+        $sql = "SELECT em.`Full_Name`,em.VEEVA_Employee_ID,COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors ,COUNT(p.`Doctor_Id`)AS No_of_Doctors_profiled,rt.`target` AS Target_New_Rxn_for_the_month,SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,COUNT(CASE WHEN ar.`Activity_Done`='Yes' THEN 1 END) AS checkk FROM Employee_Master em
+                LEFT JOIN Employee_Doc ed 
+                ON em.`VEEVA_Employee_ID`=ed.`VEEVA_Employee_ID`
+                LEFT JOIN Doctor_Master dm 
+                ON dm.`Account_ID` = ed.`VEEVA_Account_ID` AND dm.Individual_Type = '$this->Individual_Type'
+                LEFT JOIN Profiling p
+                ON ed.`VEEVA_Account_ID`=p.`Doctor_Id` AND p.`Product_id`= $product AND p.Status = 'Submitted'
+                LEFT JOIN Rx_Target rt
+                ON em.`VEEVA_Employee_ID`=rt.`VEEVA_Employee_ID`AND rt.`Status`='Submitted' AND rt.`Product_Id`=$product AND rt.`Month`=$month AND rt.`Year`=$year
+                LEFT JOIN Rx_Planning rp
+                ON ed.`VEEVA_Account_ID`=rp.`Doctor_Id`AND rp.`Product_Id`=$product AND rp.`Month`=$month AND rp.`Year`=$year AND rp.VEEVA_Employee_ID = em.VEEVA_Employee_ID
+                LEFT JOIN Activity_Planning ap
+                ON ed.`VEEVA_Account_ID`=ap.`Doctor_Id` AND ap.`Product_Id`=$product AND ap.`Month`=$month AND ap.`Year`=$year AND em.`VEEVA_Employee_ID` = ap.`VEEVA_Employee_ID` 
+                LEFT JOIN Activity_Reporting ar
+                ON ed.`VEEVA_Account_ID`=ar.`Doctor_Id` AND ar.`Product_Id`=$product AND ar.`Month`=$month AND ar.`Year`=$year AND em.`VEEVA_Employee_ID` = ar.`VEEVA_Employee_ID` 
+                WHERE em.Reporting_VEEVA_ID IN (
+                   SELECT VEEVA_Employee_ID FROM Employee_Master WHERE Reporting_VEEVA_ID  = '$VEEVA_Employee_ID'   )  
+                GROUP BY em.`VEEVA_Employee_ID`";
+        $query = $this->db->query($sql);
+        //echo $sql;
+        return $query->result();
+    }
 }
