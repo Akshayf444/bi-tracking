@@ -115,7 +115,6 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
-
                     $data = array('Last_Login' => date('Y-m-d H:i:s'));
                     $this->User_model->update_last_login($this->session->userdata('VEEVA_Employee_ID'), $data);
                     if ($check_password['Profile'] === 'ASM') {
