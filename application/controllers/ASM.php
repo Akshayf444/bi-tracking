@@ -648,6 +648,7 @@ class ASM extends MY_Controller {
         }
     }
 
+
     public function reporting_info() {
         $result = $this->asm_model->hospital_list();
         $data['show'] = $this->Master_Model->generateDropdown($result, 'Account_ID', 'Account_Name');

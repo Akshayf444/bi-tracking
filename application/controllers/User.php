@@ -115,12 +115,13 @@ class User extends MY_Controller {
                 if (is_null($check_password['password_status']) || $check_password['password_status'] == '') {
                     redirect('User/password', 'refresh');
                 } else {
-
                     $data = array('Last_Login' => date('Y-m-d H:i:s'));
                     $this->User_model->update_last_login($this->session->userdata('VEEVA_Employee_ID'), $data);
                     if ($check_password['Profile'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
-                    } else {
+                    } elseif ($check_password['Profile'] === 'ZSM') {
+                        redirect('ZSM/dashboard', 'refresh');
+                    } elseif ($check_password['Profile'] === 'BDM') {
                         redirect('User/dashboard', 'refresh');
                     }
                 }
@@ -442,7 +443,7 @@ class User extends MY_Controller {
                                 $doc['Approve_Status'] = 'SFA';
                             }
                             if ($this->User_model->Save_Planning($doc)) {
-                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
+                                array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been saved successfully! Thank you!.', 'success'));
                             }
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Draft') {
 
@@ -460,9 +461,9 @@ class User extends MY_Controller {
                             $doc['updated_at'] = date('Y-m-d H:i:s');
                             $this->db->where(array('VEEVA_Employee_ID' => $this->VEEVA_Employee_ID, 'Product_Id' => $this->Product_Id, 'Doctor_Id' => $doc_id[$i]));
                             $this->db->update('Rx_Planning', $doc);
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' has been Updated successfully! Thank you!.', 'success'));
                         } elseif (isset($result->Planning_Status) && $result->Planning_Status == 'Submitted') {
-                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M', strtotime($this->nextMonth)) . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
+                            array_push($messages, $this->Master_Model->DisplayAlert('The Planning for ' . date('M') . '' . $this->nextYear . ' Already Submitted ! Thank you!.', 'danger'));
                         }
                     }
                     if (!empty($messages)) {
@@ -612,7 +613,6 @@ class User extends MY_Controller {
         }
         $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
         $this->load->view('template2', $data);
-
     }
 
     public function Reporting() {
@@ -745,7 +745,7 @@ class User extends MY_Controller {
     public function ActivityReporting() {
         $Status = "Submitted";
         $check = $this->User_model->Activity_reporting_check($this->VEEVA_Employee_ID, $this->Product_Id, $Status);
-         
+
         if (!empty($check)) {
             if ($this->Product_Id == 1) {
                 $this->alertLabel = "Hospital";
@@ -841,7 +841,7 @@ class User extends MY_Controller {
         } else {
             $data['doctorList'] = "Activity Planning Not Submitted";
         }
-        $data['asm_comment']= $this->User_model->ASM_comment_rep($this->VEEVA_Employee_ID, $this->Product_Id);
+        $data['asm_comment'] = $this->User_model->ASM_comment_rep($this->VEEVA_Employee_ID, $this->Product_Id);
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
@@ -965,7 +965,7 @@ class User extends MY_Controller {
         $emp = $this->User_model->employee_id($email);
         if (!empty($emp)) {
             $encodedPassword = base64_encode($emp['VEEVA_Employee_ID']);
-            $link = "http://localhost/bi-tracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
+            $link = "http://instacom.in/test-bitracking/index.php/User/Reset_Password/?e=" . $encodedPassword;
 
             $mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
 
