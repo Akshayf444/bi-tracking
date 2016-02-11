@@ -120,7 +120,9 @@ class User extends MY_Controller {
                     $this->User_model->update_last_login($this->session->userdata('VEEVA_Employee_ID'), $data);
                     if ($check_password['Profile'] === 'ASM') {
                         redirect('ASM/dashboard', 'refresh');
-                    } else {
+                    } elseif ($check_password['Profile'] === 'ZSM') {
+                        redirect('ZSM/dashboard', 'refresh');
+                    } elseif ($check_password['Profile'] === 'BDM') {
                         redirect('User/dashboard', 'refresh');
                     }
                 }
@@ -612,7 +614,6 @@ class User extends MY_Controller {
         }
         $data = array('title' => 'Change Password', 'content' => 'User/password', 'view_data' => 'blank');
         $this->load->view('template2', $data);
-
     }
 
     public function Reporting() {
@@ -745,7 +746,7 @@ class User extends MY_Controller {
     public function ActivityReporting() {
         $Status = "Submitted";
         $check = $this->User_model->Activity_reporting_check($this->VEEVA_Employee_ID, $this->Product_Id, $Status);
-         
+
         if (!empty($check)) {
             if ($this->Product_Id == 1) {
                 $this->alertLabel = "Hospital";
@@ -841,7 +842,7 @@ class User extends MY_Controller {
         } else {
             $data['doctorList'] = "Activity Planning Not Submitted";
         }
-        $data['asm_comment']= $this->User_model->ASM_comment_rep($this->VEEVA_Employee_ID, $this->Product_Id);
+        $data['asm_comment'] = $this->User_model->ASM_comment_rep($this->VEEVA_Employee_ID, $this->Product_Id);
         $data = array('title' => 'Activity Planning', 'content' => 'User/Act_Report', 'backUrl' => 'User/dashboard', 'view_data' => $data);
         $this->load->view('template2', $data);
     }
