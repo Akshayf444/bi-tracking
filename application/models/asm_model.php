@@ -47,7 +47,7 @@ class asm_model extends CI_Model {
             LEFT JOIN `Rx_Actual` rt ON `dm`.`Account_ID` = `rt`.`Doctor_Id` AND `rt`.`VEEVA_Employee_ID` = '$id' AND `rt`.`month` = '$this->nextMonth'  AND `rt`.`Year` = '$this->nextYear' AND `rt`.`Product_Id` = '$product_id' "
                 . " WHERE   rt.Approve_Status = 'SFA'  OR rt.Approve_Status = 'Un-Approved' GROUP BY rt.Doctor_Id  ORDER BY Actual_Rx DESC";
         $query = $this->db->query($sql);
-     
+
         return $query->result();
     }
 
@@ -313,4 +313,78 @@ class asm_model extends CI_Model {
         $this->db->insert('Asm_Comment', $data);
     }
 
+    function hospital_list() {
+        $sql = "select * from Doctor_Master where Individual_Type='Hospital'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    function data_report($id) {
+        $sql = "
+SELECT 
+*
+FROM
+  Employee_Doc ed 
+  LEFT JOIN Doctor_Master dm 
+    ON dm.`Account_ID` = ed.`VEEVA_Account_ID` 
+  LEFT JOIN Employee_Master em 
+    ON em.`VEEVA_Employee_ID` = ed.`VEEVA_Employee_ID` 
+  LEFT JOIN Profiling pr 
+    ON pr.`Doctor_Id` = ed.`VEEVA_Account_ID` 
+WHERE ed.`VEEVA_Account_ID` = '$id' ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+ function month1($id){
+     $sql="SELECT 
+  ( 
+    CASE
+      WHEN `Year` = '2015' 
+      AND `month` = '1' 
+    
+      THEN  Actual_Rx 
+      END
+    ) AS past ,
+     ( 
+    CASE 
+      
+      WHEN `Year` = '2016' 
+      AND `month` = '1' 
+      THEN  Actual_Rx 
+      END
+    ) AS present 
+    
+FROM
+  Rx_Actual 
+WHERE Doctor_id = '$id' ";
+     $query=$this->db->query($sql);
+     return$query->result();
+     
+ }
+  function month2(){
+     $sql="select * from Rx_Actual where  Year='2015'And Month='1'";
+     $query=$this->db->query($sql);
+     return$query->result();
+     
+ }
+  function month3(){
+     $sql="select * from Rx_Actual where  Year='2015'And Month='1'";
+     $query=$this->db->query($sql);
+     return$query->result();
+     
+ }
+  function month4(){
+     $sql="select * from Rx_Actual where  Year='2015'And Month='1'";
+     $query=$this->db->query($sql);
+     return$query->result();
+     
+ }
+  
+
+ function present_data(){
+     $sql="select * from Rx_Actual where  Year='2016'";
+     $query=$this->db->query($sql);
+     return$query->result();
+     
+ }
 }
