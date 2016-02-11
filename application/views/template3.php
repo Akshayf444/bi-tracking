@@ -102,56 +102,56 @@
                     <!-- Sidebar user panel -->
                     <ul class="sidebar-menu">
                         <li class="header">MAIN NAVIGATION</li>
-                        <li>
-                            <a href="<?php echo site_url('Admin/dashboard'); ?>">
+<!--                        <li>
+                            <a href="<?php //echo site_url('Admin/dashboard'); ?>">
                                 <i class="fa fa-th"></i> <span>Dashboard</span> 
                             </a>
                         </li>
                         <li class="treeview">
-                            <a href="<?php echo site_url('Admin/emp_view'); ?>">
+                            <a href="<?php //echo site_url('Admin/emp_view'); ?>">
                                 <i class="ion ion-ios-people-outline"></i>
                                 <span>Employee Master</span>
 
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="<?php echo site_url('Admin/emp_view'); ?>"><i class="fa fa-circle-o"></i>Employee Master</a></li>
+                                <li><a href="<?php //echo site_url('Admin/emp_view'); ?>"><i class="fa fa-circle-o"></i>Employee Master</a></li>
 
-                                <li><a href="<?php echo site_url('Admin/bdm_wise'); ?>"><i class="fa fa-circle-o"></i> BDM WISE</a></li>
+                                <li><a href="<?php //echo site_url('Admin/bdm_wise'); ?>"><i class="fa fa-circle-o"></i> BDM WISE</a></li>
 
                             </ul>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Admin/doc_view'); ?>">
+                            <a href="<?php //echo site_url('Admin/doc_view'); ?>">
                                 <i class="fa fa-user-md"></i> <span>Doctor Master</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Admin/view_Activity'); ?>">
+                            <a href="<?php //echo site_url('Admin/view_Activity'); ?>">
                                 <i class="fa fa-folder"></i> <span>View Activity</span> 
 
                             </a>
                         </li>
 
                         <li>
-                            <a href="<?php echo site_url('Admin/profile_view'); ?>">
+                            <a href="<?php //echo site_url('Admin/profile_view'); ?>">
                                 <i class="fa fa-book"></i> <span>Control Access</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Admin/unlocked_employee'); ?>">
+                            <a href="<?php //echo site_url('Admin/unlocked_employee'); ?>">
                                 <i class="fa fa-lock"></i> <span>Blocked Accounts</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Admin/territory_view'); ?>">
+                            <a href="<?php //echo site_url('Admin/territory_view'); ?>">
                                 <i class="fa fa-eye"></i> <span>Territory</span> 
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Admin/asm_target'); ?>">
+                            <a href="<?php //echo site_url('Admin/asm_target'); ?>">
                                 <i class="fa fa-eye"></i> <span>Target List</span> 
                             </a>
-                        </li>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('Admin/login_history'); ?>">
                                 <i class="fa fa-eye"></i> <span>Login History</span> 

@@ -1,19 +1,19 @@
 <script src="<?php echo asset_url() ?>js/excellentexport.min.js" type="text/javascript"></script>
 <div class="col-lg-12">
-        <a download="Login_history.xls" class="btn btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'datatable', 'Sheeting');">Export to Excel</a>
-    </div>
+    <a download="Login_history<?php echo date('dM g-i-a'); ?>.xls" class="btn btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'datatable', 'Sheeting');">Export to Excel</a>
+</div>
 <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10">
     <div class="table-responsive">
         <table class="table table-bordered table-hover " id="datatable">
             <thead>
-                <tr style="background-color: #428BCA">
+                <tr>
                     <th>VEEVA_Employee_ID</th>
                     <th>Full Name</th>
                     <th>Zone</th>
                     <th>Division </th>
                     <th>Profile</th>
                     <th>Territory</th>
-                   
+
 
                 </tr>
             </thead>
@@ -26,18 +26,18 @@
                             <td><?php echo $row->id; ?></td>  
                             <td><?php echo $row->Full_Name; ?></td>
                             <td><?php echo $row->Zone; ?></td>
-                            <td><?php echo $row->Division ; ?></td>
+                            <td><?php echo $row->Division; ?></td>
                             <td><?php echo $row->Profile; ?></td>
-                       <td><?php echo $row->Territory; ?></td>
-<!--                            <td> <a href="#" data-toggle="popover"  id=" <?php echo $row->id ?>"  data-content=" <?php
+                            <td><?php echo $row->Territory; ?></td>
+        <!--                            <td> <a href="#" data-toggle="popover"  id=" <?php echo $row->id ?>"  data-content=" <?php
 //                                foreach ($view as $rs) :
 //                                    echo date('d-M-Y g:i:a', strtotime($rs->created_at)) . ',';
 //
 //
 //                                endforeach;
-                                ?>"><?Php // echo $row->COUNT; ?></a></td>-->
-                                
-                                
+                            ?>"><?Php // echo $row->COUNT; ?></a></td>-->
+
+
 
                         </tr>
                         <?php
@@ -45,12 +45,9 @@
                 }
                 ?>
             </tbody>
-
-
         </table>
     </div>
 </div>
- 
 <script>
     $(document).ready(function () {
         var oTable = $('#datatable').dataTable({

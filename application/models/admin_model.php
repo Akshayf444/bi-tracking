@@ -547,27 +547,27 @@ GROUP BY em.`VEEVA_Employee_ID`";
 
     public function login_history() {
         $sql = "
-SELECT 
-  em.Full_Name,
-  em.Zone,
-  em.Profile,
-  em.Division,
-  tr.Territory,
-  lh.VEEVA_Employee_ID AS id,
-  COUNT(lh.VEEVA_Employee_ID) AS COUNT
-FROM
-  login_history lh 
-  INNER JOIN Employee_Master em 
-    ON em.`VEEVA_Employee_ID` = lh.`VEEVA_Employee_ID` 
-  LEFT JOIN Territory_master tr 
-    ON em.territory = tr.id 
-GROUP BY lh.`VEEVA_Employee_ID` ";
+                SELECT 
+                  em.Full_Name,
+                  em.Zone,
+                  em.Profile,
+                  em.Division,
+                  tr.Territory,
+                  lh.VEEVA_Employee_ID AS id,
+                  COUNT(lh.VEEVA_Employee_ID) AS COUNT
+                FROM
+                  login_history lh 
+                  INNER JOIN Employee_Master em 
+                    ON em.`VEEVA_Employee_ID` = lh.`VEEVA_Employee_ID` 
+                  LEFT JOIN Territory_master tr 
+                    ON em.territory = tr.id 
+                GROUP BY lh.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function login_view($id) {
-        $sql = "select * FROM Login_History WHERE VEEVA_Employee_ID ='$id' ";
+        $sql = "select * FROM login_history WHERE VEEVA_Employee_ID ='$id' ";
         $query = $this->db->query($sql);
         return $query->result();
     }
