@@ -95,7 +95,12 @@ class Admin extends CI_Controller {
 
     public function emp_view() {
         $data['show'] = $this->admin_model->emp_view();
-
+        $result = $this->admin_model->find_zone();
+        $data['zone'] = $this->Master_Model->generateDropdown($result, 'Zone', 'Zone');
+        if ($this->input->get()) {
+            $id = $this->input->get('id');
+            $data['show'] = $this->admin_model->zone_data($id);
+        }
         $data = array('title' => 'Employee View', 'content' => 'admin/add_emp', 'page_title' => ' Employeee Master', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
@@ -184,7 +189,7 @@ class Admin extends CI_Controller {
                 'Mobile' => $this->input->post('Mobile'),
                 'Email_ID' => $this->input->post('Email_ID'),
                 'Username' => $this->input->post('Username'),
-                'Password' => '',
+                'Password' => $this->input->post('First_Name').'@bi',
                 'Last_Login' => $this->input->post('Last_Login'),
                 'Address_1' => $this->input->post('Address_1'),
                 'Address_2' => $this->input->post('Address_2'),
@@ -206,17 +211,33 @@ class Admin extends CI_Controller {
                 'Status' => '1',
             );
             $this->admin_model->insert($data);
-            redirect('admin/dashboard', 'refresh');
+            redirect('admin/emp_view', 'refresh');
         }
+        $result = $this->admin_model->find_Designation();
+        $data['Designation'] = $this->Master_Model->generateDropdown($result, 'Designation', 'Designation');
+        $result = $this->admin_model->find_territory();
+        $data['Territory'] = $this->Master_Model->generateDropdown($result, 'id', 'Territory');
+        $result = $this->admin_model->find_Division();
+        $data['Division'] = $this->Master_Model->generateDropdown($result, 'Division', 'Division');
         $result = $this->admin_model->find_zone();
         $data['zone'] = $this->Master_Model->generateDropdown($result, 'Zone', 'Zone');
         $result = $this->admin_model->find_region();
         $data['region'] = $this->Master_Model->generateDropdown($result, 'Region', 'Region');
-        $result = $this->admin_model->find_Designation();
-        $data['Designation'] = $this->Master_Model->generateDropdown($result, 'Designation', 'Designation');
+        $result = $this->admin_model->reporting_to($this->input->post('Profile'));
+        $data['Reporting_To'] = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To');
+        $result = $this->admin_model->find_Profile();
+        $data['Profile'] = $this->Master_Model->generateDropdown($result, 'Profile', 'Profile');
+        $data['Reporting_id'] = $this->admin_model->reporting_id($this->input->post('Reporting_To'));
         $data = array('title' => 'Add Employee', 'content' => 'admin/emp_add', 'page_title' => 'Add Employee', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
+
+    public function ajax_data() {
+        $result = $this->admin_model->reporting_to($this->input->post('profile'));
+        $data = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To');
+        echo $data;
+    }
+   
 
     public function update_emp() {
         $id = $_GET['id'];
@@ -867,5 +888,4 @@ class Admin extends CI_Controller {
         $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
-
 }
