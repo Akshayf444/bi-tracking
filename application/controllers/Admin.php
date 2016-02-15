@@ -826,4 +826,12 @@ class Admin extends CI_Controller {
         redirect('admin/unlocked_employee', 'refresh');
     }
 
+    public function planningStatus() {
+        $this->load->model('admin_model');
+        $this->load->model('asm_model');
+        $data['productlist'] = $this->admin_model->show_pro_list();
+        $data = array('title' => 'Planning Status', 'content' => 'admin/Planning_Status', 'page_title' => 'Planning Status', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
 }
