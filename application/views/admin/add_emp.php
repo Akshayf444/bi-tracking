@@ -16,6 +16,9 @@
             <button type="submit" class="btn btn-primary">Fetch</button>
         </div>
     </div>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <a class="btn btn-primary " onclick="window.location = '<?php echo site_url('admin/emp_csv'); ?>';"> Import csv</a>
+</div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/emp_add'); ?>';"> Add Employee</a>
 </div>

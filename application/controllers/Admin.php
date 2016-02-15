@@ -188,8 +188,8 @@ class Admin extends CI_Controller {
                 'Gender' => $this->input->post('Gender'),
                 'Mobile' => $this->input->post('Mobile'),
                 'Email_ID' => $this->input->post('Email_ID'),
-                'Username' => $this->input->post('Username'),
-                'Password' => $this->input->post('First_Name').'@bi',
+                'Username' => $this->input->post('Email_ID'),
+                'Password' => $this->input->post('First_Name') . '@bi',
                 'Last_Login' => $this->input->post('Last_Login'),
                 'Address_1' => $this->input->post('Address_1'),
                 'Address_2' => $this->input->post('Address_2'),
@@ -237,7 +237,6 @@ class Admin extends CI_Controller {
         $data = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To');
         echo $data;
     }
-   
 
     public function update_emp() {
         $id = $_GET['id'];
@@ -248,11 +247,14 @@ class Admin extends CI_Controller {
         $data['region'] = $this->Master_Model->generateDropdown($result, 'Region', 'Region', $data['rows']['Region']);
         $result = $this->admin_model->find_territory();
         $data['Territory'] = $this->Master_Model->generateDropdown($result, 'Territory', 'Territory', $data['rows']['Territory']);
-        $result = $this->admin_model->find_REPORTING_TO();
-        $data['Reporting_To'] = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To', $data['rows']['Reporting_To']);
         $result = $this->admin_model->find_Designation();
         $data['Designation'] = $this->Master_Model->generateDropdown($result, 'Designation', 'Designation', $data['rows']['Designation']);
-
+        $result = $this->admin_model->find_Division();
+        $data['Division'] = $this->Master_Model->generateDropdown($result, 'Division', 'Division', $data['rows']['Division']);
+        $result = $this->admin_model->find_Profile();
+        $data['Profile'] = $this->Master_Model->generateDropdown($result, 'Profile', 'Profile', $data['rows']['Profile']);
+        $result = $this->admin_model->find_REPORTING_TO();
+        $data['Reporting_To'] = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To', $data['rows']['Reporting_To']);
         if ($this->input->post()) {
             $empid = $this->input->post('VEEVA_Employee_ID');
             $data = array(
@@ -888,4 +890,5 @@ class Admin extends CI_Controller {
         $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
+
 }
