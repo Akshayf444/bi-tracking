@@ -41,9 +41,7 @@
                     <td><?php echo $row->Zone; ?></td>
                     <td><?php echo $row->No_Of_Beds; ?></td>
                     <td><?php echo $row->CT_MRI_available; ?></td>
-                    <td><?php echo $row->CT_MRI_available;
-        ;
-        ?></td>
+                    <td><?php echo $row->CT_MRI_available; ?></td>
                     <td><?php echo $row->Patient_Seen_month; ?></td>
 
                 </tr>
@@ -56,15 +54,15 @@
         ?>
     </table>
 </div>
-    
+
+<div class="col-lg-12">
 
 
-
-<div class="table-responsive panel">
-    <?php if (!empty($list)) { ?>
+    <div class="table-responsive panel">
+        <?php  ?>
         <table class="table table-bordered table-hover ">
-					
 
+            <thead>
             <tr>
                 <th>Month</th>
                 <th>2015 Yield</th>
@@ -77,47 +75,62 @@
                 <th>+/-over last month
 
                 </th>
-                <th></th>
+               
 
 
             </tr>
-<tr>
-   <th>JAN</th> 
-    <th>FEB</th>
-    <th>March</th>
-    <th>April</th>
-    <th>May</th>
-    <th>June</th>
-    <th>July</th>
-    <th>Aug</th>
-    <th>Sep</th>
-    <th>Oct</th>
-    <th>Nov</th>
-    <th>Dec</th>
-            <?php
-            
-            foreach ($his as $row) :
-                ?>
-                <tr>  
-                    <td><?php echo $row->Full_Name; ?></td>
-                    <td><?php echo $row->Reporting_To; ?></td>
-                    <td><?php echo $row->Zone; ?></td>
-                    <td><?php echo $row->No_Of_Beds; ?></td>
-                    <td><?php echo $row->CT_MRI_available; ?></td>
-                    <td><?php echo $row->CT_MRI_available;
-        ;
-        ?></td>
-                    <td><?php echo $row->Patient_Seen_month; ?></td>
+            </thead>
+            <tr>
+                <th>JAN</th> 
+                <td><?php //  echo $his['past'];   ?>88</td>
+                <td><?php // echo $rows['present'];   ?> 88</td>
+                <td><?php // echo $rows['present'];   ?> 88</td>
+                <td><?php // echo $rows['present'];   ?> 88</td>
+                <td><?php // echo $rows['present'];   ?> 88</td>
+                <td><?php // echo $rows['present'];   ?> 88</td>
 
-                </tr>
-                <?php
-            endforeach;
-        }
-        else {
-            echo 'Data Is Not Available';
-        }
-        ?>
-    </table>
+            </tr>
+            <tr>
+                <th>FEB</th>
+
+
+            </tr>
+            <tr>
+                <th>March</th></tr>
+            <tr>
+                <th>April</th></tr>
+            <tr>
+                <th>May</th></tr>
+            <tr>
+                <th>June</th></tr>
+            <tr>
+                <th>July</th></tr>
+            <tr>
+                <th>Aug</th></tr>
+            <tr>
+                <th>Sep</th></tr>
+            <tr>
+                <th>Oct</th></tr>
+            <tr>
+                <th>Nov</th></tr>
+            <tr>
+                <th>Dec</th></tr>
+            //<?php
+//  foreach ($his as $rows) :
+       
+            ?>
+            <tr>  
+                 <th>Total</th>
+                <td><?php // echo $rows['past']; ?> 88</td>
+
+
+            </tr>
+            <?php
+//            endforeach;
+//        }
+            ?>
+        </table>
+    </div>
 </div>
 
 

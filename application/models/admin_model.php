@@ -66,25 +66,51 @@ class admin_model extends CI_Model {
     }
 
     public function find_zone() {
-        $sql = "select distinct(Zone) as Zone from Employee_Master";
+        $sql = "select distinct(Zone) as Zone from Employee_Master WHERE Zone IS NOT NULL AND Zone <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
+      public function find_Division() {
+        $sql = "select distinct(Division) as Division from Employee_Master WHERE Division IS NOT NULL AND Division <> ''";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+      public function find_profile() {
+        $sql = "select distinct(Profile) as Profile from Employee_Master WHERE Profile IS NOT NULL AND Profile <> ''";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+      public function reporting_to($profile) {
+        $sql = "SELECT * FROM Employee_Master WHERE Profile='$profile' GROUP BY Reporting_VEEVA_ID ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    public function reporting_id($reporting_to) {
+        $sql = "SELECT  * FROM Employee_Master WHERE Reporting_To ='$reporting_to'";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    
+     public function zone_data($zone){
+         $sql = "select * from Employee_Master WHERE Zone = '$zone'";
+        $query = $this->db->query($sql);
+        return $query->result(); 
+     }
 
     public function find_region() {
-        $sql = "select distinct(Region) as Region from Employee_Master";
+        $sql = "select distinct(Region) as Region from Employee_Master WHERE Region IS NOT NULL AND Region <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function find_Designation() {
-        $sql = "select distinct(Designation) as Designation from Employee_Master";
+        $sql = "select distinct(Designation) as Designation from Employee_Master WHERE Designation IS NOT NULL AND Designation <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function find_territory() {
-        $sql = "select distinct (Territory) AS Territory from Employee_Master";
+        $sql = "select distinct (Territory) AS Territory,id from Territory_master where status='1' AND Territory IS NOT NULL AND Territory <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }

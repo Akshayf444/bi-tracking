@@ -21,6 +21,8 @@
              folder instead of downloading all of them to reduce the load. -->
         <link href="<?php echo asset_url() ?>dashboard/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
         <script src="<?php echo asset_url() ?>dashboard/plugins/jQuery/jQuery-2.1.3.min.js"></script>
+        <link href="<?php echo asset_url() ?>css/jQuery-ui.css" rel="stylesheet" type="text/css" />
+           <script src="<?php echo asset_url() ?>js/jQuery-ui.js"></script>
         <script src="<?php echo asset_url(); ?>js/jquery.dataTables.min.js" type="text/javascript"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -101,12 +103,12 @@
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
                     <ul class="sidebar-menu">
-                        <li class="header">MAIN NAVIGATION</li>
-<!--                        <li>
+<!--                        <li class="header">MAIN NAVIGATION</li>
+                      <li>
                             <a href="<?php //echo site_url('Admin/dashboard'); ?>">
                                 <i class="fa fa-th"></i> <span>Dashboard</span> 
                             </a>
-                        </li>
+                        </li>-->
                         <li class="treeview">
                             <a href="<?php //echo site_url('Admin/emp_view'); ?>">
                                 <i class="ion ion-ios-people-outline"></i>
@@ -114,13 +116,13 @@
 
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="<?php //echo site_url('Admin/emp_view'); ?>"><i class="fa fa-circle-o"></i>Employee Master</a></li>
+                                <li><a href="<?php echo site_url('Admin/emp_view'); ?>"><i class="fa fa-circle-o"></i>Employee Master</a></li>
 
-                                <li><a href="<?php //echo site_url('Admin/bdm_wise'); ?>"><i class="fa fa-circle-o"></i> BDM WISE</a></li>
+                                <li><a href="<?php echo site_url('Admin/bdm_wise'); ?>"><i class="fa fa-circle-o"></i> BDM WISE</a></li>
 
                             </ul>
                         </li>
-                        <li>
+                        <!--  <li>
                             <a href="<?php //echo site_url('Admin/doc_view'); ?>">
                                 <i class="fa fa-user-md"></i> <span>Doctor Master</span> 
                             </a>

@@ -1,4 +1,21 @@
-
+<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-body ">
+            
+            <?php 
+            $attributes = array('method' => 'GET');
+            echo form_open('Admin/emp_view',$attributes); ?>
+            <div class="col-sm-2 col-md-2"  >
+                <select name="id" class="form-control">
+                    <option value="-1">Select Zone </option>
+                    <?php
+                  
+                    echo $zone; ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch</button>
+        </div>
+    </div>
 <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
     <a class="btn btn-primary pull-right" onclick="window.location = '<?php echo site_url('admin/emp_add'); ?>';"> Add Employee</a>
 </div>
