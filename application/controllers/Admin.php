@@ -39,7 +39,8 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-
+        $data['productlist'] = $this->admin_model->show_pro_list() ;
+/*
 //        $data['Doctor_Count'] = $this->admin_model->count();
 //        $planing_count = $this->admin_model->count_planned();
 //        $actual_count = $this->admin_model->count_achive();
@@ -88,9 +89,11 @@ class Admin extends CI_Controller {
         $data['total_convertion_by_product2'] = $this->admin_model->total_convertion_by_product(2);
         $data['total_convertion_by_product3'] = $this->admin_model->total_convertion_by_product(3);
         $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
-        $this->load->view('template3', $data);
+        $this->load->view('template3', $data);*/
 
-//        }
+        //}
+        $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
+        $this->load->view('template3', $data);
     }
 
     public function emp_view() {
