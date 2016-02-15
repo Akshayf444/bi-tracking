@@ -1,5 +1,4 @@
 
-
 <?php
 $attribute = array('id' => 'valid');
 echo form_open('admin/emp_add', $attribute);
@@ -35,8 +34,7 @@ echo form_open('admin/emp_add', $attribute);
         Mobile:<input type="text" class="form-control" value="" name="Mobile" placeholder="Enter Mobile"/> </div>
     <div class="col-lg-4">
         Email_ID:<input type="text" class="form-control" value="" id="email" name="Email_ID" placeholder="Enter Email_ID"/> </div>
-    <div class="col-lg-4">
-        Username:<input type="text" class="form-control" readonly="" value="" id="username" name="Username" placeholder="Enter Username"  /> </div>
+    
     <div class="col-lg-4">
 
         Address_1:  <input type="text" class="form-control" value="" name="Address_1" placeholder="Enter Address_1"/> </div>
