@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -869,18 +868,98 @@ class Admin extends CI_Controller {
         $Reporting_To = $this->input->post('Reporting_To');
         $reporting_id = $this->input->post('reporting_veeva_id');
         if ($this->input->post()) {
-        $data = array('Profile' => $profile,
-            'Reporting_To' => $Reporting_To,
-            'Reporting_VEEVA_ID' => $reporting_id,
-            'Designation'=>$Reporting_To);
-        $this->admin_model->reporting_change($id, $data);
-        redirect('admin/reporting_change', 'refresh');
+            $data = array('Profile' => $profile,
+                'Reporting_To' => $Reporting_To,
+                'Reporting_VEEVA_ID' => $reporting_id,
+                'Designation' => $Reporting_To);
+            $this->admin_model->reporting_change($id, $data);
+            redirect('admin/reporting_change', 'refresh');
+        }
     }
-    }
- public function Target_assign(){
-     $data['show']=$this->admin_model->target_assign();
-    
+
+    public function Target_assign() {
+        $data['show'] = $this->admin_model->target_assign();
+
         $data = array('title' => 'Target_Assign', 'content' => 'admin/target_assign', 'page_title' => 'Target_Assign', 'view_data' => $data);
         $this->load->view('template3', $data);
- }
+    }
+
+    public function dashboardTab() {
+        if ($this->input->post('Product_Id')) {
+            $Product_id = $this->input->post('Product_Id');
+            $noofdoctors = 0;
+            $target = 0;
+            $planned = 0;
+
+            $result = $this->admin_model->adminDashboardCount($Product_id, $this->nextMonth, $this->nextYear);
+            if (!empty($result)) {
+                foreach ($result as $value) {
+                    $target+= $value->Target_New_Rxn_for_the_month;
+                    $planned+= $value->Planned_New_Rxn;
+                    $noofdoctors+= $value->No_of_Doctors;
+                }
+            }
+            ?>
+            <div id="<?php echo $Product_id ?>" class="tab-pane fade in active">
+                <div class="row" style="margin-top:5px">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-yellow">
+                            <span class="info-box-icon"><i class="fa fa-user-md"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Doctors </span>
+                                <span class="info-box-number"><?php echo $noofdoctors; ?></span>
+                                <!--                                                <div class="progress">
+                                                                                    <div class="progress-bar" style="width: 50%"></div>
+                                                                                </div>
+                                                                                <span class="progress-description">
+                                                                                    50% Increase in 30 Days
+                                                                                </span>-->
+                            </div><!-- /.info-box-content -->
+                        </div><!-- /.info-box -->
+                    </div><!-- /.col -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon"><i class="fa fa-medkit"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Target</span>
+                                <span class="info-box-number"><?php
+                                    echo $target;
+                                    ?></span>
+                                <!--                                                <div class="progress">
+                                                                                    <div class="progress-bar" style="width: 50%"></div>
+                                                                                </div>
+                                                                                <span class="progress-description">
+                                                                                    50% Increase in 30 Days
+                                                                                </span>-->
+                            </div><!-- /.info-box-content -->
+                        </div><!-- /.info-box -->
+                    </div><!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix visible-sm-block"></div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box bg-red">
+                            <span class="info-box-icon"><i class="ion ion-ios-cart-outline"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Planned</span>
+                                <span class="info-box-number"><?php
+                                    echo $planned;
+                                    ?></span>
+                                <!--                                                <div class="progress">
+                                                                                    <div class="progress-bar" style="width: 50%"></div>
+                                                                                </div>
+                                                                                <span class="progress-description">
+                                                                                    50% Increase in 30 Days
+                                                                                </span>-->
+                            </div><!-- /.info-box-content -->
+                        </div><!-- /.info-box -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div>
+
+            <?php
+        }
+    }
+
 }

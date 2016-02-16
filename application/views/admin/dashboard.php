@@ -56,12 +56,14 @@
                     $count = 1;
                     foreach ($productlist as $product) {
                         ?>
-                        <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
+                        <li class="<?php echo isset($count) && $count == 1 ? 'active' : ''; ?>"><a data-toggle="tab" style="    padding: 12px;" onclick="getTabDetails(<?php echo $product->id ?>)" href="#<?php echo $product->id ?>"><?php echo $product->Brand_Name ?></a></li>
                         <?php
                         $count ++;
                     }
                 }
                 ?>
+                <li id="loader" style="display:none"><img src="<?php echo asset_url(); ?>images/loader.gif" alt=""/></li>
+
             </ul>
 
             <div class="tab-content">
@@ -144,6 +146,7 @@
                         </div>
                         <?php
                         $count ++;
+                        break;
                     }
                 }
                 ?>
@@ -152,3 +155,18 @@
         <?php } ?>
     </div>
 </div>
+<script>
+    function getTabDetails(Product_id) {
+        $("#loader").show();
+        $.ajax({
+            //Send request
+            type: 'POST',
+            data: {Product_Id: Product_id},
+            url: '<?php echo site_url('Admin/dashboardTab'); ?>',
+            success: function (data) {
+                $("#loader").hide();
+                $(".tab-content").html(data);
+            }
+        });
+    }
+</script>
