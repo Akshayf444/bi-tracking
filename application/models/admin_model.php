@@ -70,32 +70,36 @@ class admin_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function find_Division() {
+
+    public function find_Division() {
         $sql = "select distinct(Division) as Division from Employee_Master WHERE Division IS NOT NULL AND Division <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function find_profile() {
+
+    public function find_profile() {
         $sql = "select distinct(Profile) as Profile from Employee_Master WHERE Profile IS NOT NULL AND Profile <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function reporting_to($profile) {
+
+    public function reporting_to($profile) {
         $sql = "SELECT * FROM Employee_Master WHERE Profile='$profile' GROUP BY Reporting_VEEVA_ID ";
         $query = $this->db->query($sql);
         return $query->result();
     }
+
     public function reporting_id($reporting_to) {
         $sql = "SELECT  * FROM Employee_Master WHERE Reporting_To ='$reporting_to'";
         $query = $this->db->query($sql);
         return $query->result();
     }
-    
-     public function zone_data($zone){
-         $sql = "select * from Employee_Master WHERE Zone = '$zone'";
+
+    public function zone_data($zone) {
+        $sql = "select * from Employee_Master WHERE Zone = '$zone'";
         $query = $this->db->query($sql);
-        return $query->result(); 
-     }
+        return $query->result();
+    }
 
     public function find_region() {
         $sql = "select distinct(Region) as Region from Employee_Master WHERE Region IS NOT NULL AND Region <> ''";
@@ -328,20 +332,15 @@ class admin_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function count() {
-
-//    $sql="SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Employee_Doc  ";
-        $sql = "SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Doctor_Master  
-            Left Join Employee_Doc on Employee_Doc.VEEVA_Account_ID=Doctor_Master.Account_ID 
-                 where Doctor_Master.Status='ACTIVE' ";
-
-
+    public function count() {        
+        $sql = "SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Employee_Master em  
+                INNER JOIN Employee_Doc on Employee_Doc.VEEVA_Employee_ID = em.VEEVA_Employee_ID ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
 
-    public function total_target() {
-        $sql = "SELECT SUM(`target`) AS TOTAL FROM `Rx_Target`";
+    public function total_target($month,$Year) {
+        $sql = "SELECT SUM(`target`) AS TOTAL FROM `Rx_Target` WHERE month = {$month} AND Year = '$Year' ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -354,15 +353,15 @@ class admin_model extends CI_Model {
     }
 
     public function total_convertion() {
-        $sql = "SELECT COUNT(`Doctor_Id`) AS TOTAL FROM `Rx_Actual`";
+        $sql = "SELECT COUNT(DISTINCT(`Doctor_Id`)) AS TOTAL FROM `Rx_Actual`";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
 
-    public function count_planned() {
+    public function count_planned($month, $Year) {
         $sql = "SELECT SUM(Rx_Planning.Planned_RX) AS TOTAL FROM Employee_Master
             LEFT JOIN Rx_Planning ON Employee_Master.VEEVA_Employee_ID=Rx_Planning.VEEVA_Employee_ID
-             WHERE Employee_Master.status='1' ";
+            WHERE Employee_Master.status='1' AND Rx_Planning.month = {$month} AND Rx_Planning.Year = '$Year'  ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
@@ -375,10 +374,9 @@ class admin_model extends CI_Model {
         return $query->result();
     }
 
-    public function count_achive() {
+    public function count_achive($month, $Year) {
         $sql = "SELECT SUM(Rx_Actual.Actual_Rx) AS TOTAL FROM Rx_Actual
- LEFT JOIN Employee_Master ON Employee_Master.VEEVA_Employee_ID=Rx_Actual.VEEVA_Employee_ID
- WHERE Employee_Master.status='1' ";
+            WHERE month = {$month} AND Year = '$Year' ";
 
         $query = $this->db->query($sql);
         return $query->row_array();
@@ -594,6 +592,65 @@ GROUP BY em.`VEEVA_Employee_ID`";
 
     public function login_view($id) {
         $sql = "select * FROM login_history WHERE VEEVA_Employee_ID ='$id' ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function adminDashboardCount($Product_Id, $month, $Year) {
+        $sql = "SELECT 
+                    em.`Full_Name`,
+                    em.VEEVA_Employee_ID,
+                    COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors,
+                    COUNT(p.`Doctor_Id`) AS No_of_Doctors_profiled,
+                    SUM(rt.`target`) AS Target_New_Rxn_for_the_month,
+                    SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,
+                    COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,
+                    COUNT(
+                      CASE
+                        WHEN ar.`Activity_Done` = 'Yes' 
+                        THEN 1 
+                      END
+                    ) AS checkk 
+                  FROM
+                    Employee_Master em 
+                    LEFT JOIN Employee_Doc ed 
+                      ON em.`VEEVA_Employee_ID` = ed.`VEEVA_Employee_ID` 
+                    LEFT JOIN Doctor_Master dm 
+                      ON dm.`Account_ID` = ed.`VEEVA_Account_ID` 
+                      AND dm.Individual_Type = 'Doctor' 
+                    LEFT JOIN Profiling p 
+                      ON ed.`VEEVA_Account_ID` = p.`Doctor_Id` 
+                      AND p.`Product_id` = {$Product_Id} 
+                      AND p.Status = 'Submitted' 
+                    LEFT JOIN 
+                      (SELECT 
+                        * 
+                      FROM
+                        Rx_Target 
+                      WHERE MONTH = {$month} 
+                        AND YEAR = '$Year' 
+                        AND `Product_Id` = {$Product_Id} 
+                        AND STATUS = 'Submitted') AS rt 
+                      ON em.`VEEVA_Employee_ID` = rt.`VEEVA_Employee_ID` 
+                    LEFT JOIN Rx_Planning rp 
+                      ON ed.`VEEVA_Account_ID` = rp.`Doctor_Id` 
+                      AND rp.`Product_Id` = {$Product_Id}  
+                      AND rp.`Month` = {$month} 
+                      AND rp.`Year` = '$Year' 
+                      AND rp.VEEVA_Employee_ID = em.VEEVA_Employee_ID 
+                    LEFT JOIN Activity_Planning ap 
+                      ON ed.`VEEVA_Account_ID` = ap.`Doctor_Id` 
+                      AND ap.`Product_Id` = {$Product_Id}   
+                      AND ap.`Month` = {$month} 
+                      AND ap.`Year` = '$Year' 
+                      AND em.`VEEVA_Employee_ID` = ap.`VEEVA_Employee_ID` 
+                    LEFT JOIN Activity_Reporting ar 
+                      ON ed.`VEEVA_Account_ID` = ar.`Doctor_Id` 
+                      AND ar.`Product_Id` = {$Product_Id} 
+                      AND ar.`Month` = {$month} 
+                      AND ar.`Year` = '$Year'  
+                      AND em.`VEEVA_Employee_ID` = ar.`VEEVA_Employee_ID` 
+                  GROUP BY em.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
         return $query->result();
     }

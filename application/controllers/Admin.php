@@ -39,57 +39,60 @@ class Admin extends CI_Controller {
     }
 
     public function dashboard() {
-        $data['productlist'] = $this->admin_model->show_pro_list() ;
-/*
-//        $data['Doctor_Count'] = $this->admin_model->count();
-//        $planing_count = $this->admin_model->count_planned();
-//        $actual_count = $this->admin_model->count_achive();
+        $data['productlist'] = $this->admin_model->show_pro_list();
+
+        $data['Doctor_Count'] = $this->admin_model->count();
+        //$data['Doctor_Count'] = $this->admin_model->count_planned($this->nextMonth, $this->nextYear);
+        $data['Actual_Count'] = $this->admin_model->count_achive($this->nextMonth, $this->nextYear);
+        $data['Target_Count'] = $this->admin_model->total_target($this->nextMonth, $this->nextYear);
+        $data['Con_Count'] = $this->admin_model->total_convertion();
+        
 ////        $data['Doctor_Count'] = isset($doctor_count['COUNT']) ? $doctor_count['COUNT'] : 0;
 //        $data['Planning_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
 //        $data['Actual_Count'] = isset($doctor_count['TOTAL']) ? $doctor_count['TOTAL'] : 0;
-        $data['Doctor_Count'] = $this->admin_model->count();
-        $data['Target_Count'] = $this->admin_model->total_target();
-        $data['Actual_Count'] = $this->admin_model->count_achive();
-        $data['Con_Count'] = $this->admin_model->total_convertion();
-        $data['Planning_Count'] = $this->admin_model->count_planned();
-        $division = 'Diabetes';
-        $division1 = 'ThromBI';
-//        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
-        $data['count_achive_month'] = $this->admin_model->count_achive_month();
-        $data['plan_month'] = $this->admin_model->count_planned_month();
+        /*       $data['Doctor_Count'] = $this->admin_model->count();
+          
+          $data['Actual_Count'] = $this->admin_model->count_achive();
+          
+          $data['Planning_Count'] = $this->admin_model->count_planned();
+          $division = 'Diabetes';
+          $division1 = 'ThromBI';
+          //        $month = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12');
+          $data['count_achive_month'] = $this->admin_model->count_achive_month();
+          $data['plan_month'] = $this->admin_model->count_planned_month();
 
-        $data['dr_by_product'] = $this->admin_model->dr_by_product($division);
-        $data['Over_all_count'] = $this->admin_model->Over_all_count();
-        $data['profiling_by_product1'] = $this->admin_model->profiling_by_product(1);
+          $data['dr_by_product'] = $this->admin_model->dr_by_product($division);
+          $data['Over_all_count'] = $this->admin_model->Over_all_count();
+          $data['profiling_by_product1'] = $this->admin_model->profiling_by_product(1);
 
-        $data['profiling_by_product2'] = $this->admin_model->profiling_by_product(2);
-        $data['profiling_by_product3'] = $this->admin_model->profiling_by_product(3);
-        if ($data['profiling_by_product1']['profiling_by_product'] > 0) {
-            $data['tot1'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product1']['profiling_by_product']) * 100;
-        } else {
-            $data['tot1'] = 0;
-        }
-        if ($data['profiling_by_product2']['profiling_by_product'] > 0) {
-            $data['tot2'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product2']['profiling_by_product']) * 100;
-        } else {
-            $data['tot2'] = 0;
-        }
-        if ($data['profiling_by_product3']['profiling_by_product'] > 0) {
-            $data['tot3'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product3']['profiling_by_product']) * 100;
-        } else {
-            $data['tot3'] = 0;
-        }
-        $data['total_target_by_product1'] = $this->admin_model->total_target_by_product(1);
-        $data['total_target_by_product2'] = $this->admin_model->total_target_by_product(2);
-        $data['total_target_by_product3'] = $this->admin_model->total_target_by_product(3);
-        $data['total_actualrx_by_product1'] = $this->admin_model->total_actualrx_by_product(1);
-        $data['total_actualrx_by_product2'] = $this->admin_model->total_actualrx_by_product(2);
-        $data['total_actualrx_by_product3'] = $this->admin_model->total_actualrx_by_product(3);
-        $data['total_convertion_by_product1'] = $this->admin_model->total_convertion_by_product(1);
-        $data['total_convertion_by_product2'] = $this->admin_model->total_convertion_by_product(2);
-        $data['total_convertion_by_product3'] = $this->admin_model->total_convertion_by_product(3);
-        $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
-        $this->load->view('template3', $data);*/
+          $data['profiling_by_product2'] = $this->admin_model->profiling_by_product(2);
+          $data['profiling_by_product3'] = $this->admin_model->profiling_by_product(3);
+          if ($data['profiling_by_product1']['profiling_by_product'] > 0) {
+          $data['tot1'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product1']['profiling_by_product']) * 100;
+          } else {
+          $data['tot1'] = 0;
+          }
+          if ($data['profiling_by_product2']['profiling_by_product'] > 0) {
+          $data['tot2'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product2']['profiling_by_product']) * 100;
+          } else {
+          $data['tot2'] = 0;
+          }
+          if ($data['profiling_by_product3']['profiling_by_product'] > 0) {
+          $data['tot3'] = ($data['Over_all_count']['over_all'] / $data['profiling_by_product3']['profiling_by_product']) * 100;
+          } else {
+          $data['tot3'] = 0;
+          }
+          $data['total_target_by_product1'] = $this->admin_model->total_target_by_product(1);
+          $data['total_target_by_product2'] = $this->admin_model->total_target_by_product(2);
+          $data['total_target_by_product3'] = $this->admin_model->total_target_by_product(3);
+          $data['total_actualrx_by_product1'] = $this->admin_model->total_actualrx_by_product(1);
+          $data['total_actualrx_by_product2'] = $this->admin_model->total_actualrx_by_product(2);
+          $data['total_actualrx_by_product3'] = $this->admin_model->total_actualrx_by_product(3);
+          $data['total_convertion_by_product1'] = $this->admin_model->total_convertion_by_product(1);
+          $data['total_convertion_by_product2'] = $this->admin_model->total_convertion_by_product(2);
+          $data['total_convertion_by_product3'] = $this->admin_model->total_convertion_by_product(3);
+          $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
+          $this->load->view('template3', $data); */
 
         //}
         $data = array('title' => 'Dashboard', 'content' => 'admin/dashboard', 'page_title' => 'Dashboard', 'view_data' => $data);
