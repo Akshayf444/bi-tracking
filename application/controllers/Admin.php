@@ -887,8 +887,44 @@ class Admin extends CI_Controller {
     public function login_history() {
 
         $data['show'] = $this->admin_model->login_history();
-        $data = array('title' => 'Employee View', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
+        $data = array('title' => 'Login_History', 'content' => 'admin/login_history', 'page_title' => 'Login History ', 'view_data' => $data);
         $this->load->view('template3', $data);
     }
 
+    public function reporting_change() {
+        $data[] = array();
+
+        if ($this->input->get()) {
+            $id = $this->input->get('id');
+            $data['rows'] = $this->admin_model->find_by_empid($id);
+            $data['show'] = $this->admin_model->reporting_view2($id);
+            $result = $this->admin_model->find_Profile();
+            $data['Profile'] = $this->Master_Model->generateDropdown($result, 'Profile', 'Profile', $data['rows'] ['Profile']);
+            $result = $this->admin_model->find_REPORTING_TO();
+            $data['Reporting_To'] = $this->Master_Model->generateDropdown($result, 'Reporting_To', 'Reporting_To', $data['rows'] ['Reporting_To']);
+        }
+        $data = array('title' => ' Reporting', 'content' => 'admin/reporting_change', 'page_title' => 'Reporting Change', 'view_data' => $data);
+        $this->load->view('template3', $data);
+    }
+
+    public function change_profile() {
+        $id = $this->input->post('veeva_id');
+        $profile = $this->input->post('Profile');
+        $Reporting_To = $this->input->post('Reporting_To');
+        $reporting_id = $this->input->post('reporting_veeva_id');
+        if ($this->input->post()) {
+        $data = array('Profile' => $profile,
+            'Reporting_To' => $Reporting_To,
+            'Reporting_VEEVA_ID' => $reporting_id,
+            'Designation'=>$Reporting_To);
+        $this->admin_model->reporting_change($id, $data);
+        redirect('admin/reporting_change', 'refresh');
+    }
+    }
+ public function Target_assign(){
+     $data['show']=$this->admin_model->target_assign();
+    
+        $data = array('title' => 'Target_Assign', 'content' => 'admin/target_assign', 'page_title' => 'Target_Assign', 'view_data' => $data);
+        $this->load->view('template3', $data);
+ }
 }

@@ -70,32 +70,36 @@ class admin_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function find_Division() {
+
+    public function find_Division() {
         $sql = "select distinct(Division) as Division from Employee_Master WHERE Division IS NOT NULL AND Division <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function find_profile() {
+
+    public function find_profile() {
         $sql = "select distinct(Profile) as Profile from Employee_Master WHERE Profile IS NOT NULL AND Profile <> ''";
         $query = $this->db->query($sql);
         return $query->result();
     }
-      public function reporting_to($profile) {
+
+    public function reporting_to($profile) {
         $sql = "SELECT * FROM Employee_Master WHERE Profile='$profile' GROUP BY Reporting_VEEVA_ID ";
         $query = $this->db->query($sql);
         return $query->result();
     }
+
     public function reporting_id($reporting_to) {
         $sql = "SELECT  * FROM Employee_Master WHERE Reporting_To ='$reporting_to'";
         $query = $this->db->query($sql);
         return $query->result();
     }
-    
-     public function zone_data($zone){
-         $sql = "select * from Employee_Master WHERE Zone = '$zone'";
+
+    public function zone_data($zone) {
+        $sql = "select * from Employee_Master WHERE Zone = '$zone'";
         $query = $this->db->query($sql);
-        return $query->result(); 
-     }
+        return $query->result();
+    }
 
     public function find_region() {
         $sql = "select distinct(Region) as Region from Employee_Master WHERE Region IS NOT NULL AND Region <> ''";
@@ -586,7 +590,7 @@ GROUP BY em.`VEEVA_Employee_ID`";
                   INNER JOIN Employee_Master em 
                     ON em.`VEEVA_Employee_ID` = lh.`VEEVA_Employee_ID` 
                   LEFT JOIN Territory_master tr 
-                    ON em.territory = tr.id 
+                    ON em.Territory = tr.id 
                 GROUP BY lh.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
         return $query->result();
@@ -597,5 +601,34 @@ GROUP BY em.`VEEVA_Employee_ID`";
         $query = $this->db->query($sql);
         return $query->result();
     }
+
+    public function reporting_view2($id) {
+        $sql = "select em.*,tr.* FROM Employee_Master em   LEFT JOIN Territory_master tr 
+                    ON em.Territory = tr.id WHERE VEEVA_Employee_ID ='$id'  ";
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function reporting_change($id, $data) {
+        $query = $this->db->where('VEEVA_Employee_ID', $id);
+        $query = $this->db->update('Employee_Master', $data);
+        return $query;
+    }
+     public function target_assign(){
+         $sql="SELECT 
+  em.*,tm.`Territory` 
+FROM
+  `Employee_Master` em
+  INNER JOIN `Territory_master` tm ON tm.`id` = em.`Territory`
+  
+WHERE `VEEVA_Employee_ID` IN 
+  (SELECT DISTINCT 
+    (`Reporting_VEEVA_ID`) 
+  FROM
+    Employee_Master em 
+    INNER JOIN `Rx_Target` rt 
+      ON rt.VEEVA_Employee_ID = em.VEEVA_Employee_ID 
+  WHERE rt.Status = 'Submitted')";
+     }
 
 }

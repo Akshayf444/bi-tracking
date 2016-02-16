@@ -17,7 +17,7 @@
                 <span class="info-box-text">Target</span>
                 <span class="info-box-number"><?php 
                 
-                var_dump($Target_Count);
+               
                 echo $Target_Count['TOTAL']; ?></span>
             </div><!-- /.info-box-content -->
         </div><!-- /.info-box -->
@@ -468,13 +468,13 @@
 //  
             }
             ?>
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/jQuery/jQuery-2.1.3.min.js" type="text/javascript"></script>
+<!--            <script src="<?php echo asset_url() ?>/dashboard/plugins/jQuery/jQuery-2.1.3.min.js" type="text/javascript"></script>
 
-            <!-- Bootstrap 3.3.2 JS -->
+             Bootstrap 3.3.2 JS 
             <script src="<?php echo asset_url() ?>/dashboard/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
 
-            <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+            <script src="<?php echo asset_url() ?>/dashboard/plugins/chartjs/Chart.min.js" type="text/javascript"></script>-->
 
 
 
