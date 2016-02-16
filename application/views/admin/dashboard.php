@@ -1,4 +1,3 @@
-
 <!-- Info boxes -->
 <div class="row">
     <div class="col-md-3 col-sm-6 col-xs-12">
@@ -47,8 +46,8 @@
 </div><!-- /.row -->
 
 <div class="row">
-<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-    <?php if (!empty($productlist)) { ?>
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+        <?php if (!empty($productlist)) { ?>
 
 
             <ul align="center" class="nav nav-tabs ">
