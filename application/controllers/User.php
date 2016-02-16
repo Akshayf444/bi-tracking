@@ -600,8 +600,10 @@ class User extends MY_Controller {
                         $check_password = $this->User_model->password_status($this->session->userdata('VEEVA_Employee_ID'));
                         if ($check_password['Profile'] == 'ASM') {
                             redirect('ASM/dashboard', 'refresh');
-                        } else {
+                        } elseif ($check_password['Profile'] == 'BDM') {
                             redirect('User/dashboard', 'refresh');
+                        } elseif ($check_password['Profile'] == 'ZSM') {
+                            redirect('ZSM/dashboard', 'refresh');
                         }
                     }
                 } else {
