@@ -597,12 +597,13 @@ GROUP BY em.`VEEVA_Employee_ID`";
     }
 
     public function adminDashboardCount($Product_Id, $month, $Year) {
+        $individualType = (int) $Product_Id == 1 ? 'Hospital' : 'Doctor';
         $sql = "SELECT 
                     em.`Full_Name`,
                     em.VEEVA_Employee_ID,
                     COUNT(ed.`VEEVA_Account_ID`) AS No_of_Doctors,
                     COUNT(p.`Doctor_Id`) AS No_of_Doctors_profiled,
-                    SUM(rt.`target`) AS Target_New_Rxn_for_the_month,
+                    rt.`target` AS Target_New_Rxn_for_the_month,
                     SUM(rp.`Planned_Rx`) AS Planned_New_Rxn,
                     COUNT(ap.`Act_Plan`) AS No_of_Doctors_planned,
                     COUNT(
@@ -615,9 +616,9 @@ GROUP BY em.`VEEVA_Employee_ID`";
                     Employee_Master em 
                     LEFT JOIN Employee_Doc ed 
                       ON em.`VEEVA_Employee_ID` = ed.`VEEVA_Employee_ID` 
-                    LEFT JOIN Doctor_Master dm 
+                    INNER JOIN Doctor_Master dm 
                       ON dm.`Account_ID` = ed.`VEEVA_Account_ID` 
-                      AND dm.Individual_Type = 'Doctor' 
+                      AND dm.Individual_Type = '$individualType' 
                     LEFT JOIN Profiling p 
                       ON ed.`VEEVA_Account_ID` = p.`Doctor_Id` 
                       AND p.`Product_id` = {$Product_Id} 
@@ -651,6 +652,9 @@ GROUP BY em.`VEEVA_Employee_ID`";
                       AND ar.`Year` = '$Year'  
                       AND em.`VEEVA_Employee_ID` = ar.`VEEVA_Employee_ID` 
                   GROUP BY em.`VEEVA_Employee_ID` ";
+        //echo $sql;
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     public function reporting_view2($id) {
