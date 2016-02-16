@@ -156,7 +156,17 @@
                         </li>-->
                         <li>
                             <a href="<?php echo site_url('Admin/login_history'); ?>">
-                                <i class="fa fa-eye"></i> <span>Login History</span> 
+                                <i class="fa fa-eye-slash"></i> <span>Login History</span> 
+                            </a>
+                        </li>
+  <li>
+                            <a href="<?php echo site_url('Admin/reporting_change'); ?>">
+                                <i class="fa fa-bookmark"></i> <span>Reporting_Change</span> 
+                            </a>
+                        </li>
+ <li>
+                            <a href="<?php echo site_url('Admin/Target_assign'); ?>">
+                                <i class="fa fa-bookmark"></i> <span>Target-Assign</span> 
                             </a>
                         </li>
 

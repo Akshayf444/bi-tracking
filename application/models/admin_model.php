@@ -332,14 +332,14 @@ class admin_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function count() {        
+    public function count() {
         $sql = "SELECT COUNT(Employee_Doc.VEEVA_Account_ID) AS COUNT FROM Employee_Master em  
                 INNER JOIN Employee_Doc on Employee_Doc.VEEVA_Employee_ID = em.VEEVA_Employee_ID ";
         $query = $this->db->query($sql);
         return $query->row_array();
     }
 
-    public function total_target($month,$Year) {
+    public function total_target($month, $Year) {
         $sql = "SELECT SUM(`target`) AS TOTAL FROM `Rx_Target` WHERE month = {$month} AND Year = '$Year' ";
         $query = $this->db->query($sql);
         return $query->row_array();
@@ -584,7 +584,7 @@ GROUP BY em.`VEEVA_Employee_ID`";
                   INNER JOIN Employee_Master em 
                     ON em.`VEEVA_Employee_ID` = lh.`VEEVA_Employee_ID` 
                   LEFT JOIN Territory_master tr 
-                    ON em.territory = tr.id 
+                    ON em.Territory = tr.id 
                 GROUP BY lh.`VEEVA_Employee_ID` ";
         $query = $this->db->query($sql);
         return $query->result();
@@ -651,6 +651,37 @@ GROUP BY em.`VEEVA_Employee_ID`";
                       AND ar.`Year` = '$Year'  
                       AND em.`VEEVA_Employee_ID` = ar.`VEEVA_Employee_ID` 
                   GROUP BY em.`VEEVA_Employee_ID` ";
+    }
+
+    public function reporting_view2($id) {
+        $sql = "select em.*,tr.* FROM Employee_Master em   LEFT JOIN Territory_master tr 
+                    ON em.Territory = tr.id WHERE VEEVA_Employee_ID ='$id'  ";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+
+    public function reporting_change($id, $data) {
+        $query = $this->db->where('VEEVA_Employee_ID', $id);
+        $query = $this->db->update('Employee_Master', $data);
+        return $query;
+    }
+
+    public function target_assign() {
+        $sql = "SELECT 
+            em.*,tm.`Territory` 
+          FROM
+            `Employee_Master` em
+            INNER JOIN `Territory_master` tm ON tm.`id` = em.`Territory`
+
+          WHERE `VEEVA_Employee_ID` IN 
+            (SELECT DISTINCT 
+              (`Reporting_VEEVA_ID`) 
+            FROM
+              Employee_Master em 
+              INNER JOIN `Rx_Target` rt 
+                ON rt.VEEVA_Employee_ID = em.VEEVA_Employee_ID 
+            WHERE rt.Status = 'Submitted')";
         $query = $this->db->query($sql);
         return $query->result();
     }
